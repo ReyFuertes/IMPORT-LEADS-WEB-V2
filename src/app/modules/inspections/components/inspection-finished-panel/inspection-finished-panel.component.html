@@ -1,0 +1,43 @@
+<div class="col-header" fxLayoutAlign="center center" fxLayoutGap="10px">
+  <div *ngFor="let col of colsHeaders" [fxFlex]="col?.width">{{ col?.label }}</div>
+</div>
+<div class="fade-in il-draggable-expansion">
+  <mat-accordion cdkDropList (cdkDropListDropped)="drop($event)">
+    <mat-expansion-panel (click)="expandPnl(pnl, $event, i)" cdkDrag (cdkDragStarted)="dragStarted(true)" #pnl="matExpansionPanel" *ngFor="let item of items; let i = index" hideToggle="true">
+
+      <mat-expansion-panel-header (keydown.Space)="$event.stopImmediatePropagation()" (click)="onClickPnl(pnl, $event, i)" (mouseover)="mouseover(i)" (mouseleave)="mouseout()">
+        <div class="pnl-header" fxLayout="row" fxlayoutGap="20px" fxLayoutGap="10px">
+          <div fxFlex="45" fxLayoutGap="8px">
+            <img cdkDragHandle [src]="svgPath + 'drag-icon.svg'" />
+            <div fxFlex class="contact-title" [matTooltip]="item?.title" fxLayoutAlign="start center">
+              <span>{{item?.title}}</span>
+            </div>
+          </div>
+          <div fxFlex="35" class="assigned-to" [matTooltip]="item?.assignedTo" fxLayoutAlign="start center" fxLayoutGap="10px">
+            <div class="img-circle">
+              <img [src]="imgPath + 'profile.png'" />
+            </div>
+            <span>{{item?.assignedTo}}</span>
+          </div>
+          <div fxFlex="10" [matTooltip]="item?.startDate" fxLayoutAlign="start center">
+            <span>{{item?.startDate}}</span>
+          </div>
+          <div fxFlex="10" [matTooltip]="item?.endDate" fxLayoutAlign="start center">
+            <span>{{item?.endDate}}</span>
+          </div>
+          <div fxFlex="10" [matTooltip]="item?.dateRun" fxLayoutAlign="start center">
+            <span>{{item?.dateRun}}</span>
+          </div>
+          <div fxFlex="5" [matTooltip]="item?.dateRun" fxLayoutAlign="start center">
+            <span>{{item?.totalAmount}}</span>
+          </div>
+          <div class="action-col" fxFlex="3" fxLayoutAlign="end center">
+            <il-popover-menu [menus]="menus" class="action-col" (click)="$event.stopPropagation();"></il-popover-menu>
+          </div>
+        </div>
+      </mat-expansion-panel-header>
+
+      <il-inspection-panel-detail *ngIf="!isCategory" [products]="item?.products"></il-inspection-panel-detail>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

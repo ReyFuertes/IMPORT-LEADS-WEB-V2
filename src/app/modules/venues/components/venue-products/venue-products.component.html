@@ -1,0 +1,75 @@
+<div class="col-header" fxLayoutAlign="start center" fxLayoutGap="5px">
+  <div *ngFor="let col of colsHeaders; let last = last" [fxFlex]="col?.width">{{ col?.label }}</div>
+</div>
+<div class="il-draggable-expansion">
+  <mat-accordion cdkDropList (cdkDropListDropped)="drop($event)">
+    <mat-expansion-panel #pnl cdkDrag (cdkDragStarted)="dragStarted(true)" #pnl="matExpansionPanel" *ngFor="let item of items; let i = index" hideToggle="true">
+
+      <mat-expansion-panel-header (keydown.Space)="$event.stopImmediatePropagation()" (click)="onClickPnl(pnl, $event, i)" (mouseover)="mouseover(i)" (mouseleave)="mouseout()">
+        <div class="pnl-header" fxLayout="row" fxLayoutGap="10px">
+          <img cdkDragHandle [src]="svgPath + 'drag-icon.svg'" />
+          <div fxFlex="20" fxLayoutAlign="start center">
+            <span *ngIf="selectedIndex !== i">{{item.name}}</span>
+            <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
+              <input matInput [value]="item?.name">
+            </mat-form-field>
+          </div>
+          <div fxFlex="15" fxLayoutAlign="start center">
+            <span *ngIf="selectedIndex !== i">{{item?.location}}</span>
+            <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
+              <input matInput [value]="item?.location">
+            </mat-form-field>
+          </div>
+          <div fxFlex="20" fxLayoutAlign="start center">
+            <il-pill *ngFor="let product of item?.related_products | slice:0:1; let i = index;" [matTooltipClass]="'multi-line-tooltip'" [matTooltip]="getToolTip(item?.related_products)" [item]="{ value: product?.id, label: product?.product_name }"
+              (removeEmitter)="onRemove($event)">
+            </il-pill>
+          </div>
+          <div fxFlex="100px" fxLayoutAlign="center center">
+            <span *ngIf="selectedIndex !== i">{{item?.contracts}}</span>
+            <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
+              <input matInput [value]="item?.contracts">
+            </mat-form-field>
+          </div>
+          <div fxFlex="100px" fxLayoutAlign="center center">
+            <span *ngIf="selectedIndex !== i">{{item?.inspections}}</span>
+            <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
+              <input matInput [value]="item.inspections">
+            </mat-form-field>
+          </div>
+          <div fxFlex="100px" fxLayoutAlign="center center">
+            <span *ngIf="selectedIndex !== i">{{item?.avgPassFail}}%</span>
+            <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
+              <input matInput [value]="item.avgPassFail">
+            </mat-form-field>
+          </div>
+          <div fxFlex="100px" fxLayoutAlign="start center">
+            <span *ngIf="selectedIndex !== i">
+              <il-star-rating [rating]="item.rating"></il-star-rating>
+            </span>
+            <span *ngIf="selectedIndex !== i" class="rating-label">{{item?.rating}}</span>
+            <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
+              <input matInput [value]="item.rating">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div fxFlex="100px" class="pnl-actions" fxLayoutAlign="end center">
+          <il-ellipse-menu class="menu-ellipse" *ngIf="hoveredIndex !== i"></il-ellipse-menu>
+          <div class="menu-icon" *ngIf="hoveredIndex === i && selectedIndex === null">
+            <img [src]="svgPath + 'edit-icon-blue.svg'" />
+            <img [src]="svgPath + 'delete-icon-red.svg'">
+          </div>
+          <div class="menu-icon" *ngIf="hoveredIndex === i && selectedIndex === i">
+            <img [src]="svgPath + 'close-icon-blue.svg'" (click)="onClose()" />
+            <img [src]="svgPath + 'save-icon-blue.svg'">
+          </div>
+        </div>
+      </mat-expansion-panel-header>
+      <div>
+        <il-venue-expansion-list [colsHeaders]="ctColsRelatedProduct" [items]="item?.relatedProducts"></il-venue-expansion-list>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+</div>

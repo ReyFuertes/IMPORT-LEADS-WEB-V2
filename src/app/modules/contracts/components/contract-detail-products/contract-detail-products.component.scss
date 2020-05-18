@@ -1,0 +1,36 @@
+@import "src/styleguide/shared";
+.product-section {
+  > div {
+    &:nth-child(2) {
+      height: 50px;
+    }
+    > div {
+      width: 100%;
+      height: 60px;
+    }
+  }
+}
+.cp-container {
+  p {
+    font-size: 14px;
+    color: $color-gray-1;
+  }
+}
+.il-button {
+  @include il-button;
+}
+.remove-icon {
+  cursor: pointer;
+}
+.add-icon {
+  height: 25px;
+  top: 2px;
+  position: relative;
+  cursor: pointer;
+}
+:host ::ng-deep {
+  .mat-form-field-appearance-legacy .mat-form-field-label {
+    font-size: 14px;
+    top: 23px !important;
+  }
+}

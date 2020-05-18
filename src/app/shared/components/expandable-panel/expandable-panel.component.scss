@@ -1,0 +1,13 @@
+@import "src/styleguide/shared";
+:host ::ng-deep {
+  .mat-expansion-panel-header-description {
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 16px;
+    color: $color-black-1;
+  }
+  .mat-expansion-panel-body {
+    padding: 24px 24px 16px;
+    background-color: $color-white-1;
+  }
+}

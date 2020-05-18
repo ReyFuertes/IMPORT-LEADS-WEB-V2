@@ -1,0 +1,7 @@
+<div *ngIf="item" class="pill-container fade-in">
+  <div #btn [attr.id]="item?.value" (click)="enabled ? onHighlightProduct($event): null" [ngClass]="{'p-cursor': selectable, 'small': isSizeSmall, 'enabled': enabled && isSizeSmall, 'disabled': !enabled && !isSizeSmall}" class="il-pill"
+    fxLayoutGap="5px">
+    <div>{{ item?.label }}</div>
+    <img matTooltip="Remove" (click)="removeEmitter.emit(item?.value)" [src]="svgPath + 'close-icon-white.svg'" />
+  </div>
+</div>

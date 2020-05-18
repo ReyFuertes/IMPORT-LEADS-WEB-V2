@@ -1,0 +1,132 @@
+@import "src/styleguide/shared";
+.table-footer {
+  height: 40px;
+  background-color: $color-white;
+  padding: 10px;
+  span {
+    font-size: 12px;
+    font-weight: 500;
+    color: $color-primary;
+  }
+  img {
+    cursor: pointer;
+  }
+  > div > div {
+    cursor: pointer;
+    width: fit-content;
+  }
+}
+table {
+  width: 100%;
+}
+tr.detail-row {
+  height: 0;
+}
+tr.element-row:not(.expanded-row):hover {
+  background: $color-white-1;
+}
+tr.element-row:not(.expanded-row):active {
+  background: $color-white-1;
+}
+.element-row td {
+  border-bottom-width: 0;
+}
+.element-detail {
+  overflow: hidden;
+  display: flex;
+  min-height: 150px;
+  max-height: 100%;
+  > div {
+    &:first-child {
+      margin-top: 20px;
+    }
+    &:nth-child(2) {
+      margin-top: 20px;
+    }
+  }
+}
+.element-detail__btn,
+.element-detail__name {
+  margin-bottom: 20px;
+}
+::ng-deep {
+  .mat-tab-header,
+  .mat-tab-nav-bar {
+    border-bottom: 1px solid $color-gray-3 !important;
+  }
+  p-inputswitch {
+    @include il-input-switch;
+  }
+  .mat-tab-group {
+    box-shadow: $box-shadow;
+  }
+}
+/* override the overlay panel to be aligned with the dropdown */
+::ng-deep {
+  .cdk-overlay-pane {
+    margin-left: -44px !important;
+    margin-bottom: 35px !important;
+  }
+}
+:host ::ng-deep {
+  .dss {
+    .mat-select-value-text,
+    .mat-form-field-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: $color-primary !important;
+    }
+  }
+  .row-detail .mat-form-field-appearance-legacy .mat-form-field-underline {
+    height: 0;
+    display: none !important;
+  }
+  td.mat-cell {
+    &:first-child {
+      width: 300px;
+    }
+  }
+  td.mat-cell:not(:last-child) > div {
+    margin-right: 20px;
+    height: 40px;
+  }
+  mat-footer-row,
+  mat-header-row,
+  mat-row,
+  td.mat-cell,
+  td.mat-footer-cell,
+  th.mat-header-cell {
+    border-bottom-color: $color-gray-3 !important;
+  }
+  il-dropdown-select-search {
+    height: 30px;
+    margin-bottom: 9px;
+  }
+  .mat-select-value-text {
+    font-size: 14px !important;
+    float: right;
+    margin-right: 10px;
+    height: 16px;
+  }
+  il-dropdown-select-search .mat-form-field-appearance-legacy .mat-form-field-underline {
+    height: 0 !important;
+    display: none !important;
+  }
+  p-inputswitch .ui-inputswitch-slider {
+    left: 3px;
+  }
+  td.mat-cell:last-of-type,
+  td.mat-footer-cell:last-of-type,
+  th.mat-header-cell:last-of-type {
+    padding-right: 15px !important;
+  }
+  td.mat-cell:not(last-child) {
+    cursor: pointer;
+  }
+  td.mat-cell:last-child {
+    width: 175px;
+  }
+  .mat-table thead {
+    display: none !important;
+  }
+}

@@ -1,0 +1,19 @@
+<div class="irr-container" fxLayout="column" fxLayoutGap="32px">
+  <div fxLayout="row" fxLayoutAlign="start center">
+    <div fxFlex="50">
+      <h1>Inspection run report</h1>
+    </div>
+    <div fxFlex="50" fxLayoutAlign="end center" fxLayoutGap="10px">
+      <img [src]="svgPath + 'download-icon-blue.svg'" />
+      <span>Download production images</span>
+    </div>
+  </div>
+
+  <il-inspection-report-inspector></il-inspection-report-inspector>
+  <il-inspection-report-inspections></il-inspection-report-inspections>
+  <il-inspection-report-notable-items></il-inspection-report-notable-items>
+  <il-inspection-report-products></il-inspection-report-products>
+  <il-inspection-report-tags></il-inspection-report-tags>
+  <il-inspection-report-failures></il-inspection-report-failures>
+  <il-inspection-report-comments></il-inspection-report-comments>
+</div>

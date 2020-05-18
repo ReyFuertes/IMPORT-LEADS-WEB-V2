@@ -1,0 +1,30 @@
+<p-blockUI [blocked]="blocked" [target]="pnl"></p-blockUI>
+
+<div class="template-card" fxLayout="column" fxLayoutGap="20px" (mouseover)="blocked = true" (mouseleave)="onMouseout()">
+  <p-panel #pnl>
+    <div>
+      <span>Template Name {{ template }}</span>
+      <div>PI SK19NL0806-1 Touch Dimmer Switch {{ template }}</div>
+    </div>
+
+    <div class="img">
+      <div *ngIf="blocked" class="btn-select" fxLayout="row" fxLayoutAlign="center center">
+        <button (click)="onSelectContract()" mat-flat-button class="il-button primary">
+          Select
+        </button>
+      </div>
+    </div>
+    <div>
+      Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+    </div>
+    <div fxLayout="row">
+      <div class="btn-delete" fxLayoutAlign="center center">
+        <img [src]="svgPath + 'delete-icon-white.svg'" />
+      </div>
+      <div fxLayout="column" fxFlex="50">
+        <div>Save Date</div>
+        <div>10.09.2019</div>
+      </div>
+    </div>
+  </p-panel>
+</div>

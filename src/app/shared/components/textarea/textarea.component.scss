@@ -1,0 +1,16 @@
+@import "src/styleguide/shared";
+.il-textarea {
+  @include il-textarea;
+}
+:host ::ng-deep {
+  .has-border {
+    .mat-form-field-infix {
+      border: thin $color-gray-2 solid;
+      padding-left: 4px;
+      border-radius: 2px;
+    }
+    .mat-form-field-label {
+      padding-left: 4px !important;
+    }
+  }
+}

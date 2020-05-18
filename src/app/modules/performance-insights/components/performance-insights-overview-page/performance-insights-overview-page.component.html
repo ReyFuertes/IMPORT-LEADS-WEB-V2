@@ -1,0 +1,10 @@
+<div class="pip-container" fxLayout="column" fxLayoutGap="32px">
+  <il-performance-insights-graphs></il-performance-insights-graphs>
+  <div>
+    <div fxLayout="row" fxLayoutGap="32px">
+      <il-performance-insights-quick-wins fxFlex="70"></il-performance-insights-quick-wins>
+      <il-performance-insights-kpi fxFlex="30"></il-performance-insights-kpi>
+    </div>
+  </div>
+  <il-performance-insights-venue [colsHeaders]="ctColsInsightVenue" [items]="insightProducts"></il-performance-insights-venue>
+</div>

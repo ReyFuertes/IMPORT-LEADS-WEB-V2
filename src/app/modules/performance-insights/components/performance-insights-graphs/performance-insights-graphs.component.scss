@@ -1,0 +1,64 @@
+@import "src/styleguide/shared";
+.graph-card {
+  padding: 30px 25px;
+}
+.chart-container{
+  overflow-x: auto;
+  font-size: 12px;
+
+  div:nth-of-type(1) {
+    span {
+      line-height: 40px;
+    }
+    span:nth-child(odd) {
+      display: inline-block;
+      height: 10px;
+      width: 10px;
+      border-radius: 50%;
+      margin-right: 6px;
+    } 
+    span:nth-child(even) {
+      margin-right: 15px;
+    }
+  }
+  div:nth-of-type(3) {
+    span {
+      color: $color-gray-1;
+      margin: 0 15px;
+      cursor: pointer;
+    }
+  }
+}
+.chart-container-inner {
+  height: 280px;
+}
+.product-venue{
+  margin: 20px 0;
+  span {
+    color: $color-primary;
+    font-size: 14px;
+    position: relative;
+    top: -5px;
+    cursor: pointer;
+ 
+    mat-icon {
+      height: 16px;
+      width: 16px;
+      top: -5px;
+      margin-right: 10px;
+      position: relative;
+     }
+  }
+}
+.bg_salmon {
+  background: $color-salmon;
+}
+.bg_green {
+  background: $color-green-2;
+}
+.bg_blue {
+  background: $color-blue;
+}
+.bg_red {
+  background: $color-red;
+}

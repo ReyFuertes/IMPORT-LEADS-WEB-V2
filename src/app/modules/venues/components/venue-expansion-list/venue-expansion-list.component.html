@@ -1,0 +1,22 @@
+<div class="col-header" fxLayoutAlign="center center" fxLayoutGap="10px">
+  <div *ngFor="let col of colsHeaders" [fxFlex]="col?.width">{{ col?.label }}</div>
+</div>
+<div *ngFor="let item of items; let i = index"
+  class="product-list" fxLayout="row" fxLayoutGap="10px">
+  <div fxFlex="32" fxLayoutAlign="start center">
+  </div>
+  <div fxFlex="25" fxLayoutAlign="start center">
+    <il-pill [item]="item.product"
+      (removeEmitter)="onRemove($event)">
+    </il-pill>
+  </div>
+  <div fxFlex="10" fxLayoutAlign="start center">
+    <span>${{item.averagePrice}}</span>
+  </div>
+  <div fxFlex="10" fxLayoutAlign="start center">
+    <span>{{item.avgPassFail}}%</span>
+  </div>
+  <div fxFlex="10" fxLayoutAlign="start center">
+    <span>{{item.quantity}}</span>
+  </div>
+</div>

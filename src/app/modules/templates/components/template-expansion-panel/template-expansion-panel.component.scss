@@ -1,0 +1,24 @@
+@import "src/styleguide/shared";
+.il-button {
+  @include il-button;
+}
+.il-draggable-expansion {
+  @include il-draggable-expansion;
+}
+.desc1, .desc2 {
+  span {
+    width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: normal;
+    flex-wrap: nowrap;
+  }
+}
+::ng-deep {
+  .cdk-drag-preview {
+    border-radius: 0 !important;
+    @extend .il-draggable-expansion;
+  }
+}
+

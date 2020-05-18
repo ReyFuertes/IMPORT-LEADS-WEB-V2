@@ -1,0 +1,24 @@
+<mat-accordion cdkDropList (start)="drop($event)">
+  <mat-expansion-panel cdkDrag #pnl="matExpansionPanel" *ngFor="let p of panels; let i = index" [expanded]="false" hideToggle="true"
+    [ngClass]="{'expanded-bg': pnl?.expanded}">
+    <mat-expansion-panel-header (keydown.Space)="$event.stopImmediatePropagation()" (click)="expandPanel(pnl, $event)" expandedHeight="150px">
+      <div class="inner-container" [ngClass]="{'h-40': !pnl?.expanded}" fxLayout="row" [fxLayoutAlign]="!pnl?.expanded ? 'center center' : 'start start'" fxFlex>
+        <img cdkDragHandle [src]="svgPath + 'drag-icon.svg'" />
+        <div [fxFlexOffset]="hoveredPnl !== i ? '15px': '7px'" fxFlex="30" fxLayoutAlign="start start">{{ p.title }}</div>
+        <div fxFlex [ngClass]="{'border': pnl?.expanded}">
+          <div *ngIf="!pnl?.expanded">{{ p?.description }}</div>
+          <il-textarea *ngIf="pnl?.expanded" (click)="isEventDialog = true"></il-textarea>
+        </div>
+        <div class="no-expand" fxFlex="15" fxLayoutAlign="end center" fxLayoutGap="10px">
+          <span class="no-expand">Appearance</span>
+          <img class="no-expand" [src]="svgPath + 'arrow-down-icon-blue.svg'">
+          <img class="no-expand" [src]="svgPath + 'dots-icon-gray.svg'" [matMenuTriggerFor]="appMenu">
+          <mat-menu #appMenu="matMenu">
+            <button mat-menu-item >Edit</button>
+            <button mat-menu-item>Delete</button>
+          </mat-menu>
+        </div>
+      </div>
+    </mat-expansion-panel-header>
+  </mat-expansion-panel>
+</mat-accordion>

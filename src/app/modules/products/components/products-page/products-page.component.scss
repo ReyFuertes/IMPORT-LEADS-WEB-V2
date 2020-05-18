@@ -1,0 +1,40 @@
+@import "src/styleguide/shared";
+.action-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+.il-bg-blue {
+  @include il-bg-blue;
+  background: $color-gray-2;
+  color: $color-black-2;
+  width: 120px;
+}
+:host ::ng-deep {
+  .mat-button {
+    background: $color-primary;
+    min-width: 45px;
+    padding: 0 10px;
+    height: 40px;
+    border-radius: 8px;
+
+    mat-icon {
+      color: $color-white;
+      font-size: 18px;
+      padding-top: 3px;
+    }
+  }
+  .mat-button-toggle-label-content {
+    line-height: 32px !important;
+  }
+  .mat-button-toggle-group-appearance-standard {
+    border: none !important;
+  }
+  .mat-button-toggle-checked {
+    background: $color-primary !important;
+    color: $color-white !important;
+  }
+  .mat-button-toggle-group {
+    margin-left: 30px;
+  }
+}

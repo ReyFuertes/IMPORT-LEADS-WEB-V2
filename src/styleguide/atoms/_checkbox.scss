@@ -1,0 +1,8 @@
+.mat-checkbox-checked .mat-checkbox-background,
+.mat-pseudo-checkbox.mat-pseudo-checkbox-checked {
+  background: $color-primary !important;
+}
+
+.mat-primary .mat-option.mat-selected {
+  color: $color-primary !important;
+}

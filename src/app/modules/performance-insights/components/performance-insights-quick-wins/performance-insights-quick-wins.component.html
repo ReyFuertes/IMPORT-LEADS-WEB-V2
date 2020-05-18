@@ -1,0 +1,15 @@
+<mat-card>
+  <mat-list role="list">
+    <mat-list-item role="listitem">
+      <h5>QUICK WINS</h5>
+    </mat-list-item>
+    <mat-list-item role="listitem" *ngFor="let win of wins; let i = index;" [ngClass]="win.class">
+     {{ win.label }}
+    </mat-list-item>
+    <mat-list-item role="listitem" fxLayoutAlign="center center">
+      <img [src]="svgPath + 'pointer-bottom-icon-blue.svg'"><span class="see-all">See all wins</span>
+    </mat-list-item>
+  </mat-list>
+</mat-card>
+
+

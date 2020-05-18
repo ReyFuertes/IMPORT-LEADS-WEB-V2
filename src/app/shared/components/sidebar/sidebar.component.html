@@ -1,0 +1,19 @@
+<div class="il-sidebar">
+  <mat-list role="list">
+    <mat-list-item class="brand" role="listitem">
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+        <img [src]="svgPath + 'logo.svg'" />
+        <span class="cap-case">import leads</span>
+      </div>
+    </mat-list-item>
+  </mat-list>
+  <mat-list role="list">
+    <mat-list-item *ngFor="let menu of menus" [routerLink]="menu?.route" routerLinkActive="active" [routerLinkActiveOptions]="{exact:
+      false}" role="listitem">
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+        <img [src]="svgPath + menu?.icon" />
+        <span>{{ menu?.name }}</span>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</div>

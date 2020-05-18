@@ -1,0 +1,17 @@
+@mixin il-textarea {
+  .no-resize {
+    resize: none !important;
+  }
+  ::ng-deep {
+    mat-form-field {
+      width: 100%;
+    }
+    textarea.mat-input-element {
+      width: 100%;
+      min-width: 100%;
+      min-height: 50px;
+      color: $color-black-1;
+      font-size: 14px;
+    }
+  }
+}

@@ -1,0 +1,7 @@
+@mixin il-datepicker {
+  :ng-deep {
+    input.mat-input-element {
+      font-size: 14px;
+    }
+  }
+}

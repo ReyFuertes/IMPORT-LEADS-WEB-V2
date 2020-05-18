@@ -1,0 +1,20 @@
+@import "src/styleguide/shared";
+.menu-box > div {
+  cursor: pointer;
+}
+img {
+  padding: 5px;
+  cursor: pointer;
+}
+.active-link {
+  background-color: $color-gray-3;
+}
+::ng-deep {
+  .sub-menu-item.mat-menu-item {
+    width: 100%;
+    font-size: 14px;
+    font-weight: 500;
+    height: 40px !important;
+    line-height: 43px !important;
+  }
+}

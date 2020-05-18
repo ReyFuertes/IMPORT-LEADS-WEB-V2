@@ -1,0 +1,86 @@
+<mat-card class="venue-card">
+  <div class="venue-filter">
+    <div fxFlex>
+      <div fxLayout="row" fxFlex fxLayoutGap="32px">
+        <mat-form-field>
+          <mat-label>Choose a date</mat-label>
+          <input matInput [matDatepicker]="startdate">
+          <mat-datepicker-toggle matSuffix [for]="startdate"></mat-datepicker-toggle>
+          <mat-datepicker #startdate></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Choose a date</mat-label>
+          <input matInput [matDatepicker]="enddate">
+          <mat-datepicker-toggle matSuffix [for]="enddate"></mat-datepicker-toggle>
+          <mat-datepicker #enddate></mat-datepicker>
+        </mat-form-field>
+
+        <button mat-flat-button class="il-button primary large">Select Contract</button>
+      </div>
+    </div>
+
+    <div fxFlex="120px" fxLayoutAlign="end center">
+      <il-sort></il-sort>
+    </div>
+  </div>
+  <div class="venue-products">
+    <div class="col-header" fxLayoutAlign="start center">
+      <div *ngFor="let col of colsHeaders; let last = last" [fxFlex]="col?.width">
+        <div>
+          <div fxFlex>
+            {{ col?.label }}
+          </div>
+          <div *ngIf="col?.icon" fxFlex="10px" fxLayoutAlign="end center">
+            <img [src]="svgPath + col?.icon">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="il-draggable-expansion">
+      <mat-accordion cdkDropList (cdkDropListDropped)="drop($event)" [multi]="true">
+        <mat-expansion-panel #pnl cdkDrag (cdkDragStarted)="dragStarted(true)" #pnl="matExpansionPanel" *ngFor="let item of items; let i = index"
+          hideToggle="true" [expanded]="true">
+
+          <mat-expansion-panel-header (click)="onClickPnl(pnl, $event, i)" (mouseover)="mouseover(i)" (mouseleave)="mouseout()">
+            <div class="pnl-header" fxLayout="row" fxLayoutGap="10px">
+              <img cdkDragHandle [src]="svgPath + 'drag-icon.svg'" />
+              <div fxFlex="14" fxLayoutAlign="start center">
+                <span>{{item.venue}}</span>
+              </div>
+              <div fxFlex="30" fxLayoutAlign="start center">
+                <il-pill [item]="item.product"
+                  (removeEmitter)="onRemove($event)">
+                </il-pill>
+              </div>
+              <div fxFlex="10" fxLayoutAlign="start center">
+                <span>{{item.passRate}}%</span>
+              </div>
+              <div fxFlex="10" fxLayoutAlign="start center">
+                <span>{{item.failureRate}}%</span>
+              </div>
+              <div fxFlex="10" fxLayoutAlign="start center">
+                <span>{{item.materials}}%</span>
+              </div>
+              <div fxFlex="10" fxLayoutAlign="start center">
+                <span>{{item.packaging}}%</span>
+              </div>
+              <div fxFlex="10" fxLayoutAlign="start center">
+                <span>{{item.appearance}}%</span>
+              </div>
+              <div class="hide-col" fxFlex="3" fxLayoutAlign="start center">
+                <span>{{item.hideCol}}</span>
+              </div>
+              <div fxFlex="8" fxLayoutAlign="start center">
+                <span>{{item.techMes}}</span>
+              </div>
+            </div>
+          </mat-expansion-panel-header>
+          <div>
+            <il-performance-insights-expansion-list [items]="item?.relatedProducts"></il-performance-insights-expansion-list>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div>
+</mat-card>

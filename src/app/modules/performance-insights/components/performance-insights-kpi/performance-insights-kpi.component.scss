@@ -1,0 +1,30 @@
+@import "src/styleguide/shared";
+h2 {
+  border-bottom: 1px solid $color-gray-3;
+  padding: 16px 20px;
+}
+img {
+  position: absolute;
+  right: 24px;
+  top: 84px;
+  cursor: pointer;
+}
+.chart {
+  display: block;
+  width: 160px;
+  height: 160px;
+  margin: 24px auto 20px;
+  .percent {
+    position: relative;
+    font-size: 40px;
+    left: -115px;
+    top: 6px;
+  }
+}
+:host ::ng-deep {
+  .mat-card {
+    height: 296px !important;
+    padding: 0 !important;
+    position: relative;
+  }
+}

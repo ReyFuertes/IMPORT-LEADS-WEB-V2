@@ -1,0 +1,11 @@
+<div class="no-expand" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+  <label [matMenuTriggerFor]="menu">{{ selectedItem?.label }}</label>
+  <div class="no-expand">
+    <img [matMenuTriggerFor]="menu" class="arrow" [src]="svgPath + 'arrow-down-icon-black.svg'">
+    <mat-menu #menu="matMenu" yPosition="below" xPosition="before">
+      <button *ngFor="let option of options" mat-menu-item fxLayout="row" (click)="selectedEmitter.emit(option)" fxLayoutAlign="start center" fxLayoutGap="10px">
+        <span>{{ option?.label | uppercase }}</span>
+      </button>
+    </mat-menu>
+  </div>
+</div>

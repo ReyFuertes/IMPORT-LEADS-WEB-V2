@@ -1,0 +1,21 @@
+@import "src/styleguide/shared";
+.action-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+:host ::ng-deep {
+  .mat-button {
+    background: $color-primary;
+    min-width: 45px;
+    padding: 0 10px;
+    height: 40px;
+    border-radius: 8px;
+
+    mat-icon {
+      color: $color-white;
+      font-size: 18px;
+      padding-top: 3px;
+    }
+  }
+}

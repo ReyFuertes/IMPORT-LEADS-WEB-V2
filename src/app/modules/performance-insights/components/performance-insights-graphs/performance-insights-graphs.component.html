@@ -1,0 +1,93 @@
+<mat-card class="graph-card">
+  <div fxLayout="column" fxLayoutGap="20px">
+    <div class="chart-container">
+      <div fxLayoutAlign="end center">
+        <span class="bg_salmon"></span>
+        <span>Amount of value</span>
+      </div>
+      <div class="chart-container-inner">
+        <canvas baseChart
+          [datasets]="barChartData"
+          [labels]="barChartLabels"
+          [options]="barChartOptions"
+          [colors]="barChartColors"
+          [legend]="barChartLegend"
+          [chartType]="barChartType">
+        </canvas>
+      </div>
+      <div fxLayout="row">
+        <span fxFlex="50" fxLayoutAlign="start center">
+           <mat-icon>keyboard_arrow_left</mat-icon> Nov. 2019
+        </span>
+        <span fxFlex="50" fxLayoutAlign="end center">
+          Dec. 2019 <mat-icon>keyboard_arrow_right</mat-icon>
+        </span>
+      </div>
+    </div>
+    <div class="chart-container">
+      <div fxLayoutAlign="end center">
+        <span class="bg_green"></span>
+        <span>Amount of items</span>
+        <span class="bg_blue"></span>
+        <span>Amount of contracts</span>
+      </div>
+      <div class="chart-container-inner">
+        <canvas baseChart 
+          [datasets]="barChartDataContracts"
+          [labels]="barChartLabelsContracts"
+          [options]="barChartOptionsContracts"
+          [colors]="barChartColorsContracts"
+          [legend]="barChartLegendContracts"
+          [chartType]="barChartTypeContracts">
+        </canvas>
+      </div>
+      <div fxLayout="row">
+        <span fxFlex="50" fxLayoutAlign="start center">
+           <mat-icon>keyboard_arrow_left</mat-icon> Nov. 2019
+        </span>
+        <span fxFlex="50" fxLayoutAlign="end center">
+          Dec. 2019 <mat-icon>keyboard_arrow_right</mat-icon>
+        </span>
+      </div>
+    </div>
+    <div class="chart-container">
+      <div fxLayoutAlign="end center">
+        <span class="bg_red"></span>
+        <span>Failue rate</span>
+        <span class="bg_green"></span>
+        <span>Tag 1 failure rate</span>
+        <span class="bg_blue"></span>
+        <span>Tag 2 failure rate</span>
+      </div>
+      <div class="chart-container-inner">
+        <canvas baseChart 
+          [datasets]="lineChartData"
+          [labels]="lineChartLabels"
+          [options]="lineChartOptions"
+          [colors]="lineChartColors"
+          [legend]="lineChartLegend"
+          [chartType]="lineChartType"
+          [plugins]="lineChartPlugins">
+        </canvas>
+      </div>
+      <div fxLayout="row">
+        <span fxFlex="50" fxLayoutAlign="start center">
+           <mat-icon>keyboard_arrow_left</mat-icon> Nov. 2019
+        </span>
+        <span fxFlex="50" fxLayoutAlign="end center">
+          Dec. 2019 <mat-icon>keyboard_arrow_right</mat-icon>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="product-venue">
+    <div fxLayout="row" fxLayoutGap="8px">
+      <il-pill *ngFor="let item of items; let i = index" [item]="item"
+        (removeEmitter)="onRemove($event)">
+      </il-pill>
+      <span fxLayoutAlign="end center">
+        <mat-icon>add</mat-icon> Add a product or venue
+      </span>
+    </div>
+  </div>
+</mat-card>

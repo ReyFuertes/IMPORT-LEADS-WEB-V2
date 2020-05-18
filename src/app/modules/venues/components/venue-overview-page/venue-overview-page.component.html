@@ -1,0 +1,24 @@
+<div fxLayout="column" fxLayoutGap="20px">
+  <div>
+    <div fxFlex>
+      <h2>Venues</h2>
+    </div>
+    <div fxFlex="120px" fxLayoutAlign="end center">
+      <il-sort></il-sort>
+    </div>
+    <mat-button-toggle-group value="products" name="fontStyle" aria-label="Font Style" fxLayoutAlign="end center">
+      <mat-button-toggle class="il-button il-bg-blue" value="products" (click)="isProduct = true">products</mat-button-toggle>
+      <mat-button-toggle class="il-button il-bg-blue" value="address" (click)="isProduct = false">address</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+  <div>
+    <il-venue-products *ngIf="isProduct && venueProducts" [colsHeaders]="ctColsProduct" [items]="venueProducts"></il-venue-products>
+    <il-venue-address *ngIf="!isProduct" [colsHeaders]="ctColsAddress" [items]="venueAddress"></il-venue-address>
+  </div>
+
+  <div class="action-btn">
+    <button mat-button color="primary" class="mat-elevation-z4" (click)="onAddVenues()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+</div>

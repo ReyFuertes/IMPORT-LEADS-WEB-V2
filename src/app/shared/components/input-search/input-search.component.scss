@@ -1,0 +1,10 @@
+
+:host ::ng-deep {
+  .mat-form-field-prefix, .mat-form-field-suffix {
+    top: 6px;
+    padding-right: 5px;
+  }
+  .mat-form-field-appearance-legacy .mat-form-field-underline {
+    display: none !important;
+  }
+}

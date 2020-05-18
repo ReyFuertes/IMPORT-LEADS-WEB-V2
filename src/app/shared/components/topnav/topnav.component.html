@@ -1,0 +1,30 @@
+<div fxLayout="row" class="top-nav fade-in" fxLayoutAlign="start center" fxLayoutGap="20px">
+  <div fxFlex fxLayoutAlign="start center">
+    <div class="menu-box logo" fxFlex="10">
+      <img [src]="imgPath + 'logo.png'" />
+    </div>
+    <ng-container *ngFor="let menu of toolbarMenu; let i = index">
+      <div class="menu-box" [routerLink]="menu?.route" fxFlex="25" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:
+        false}" fxFlex="25" *ngIf="menu?.children">
+        <il-menu [menu]="menu"></il-menu>
+      </div>
+      <div class="menu-box" [routerLink]="menu?.route" *ngIf="!menu?.children" fxFlex="25" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">{{ menu?.label }}</div>
+    </ng-container>
+  </div>
+  <div fxFlex="20" fxLayoutAlign="end center" fxLayoutGap="40px">
+    <div fxLayoutAlign="end center">
+      <img class="chat" [src]="svgPath + 'chat-icon-black.svg'" routerLink="dashboard/chat" />
+      <span matBadge="4" matBadgeColor="warn"></span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+      <img [src]="imgPath + 'profile.png'" />
+      <span [matMenuTriggerFor]="menu">John Doe</span>
+      <img class="arrow" [matMenuTriggerFor]="menu" [src]="svgPath + 'arrow-down-icon-black.svg'" />
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item routerLink="dashboard/users/profile">Profile</button>
+        <button mat-menu-item routerLink="dashboard/users/setting">Settings</button>
+        <button mat-menu-item>Help</button>
+      </mat-menu>
+    </div>
+  </div>
+</div>

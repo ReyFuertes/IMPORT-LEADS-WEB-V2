@@ -1,0 +1,55 @@
+@import "src/styleguide/shared";
+.category-title {
+  flex-direction: row;
+  box-sizing: border-box;
+  display: flex;
+  place-content: center;
+  align-items: center;
+  background-color: $color-white;
+  padding: 10px;
+  margin-bottom: 20px;
+  box-shadow: $box-shadow;
+
+  > img:nth-of-type(1) {
+    cursor: move;
+  }
+
+  > img:nth-of-type(2) {
+    cursor: pointer;
+  }
+}
+.tab-title {
+  position: fixed;
+}
+.tab-header {
+  border-bottom: 40px solid $color-white;
+  border-left: 25px solid transparent;
+  border-right: 25px solid transparent;
+  width: fit-content;
+  max-height: 20px;
+  text-align: center;
+  padding-left: 20px;
+  padding-right: 20px;
+  > div {
+    position: relative;
+    top: 12px;
+    height: 20px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+}
+.save-icon {
+  cursor: pointer;
+}
+.il-tab {
+  @include il-tab;
+}
+mat-icon {
+  color: $color-gray-2;
+  cursor: pointer;
+}
+:host ::ng-deep {
+  .mat-tab-label {
+    display: none;
+  }
+}

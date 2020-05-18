@@ -1,0 +1,61 @@
+@import "src/styleguide/shared";
+.new-chat {
+  font-size: 14px;
+  color: $color-primary;
+  cursor: pointer;
+  display: block;
+  padding: 14px 14px 6px;
+}
+.selected {
+  background-color: $color-gray-3 !important;
+}
+.user {
+   cursor: pointer;
+   padding-top: 16px;
+
+  img {
+    width: 32px;
+    height: 32px;
+    margin-right: 12px;
+  }
+  span {
+    display: block;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    overflow: hidden;
+
+    &:nth-child(1) {
+      font-size: 14px;
+      font-weight: 500;
+    }
+    &:nth-child(2) {
+      font-size: 11px;
+    }
+  }
+  p {
+    color: $color-gray-1;
+    font-size: 11px;
+    display: block;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    overflow: hidden;
+    max-height: 3.6em;
+    line-height: 1.8em;
+  }
+}
+
+:host ::ng-deep {
+  .mat-list {
+
+    .mat-list-item {
+      height: 104px;
+    }
+    .mat-list-item {
+      border-top: 1px solid $color-white-1;
+    }
+    .mat-list-item:last-child {
+      border-bottom: 1px solid $color-white-1;
+    }
+
+  }
+}

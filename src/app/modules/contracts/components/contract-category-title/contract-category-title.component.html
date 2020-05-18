@@ -1,0 +1,5 @@
+<div fxLayout="row" class="category-title" [ngClass]="{'hidden': specification.title == ''}">
+  <img cdkDragHandle [src]="svgPath + 'drag-icon.svg'" />
+  <div fxFlex fxLayoutAlign="center center">{{ specification?.title }}</div>
+  <img (click)="onRemoveTitle(specification.id)" [src]="svgPath + 'close-icon-big-gray.svg'" />
+</div>

@@ -1,0 +1,51 @@
+<div class="col-header" fxLayoutAlign="center center" fxLayoutGap="10px">
+  <div *ngFor="let col of colsHeaders" [fxFlex]="col?.width">{{ col?.label }}</div>
+</div>
+<div class="il-draggable-expansion">
+  <mat-accordion cdkDropList (cdkDropListDropped)="drop($event)">
+    <mat-expansion-panel #pnl cdkDrag (cdkDragStarted)="dragStarted(true)" #pnl="matExpansionPanel" *ngFor="let item of items; let i = index" hideToggle="true">
+      <mat-expansion-panel-header (keydown.Space)="$event.stopImmediatePropagation()" class="no-expand" (click)="onClickPnl(pnl, $event, i)" (mouseover)="mouseover(i)" (mouseleave)="mouseout()">
+        <div class="pnl-header" fxLayout="row" fxLayoutGap="10px">
+          <img cdkDragHandle [src]="svgPath + 'drag-icon.svg'" />
+          <div fxFlex="25" fxLayoutAlign="start center">
+            <span *ngIf="selectedIndex !== i">{{item?.name}}</span>
+            <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
+              <input matInput [value]="item?.name">
+            </mat-form-field>
+          </div>
+          <div fxFlex="50" fxLayoutAlign="start center">
+            <span *ngIf="selectedIndex !== i">{{item.location}}</span>
+            <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
+              <input matInput [value]="item.location">
+            </mat-form-field>
+          </div>
+          <div fxFlex="150px" fxLayoutAlign="start center">
+            <span *ngIf="selectedIndex !== i">{{item.contactPerson}}</span>
+            <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
+              <input matInput [value]="item.contactPerson">
+            </mat-form-field>
+          </div>
+          <div fxFlex="15" fxLayoutAlign="start center">
+            <span *ngIf="selectedIndex !== i">{{item.phone}}</span>
+            <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
+              <input matInput [value]="item.phone">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div fxFlex="100px" class="pnl-actions" fxLayout="row" fxLayoutAlign="end center">
+          <il-ellipse-menu class="menu-ellipse" *ngIf="hoveredIndex !== i"></il-ellipse-menu>
+          <div class="menu-icon" *ngIf="hoveredIndex === i && selectedIndex === null">
+            <img [src]="svgPath + 'edit-icon-blue.svg'" />
+            <img [src]="svgPath + 'delete-icon-red.svg'">
+          </div>
+          <div class="menu-icon" *ngIf="hoveredIndex === i && selectedIndex === i">
+            <img [src]="svgPath + 'close-icon-blue.svg'" (click)="onClose()" />
+            <img [src]="svgPath + 'save-icon-blue.svg'">
+          </div>
+        </div>
+      </mat-expansion-panel-header>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+</div>

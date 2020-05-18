@@ -1,0 +1,68 @@
+@mixin contract-card {
+  cursor: pointer;
+  > div {
+    margin-bottom: 0;
+    flex-direction: row;
+    box-sizing: border-box;
+    display: flex;
+    place-content: center flex-start;
+    align-items: center;
+    height: 50px;
+  }
+  img {
+    object-fit: contain;
+  }
+  .col-table {
+    flex-direction: row;
+    box-sizing: border-box;
+    display: flex;
+    place-content: center flex-end;
+    align-items: center;
+    flex: 1 1 100%;
+    max-width: 50%;
+    > div {
+      flex-direction: column;
+      box-sizing: border-box;
+      display: flex;
+      flex: 1 1 100%;
+      max-width: 100%;
+      span {
+        margin-bottom: 5px;
+      }
+    }
+  }
+  .col-text {
+    font-size: 11px;
+    font-weight: normal;
+    color: $color-gray-1;
+  }
+  .row-text {
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .ellipse {
+    cursor: pointer;
+  }
+}
+.mat-card {
+  border-radius: 0;
+  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.08) !important;
+}
+.card-row {
+  padding: 30px;
+  &:nth-child(odd) {
+    border-bottom: thin solid $color-gray-3;
+  }
+}
+.mat-card {
+  .img-box {
+    background-color: $color-gray-3;
+    height: 40px;
+    width: 40px;
+    place-content: center;
+    align-items: center;
+    flex-direction: row;
+    box-sizing: border-box;
+    display: flex;
+  }
+}

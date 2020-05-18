@@ -1,0 +1,9 @@
+@import "src/styleguide/shared";
+.il-pill {
+  @include il-pill;
+}
+.selected {
+  > div {
+    box-shadow: inset 0 0 0 2px $color-black-1;
+  }
+}

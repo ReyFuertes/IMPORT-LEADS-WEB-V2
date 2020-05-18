@@ -1,0 +1,23 @@
+@import "src/styleguide/shared";
+.dd-img {
+  position: relative;
+  top: 26px;
+  left: 6px;
+  z-index: 1;
+  cursor: move;
+}
+.cdk-drag-preview {
+  border-radius: 0px;
+  background: none;
+  box-shadow: none;
+  width: inherit;
+}
+.il-fab {
+  @include il-fab;
+  left: 95%;
+  top: 90%;
+  &.default {
+    left: 95%;
+    top: 75%;
+  }
+}

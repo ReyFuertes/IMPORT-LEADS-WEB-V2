@@ -1,0 +1,45 @@
+@import "src/styleguide/shared";
+il-textarea {
+  width: 100% !important;
+}
+.il-button {
+  @include il-button;
+}
+.il-dialog {
+  width: 385px !important;
+  height: 270px !important;
+  padding: 20px;
+  > div {
+    &:first-child {
+      width: 100%;
+    }
+  }
+  .content {
+    width: 100%;
+    height: 160px !important;
+  }
+  il-input {
+    width: 100%;
+    max-width: 100% !important;
+  }
+  button {
+    min-width: 100px;
+    width: 107px !important;
+  }
+}
+:host ::ng-deep {
+  .il-input .mat-form-field-appearance-legacy .mat-form-field-label {
+    font-size: 14px;
+    position: relative;
+    top: 9px;
+    left: 1px;
+  }
+  .mat-focused .mat-form-field-underline {
+    background-color: $color-primary !important;
+  }
+}
+::ng-deep {
+  .il-sidebar {
+    position: relative !important;
+  }
+}

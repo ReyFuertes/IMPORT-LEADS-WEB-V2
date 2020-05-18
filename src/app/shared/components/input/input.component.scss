@@ -1,0 +1,34 @@
+@import "src/styleguide/shared";
+.il-input {
+  &.center {
+    input {
+      text-align: center;
+    }
+    .errors {
+      text-align: center;
+      width: 100%;
+    }
+  }
+  @include il-input;
+  ::ng-deep {
+    input.mat-input-element {
+      font-size: 14px;
+    }
+    .mat-form-field-appearance-legacy .mat-form-field-label {
+      font-size: 14px;
+      // top: 23px !important;
+    }
+  }
+}
+:host ::ng-deep {
+  .has-border {
+    .mat-form-field-infix {
+      border: thin $color-gray-2 solid !important;
+      padding-left: 4px !important;
+      border-radius: 2px;
+    }
+    .mat-form-field-label {
+      padding-left: 4px !important;
+    }
+  }
+}

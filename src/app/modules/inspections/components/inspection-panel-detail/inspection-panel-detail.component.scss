@@ -1,0 +1,26 @@
+@import "src/styleguide/shared";
+.content {
+  padding: 40px;
+  background-color: $color-gray-3;
+  border-right: thin $color-gray-3 solid;
+  border-left: thin $color-gray-3 solid;
+  .detail {
+    > div span {
+      &:first-child {
+        font-size: 12px;
+        font-weight: normal;
+        color: $color-gray-1;
+      }
+      &:nth-child(2) {
+        font-weight: 500;
+      }
+    }
+  }
+  .product {
+    p {
+      font-size: 12px;
+      font-weight: normal;
+      color: $color-gray-1;
+    }
+  }
+}

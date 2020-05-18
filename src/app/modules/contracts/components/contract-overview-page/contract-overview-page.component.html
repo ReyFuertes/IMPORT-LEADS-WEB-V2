@@ -1,0 +1,26 @@
+<div fxLayout="column" fxLayoutGap="10px">
+  <div class="header">
+    <div fxFlex>
+      <h2>Agreements</h2>
+    </div>
+    <div fxFlex="15" fxLayoutAlign="end center">
+      <il-sort *ngIf="hasRecords"></il-sort>
+    </div>
+  </div>
+  <div *ngIf="hasRecords; else noRecords" fxLayout="column" fxLayoutGap="20px" cdkDropList (cdkDropListDropped)="drop($event)">
+    <div cdkDrag (cdkDragStarted)="dragStarted(true)" *ngFor="let contract of contracts">
+      <img class="dd-img" cdkDragHandle [src]="svgPath + 'drag-icon.svg'" />
+      <il-contract-card [contract]="contract"></il-contract-card>
+    </div>
+  </div>
+</div>
+
+<ng-template #noRecords>
+  <div class="no-records" fxLayout="row" fxLayoutAlign="center center">No Records</div>
+</ng-template>
+
+<div class="fab-buttons">
+  <button (click)="addContract()" class="il-fab" mat-fab>
+    <img [src]="svgPath + 'add-icon-white.svg'" />
+  </button>
+</div>

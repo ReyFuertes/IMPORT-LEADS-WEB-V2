@@ -1,0 +1,9 @@
+@import "src/styleguide/shared";
+.irr-container {
+  padding: 32px 0;
+  span {
+    font-size: 12px;
+    font-weight: 500;
+    color: $color-primary;
+  }
+}

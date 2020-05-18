@@ -1,0 +1,26 @@
+<div class="il-dialog" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="32px">
+  <div class="header" fxLayoutAlign="center center" fxLayout="column">
+    <div fxFlex fxLayoutAlign="end center">
+      <img class="close" (click)="dialogRef.close(false)" [src]="svgPath + 'close-icon-big-gray.svg'" />
+    </div>
+    <h2>Select a user</h2>
+  </div>
+  <div class="content">
+    <div>
+      <il-input-search [form]="form" [controlName]="'term'"></il-input-search>
+    </div>
+    <div>
+      <mat-list>
+        <ng-container *ngFor="let i of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]">
+          <mat-list-item>
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+              <img [src]="imgPath + 'profile.png'">
+              <span>John Doe</span>
+            </div>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+        </ng-container>
+      </mat-list>
+    </div>
+  </div>
+</div>

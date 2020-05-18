@@ -1,0 +1,10 @@
+
+:host ::ng-deep {
+  .mat-form-field-type-mat-select .mat-form-field-label {
+    font-size: 14px;
+    top: 20px;
+  }
+  mat-select {
+    font-size: 14px !important;
+  }
+}

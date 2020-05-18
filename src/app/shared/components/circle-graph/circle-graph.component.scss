@@ -1,0 +1,13 @@
+@import "src/styleguide/shared";
+.chart {
+  display: block;
+  width: 110px;
+  height: 110px;
+
+  .percent {
+    position: relative;
+    top: -60px;
+    font-size: 35px;
+    left: 33px;
+  }
+}

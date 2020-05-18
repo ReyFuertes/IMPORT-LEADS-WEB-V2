@@ -1,0 +1,29 @@
+<div class="content" fxLayout="column" fxLayoutGap="20px">
+  <div class="detail" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+    <div fxFlex="15" fxLayout="column">
+      <span>Сontact Person</span>
+      <span>Tammy Li</span>
+    </div>
+    <div fxFlex="15" fxLayout="column">
+      <span>Phone Number</span>
+      <span>+86 10 0000 0000</span>
+    </div>
+    <div fxFlex="15" fxLayout="column">
+      <span>Venue</span>
+      <span>Venue Name</span>
+    </div>
+    <div fxFlex fxLayout="column">
+      <span>Address</span>
+      <span>Haizhu Qu, Guangzhou Shi, Guangdong Sheng China </span>
+    </div>
+  </div>
+  <div class="brief">
+    <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text
+      ever since the 1500s.</span>
+  </div>
+  <div class="product">
+    <p>Products</p>
+    <il-pill *ngFor="let product of products" [item]="product">
+    </il-pill>
+  </div>
+</div>

@@ -1,0 +1,4 @@
+@import 'src/styleguide/shared';
+.page-container {
+  @include page-container;
+}

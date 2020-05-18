@@ -1,0 +1,36 @@
+@import "src/styleguide/shared";
+:host {
+  width: 100%;
+}
+.upload-box {
+  width: 100%;
+  height: 56px;
+  border: thin $color-primary dotted;
+  background-color: $color-gray-4;
+  span {
+    color: $color-primary;
+    font-size: 12px;
+    font-weight: 500;
+  }
+}
+:host ::ng-deep {
+  .ngx-file-drop__content {
+    background: $color-white !important;
+    height: 96px !important;
+    cursor: pointer;
+  }
+  .ngx-file-drop__drop-zone {
+    border-radius: 0 !important;
+  }
+  .disabled .ngx-file-drop__drop-zone {
+    border-color: $color-gray-2 !important;
+  }
+
+  .disabled .ngx-file-drop__content {
+    cursor: default !important;
+    color: $color-gray-2 !important;
+    img {
+      display: none !important;
+    }
+  }
+}

@@ -1,0 +1,34 @@
+<div class="il-draggable-expansion">
+  <mat-accordion cdkDropList (cdkDropListDropped)="drop($event)">
+    <mat-expansion-panel #pnl cdkDrag (cdkDragStarted)="dragStarted(true)" #pnl="matExpansionPanel" *ngFor="let item of items; let i = index" hideToggle="true">
+
+      <mat-expansion-panel-header (keydown.Space)="$event.stopImmediatePropagation()" (click)="onClickPnl(pnl, $event, i, item)" (keydown.Space)="$event.stopImmediatePropagation()" (mouseover)="mouseover(i)" (mouseleave)="mouseout()">
+        <div class="pnl-header" fxLayout="row" fxlayoutGap="20px" fxLayoutGap="10px">
+          <img cdkDragHandle [src]="svgPath + 'drag-icon.svg'" />
+          <div fxFlex fxLayoutAlign="start center">
+            <span *ngIf="selectedIndex !== i">{{item?.tag_name}}</span>
+            <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
+              <input matInput (click)="$event.stopPropagation()" class="no-expand" [value]="item?.tag_name" (input)="onEdit(item, $event?.target.value)">
+            </mat-form-field>
+          </div>
+          <div fxFlex="100px" class="pnl-actions" fxLayoutAlign="end center">
+            <div class="menu-icon" *ngIf="hoveredIndex === i && selectedIndex !== i">
+              <img class="edit" [src]="svgPath + 'edit-icon-blue.svg'" matTooltip="Edit tag" />
+              <img class="delete" (click)="onDelete(item?.id)" [src]="svgPath + 'delete-icon-red.svg'" matTooltip="Delete tag">
+            </div>
+            <div class="menu-icon" *ngIf="hoveredIndex === i && selectedIndex === i">
+              <img class="close" [src]="svgPath + 'close-icon-blue.svg'" (click)="onClose()" matTooltip="Close" />
+              <img [src]="svgPath + 'save-icon-blue.svg'" (click)="onSave()" matTooltip="Save tag">
+            </div>
+          </div>
+        </div>
+      </mat-expansion-panel-header>
+      <div>
+        <il-tag-expansion-list [tag]="item" [items]="item?.questions"></il-tag-expansion-list>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <div class="list-item" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+    <img [src]="svgPath + 'add-icon-gray.svg'" (click)="onAddTag()" />
+  </div>
+</div>

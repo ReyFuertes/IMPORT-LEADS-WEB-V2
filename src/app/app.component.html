@@ -1,0 +1,12 @@
+<div class="notification" [ngClass]="{'success': ($notify | async)}">
+  <p>Successfully Added</p>
+</div>
+<div fxFlexFill>
+  <!-- <il-sidebar></il-sidebar> -->
+  <div class="contents" fxFlex>
+    <il-topnav></il-topnav>
+    <div class="router-outlet">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

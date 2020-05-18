@@ -1,0 +1,35 @@
+@import "src/styleguide/shared";
+.il-button {
+  @include il-button;
+}
+.il-draggable-expansion {
+  @include il-draggable-expansion;
+}
+.menu-icon {
+  &:first-child {
+    img {
+      margin-right: 7px;
+    }
+    img:first-child {
+      width: 20px;
+    }
+  }
+}
+.list-item {
+  background-color: $color-white;
+  padding:10px;
+  img {
+    cursor: pointer;
+  }
+}
+// ::ng-deep {
+//   .cdk-drag-preview {
+//     border-radius: 0 !important;
+//     @extend .il-draggable-expansion;
+//   }
+// }
+@media (max-width: 1280px) {
+  .menu-icon {
+    display: flex !important;
+  }
+}

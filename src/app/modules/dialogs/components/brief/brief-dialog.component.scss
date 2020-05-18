@@ -1,0 +1,17 @@
+@import "src/styleguide/shared";
+.il-button {
+  @include il-button;
+}
+.il-dialog {
+  @include il-dialog;
+  width: 672px;
+  height: 448px;
+  .content {
+    height: 100%;
+    padding: 0 40px !important;
+    width: 672px;
+    > div > div {
+      width: 100%;
+    }
+  }
+}

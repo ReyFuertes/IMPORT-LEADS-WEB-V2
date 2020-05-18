@@ -1,0 +1,11 @@
+<div fxLayoutAlign="end center">
+  <div [matMenuTriggerFor]="menu">
+    <div fxLayoutAlign="end center" fxLayoutGap="10px">
+      <span>{{ selectedItem?.label }}</span>
+      <img [src]="svgPath + 'arrow-down-icon-blue.svg'" />
+    </div>
+  </div>
+  <mat-menu #menu="matMenu">
+    <button *ngFor="let item of items" mat-menu-item (click)="selectedItem = item">{{ item?.label }}</button>
+  </mat-menu>
+</div>

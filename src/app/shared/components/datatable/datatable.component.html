@@ -1,0 +1,33 @@
+<table mat-table [dataSource]="dataSource" matSort>
+  <ng-container *ngFor="let col of cols; let i = index" [matColumnDef]="col">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ splitToSentCase(col) | titlecase}}
+    </th>
+    <td mat-cell *matCellDef="let element">
+      <div>
+        <div [ngClass]="{'col-dialog': isColControl(i)}" fxLayoutAlign="start center">
+          <span *ngIf="!isColControl(i) && selectedIndex !== element?.id">{{ element[col] }}</span>
+          <il-dropdown-select-row *ngIf="isColControl(i) && items && items.length > 0 && !(isLastElement(cols, i))" (valueEmitter)="ddUpdate($event, element)" [selectedItem]="element?.parent?.value" placeholder="Select parent" [items]="items">
+          </il-dropdown-select-row>
+        </div>
+        <input *ngIf="selectedIndex === element?.id && !(isLastElement(cols, i)) && !isColControl(i)" (input)="onInput($event, element, col)" [value]="getValue(element[col])">
+      </div>
+      <div [ngClass]="{'hidden': !(isLastElement(cols, i))}">
+        <div fxFlex="100px" class="pnl-actions" fxLayoutAlign="end center">
+          <div class="menu-icon" *ngIf="hoveredIndex === element?.id && selectedIndex === null" fxLayoutGap="10px">
+            <img [src]="svgPath + 'edit-icon-blue.svg'" (click)="selectedIndex = element?.id" />
+            <img [src]="svgPath + 'delete-icon-red.svg'" (click)="onDelete(element)">
+          </div>
+          <div class="menu-icon" *ngIf="hoveredIndex === element?.id && selectedIndex === element?.id" fxLayoutGap="10px">
+            <img [src]="svgPath + 'close-icon-blue.svg'" (click)="onClose()" />
+            <img [src]="svgPath + 'save-icon-blue.svg'" (click)="onSave(element)">
+          </div>
+        </div>
+      </div>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="cols"></tr>
+  <tr mat-row *matRowDef="let row; columns: cols; let i = index" (mouseover)="mouseover(row.id, 0)" (mouseleave)="mouseout()">
+  </tr>
+</table>
+<mat-paginator [pageSizeOptions]="pageSizeOptions" showFirstLastButtons></mat-paginator>

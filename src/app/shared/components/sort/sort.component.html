@@ -1,0 +1,7 @@
+<div class="sort" [matMenuTriggerFor]="menu" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+  <span class="name">Sort by</span>
+  <img class="arrow" [src]="svgPath + 'arrow-down-icon-black.svg'" />
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item *ngFor="let option of options" (click)="sortEmitter.emit(option?.value)">{{ option?.label }}</button>
+  </mat-menu>
+</div>

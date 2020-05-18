@@ -1,0 +1,29 @@
+@import "src/styleguide/shared";
+.inspection-card {
+  padding: 0;
+}
+:host ::ng-deep {
+  .mat-expansion-panel-body {
+    padding: 0 !important;
+    background-color: $color-white !important;
+  }
+  .mat-list {
+    width: 100%;
+    background: $color-white-1;
+    padding: 25px 5px;
+    
+    .mat-list-item {
+      height: 65px;
+    }
+    .mat-list-item:not(:last-child) {
+      border-right: 1px solid $color-gray-2;
+    }
+    .mat-list-item-content {
+      display: block;
+      padding: 0 20px;
+    }
+  }
+  .mat-table {
+    width: 100%;
+  }
+}

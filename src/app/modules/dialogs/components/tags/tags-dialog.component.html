@@ -1,0 +1,16 @@
+<div [formGroup]="form" class="il-dialog" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px">
+  <div fxLayoutAlign="end center" fxLayout="row">
+    <div fxLayoutAlign="end center">
+      <img (click)="dialogRef.close(false)" [src]="svgPath + 'close-icon-big-gray.svg'" />
+    </div>
+  </div>
+  <div class="content">
+    <div *ngIf="form" fxLayoutAlign="start center" fxLayout="row" fxLayoutGap="40px">
+      <il-input fxFlex="25" [form]="form" isFloatLabel="true" [controlName]="'tag'" placeholder="Add tag"></il-input>
+    </div>
+  </div>
+  <div class="footer" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+    <button mat-flat-button class="il-button default large" (click)="dialogRef.close(false)">Cancel</button>
+    <button [disabled]="!form.valid" mat-flat-button class="il-button primary large" (click)="dialogRef.close(form.get('tag').value)">Save</button>
+  </div>
+</div>

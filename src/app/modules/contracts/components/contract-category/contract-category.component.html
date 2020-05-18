@@ -1,0 +1,20 @@
+<p-confirmDialog [style]="{width: '50vw'}" key="productSpecs"></p-confirmDialog>
+<div fxLayout="column">
+  <div>
+    <div fxLayout="row" fxLayoutGap="5px">
+      <div class="tab-header">
+        <div [ngClass]="{'disabled': isRightNavOpen}" fxLayoutAlign="center center">
+          <span>{{ contract_category?.category?.category_name }}</span>
+        </div>
+      </div>
+      <img *ngIf="!isRightNavOpen" matTooltip="Update Category Name" class="save-icon" (click)="UpdateCategoryName(contract_category?.category)" [src]="svgPath + 'save-icon-blue.svg'" />
+    </div>
+    <mat-tab-group class="il-tab">
+      <mat-tab class="tab-1">
+        <ng-template matTabContent>
+          <il-contract-category-table [isRightNavOpen]="isRightNavOpen" [contract_category]="contract_category"></il-contract-category-table>
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

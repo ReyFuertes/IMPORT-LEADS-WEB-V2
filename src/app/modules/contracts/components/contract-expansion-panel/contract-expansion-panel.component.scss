@@ -1,0 +1,28 @@
+@import "src/styleguide/shared";
+.il-button {
+  @include il-button;
+}
+.title-col {
+  span {
+    width: 80%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+::ng-deep p-inputswitch {
+  @include il-input-switch;
+}
+.il-draggable-expansion {
+  @include il-draggable-expansion;
+
+  .mat-action-row {
+    background-color: $color-white-1 !important;
+  }
+}
+::ng-deep {
+  .cdk-drag-preview {
+    border-radius: 0 !important;
+    @extend .il-draggable-expansion;
+  }
+}

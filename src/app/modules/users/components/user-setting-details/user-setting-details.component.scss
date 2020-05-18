@@ -1,0 +1,13 @@
+@import "src/styleguide/shared";
+.setting-card {
+  padding: 0px;
+}
+.card-row {
+  padding: 32px;
+}
+.details-container {
+  padding: 0 50px;
+}
+.il-button {
+  @include il-button;
+}

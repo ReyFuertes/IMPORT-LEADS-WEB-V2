@@ -1,0 +1,42 @@
+@import "src/styleguide/shared";
+.irp-container {
+  > div {
+    margin-bottom: 20px;
+  }
+}
+.il-bordered-blue {
+  @include il-bordered-blue;
+}
+.il-bg-blue {
+  @include il-bg-blue;
+  width: 120px;
+}
+.il-bg-green {
+  @include il-bg-blue;
+  width: 120px;
+  background-color: $color-green !important;
+}
+.il-bg-red {
+  @include il-bg-blue;
+  width: 120px;
+  background-color: $color-red !important;
+}
+.title {
+  width: 100%;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+.actions-panel {
+  background-color: $color-white;
+  height: 64px;
+  box-shadow: $box-shadow;
+  margin-right: -30px;
+  margin-left: -30px;
+  padding: 0 32px;
+}
+::ng-deep {
+  .navigate-to.mat-menu-panel {
+    max-width: 338px !important;
+    padding: 0 17px !important;
+  }
+}

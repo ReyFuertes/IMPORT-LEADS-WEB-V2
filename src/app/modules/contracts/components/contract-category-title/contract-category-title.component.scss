@@ -1,0 +1,30 @@
+@import "src/styleguide/shared";
+.category-title {
+  flex-direction: row;
+  box-sizing: border-box;
+  display: flex;
+  place-content: center;
+  align-items: center;
+  background-color: $color-white;
+  padding: 10px;
+  margin-bottom: 20px;
+  box-shadow: $box-shadow;
+  font-weight: 500;
+  font-size: 14px;
+  img:nth-of-type(1) {
+    cursor: move;
+  }
+  img:nth-of-type(2) {
+    cursor: pointer;
+  }
+}
+.hidden {
+  height: 0;
+  opacity: 0;
+  margin-bottom: 0;
+  img {
+    display: none;
+  }
+}
+
+

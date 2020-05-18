@@ -1,0 +1,112 @@
+@import "src/styleguide/shared";
+.col-header {
+  font-size: 12px;
+  font-weight: normal;
+  width: 100%;
+  height: 48px;
+  margin-bottom: 0 !important;
+  color: $color-gray-1;
+  background-color: $color-white;
+  padding-left: 28px;
+  padding-right: 10px;
+}
+.il-button {
+  @include il-button;
+}
+.il-draggable-expansion {
+  @include il-draggable-expansion;
+}
+.menu-icon {
+  &:first-child {
+    img {
+      margin-right: 7px;
+    }
+  }
+}
+mat-icon {
+  color: $color-gray-2;
+}
+.rating {
+  color: $color-yellow;
+}
+.rating-label {
+  margin-left: 5px;
+}
+:host ::ng-deep {
+  .il-pill {
+    margin-right: 5px;
+    margin-bottom: 0px !important;
+    cursor: default;
+  }
+  .multi-line-tooltip {
+    white-space: pre-line;
+    border-radius: 0 !important;
+    padding: 15px !important;
+    line-height: 18px;
+  }
+}
+::ng-deep {
+  .cdk-drag-preview {
+    border-radius: 0 !important;
+    @extend .il-draggable-expansion;
+  }
+}
+:host ::ng-deep {
+  .menu-icon img {
+    cursor: pointer;
+  }
+  tr.mat-header-row {
+    height: 40px;
+    font-weight: 600;
+  }
+  tr.mat-footer-row,
+  tr.mat-row {
+    height: 40px;
+    font-size: 14px;
+  }
+  td.mat-cell,
+  td.mat-footer-cell,
+  th.mat-header-cell {
+    margin-right: 20px;
+    input {
+      height: 30px;
+      border-radius: 2px;
+      border: thin $color-gray-2 solid;
+      padding-left: 5px;
+      font-size: 14px;
+    }
+    &:first-child input {
+      width: 95% !important;
+    }
+    &:not(:first-child) input {
+      width: 80% !important;
+    }
+    &:nth-child(2) {
+      width: 275px;
+      max-width: 275px;
+      min-width: 275px;
+    }
+    &:nth-child(3) {
+      width: 75px;
+      max-width: 75px;
+      min-width: 75px;
+    }
+    &:nth-child(4) {
+      width: 75px;
+      max-width: 75px;
+      min-width: 75px;
+    }
+  }
+  .mat-header-row th {
+    &:last-child {
+      max-width: 100px;
+      width: 100px;
+      .mat-sort-header-arrow {
+        display: none !important;
+      }
+      button {
+        display: none !important;
+      }
+    }
+  }
+}

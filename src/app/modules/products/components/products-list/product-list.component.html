@@ -1,0 +1,1 @@
+<iv-datatable *ngIf="products && products.length > 0" (ddUpdateEmitter)="onUpdate($event)" [items]="getDdItems" [colFunc]="colFunc" fxFlex [cols]="cols" (deleteEmitter)="onDelete($event)" (modValueEmitter)="onSave($event)" [data]="products"></iv-datatable>

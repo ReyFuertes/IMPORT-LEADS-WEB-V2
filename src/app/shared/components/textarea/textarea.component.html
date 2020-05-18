@@ -1,0 +1,5 @@
+<div *ngIf="form" [ngClass]="{'has-border': hasBorder}" [formGroup]="form" class="il-textarea">
+  <mat-form-field [floatLabel]="isFloatLabel == true ? '' : 'never'">
+    <textarea [rows]="rows" matInput [formControlName]="controlName" [ngClass]="{'no-resize': noResize}" [placeholder]="placeholder">{{ value }}</textarea>
+  </mat-form-field>
+</div>

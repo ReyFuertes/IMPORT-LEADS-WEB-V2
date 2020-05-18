@@ -1,0 +1,61 @@
+<div class="right-content" fxLayout="column" fxFlexFill>
+  <div>
+    <div fxFlex>Create new Checklist</div>
+    <div (click)="closeEmitter.emit(false)" fxFlex="15px">
+      <img class="close-icon" [src]="svgPath + 'close-icon-gray-16x16.svg'" />
+    </div>
+  </div>
+
+  <div>
+    <mat-tab-group>
+      <mat-tab label="New Checklist">
+        <div class="new-template" fxLayout="column" fxLayoutGap="10px">
+          <div>
+            <il-dropdown-select [form]="form" [controlName]="'assignedTo'" placeholder="Assigned To" ></il-dropdown-select>
+            <il-datepicker [form]="form" [controlName]="'designedRunDate'" [placeholder]="'Desired run date'"></il-datepicker>
+          </div>
+          <div class="content" fxLayout="column" fxLayoutAlign="start start">
+            <div fxLayout="row" fxLayoutAlign="center center">
+              <div fxFlex="50" fxLayoutAlign="end center" (click)="addAql()">AQL</div>
+              <div fxFlex="50" fxLayoutAlign="start center" (click)="addBrief()">Brief </div>
+            </div>
+            <div>
+              <h5>Select terms for inspection</h5>
+            </div>
+            <!-- <div class="inner-container" fxLayout="column" fxLayoutGap="104px">
+              <mat-list *ngFor="let o of [0, 1, 2]; let i = index" [ngClass]="'scroll-' + i">
+                <ng-container *ngFor="let i of [0, 1, 2, 3]; let last = last">
+                  <mat-list-item fxLayoutAlign="center center">
+                    <p-inputSwitch></p-inputSwitch>
+                  </mat-list-item>
+                  <mat-divider></mat-divider>
+                </ng-container>
+              </mat-list>
+              <mat-list>
+                <ng-container *ngFor="let i of [0, 1, 2, 3]; let last = last">
+                  <mat-list-item fxLayoutAlign="center center">
+                    <p-inputSwitch></p-inputSwitch>
+                  </mat-list-item>
+                  <mat-divider></mat-divider>
+                </ng-container>
+              </mat-list>
+
+            </div> -->
+          </div>
+
+        </div>
+      </mat-tab>
+      <mat-tab label="Saved Checklist">
+        <mat-list class="saved-template">
+          <mat-list-item *ngFor="let i of [0, 1, 2, 3, 4, 5]">
+            <div class="temp-row" fxLayout="column">
+              <div>Checklist Name 1</div>
+              <div>Inspector: John Doe</div>
+              <div>Date: 20.09.2019</div>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

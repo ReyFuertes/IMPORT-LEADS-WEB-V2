@@ -1,0 +1,23 @@
+@import "src/styleguide/shared";
+.il-datepicker {
+  @include il-datepicker;
+}
+
+:host ::ng-deep {
+  input.mat-input-element {
+    font-size: 14px !important;
+  }
+  .mat-form-field-appearance-legacy .mat-form-field-label {
+    font-size: 14px;
+    top: 20px;
+  }
+  .cdk-overlay-container {
+    z-index: 1200 !important;
+  }
+  .cdk-overlay-pane {
+    z-index: 99999999 !important;
+  }
+  .mat-form-field-infix {
+    width: 100% !important;
+  }
+}

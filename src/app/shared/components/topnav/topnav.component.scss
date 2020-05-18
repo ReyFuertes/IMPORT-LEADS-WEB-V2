@@ -1,0 +1,13 @@
+@import "src/styleguide/shared";
+.top-nav {
+  @include il-topnav;
+  // @include fade-in;
+  overflow: hidden;
+}
+.chat {
+  cursor: pointer;
+}
+.active-link {
+  background-color: $color-gray-3;
+  border-bottom: 2px solid $color-primary;
+}

@@ -1,0 +1,28 @@
+@import "src/styleguide/shared";
+::ng-deep {
+  .ql-container {
+    height: 100%;
+    border: thin $color-gray-2 solid !important;
+  }
+  .expanded .ql-container {
+    height: auto  !important;
+  }
+  .ql-toolbar.ql-snow {
+    border: none !important;
+  }
+  .ql-editor {
+    background-color: $color-white;
+    resize: vertical;
+    overflow-y: scroll;
+    height: 100%;
+    position: relative;
+    height: 150px;
+  }
+  .expanded .ql-editor {
+    height: 100%;
+  }
+  quill-editor {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+}

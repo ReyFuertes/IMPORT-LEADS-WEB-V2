@@ -1,0 +1,28 @@
+@import "src/styleguide/shared";
+h5 {
+  font-size: 16px;
+}
+.bl_red {
+  border-left: 16px solid $color-red;
+}
+.bl_yellow {
+  border-left: 16px solid $color-yellow-2;
+}
+.bl_green {
+  border-left: 16px solid $color-green;
+}
+.see-all {
+  font-size: 12px;
+  color:$color-primary;
+  font-weight: 500;
+  margin-left: 2px;
+  cursor: pointer;
+}
+:host ::ng-deep {
+  .mat-card {
+    padding: 0;
+  }
+  .mat-list-item {
+    border-bottom: 1px solid $color-gray-3;
+  }
+}

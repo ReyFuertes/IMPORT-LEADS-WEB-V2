@@ -1,0 +1,23 @@
+<div class="chat-container" fxLayout="column">
+  <div class="messages">
+    <div *ngFor="let chat of chatMessages">
+      <div class="separator">{{ chat.date }}</div>
+      <div *ngFor="let message of chat.messages">
+        <il-chat-message [message]="message"></il-chat-message>
+      </div>
+    </div>
+  </div>
+  <div fxFlex>
+    <div>
+      <textarea fxFlex rows="4" placeholder="Type your message here"></textarea>
+    </div>
+    <div>
+      <div fxFlex="50" fxLayoutAlign="start center">
+        <a href="#">Attach files</a>
+      </div>
+      <div fxFlex="50" fxLayoutAlign="end center">
+        <button mat-flat-button class="il-button primary">Send message</button>
+      </div>
+    </div>
+  </div>
+</div>

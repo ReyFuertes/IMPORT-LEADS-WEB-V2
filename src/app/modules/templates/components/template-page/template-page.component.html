@@ -1,0 +1,26 @@
+<div class="template-container" fxLayout="column">
+  <div>
+    <div fxFlex>
+      <h1>Templates</h1>
+    </div>
+    <div fxFlex="120px" fxLayoutAlign="end center">
+      <il-sort></il-sort>
+    </div>
+  </div>
+  <mat-tab-group fxFlexFill>
+    <mat-tab label="Contract Templates">
+      <ng-template matTabContent>
+        <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="20px">
+          <il-template-card *ngFor="let i of [0, 1, 2, 3]" [template]="i"></il-template-card>
+        </div>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Category Templates">
+      <ng-template matTabContent>
+        <div>
+          <il-template-expansion-panel [items]="items"></il-template-expansion-panel>
+        </div>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+</div>

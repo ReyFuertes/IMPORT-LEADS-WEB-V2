@@ -1,0 +1,7 @@
+<div class="il-datepicker" *ngIf="form" [formGroup]="form">
+  <mat-form-field>
+    <input matInput [matDatepicker]="picker" [formControlName]="controlName" readonly [placeholder]="placeholder">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker readonly="false"></mat-datepicker>
+  </mat-form-field>
+</div>

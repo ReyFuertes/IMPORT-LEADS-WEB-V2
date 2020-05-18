@@ -1,0 +1,13 @@
+@import "src/styleguide/shared";
+:host {
+  position: fixed;
+  height: 100%;
+}
+.il-sidebar {
+  @include il-sidebar;
+}
+@media (max-width: 1280px) {
+  .il-sidebar {
+    width: 210px !important;
+  }
+}

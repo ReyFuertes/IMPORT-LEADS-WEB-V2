@@ -1,0 +1,17 @@
+<div class="user-container">
+  <span class="new-chat" (click)="newChat()">+ Start a new chat</span>
+  <mat-list role="list">
+    <mat-list-item *ngFor="let chat of chatUsers; let i = index" role="listitem" [ngClass]="{'selected': selectedItem === i}">
+      <div class="user" fxLayout="column" (click)="onEdit(i)">
+        <div fxLayout="row">
+          <img [src]="svgPath + chat.image">
+          <div>
+            <span>{{ chat.name }}</span>
+            <span>{{ chat.subject }}</span>
+          </div>
+        </div>
+        <p>{{ chat.lastChat }}</p>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</div>

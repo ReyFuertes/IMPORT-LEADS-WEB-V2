@@ -1,0 +1,13 @@
+@import "src/styleguide/shared";
+.mat-table {
+  width: 100%;
+}
+.col-dialog {
+  cursor: pointer;
+}
+td.mat-cell {
+  font-size: 14px;
+  font-weight: 500;
+  color: $color-black-1;
+  text-transform: capitalize;
+}

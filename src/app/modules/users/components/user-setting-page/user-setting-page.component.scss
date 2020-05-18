@@ -1,0 +1,10 @@
+@import "src/styleguide/shared";
+.us-container {
+  padding-top: 20px;
+}
+.il-button {
+  @include il-button;
+}
+il-user-setting-details {
+  margin-bottom: 40px !important;
+}

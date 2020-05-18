@@ -1,0 +1,83 @@
+@import "src/styleguide/shared";
+.btn-delete {
+  position: absolute;
+  width: 79%;
+  height: 10%;
+  z-index: 9999;
+  cursor: pointer;
+}
+.btn-select {
+  position: absolute;
+  width: 79%;
+  height: 49%;
+  z-index: 9999;
+  cursor: pointer;
+  button {
+    width: 183px !important;
+    height: 40px !important;
+    font-size: 14px;
+  }
+}
+.template-card {
+  box-shadow: $box-shadow;
+  margin-bottom: 32px;
+}
+:host ::ng-deep {
+  .ui-widget-overlay {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+  }
+  .ui-panel .ui-panel-content {
+    width: 232px;
+    height: 367px;
+    background-color: $color-white;
+    border: none !important;
+    padding: 20px !important;
+    > div {
+      margin-bottom: 20px;
+      width: 100%;
+      &:first-child {
+        &:first-child {
+          font-size: 14px;
+          font-weight: 600;
+        }
+        > div {
+          font-size: 12px;
+          color: $color-gray-1;
+          font-weight: normal;
+          margin-top: 5px;
+        }
+      }
+      &:nth-child(3) {
+        font-size: 12px;
+        font-weight: normal;
+      }
+      &:nth-child(4) {
+        > div {
+          font-size: 12px;
+          > div {
+            &:first-child {
+              color: $color-gray-1;
+              min-height: 16px;
+              font-size: 11px;
+              font-weight: normal;
+            }
+            &:nth-child(2) {
+              color: $color-black-1;
+              font-weight: 600;
+              min-height: 20px;
+            }
+          }
+        }
+      }
+    }
+    .img {
+      width: 183px;
+      height: 120px;
+      background-color: $color-gray-2;
+    }
+  }
+
+  .ui-panel .ui-panel-titlebar {
+    display: none;
+  }
+}

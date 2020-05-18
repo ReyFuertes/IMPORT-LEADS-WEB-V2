@@ -1,0 +1,13 @@
+@import "src/styleguide/shared";
+.detail {
+  > div span {
+    &:first-child {
+      font-size: 12px;
+      font-weight: normal;
+      color: $color-gray-1;
+    }
+    &:nth-child(2) {
+      font-weight: 500;
+    }
+  }
+}

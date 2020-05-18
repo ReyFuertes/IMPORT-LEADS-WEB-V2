@@ -1,0 +1,12 @@
+<div *ngIf="form" [formGroup]="form">
+  <mat-form-field>
+    <mat-select #multiSelect [placeholder]="placeHolder" [formControlName]="controlName">
+      <mat-option>
+        <ngx-mat-select-search [clearSearchInput]="'false'" [placeholderLabel]="'Search'" [formControl]="dataFilterForm" [noEntriesFoundLabel]="'No result'" *ngIf="searchItem"></ngx-mat-select-search>
+      </mat-option>
+      <mat-option *ngFor="let item of filteredData$ | async" [value]="item?.value">
+        {{ item.label }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>

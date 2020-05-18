@@ -1,0 +1,26 @@
+@mixin il-tab {
+  .footer {
+    height: 48px;
+    font-size: 12px;
+    font-weight: 500;
+    color: $color-primary;
+    background-color: $color-white;
+    img.add {
+      padding: 0 20px;
+    }
+    img {
+      cursor: pointer;
+    }
+  }
+  .actions-links {
+    > div {
+      display: flex;
+      cursor: pointer;
+      place-content: center flex-start;
+      align-items: center;
+      img {
+        margin-right: 5px;
+      }
+    }
+  }
+}

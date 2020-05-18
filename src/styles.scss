@@ -1,0 +1,78 @@
+/* You can add global styles to this file, and also import other style files */
+@import "./styleguide/shared";
+html,
+body {
+  margin: 0;
+  width: 100%;
+  outline: none;
+  font-family: "Roboto", sans-serif;
+  height: 100%;
+  min-height: 100%;
+  background-color: #f2f5f8;
+  overflow: hidden;
+}
+a,
+a:focus,
+a:hover,
+a:visited {
+  text-decoration: none;
+}
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-weight: 400;
+  margin: 0;
+}
+h2 {
+  font-size: 24px;
+}
+h3 {
+  font-size: 22px;
+}
+h4 {
+  font-size: 20px;
+}
+h5 {
+  font-size: 14px;
+  font-weight: 550;
+}
+.hidden {
+  display: none !important;
+  transition: all 0.5s ease-in;
+  opacity: 0;
+}
+img.close {
+  cursor: pointer;
+}
+.no-records {
+  color: $color-gray-1;
+  font-size: 24px;
+  font-size: 14px;
+}
+.mat-form-field {
+  width: 100%;
+}
+.ui-widget-overlay.ui-sidebar-mask {
+  opacity: 0 !important;
+  display: none;
+  z-index: 999 !important;
+}
+.il-rightnav .ui-sidebar {
+  z-index: 1000 !important;
+}
+.disabled {
+  opacity: 0.5;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+  div,
+  img {
+    cursor: default !important;
+  }
+}

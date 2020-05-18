@@ -1,0 +1,6 @@
+<img [matMenuTriggerFor]="menu" class="arrow" [src]="svgPath + 'arrow-down-icon-black.svg'">
+<mat-menu #menu="matMenu" yPosition="below" xPosition="before">
+  <button *ngFor="let option of options" mat-menu-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+    <mat-checkbox (change)="onSelectOption(option);" (click)="$event.stopPropagation();">{{ option?.label | uppercase }}</mat-checkbox>
+  </button>
+</mat-menu>

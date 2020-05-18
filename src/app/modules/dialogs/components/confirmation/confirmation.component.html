@@ -1,0 +1,14 @@
+<div class="il-dialog" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px">
+  <div fxLayoutAlign="end center" fxLayout="row">
+    <div fxLayoutAlign="end center">
+      <img (click)="dialogRef.close(false)" [src]="svgPath + 'close-icon-big-gray.svg'" />
+    </div>
+  </div>
+  <div class="content">
+    <h2>Are you sure to delete this item?</h2>
+  </div>
+  <div class="footer" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+    <button mat-flat-button class="il-button default large" (click)="dialogRef.close(false)">Cancel</button>
+    <button mat-flat-button class="il-button danger large" (click)="dialogRef.close(true)">Delete</button>
+  </div>
+</div>

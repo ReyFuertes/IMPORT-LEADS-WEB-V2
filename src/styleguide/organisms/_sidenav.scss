@@ -1,0 +1,24 @@
+@mixin il-sidebar {
+  background-color: $color-black-1;
+  max-width: 250px;
+  width: 250px;
+  outline: none;
+  position: fixed;
+  height: 100%;
+  span.cap-case {
+    text-transform: uppercase;
+  }
+  .mat-list-base .mat-list-item {
+    color: $color-white;
+    outline: none;
+    text-transform: capitalize;
+    font-size: 14px;
+    &.active {
+      background-color: $color-primary;
+    }
+    &:hover:not(.brand) {
+      cursor: pointer;
+      outline: none;
+    }
+  }
+}

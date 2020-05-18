@@ -1,0 +1,42 @@
+@import "src/styleguide/shared";
+.chat-container {
+  border-left: 1px solid $color-white-1;
+
+  .messages {
+    padding-top: 15px;
+    overflow-y: scroll;
+    height: 511px;
+    background: $color-white-1;
+
+    .separator{
+      display: flex;
+      align-items: center;
+      text-align: center;
+      width: 98%;
+      margin: 0 auto;
+      color: $color-gray-2;
+      font-size: 12px;
+
+      &::before, &::after{
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid $color-gray-3;
+      }
+      &::before {
+        margin-right: .25em;
+      }
+      &::after {
+        margin-left: .25em;
+      }
+    }
+  }
+  >div:nth-child(2) {
+    padding: 12px;
+    >div {
+      margin-bottom: 12px;
+    }
+  }
+}
+.il-button {
+  @include il-button;
+}

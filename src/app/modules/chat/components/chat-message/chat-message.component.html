@@ -1,0 +1,20 @@
+<div class="message">
+  <div *ngIf="message.isSender; else receiver" 
+        fxLayout="row" fxLayoutAlign="end center" >
+    <div class="sender">
+      <div>{{ message.message }}</div>
+      <span>{{ message.time }}</span>
+    </div>
+    <img [src]="svgPath + message.image">
+  </div>
+  <ng-template #receiver>
+    <div fxLayout="row" fxLayoutAlign="start center" >
+      <img [src]="svgPath + message.image">
+      <div class="receiver">
+        <div>{{ message.message }}</div>
+        <span>{{ message.time }}</span>
+      </div>
+    </div>
+  </ng-template>
+</div>
+

@@ -1,0 +1,48 @@
+@import "src/styleguide/shared";
+.col-header {
+  font-size: 12px;
+  font-weight: normal;
+  width: 100%;
+  height: 48px;
+  margin-bottom: 0 !important;
+  color: $color-gray-1;
+  background-color: $color-white;
+  padding-left: 28px;
+  padding-right: 10px;
+}
+.il-button {
+  @include il-button;
+}
+.il-draggable-expansion {
+  @include il-draggable-expansion;
+  .mat-expansion-panel-header {
+    padding-right: 15px !important;
+  }
+}
+.user-image {
+  border-radius: 50%;
+  margin-right: 15px;
+  width: 30px;
+}
+.user-access {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 380px;
+}
+.user-role {
+  width: 65px;
+}
+.menu-icon {
+  &:first-child {
+    img {
+      margin-right: 7px;
+    }
+  }
+}
+::ng-deep {
+  .cdk-drag-preview {
+    border-radius: 0 !important;
+    @extend .il-draggable-expansion;
+  }
+}

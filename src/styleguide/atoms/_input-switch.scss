@@ -1,0 +1,23 @@
+@mixin il-input-switch {
+  .ui-inputswitch .ui-inputswitch-slider:before {
+    left: 1px !important;
+    height: 16px !important;
+    width: 16px !important;
+    top: -2px !important;
+    background-color: $color-gray-1 !important;
+  }
+  .ui-inputswitch-slider {
+    height: 12px;
+    width: 32px;
+    top: 9px;
+  }
+  .ui-inputswitch.ui-inputswitch-checked .ui-inputswitch-slider {
+    background-color: $color-primary-3 !important;
+  }
+  .ui-inputswitch.ui-inputswitch-checked .ui-inputswitch-slider:before {
+    background-color: $color-primary !important;
+  }
+  .ui-inputswitch.ui-inputswitch-focus .ui-inputswitch-slider {
+    box-shadow: none !important;
+  }
+}

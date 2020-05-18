@@ -1,0 +1,32 @@
+@import "src/styleguide/shared";
+.il-button {
+  @include il-button;
+}
+.il-dialog {
+  width: 385px !important;
+  padding: 20px;
+  > div {
+    &:first-child {
+      width: 100%;
+    }
+  }
+  .content {
+    width: 100%;
+  }
+  il-input {
+    width: 100%;
+    max-width: 100% !important;
+  }
+  button {
+    min-width: 100px;
+    width: 107px !important;
+  }
+  img {
+    cursor: pointer;
+  }
+}
+:host ::ng-deep {
+  .mat-focused .mat-form-field-underline {
+    background-color: $color-primary !important;
+  }
+}

@@ -1,0 +1,21 @@
+@import "src/styleguide/shared";
+:host ::ng-deep {
+  .ui-dropdown-trigger {
+    color: $color-gray-1 !important;
+  }
+  .ui-dropdown {
+    border-color: $color-gray-2 !important;
+  }
+  .pi-chevron-down {
+    top: 55% !important;
+    font-size: 1em !important;
+  }
+  .ui-dropdown-label {
+    padding: 3px;
+    font-size: 13px;
+    span {
+      position: relative;
+      top: -1px;
+    }
+  }
+}

@@ -1,0 +1,33 @@
+<mat-card *ngIf="contract" fxLayout="column" class="contract-card" fxLayoutGap="10px">
+  <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+    <div fxFlex fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+      <div class="img-box" fxLayoutAlign="center center">
+        <img [src]="imgPath + 'product-img-small.png'" />
+      </div>
+      <span class="row-text">{{ contract?.contract_name }}</span>
+    </div>
+    <div class="col-table">
+      <div>
+        <span class="col-text">Contract Date</span>
+        <span class="row-text">{{ contract?.start_date | date: 'dd/MM/yyyy' }}</span>
+      </div>
+      <div>
+        <span class="col-text">Created by</span>
+        <span class="row-text">{{ contract?.user ? getFullName(contract?.user) : '' }}</span>
+      </div>
+      <div>
+        <span class="col-text">Related Venue</span>
+        <span class="row-text">{{ contract?.venue?.name }}</span>
+      </div>
+      <div fxFlex="5">
+        <img class="ellipse" [matMenuTriggerFor]="menu" [src]="svgPath + 'dots-icon-blue.svg'" />
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="gotoDetail(contract?.id)">Edit</button>
+        </mat-menu>
+      </div>
+    </div>
+  </div>
+
+  <il-contract-card-milestone fxFlex [contract]=[contract]></il-contract-card-milestone>
+
+</mat-card>

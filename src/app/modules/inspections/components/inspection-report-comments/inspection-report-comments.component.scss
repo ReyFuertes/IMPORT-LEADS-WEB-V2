@@ -1,0 +1,34 @@
+@import "src/styleguide/shared";
+canvas {
+  height: 400px !important;
+}
+h2 {
+  line-height: 32px;
+}
+img {
+  padding: 10px 0px 5px;
+}
+:host ::ng-deep {
+  .mat-expansion-panel-body {
+    padding: 24px 0 0 0 !important;
+    background-color: $color-white !important;
+  }
+  .mat-list {
+    width: 100%;
+    background: $color-white-1;
+    padding: 25px 5px;
+    
+    .mat-list-item {
+      height: 65px;
+    }
+
+    .mat-list-item-content {
+      display: block;
+      padding: 0 20px;
+    }
+  }
+  .mat-table {
+    width: 100%;
+  }
+
+}

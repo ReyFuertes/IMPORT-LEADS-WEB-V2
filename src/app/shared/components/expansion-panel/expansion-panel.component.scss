@@ -1,0 +1,76 @@
+@import "src/styleguide/shared";
+.inner-container {
+  &.h-40 {
+    height: 40px;
+  }
+  :nth-child(2) {
+    font-size: 14px;
+    font-weight: 500;
+    color: $color-black-2;
+
+  }
+  .border {
+    border: thin $color-gray-1 solid;
+    padding: 5px 10px;
+  }
+  :nth-child(4) {
+    height: 100%;
+    span {
+      font-size: 12px;
+      font-weight: 500;
+      color: $color-primary;
+    }
+  }
+}
+.cdk-drop-list-dragging .cdk-drag {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+.cdk-drag-animating {
+  transition: transform 300ms cubic-bezier(0, 0, 0.2, 1);
+}
+.expanded-bg {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+  border-bottom: thin $color-gray-1 solid;
+}
+:host ::ng-deep {
+  .mat-expansion-panel .mat-expansion-panel-header.cdk-keyboard-focused:not([aria-disabled="true"]),
+  .mat-expansion-panel .mat-expansion-panel-header.cdk-program-focused:not([aria-disabled="true"]),
+  .mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:hover:not([aria-disabled="true"]) {
+    background-color: transparent !important;
+  }
+  .mat-expansion-panel-header.mat-expanded:focus,
+  .mat-expansion-panel-header.mat-expanded:hover {
+    background-color: transparent !important;
+  }
+  .mat-expansion-panel-header {
+    font-size: 14px;
+    font-weight: 500;
+    padding: 0 0 0 15px !important;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  .mat-expansion-panel-header-description {
+    padding: 13px 0 !important;
+  }
+  .mat-expansion-panel:not([class*="mat-elevation-z"]) {
+    box-shadow: none;
+    border-bottom: thin $color-gray-2 solid;
+  }
+  .mat-expansion-panel-spacing {
+    margin: 0 !important;
+    border-radius: 0 !important;
+  }
+  .mat-expansion-panel-header-description {
+    cursor: pointer;
+  }
+  .mat-expansion-panel-content {
+    transition: all 0.3s ease-in !important;
+  }
+  .mat-form-field-infix {
+    border-top: 0;
+  }
+}

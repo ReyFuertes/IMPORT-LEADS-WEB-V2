@@ -1,0 +1,10 @@
+<mat-card class="chat-card">
+  <div fxLayout="row">
+    <div fxFlex="232px">
+      <il-chat-user-list [chatUsers]="chatUsers"></il-chat-user-list>
+    </div>
+    <div fxFlex>
+      <il-chat-message-container [chatMessages]="chatMessages"></il-chat-message-container>
+    </div>
+  </div>
+</mat-card>

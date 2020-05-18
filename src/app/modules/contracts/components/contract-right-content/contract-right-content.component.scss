@@ -1,0 +1,141 @@
+@import "src/styleguide/shared";
+.inner-container {
+  display: none;
+  overflow-y: auto;
+  width: 100%;
+  .mat-list:first-child {
+    margin-top: calc(100% + 222px);
+  }
+}
+.right-content {
+  > div {
+    &:first-child {
+      padding: 14px 9px 14px 14px;
+      font-size: 14px;
+      font-weight: 550;
+    }
+    &:nth-child(2) {
+      height: 100%;
+      min-height: 100%;
+    }
+    &:nth-child(3) {
+      min-height: calc(100% - 310px) !important;
+      height: calc(100% - 310px) !important;
+      > div {
+        &:first-child {
+          text-align: center;
+          width: 100%;
+          padding: 0;
+        }
+      }
+    }
+  }
+}
+.content {
+  height: 100%;
+  min-height: 100%;
+  > div {
+    &:first-child {
+      font-size: 14px;
+      font-weight: 500;
+      font-stretch: normal;
+      color: $color-primary;
+      width: 100%;
+      margin-bottom: 15px;
+      > div {
+        padding: 0 20px;
+        cursor: pointer;
+      }
+      :first-child {
+        border-right: thin $color-gray-2 solid;
+      }
+    }
+    &:nth-child(2) {
+      padding: 0 10px 15px 15px;
+    }
+  }
+}
+.new-template {
+  height: calc(100% - 310px);
+  min-height: calc(100% - 310px);
+  > div {
+    &:first-child {
+      padding: 20px 15px 0 15px;
+    }
+  }
+}
+.close-icon {
+  cursor: pointer;
+}
+.temp-row {
+  > div {
+    &:first-child {
+      font-size: 14px;
+      font-weight: 500;
+    }
+    &:nth-child(2),
+    &:nth-child(3) {
+      font-size: 12px;
+      font-weight: normal;
+    }
+  }
+}
+:host ::ng-deep {
+  ::-webkit-scrollbar {
+    width: 0;
+  }
+  .saved-template {
+    .mat-list-item {
+      height: 85px !important;
+    }
+  }
+  .mat-list-base {
+    width: 100%;
+  }
+  .mat-tab-group {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 100%;
+  }
+  .mat-tab-body-wrapper {
+    height: 100%;
+    min-height: 100%;
+  }
+  .mat-tab-body.mat-tab-body-active {
+    height: 100%;
+    min-height: 100%;
+  }
+  .mat-tab-header-pagination {
+    display: none !important;
+  }
+  .mat-tab-body-wrapper {
+    box-shadow: none !important;
+  }
+  .mat-tab-label-active {
+    color: $color-primary;
+  }
+  .mat-ink-bar {
+    height: 2px !important;
+    background-color: $color-primary !important;
+  }
+  .mat-tab-label {
+    min-width: 100px !important;
+    width: 100px !important;
+    border-radius: 0 !important;
+    .mat-tab-label-content {
+      width: 75px !important;
+      white-space: normal !important;
+      font-size: 12px !important;
+      font-weight: normal;
+    }
+  }
+  .mat-tab-label-active .mat-tab-label-content {
+    font-weight: 500 !important;
+  }
+  .mat-tab-body-content {
+    height: 100%;
+    min-height: 100%;
+    overflow-y: scroll;
+  }
+}

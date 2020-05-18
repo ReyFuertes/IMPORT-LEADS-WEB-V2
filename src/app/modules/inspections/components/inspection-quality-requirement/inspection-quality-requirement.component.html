@@ -1,0 +1,37 @@
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <!-- Position Column -->
+  <ng-container matColumnDef="position">
+    <th mat-header-cell *matHeaderCellDef> Term </th>
+    <th mat-header-cell *matHeaderCellDef> No. </th>
+    <td mat-cell *matCellDef="let items"> {{items?.position}} </td>
+  </ng-container>
+
+  <!-- conditions Column -->
+  <ng-container matColumnDef="conditions">
+    <th mat-header-cell *matHeaderCellDef> Conditions </th>
+    <td mat-cell *matCellDef="let items"> {{items?.conditions}} </td>
+  </ng-container>
+
+  <!-- verification Column -->
+  <ng-container matColumnDef="verification">
+    <th mat-header-cell *matHeaderCellDef> Verification </th>
+    <td mat-cell *matCellDef="let items">
+      <mat-radio-group aria-label="Select an option" fxLayoutAlign="start center" fxLayoutGap="10px">
+        <mat-radio-button *ngFor="let item of items?.verification; let i = index" (click)="onRemarks(items, i)" [value]="item?.label" [checked]="item?.value">{{ item?.label }}</mat-radio-button>
+      </mat-radio-group>
+    </td>
+  </ng-container>
+
+  <!-- Remarks Column -->
+  <ng-container matColumnDef="remarks">
+    <th mat-header-cell *matHeaderCellDef> Remarks </th>
+    <td mat-cell *matCellDef="let items">
+      <button *ngIf="!items?.verification[0].value" (click)="onRemarks()" class="il-button purple" mat-flat-button>
+        <span>Remarks</span>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

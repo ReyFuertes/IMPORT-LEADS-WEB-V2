@@ -1,0 +1,11 @@
+@import "src/styleguide/shared";
+.sort {
+  cursor: pointer;
+  span.name {
+    font-size: 14px;
+    font-weight: 500;
+  }
+  img.arrow {
+    margin-right: 0 !important;
+  }
+}

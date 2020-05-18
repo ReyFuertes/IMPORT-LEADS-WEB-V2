@@ -85,7 +85,7 @@ export class ProductListComponent extends GenericRowComponent implements OnInit,
   public getToolTip(product: IRelatedProduct[]): string {
     let tooltip = '';
     for (const entry of product) {
-      tooltip = tooltip + entry.product.label + '\n';
+      tooltip = tooltip + entry.product_name + '\n';
     }
     return tooltip;
   }

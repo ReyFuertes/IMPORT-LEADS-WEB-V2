@@ -51,8 +51,8 @@ export abstract class BaseService<T> {
       { headers: this.commonHeaders() });
   }
 
-  public patch(object: T, url?: string): Observable<T> {
-    return this.http.patch<T>(`${this.baseUrl}${this.entity}${url ? '/' + url : ''}`,
+  public patch(object: T | any, addtnlParam?: string): Observable<T> {
+    return this.http.patch<T>(`${this.baseUrl}${this.entity}${this.fmtParam(addtnlParam)}`,
       this.removeNullProps(object),
       { headers: this.commonHeaders() }
     );
@@ -66,18 +66,16 @@ export abstract class BaseService<T> {
     return this.http.get<T[]>(`${this.baseUrl}${this.entity}${this.fmtParam(param)}`, { headers: this.commonHeaders() });
   }
 
-  public getById(id: string, additionalParam?: string): Observable<T[]> {
-    const fmtParam = additionalParam ? `/${additionalParam}` : '';
-    return this.http.get<T[]>(`${this.baseUrl}${this.entity}/${id}${fmtParam}`, { headers: this.commonHeaders() });
+  public getById(id: string, addtnlParam?: string): Observable<T[]> {
+    return this.http.get<T[]>(`${this.baseUrl}${this.entity}/${id}${this.fmtParam(addtnlParam)}`, { headers: this.commonHeaders() });
   }
 
-  public upload(object?: any, additionalParam?: string): Observable<T> {
-    const fmtParam = additionalParam ? `/${additionalParam}` : '';
+  public upload(object?: any, addtnlParam?: string): Observable<T> {
     let headers = new HttpHeaders({
       Authorization: `Bearer ${this.getToken()}`,
       Accept: "application/json"
     });
     headers.set('Content-Type', 'multipart/form-data');
-    return this.http.post<T>(`${this.baseUrl}${this.entity}${fmtParam}`, object, { headers: headers });
+    return this.http.post<T>(`${this.baseUrl}${this.entity}${this.fmtParam(addtnlParam)}`, object, { headers: headers });
   }
 }

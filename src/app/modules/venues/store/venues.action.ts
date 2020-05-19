@@ -11,6 +11,7 @@ export enum VenueActionTypes {
   loadVenues = '[Venue] Load',
   loadVenuesSuccess = '[Venue] Load (success)',
 }
+
 export const deleteVenue = createAction(
   VenueActionTypes.deleteVenue,
   props<{ id: string }>()

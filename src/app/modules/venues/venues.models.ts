@@ -1,3 +1,4 @@
+import { IProduct } from './../products/products.model';
 export interface IVenue {
   id?: string;
   name: string;
@@ -10,6 +11,13 @@ export interface IVenue {
   contracts?: string;
   contact_person?: string;
   phone?: string;
+}
+
+export interface IvenueProduct {
+  id?: string;
+  venue?: IVenue;
+  product?: IProduct;
+  _id?: string;
 }
 
 export interface IRelatedProduct {

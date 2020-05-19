@@ -1,3 +1,5 @@
+import { IvenueProduct } from './../../venues.models';
+import { removeVenueProduct } from './../../store/venue-product.action';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { MatDialog } from '@angular/material/dialog';
 import { addVenue, deleteVenue } from './../../store/venues.action';
@@ -43,7 +45,9 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
 
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    console.log(this.items);
+  }
 
   public onEdit(item: IVenue, key: string, value: string): void {
     if (value)
@@ -66,6 +70,19 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
     this.dragStart = event;
   }
 
+  public onRemoveProduct(item: IvenueProduct): void {
+    const dialogRef = this.dialog.open(ConfirmationComponent, {
+      width: '410px'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        setTimeout(() => {
+          this.store.dispatch(removeVenueProduct({ item }))
+        }, 100);
+      }
+    });
+  }
+
   public getToolTip(product: IRelatedProduct[]): string {
     let tooltip = '';
     for (const entry of product) {
@@ -75,6 +92,10 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
   }
 
   public onClickPnl(pnl: any, event: any, i: number, item: IVenue): void {
+    if(item && item.related_products && item.related_products.length === 0) {
+      pnl.close();
+    }
+
     if (item)
       this.selectedItem = item;
 

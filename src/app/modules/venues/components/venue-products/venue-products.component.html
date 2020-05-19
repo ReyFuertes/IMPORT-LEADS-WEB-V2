@@ -3,9 +3,9 @@
 </div>
 <div class="il-draggable-expansion">
   <mat-accordion cdkDropList (cdkDropListDropped)="drop($event)">
-    <mat-expansion-panel #pnl cdkDrag (cdkDragStarted)="dragStarted(true)" #pnl="matExpansionPanel" *ngFor="let item of items; let i = index" hideToggle="true">
+    <mat-expansion-panel #pnl cdkDrag (cdkDragStarted)="dragStarted(true)" #pnl="matExpansionPanel" *ngFor="let item of items; let i = index" hideToggle="true" [ngClass]="'no-expand'">
 
-      <mat-expansion-panel-header (keydown.Space)="$event.stopImmediatePropagation()" (click)="onClickPnl(pnl, $event, i, item)" (mouseover)="mouseover(i)" (mouseleave)="mouseout()">
+      <mat-expansion-panel-header (keydown.Space)="$event.stopImmediatePropagation()" (click)="onClickPnl(pnl, $event, i, item)" (mouseover)="mouseover(i)" (mouseleave)="mouseout()" [ngClass]="'no-expand'">
         <div class="pnl-header" fxLayout="row" fxLayoutGap="10px">
           <img cdkDragHandle [src]="svgPath + 'drag-icon.svg'" />
           <div fxFlex="20" fxLayoutAlign="start center">
@@ -21,9 +21,10 @@
             </mat-form-field>
           </div>
           <div fxFlex="21" fxLayoutAlign="start center">
-            <il-pill *ngFor="let product of item?.related_products | slice:0:1; let i = index;" [matTooltipClass]="'multi-line-tooltip'" [matTooltip]="getToolTip(item?.related_products)" [item]="{ value: product?.id, label: product?.product_name }"
-              (removeEmitter)="onRemove($event)">
-            </il-pill>
+            <ng-container *ngIf="item?.related_products && item?.related_products.length > 0">
+              <il-pill *ngFor="let product of item?.related_products | slice:0:1; let i = index;" [item]="{ value: product?._id, label: product?.product_name }" (removeEmitter)="onRemoveProduct({ id: $event, venue_id: item?.id })">
+              </il-pill>
+            </ng-container>
           </div>
           <div fxFlex="100px" fxLayoutAlign="center center">
             <span *ngIf="selectedIndex !== i">{{item?.contracts}}</span>
@@ -61,13 +62,13 @@
             <img class="delete" [src]="svgPath + 'delete-icon-red.svg'" (click)="onDelete(item?.id)">
           </div>
           <div class="menu-icon" *ngIf="hoveredIndex === i && selectedIndex === i">
-            <img [src]="svgPath + 'close-icon-blue.svg'" (click)="onClose()" />
+            <img [src]="svgPath + 'close-icon-blue.svg'" class="no-expand" (click)="onClose()" />
             <img [src]="svgPath + 'save-icon-blue.svg'" class="no-expand" (click)="onSave()" matTooltip="Save tag">
           </div>
         </div>
       </mat-expansion-panel-header>
       <div>
-        <il-venue-expansion-list [items]="item?.related_products"></il-venue-expansion-list>
+        <il-venue-expansion-list *ngIf="item?.related_products && item?.related_products.length > 0" [items]="item?.related_products"></il-venue-expansion-list>
       </div>
     </mat-expansion-panel>
   </mat-accordion>

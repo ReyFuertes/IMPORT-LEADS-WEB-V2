@@ -1,5 +1,5 @@
 import { IVenue } from './../venues.models';
-import { loadVenues, loadVenuesSuccess, addVenueSuccess, deleteVenueSuccess } from './venues.action';
+import { loadVenues, loadVenuesSuccess, addVenueSuccess, deleteVenueSuccess, updateVenueSuccess } from './venues.action';
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 
@@ -11,6 +11,9 @@ export const initialState: VenuesState = adapter.getInitialState({
 });
 const venuesReducer = createReducer(
   initialState,
+  on(updateVenueSuccess, (state, action) => {
+    return adapter.updateOne({ id: action.updated.id, changes: action.updated }, state)
+  }),
   on(deleteVenueSuccess, (state, action) => {
     return adapter.removeOne(action.deleted.id, state)
   }),

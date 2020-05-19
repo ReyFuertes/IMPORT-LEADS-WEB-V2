@@ -6,6 +6,8 @@ export enum VenueActionTypes {
   deleteVenueSuccess = '[Venue] Delete (success)',
   addVenue = '[Venue] Add',
   addVenueSuccess = '[Venue] Add (success)',
+  updateVenue = '[Venue] Update',
+  updateVenueSuccess = '[Venue] Update (success)',
   loadVenues = '[Venue] Load',
   loadVenuesSuccess = '[Venue] Load (success)',
 }
@@ -16,6 +18,14 @@ export const deleteVenue = createAction(
 export const deleteVenueSuccess = createAction(
   VenueActionTypes.deleteVenueSuccess,
   props<{ deleted: IVenue }>()
+);
+export const updateVenue = createAction(
+  VenueActionTypes.updateVenue,
+  props<{ item: IVenue }>()
+);
+export const updateVenueSuccess = createAction(
+  VenueActionTypes.updateVenueSuccess,
+  props<{ updated: IVenue }>()
 );
 export const addVenue = createAction(
   VenueActionTypes.addVenue,

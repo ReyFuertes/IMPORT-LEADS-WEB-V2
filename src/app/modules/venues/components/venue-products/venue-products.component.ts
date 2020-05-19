@@ -83,7 +83,6 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
     }
 
     if (event.target.classList.contains('delete')) {
-
       const dialogRef = this.dialog.open(ConfirmationComponent, {
         width: '410px',
         data: {}

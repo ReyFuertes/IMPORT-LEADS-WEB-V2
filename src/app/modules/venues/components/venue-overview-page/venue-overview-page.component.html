@@ -7,7 +7,7 @@
       <il-sort></il-sort>
     </div>
     <mat-button-toggle-group value="products" name="fontStyle" aria-label="Font Style" fxLayoutAlign="end center">
-      <mat-button-toggle (valueEmitter)="onSave($event)" class="il-button il-bg-blue" value="products" (click)="isProduct = true">products</mat-button-toggle>
+      <mat-button-toggle class="il-button il-bg-blue" value="products" (click)="isProduct = true">products</mat-button-toggle>
       <mat-button-toggle class="il-button il-bg-blue" value="address" (click)="isProduct = false">address</mat-button-toggle>
     </mat-button-toggle-group>
   </div>

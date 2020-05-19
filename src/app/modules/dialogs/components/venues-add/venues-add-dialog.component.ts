@@ -1,6 +1,6 @@
 import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ISimpleItem} from 'src/app/shared/generics/generic.model';
 
@@ -14,38 +14,17 @@ export class VenuesAddDialogComponent implements OnInit {
   public form: FormGroup;
   public isProduct: boolean;
   public selectedItems: ISimpleItem[] = [];
-  public items: ISimpleItem[] = [
-    {
-      label: 'Product 1',
-      value: '1'
-    },
-    {
-      label: 'zxc 2',
-      value: '2'
-    },
-    {
-      label: 'bnm 3',
-      value: '3'
-    },
-    {
-      label: '67876',
-      value: '4'
-    },
-    {
-      label: 'SFDF',
-      value: '5'
-    }
-  ];
+
   constructor(public fb: FormBuilder,
     public dialogRef: MatDialogRef<VenuesAddDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: boolean) {
       this.isProduct = data;
       this.form = this.fb.group({
-        id: [''],
-        name: [''],
-        location: [''],
-        relatedProducts: [null],
-        contactPerson: [null],
+        id: [null],
+        name: [null, Validators.required],
+        location: [null],
+        related_products: [null],
+        contact: [null],
         phone: [null],
       });
     }

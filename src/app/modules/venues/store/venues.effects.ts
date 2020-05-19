@@ -1,5 +1,5 @@
 import { IVenue } from './../venues.models';
-import { loadVenues, loadVenuesSuccess, addVenue, addVenueSuccess, deleteVenue, deleteVenueSuccess } from './venues.action';
+import { loadVenues, loadVenuesSuccess, addVenue, addVenueSuccess, deleteVenue, deleteVenueSuccess, updateVenue, updateVenueSuccess } from './venues.action';
 import { VenuesService } from './../venues.service';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -13,6 +13,16 @@ export class VenuesEffects {
       .pipe(
         map((deleted: IVenue) => {
           return deleteVenueSuccess({ deleted });
+        })
+      ))
+  ));
+
+  updateVenue$ = createEffect(() => this.actions$.pipe(
+    ofType(updateVenue),
+    mergeMap(({ item }) => this.venuesService.post(item)
+      .pipe(
+        map((updated: IVenue) => {
+          return updateVenueSuccess({ updated });
         })
       ))
   ));

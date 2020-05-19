@@ -1,3 +1,4 @@
+import { updateVenue, addVenue } from './../../store/venues.action';
 import { getVenuesSelector } from './../../store/venues.selector';
 import { getVenues } from './../../store/venues.reducer';
 import { Observable } from 'rxjs';
@@ -108,6 +109,10 @@ export class VenueOverviewPageComponent implements OnInit {
 
   public onAddVenues(): void {
     const dialogRef = this.dialog.open(VenuesAddDialogComponent, { data: this.isProduct });
-    dialogRef.afterClosed().subscribe(result => { });
+    dialogRef.afterClosed().subscribe(item => {
+      if (item) {
+        this.store.dispatch(addVenue({ item }));
+      }
+    });
   }
 }

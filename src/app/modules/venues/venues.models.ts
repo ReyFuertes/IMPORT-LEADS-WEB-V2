@@ -1,5 +1,5 @@
 export interface IVenue {
-  id?: string | number;
+  id?: string;
   name: string;
   location?: string;
   related_products?: IRelatedProduct[];

@@ -7,13 +7,13 @@
       <il-sort></il-sort>
     </div>
     <mat-button-toggle-group value="products" name="fontStyle" aria-label="Font Style" fxLayoutAlign="end center">
-      <mat-button-toggle class="il-button il-bg-blue" value="products" (click)="isProduct = true">products</mat-button-toggle>
+      <mat-button-toggle (valueEmitter)="onSave($event)" class="il-button il-bg-blue" value="products" (click)="isProduct = true">products</mat-button-toggle>
       <mat-button-toggle class="il-button il-bg-blue" value="address" (click)="isProduct = false">address</mat-button-toggle>
     </mat-button-toggle-group>
   </div>
   <div>
-    <il-venue-products *ngIf="isProduct && venueProducts" [colsHeaders]="ctColsProduct" [items]="venueProducts"></il-venue-products>
-    <il-venue-address *ngIf="!isProduct" [colsHeaders]="ctColsAddress" [items]="venueAddress"></il-venue-address>
+    <il-venue-products *ngIf="isProduct" [colsHeaders]="ctColsProduct" [items]="venues"></il-venue-products>
+    <il-venue-address *ngIf="!isProduct" [colsHeaders]="ctColsAddress" [items]="venues"></il-venue-address>
   </div>
 
   <div class="action-btn">

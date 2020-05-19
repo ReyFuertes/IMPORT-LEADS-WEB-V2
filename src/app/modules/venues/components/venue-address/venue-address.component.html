@@ -14,21 +14,21 @@
             </mat-form-field>
           </div>
           <div fxFlex="50" fxLayoutAlign="start center">
-            <span *ngIf="selectedIndex !== i">{{item.location}}</span>
+            <span *ngIf="selectedIndex !== i">{{item?.location}}</span>
             <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
-              <input matInput [value]="item.location">
+              <input matInput [value]="item?.location">
             </mat-form-field>
           </div>
           <div fxFlex="150px" fxLayoutAlign="start center">
-            <span *ngIf="selectedIndex !== i">{{item.contactPerson}}</span>
+            <span *ngIf="selectedIndex !== i">{{item?.contact}}</span>
             <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
-              <input matInput [value]="item.contactPerson">
+              <input matInput [value]="item?.contact">
             </mat-form-field>
           </div>
           <div fxFlex="15" fxLayoutAlign="start center">
-            <span *ngIf="selectedIndex !== i">{{item.phone}}</span>
+            <span *ngIf="selectedIndex !== i">{{item?.phone}}</span>
             <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
-              <input matInput [value]="item.phone">
+              <input matInput [value]="item?.phone">
             </mat-form-field>
           </div>
         </div>

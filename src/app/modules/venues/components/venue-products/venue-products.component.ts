@@ -1,9 +1,10 @@
+import { AddVenue } from './../../store/venues.action';
 import { AppState } from './../../../../store/app.reducer';
 import { Store } from '@ngrx/store';
 import { ISimpleItem } from '../../../../shared/generics/generic.model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { environment } from '../../../../../environments/environment';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, HostListener, Output, EventEmitter } from '@angular/core';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
 import { IVenue, IRelatedProduct } from '../../venues.models';
 
@@ -24,29 +25,8 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
   public rates = new Array(5);
   @Input()
   public isProduct: boolean;
-
-  public ctColsRelatedProduct: Array<{ label: string, width?: string | number }> = [
-    {
-      label: '',
-      width: 30
-    },
-    {
-      label: 'Configured products',
-      width: 35
-    },
-    {
-      label: 'Avg. Price',
-      width: 10
-    },
-    {
-      label: 'Avg. pass/fail',
-      width: 10
-    },
-    {
-      label: 'Qnt. of items',
-      width: 10
-    }
-  ];
+  @Output()
+  public valueEmitter = new EventEmitter<IVenue>();
 
   public dragStart: boolean = false;
   public drop(event: CdkDragDrop<string[]>) {
@@ -59,8 +39,22 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
 
   }
 
-  ngOnInit() {
-    console.log(this.items);
+  ngOnInit() { }
+
+  public selectedItem: IVenue;
+  public onEdit(item: IVenue, key: string, value: string): void {
+    if (value)
+      item[key] = value;
+
+    this.selectedItem = item;
+  }
+
+  public onSave(): void {
+    if (this.selectedItem) {
+      this.store.dispatch(AddVenue({ item: this.selectedItem }));
+      this.selectedItem = null;
+      this.reset();
+    }
   }
 
   public dragStarted(event: any) {
@@ -73,5 +67,11 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
       tooltip = tooltip + entry.product_name + '\n';
     }
     return tooltip;
+  }
+
+  private reset(): void {
+    this.hoveredIndex = null;
+    this.selectedIndex = null;
+    this.onClose();
   }
 }

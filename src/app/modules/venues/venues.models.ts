@@ -8,6 +8,8 @@ export interface IVenue {
   avg_pass_fail?: number;
   rating?: number;
   contracts?: string;
+  contact_person?: string;
+  phone?: string;
 }
 
 export interface IRelatedProduct {
@@ -16,12 +18,4 @@ export interface IRelatedProduct {
   pos?:string;
   product_name?: string;
   qty?: string;
-}
-
-export interface IVenuesAddress {
-  id: number;
-  name: string;
-  location: string;
-  contactPerson: string;
-  phone: string;
 }

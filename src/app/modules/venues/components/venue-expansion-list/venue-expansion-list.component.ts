@@ -12,7 +12,28 @@ export class VenueExpansionListComponent implements OnInit {
   @Input()
   public items: IRelatedProduct[];
   @Input()
-  public colsHeaders: Array<{ label: string, width?: string | number }>;
+  public colsHeaders: Array<{ label: string, width?: string | number }> = [
+    {
+      label: '',
+      width: 15
+    },
+    {
+      label: 'Configured products',
+      width: 20
+    },
+    {
+      label: 'Avg. Price',
+      width: '100px'
+    },
+    {
+      label: 'Avg. pass/fail',
+      width: '100px'
+    },
+    {
+      label: 'Qnt. of items',
+      width: '100px'
+    }
+  ];;
   constructor() { }
 
   ngOnInit() { }

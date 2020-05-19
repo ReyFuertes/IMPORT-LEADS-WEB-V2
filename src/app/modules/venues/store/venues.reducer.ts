@@ -1,21 +1,24 @@
 import { IVenue } from './../venues.models';
-import { loadVenues, loadVenuesSuccess } from './venues.action';
+import { loadVenues, loadVenuesSuccess, AddVenueSuccess } from './venues.action';
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 
 export interface VenuesState extends EntityState<IVenue> {
 }
-export const venuesAdapter: EntityAdapter<IVenue> = createEntityAdapter<IVenue>({});
-export const initialState: VenuesState = venuesAdapter.getInitialState({
+export const adapter: EntityAdapter<IVenue> = createEntityAdapter<IVenue>({});
+export const initialState: VenuesState = adapter.getInitialState({
 
 });
 const venuesReducer = createReducer(
   initialState,
+  on(AddVenueSuccess, (state, action) => {
+    return adapter.addOne(action.created, state)
+  }),
   on(loadVenues, (state) => {
-    return ({ ...venuesAdapter.removeAll(state) })
+    return ({ ...adapter.removeAll(state) })
   }),
   on(loadVenuesSuccess, (state, action) => {
-    return ({ ...venuesAdapter.addAll(action.items, state) })
+    return ({ ...adapter.addAll(action.items, state) })
   })
 );
 export function VenuesReducer(state: VenuesState, action: Action) {

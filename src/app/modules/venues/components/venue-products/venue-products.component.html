@@ -9,18 +9,18 @@
         <div class="pnl-header" fxLayout="row" fxLayoutGap="10px">
           <img cdkDragHandle [src]="svgPath + 'drag-icon.svg'" />
           <div fxFlex="20" fxLayoutAlign="start center">
-            <span *ngIf="selectedIndex !== i">{{item.name}}</span>
+            <span *ngIf="selectedIndex !== i">{{item?.name}}</span>
             <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
-              <input matInput [value]="item?.name">
+              <input matInput (input)="onEdit(item, 'name', $event?.target.value)" (click)="$event.stopPropagation()" [value]="item?.name">
             </mat-form-field>
           </div>
           <div fxFlex="15" fxLayoutAlign="start center">
             <span *ngIf="selectedIndex !== i">{{item?.location}}</span>
             <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
-              <input matInput [value]="item?.location">
+              <input matInput (input)="onEdit(item, 'location', $event?.target.value)" (click)="$event.stopPropagation()" [value]="item?.location">
             </mat-form-field>
           </div>
-          <div fxFlex="20" fxLayoutAlign="start center">
+          <div fxFlex="21" fxLayoutAlign="start center">
             <il-pill *ngFor="let product of item?.related_products | slice:0:1; let i = index;" [matTooltipClass]="'multi-line-tooltip'" [matTooltip]="getToolTip(item?.related_products)" [item]="{ value: product?.id, label: product?.product_name }"
               (removeEmitter)="onRemove($event)">
             </il-pill>
@@ -28,28 +28,28 @@
           <div fxFlex="100px" fxLayoutAlign="center center">
             <span *ngIf="selectedIndex !== i">{{item?.contracts}}</span>
             <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
-              <input matInput [value]="item?.contracts">
+              <input matInput (input)="onEdit(item, 'contracts', $event?.target.value)" (click)="$event.stopPropagation()" [value]="item?.contracts">
             </mat-form-field>
           </div>
           <div fxFlex="100px" fxLayoutAlign="center center">
             <span *ngIf="selectedIndex !== i">{{item?.inspections}}</span>
             <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
-              <input matInput [value]="item.inspections">
+              <input matInput (input)="onEdit(item, 'inspections', $event?.target.value)" (click)="$event.stopPropagation()" [value]="item?.inspections">
             </mat-form-field>
           </div>
           <div fxFlex="100px" fxLayoutAlign="center center">
-            <span *ngIf="selectedIndex !== i">{{item?.avgPassFail}}%</span>
+            <span *ngIf="selectedIndex !== i">{{item?.avg_pass_fail}}%</span>
             <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
-              <input matInput [value]="item.avgPassFail">
+              <input matInput (input)="onEdit(item, 'avg_pass_fail', $event?.target.value)" (click)="$event.stopPropagation()" [value]="item?.avg_pass_fail">
             </mat-form-field>
           </div>
           <div fxFlex="100px" fxLayoutAlign="start center">
             <span *ngIf="selectedIndex !== i">
-              <il-star-rating [rating]="item.rating"></il-star-rating>
+              <il-star-rating [rating]="item?.rating"></il-star-rating>
             </span>
             <span *ngIf="selectedIndex !== i" class="rating-label">{{item?.rating}}</span>
             <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
-              <input matInput [value]="item.rating">
+              <input matInput (input)="onEdit(item, 'rating', $event?.target.value)" (click)="$event.stopPropagation()" [value]="item?.rating">
             </mat-form-field>
           </div>
         </div>
@@ -62,12 +62,12 @@
           </div>
           <div class="menu-icon" *ngIf="hoveredIndex === i && selectedIndex === i">
             <img [src]="svgPath + 'close-icon-blue.svg'" (click)="onClose()" />
-            <img [src]="svgPath + 'save-icon-blue.svg'">
+            <img [src]="svgPath + 'save-icon-blue.svg'" (click)="onSave()">
           </div>
         </div>
       </mat-expansion-panel-header>
       <div>
-        <il-venue-expansion-list [colsHeaders]="ctColsRelatedProduct" [items]="item?.relatedProducts"></il-venue-expansion-list>
+        <il-venue-expansion-list [items]="item?.related_products"></il-venue-expansion-list>
       </div>
     </mat-expansion-panel>
   </mat-accordion>

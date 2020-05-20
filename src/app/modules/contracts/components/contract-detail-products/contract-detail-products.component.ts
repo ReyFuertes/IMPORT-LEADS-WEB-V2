@@ -333,6 +333,10 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit {
     })
   }
 
+  public get isNavOpenAndEdit(): boolean {
+    return this.isRightNavOpen && this.isEditProduct;
+  }
+
   private onResetForm(): void {
     this.form.reset();
     this.hasSubProducts = false;

@@ -1,6 +1,6 @@
 <div *ngIf="form" [formGroup]="form" class="il-input" [ngClass]="{'center': isCenter}">
   <mat-form-field [ngClass]="{'has-border': hasBorder}" [floatLabel]="isFloatLabel == true ? '' : 'never'">
-    <input *ngIf="isNumberOnly" [ngClass]="{'read-only': isReadOnly}" [InputMaxLength]="inputMaxLen" matInput [formControlName]="controlName" numbersOnly currencyFormatter [placeholder]="placeholder" autocomplete="off" [required]="isRequired">
+    <input *ngIf="isNumberOnly" [ngClass]="{'read-only': isReadOnly}" [InputMaxLength]="inputMaxLen" matInput [formControlName]="controlName" numbersOnly currencyFormatter [placeholder]="placeholder" autocomplete="off" [required]="isRequired" [readonly]="isReadOnly">
     <input *ngIf="!isNumberOnly" [ngClass]="{'read-only': isReadOnly}" [InputMaxLength]="inputMaxLen" matInput [formControlName]="controlName" [placeholder]="placeholder" autocomplete="off" [required]="isRequired" [type]="inputType"
       [readonly]="isReadOnly">
     <div *ngIf="form.get(controlName).touched && !form.get(controlName).valid && showErrors

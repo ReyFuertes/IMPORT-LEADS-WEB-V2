@@ -125,6 +125,13 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       .subscribe();
   }
 
+  public onCloseRighNav(event: any): void {
+    debugger
+    setTimeout(() => {
+      this.showRightNav = !event;
+    }, 100);
+  }
+
   public createCategory = (): void => {
     const dialogRef = this.dialog.open(ContractCategoryDialogComponent, {
       height: '200px'
@@ -163,9 +170,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     }
   }
 
-  public getBg(url: string): string {
-    return `url(${url})`;
-  }
+  public getBg = (url: string): string => `url(${url})`;
 
   public showTabActions(): void {
     this._showTabActions != this._showTabActions;
@@ -198,21 +203,26 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   }
 
   public trackByField = (i: number, field: IProductImage) => field.position = i;
+
   public dropImages(event: CdkDragDrop<any[]>) {
     moveItemInArray(this.contractImages, event.previousIndex, event.currentIndex);
 
     /* update reorder images */
     setTimeout(() => this.store.dispatch(ReOrderImages({ images: this.contractImages })), 200);
   }
+
   public dropSpecs(event: CdkDragDrop<any[]>) {
     moveItemInArray(this.contract_categories, event.previousIndex, event.currentIndex);
   }
+
   public dragStartedSpecs(event: any) {
     this.dragStartSpecs = event;
   }
+
   public handleRemoveSpecsTitle(id: string) {
     this.contract_categories.find(cc => cc.id === id).category.category_name = '';
   }
+
   public handleRemoveProductSpecs(id: string) {
     this.contract_categories = this.contract_categories.filter(cc => cc.id !== id);
   }

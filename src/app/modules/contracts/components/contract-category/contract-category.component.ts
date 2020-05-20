@@ -48,7 +48,7 @@ export class ContractCategoryComponent implements OnInit, OnChanges {
   @Input()
   public specTitle: string = 'Specification title';
   @Input()
-  public contract_category: IContractCategory;
+  public contractCategory: IContractCategory;
   @Input()
   public isRightNavOpen: boolean = false;
   public showToggle: boolean = false;
@@ -60,8 +60,8 @@ export class ContractCategoryComponent implements OnInit, OnChanges {
   ngOnInit() { }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes && changes.contract_category.currentValue) {
-      this.contract_category = changes.contract_category.currentValue;
+    if (changes && changes.contract_category && changes.contract_category.currentValue) {
+      this.contractCategory = changes.contract_category.currentValue;
     }
     this.isRightNavOpen = this.isRightNavOpen;
   }
@@ -83,7 +83,7 @@ export class ContractCategoryComponent implements OnInit, OnChanges {
       if (payload) {
         this.store.dispatch(updateCategory({ payload }));
         /* just refresh all contract categories, may not be idea but temporary solution */
-        this.store.dispatch(loadContractCategory({ id: this.contract_category.contract.id }))
+        this.store.dispatch(loadContractCategory({ id: this.contractCategory.contract.id }))
       }
     });
   }

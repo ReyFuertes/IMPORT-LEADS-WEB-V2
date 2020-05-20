@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControlName } from '@angular/forms';
 
 @Component({
@@ -7,7 +7,7 @@ import { FormGroup, FormControlName } from '@angular/forms';
   styleUrls: ['./input.component.scss']
 })
 
-export class InputComponent implements OnInit {
+export class InputComponent implements OnInit, OnChanges {
   @Input()
   public placeholder: string;
   @Input()
@@ -35,4 +35,10 @@ export class InputComponent implements OnInit {
   constructor() { }
 
   ngOnInit() { }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes && changes.isReadOnly && changes.isReadOnly.currentValue) {
+      this.isReadOnly = changes.isReadOnly.currentValue;
+    }
+  }
 }

@@ -1,4 +1,11 @@
 @import "src/styleguide/shared";
+@import "src/styleguide/overrides";
+/* in progress */
+::ng-deep {
+  .cdk-overlay-pane {
+    @include adjust-dropdown-overlay($adjust: false);
+  }
+}
 .image-list {
   height: 125px;
   display: flex;

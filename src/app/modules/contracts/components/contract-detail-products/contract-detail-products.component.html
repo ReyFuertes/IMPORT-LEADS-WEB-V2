@@ -23,12 +23,12 @@
     </div>
 
     <!-- product with/without set -->
-    <div *ngIf="!isRightNavOpen" class="product-section" fxLayout="row" [formGroup]="form" fxLayoutGap="20px">
+    <div *ngIf="!isRightNavOpen || isNavOpenAndEdit" class="product-section" fxLayout="row" [formGroup]="form" fxLayoutGap="20px">
       <div fxFlex fxLayout="column" fxLayoutAlign="start start">
         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
-          <il-input-select fxFlex [form]="form" [controlName]="'product_name'" [suggestions]="suggestions" [isReadOnly]="isRightNavOpen"></il-input-select>
-          <il-input fxFlex="15" [form]="form" [isNumberOnly]="true" [controlName]="'qty'" placeholder="Enter quantity" [isReadOnly]="isRightNavOpen"></il-input>
-          <il-input fxFlex="15" [form]="form" [isNumberOnly]="true" [controlName]="'cost'" [showErrors]="hasSubProducts" placeholder="Enter unit cost"></il-input>
+          <il-input-select fxFlex [form]="form" [controlName]="'product_name'" [suggestions]="suggestions" [isReadOnly]="isRightNavOpen || isNavOpenAndEdit"></il-input-select>
+          <il-input fxFlex="15" [form]="form" [isReadOnly]="isNavOpenAndEdit" [isNumberOnly]="true" [controlName]="'qty'" placeholder="Enter quantity" [isReadOnly]="isRightNavOpen"></il-input>
+          <il-input fxFlex="15" [form]="form" [isReadOnly]="isNavOpenAndEdit" [isNumberOnly]="true" [controlName]="'cost'" [showErrors]="hasSubProducts" placeholder="Enter unit cost"></il-input>
           <div fxFlex="5"></div>
         </div>
 
@@ -39,8 +39,8 @@
               <div fxFlex fxLayoutGap="20px" [formGroupName]="i" fxLayout="row" fxLayoutAlign="start center">
                 <il-input-select [form]="sub_product" [controlName]="'product_name'" [suggestions]="suggestions" fxFlex fxFlexOffset="20px">
                 </il-input-select>
-                <il-input fxFlex="15" [form]="sub_product" [isNumberOnly]="true" [controlName]="'qty'" placeholder="Enter quantity"></il-input>
-                <il-input fxFlex="15" [form]="sub_product" [isNumberOnly]="true" [controlName]="'cost'" placeholder="Enter unit cost"></il-input>
+                <il-input fxFlex="15" [form]="sub_product" [isReadOnly]="isNavOpenAndEdit" [isNumberOnly]="true" [controlName]="'qty'" placeholder="Enter quantity"></il-input>
+                <il-input fxFlex="15" [form]="sub_product" [isReadOnly]="isNavOpenAndEdit" [isNumberOnly]="true" [controlName]="'cost'" placeholder="Enter unit cost"></il-input>
                 <div fxFlex="5" fxLayoutAlign="start center">
                   <img class="remove-icon" matTooltip="Remove" (click)="onRemoveSubProduct(sub_product?.value, i)" [src]="svgPath + 'delete-icon-red.svg'">
                 </div>

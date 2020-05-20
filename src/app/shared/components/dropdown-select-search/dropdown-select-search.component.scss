@@ -1,4 +1,10 @@
 @import "src/styleguide/shared";
+@import "src/styleguide/overrides";
+::ng-deep {
+  .cdk-overlay-pane {
+    @include adjust-dropdown-overlay($adjust: true);
+  }
+}
 img {
   position: relative;
   top: 4px;
@@ -33,9 +39,9 @@ img {
   }
 }
 
-::ng-deep  {
+::ng-deep {
   .cdk-overlay-pane {
-    transform:none !important;
+    transform: none !important;
     margin: 30px 0;
   }
 }

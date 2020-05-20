@@ -18,9 +18,9 @@ export class VenueProductsEffects {
         .pipe(tap(() => this.store.dispatch(loadVenues())))
     )), { dispatch: false });
 
-constructor(
-  private store: Store<AppState>,
-  private actions$: Actions,
-  private venueProductsService: VenueProductsService
-) { }
+  constructor(
+    private store: Store<AppState>,
+    private actions$: Actions,
+    private venueProductsService: VenueProductsService
+  ) { }
 }

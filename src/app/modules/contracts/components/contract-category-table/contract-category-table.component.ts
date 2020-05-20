@@ -14,7 +14,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ISimpleItem } from '../../../../shared/generics/generic.model';
 import { environment } from '../../../../../environments/environment';
 import { trigger, transition, style, state, animate } from '@angular/animations';
-import { Component, OnInit, Input, OnChanges, SimpleChanges, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, AfterViewInit, ViewEncapsulation } from '@angular/core';
 import { map, take } from 'rxjs/operators';
 import { IContractCategory } from '../../contract.model';
 import { deleteContractCategory } from '../../store/actions/contract-category.action';

@@ -61,22 +61,7 @@ tr.element-row:not(.expanded-row):active {
     box-shadow: $box-shadow;
   }
 }
-/* override the overlay panel to be aligned with the dropdown */
-::ng-deep {
-  .cdk-overlay-pane {
-    margin-left: -44px !important;
-    margin-bottom: 35px !important;
-  }
-}
 :host ::ng-deep {
-  .dss {
-    .mat-select-value-text,
-    .mat-form-field-label {
-      font-size: 14px;
-      font-weight: 500;
-      color: $color-primary !important;
-    }
-  }
   .row-detail .mat-form-field-appearance-legacy .mat-form-field-underline {
     height: 0;
     display: none !important;

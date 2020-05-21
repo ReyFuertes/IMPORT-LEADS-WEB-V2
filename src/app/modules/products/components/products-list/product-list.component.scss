@@ -16,13 +16,6 @@
 .il-draggable-expansion {
   @include il-draggable-expansion;
 }
-.menu-icon {
-  &:first-child {
-    img {
-      margin-right: 7px;
-    }
-  }
-}
 mat-icon {
   color: $color-gray-2;
 }
@@ -52,8 +45,16 @@ mat-icon {
   }
 }
 :host ::ng-deep {
-  .menu-icon img {
-    cursor: pointer;
+  .menu-icon {
+    margin-right: 20px !important;
+    img {
+      cursor: pointer;
+    }
+    &:first-child {
+      img {
+        margin-right: 7px;
+      }
+    }
   }
   tr.mat-header-row {
     height: 40px;

@@ -20,7 +20,7 @@ export class ProductListComponent extends GenericRowComponent implements OnInit,
   public dragStart: boolean = false;
   public hoveredIndex: number | null = null;
   public selectedIndex: number | null = null;
-  public cols: string[] = ['product_name', 'parent', 'qty', 'cost'];
+  public cols: string[] = ['product_name', 'parent'];
 
   @Input()
   public products: IProduct[];

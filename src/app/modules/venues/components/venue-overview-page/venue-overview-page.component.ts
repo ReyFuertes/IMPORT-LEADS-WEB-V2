@@ -86,12 +86,12 @@ export class VenueOverviewPageComponent implements OnInit {
           name: vp.name,
           rating: vp.rating,
           location: vp.location,
-          contracts: vp.contracts,
           avg_pass_fail: vp.avg_pass_fail,
           inspections: vp.inspections,
           related_products: vp.related_products,
           contact: vp.contact,
           phone: vp.phone,
+          contract_count: vp.contract_count
         }
       });
     });

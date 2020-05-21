@@ -8,9 +8,9 @@ export interface IVenue {
   inspections?: number;
   avg_pass_fail?: number;
   rating?: number;
-  contracts?: string;
   contact_person?: string;
   phone?: string;
+  contract_count?: number;
 }
 
 export interface IvenueProduct {

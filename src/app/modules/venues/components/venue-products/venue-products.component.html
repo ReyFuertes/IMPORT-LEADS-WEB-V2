@@ -27,10 +27,7 @@
             </ng-container>
           </div>
           <div fxFlex="100px" fxLayoutAlign="center center">
-            <span *ngIf="selectedIndex !== i">{{item?.contracts}}</span>
-            <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
-              <input matInput (input)="onEdit(item, 'contracts', $event?.target.value)" (click)="$event.stopPropagation()" [value]="item?.contracts">
-            </mat-form-field>
+            <span *ngIf="selectedIndex !== i">{{item?.contract_count}}</span>
           </div>
           <div fxFlex="100px" fxLayoutAlign="center center">
             <span *ngIf="selectedIndex !== i">{{item?.inspections}}</span>

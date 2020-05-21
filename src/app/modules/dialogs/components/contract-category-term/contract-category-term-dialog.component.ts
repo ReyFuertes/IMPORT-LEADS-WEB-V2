@@ -17,7 +17,7 @@ export class ContractCategoryTermDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<ContractCategoryTermDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: {}) {
     this.form = this.fb.group({
       term_name: [null, [Validators.required]],
-      term_description: [null, [Validators.required]]
+      term_description: [null]
     });
   }
 

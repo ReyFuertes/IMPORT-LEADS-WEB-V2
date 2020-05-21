@@ -56,11 +56,11 @@ export class VenueOverviewPageComponent implements OnInit {
   public colAddress: Array<{ label: string, width?: string | number }> = [
     {
       label: 'Venue name',
-      width: 23
+      width: 27.5
     },
     {
       label: 'Location',
-      width: 55
+      width: 50
     },
     {
       label: 'Contacts',

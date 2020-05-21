@@ -17,6 +17,7 @@ import { deleteVenue } from '../../store/venues.action';
 
 export class VenueAddressComponent extends GenericRowComponent implements OnInit {
   public svgPath: string = environment.svgPath;
+  public imgPath: string = environment.imgPath;
   public hoveredIndex: number | null = null;
   public selectedIndex: number | null = null;
   public selectedItem: IVenue;

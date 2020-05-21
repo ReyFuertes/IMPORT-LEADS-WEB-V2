@@ -5,14 +5,11 @@
   <mat-accordion cdkDropList (cdkDropListDropped)="drop($event)">
     <mat-expansion-panel #pnl cdkDrag (cdkDragStarted)="dragStarted(true)" #pnl="matExpansionPanel" *ngFor="let item of items; let i = index" hideToggle="true">
 
-      <mat-expansion-panel-header
-      (keydown.Space)="$event.stopImmediatePropagation()"
-      (keydown.Enter)="$event.stopImmediatePropagation()"
-      (keydown.Enter)="$event.stopImmediatePropagation()"
-      (click)="onClickPnl(pnl, $event, i, item)" (mouseover)="mouseover(i)" (mouseleave)="mouseout()">
+      <mat-expansion-panel-header (keydown.Space)="$event.stopImmediatePropagation()" (keydown.Enter)="$event.stopImmediatePropagation()" (keydown.Enter)="$event.stopImmediatePropagation()" (click)="onClickPnl(pnl, $event, i, item)"
+        (mouseover)="mouseover(i)" (mouseleave)="mouseout()">
         <div class="pnl-header" fxLayout="row" fxLayoutGap="10px">
           <img cdkDragHandle [src]="svgPath + 'drag-icon.svg'" />
-          <div class="venue-img"><img cdkDragHandle [src]="imgPath + 'no-image-40x40x.png'" /></div>
+          <div class="venue-img" fxLayoutAlign="start center"><img cdkDragHandle [src]="imgPath + 'no-image-40x40x.png'" /></div>
           <div fxFlex="20" fxLayoutAlign="start center">
             <span *ngIf="selectedIndex !== i">{{item?.name}}</span>
             <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">

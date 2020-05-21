@@ -20,6 +20,7 @@ import { IVenue, IRelatedProduct } from '../../venues.models';
 
 export class VenueProductsComponent extends GenericRowComponent implements OnInit {
   public svgPath: string = environment.svgPath;
+  public imgPath: string = environment.imgPath;
   @Input()
   public items: IVenue[];
   public hoveredIndex: number | null = null;
@@ -45,9 +46,7 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
 
   }
 
-  ngOnInit() {
-    console.log(this.items);
-  }
+  ngOnInit() { }
 
   public onEdit(item: IVenue, key: string, value: string): void {
     if (value)
@@ -92,7 +91,7 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
   }
 
   public onClickPnl(pnl: any, event: any, i: number, item: IVenue): void {
-    if(item && item.related_products && item.related_products.length === 0) {
+    if (item && item.related_products && item.related_products.length === 0) {
       pnl.close();
     }
 

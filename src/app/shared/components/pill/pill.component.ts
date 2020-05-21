@@ -13,6 +13,8 @@ import { fromEvent } from 'rxjs';
 
 export class PillComponent extends GenericControl<ISimpleItem> implements OnInit, AfterViewInit {
   public svgPath: string = environment.svgPath;
+  public selected: boolean = false;
+
   @Input()
   public selectable: boolean = false;
   @Input()
@@ -23,7 +25,8 @@ export class PillComponent extends GenericControl<ISimpleItem> implements OnInit
   public state: PillState;
   @Input()
   public size: string = 'medium';
-  public selected: boolean = false;
+  @Input()
+  public hasRemoveIcon: boolean = true;
   @Output()
   public removeEmitter = new EventEmitter<number>();
   @Output()
@@ -36,7 +39,7 @@ export class PillComponent extends GenericControl<ISimpleItem> implements OnInit
     super();
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ngAfterViewInit() {
     fromEvent(this.ev.nativeElement, 'dblclick')

@@ -3,7 +3,9 @@
     color: $color-black-1;
     font-size: 14px;
     &:first-child > img {
-      width: 8px;
+      &:first-child {
+        width: 8px;
+      }
     }
   }
   .actions-col {

@@ -1,4 +1,9 @@
 @import "src/styleguide/shared";
+.venue-img img {
+  width: 50px;
+  border-radius: 50%;
+  background-color: $color-gray-2;
+}
 .col-header {
   font-size: 12px;
   font-weight: normal;

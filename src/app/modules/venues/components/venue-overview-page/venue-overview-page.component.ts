@@ -19,10 +19,10 @@ export class VenueOverviewPageComponent implements OnInit {
   public isProduct: boolean = true;
   public venues: IVenue[];
 
-  public ctColsProduct: Array<{ label: string, width?: string | number }> = [
+  public colProducts: Array<{ label: string, width?: string | number }> = [
     {
       label: 'Venue name',
-      width: 19
+      width: 22.5
     },
     {
       label: 'Location',
@@ -30,7 +30,7 @@ export class VenueOverviewPageComponent implements OnInit {
     },
     {
       label: 'Related products',
-      width: 21
+      width: 18
     },
     {
       label: 'Contracts',
@@ -53,7 +53,7 @@ export class VenueOverviewPageComponent implements OnInit {
     }
   ];
 
-  public ctColsAddress: Array<{ label: string, width?: string | number }> = [
+  public colAddress: Array<{ label: string, width?: string | number }> = [
     {
       label: 'Venue name',
       width: 23

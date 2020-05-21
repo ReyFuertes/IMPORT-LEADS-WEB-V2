@@ -3,7 +3,8 @@
     <mat-expansion-panel cdkDrag (cdkDragStarted)="dragStarted(true)" #pnl="matExpansionPanel"
       *ngFor="let item of items; let i = index" hideToggle="true">
 
-      <mat-expansion-panel-header (keydown.Space)="$event.stopImmediatePropagation()" class="no-expand" (click)="onClickPnl(pnl, $event, i)" (mouseover)="mouseover(i)" (mouseleave)="mouseout()">
+      <mat-expansion-panel-header (keydown.Space)="$event.stopImmediatePropagation()"
+      (keydown.Enter)="$event.stopImmediatePropagation()" class="no-expand" (click)="onClickPnl(pnl, $event, i)" (mouseover)="mouseover(i)" (mouseleave)="mouseout()">
         <div class="pnl-header" fxLayout="row" fxlayoutGap="20px" fxLayoutGap="10px" class="no-expand">
           <img cdkDragHandle [src]="svgPath + 'drag-icon.svg'" />
           <div fxFlex="200px" fxLayoutAlign="start center">

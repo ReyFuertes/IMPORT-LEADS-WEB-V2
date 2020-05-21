@@ -5,9 +5,14 @@
   <mat-accordion cdkDropList (cdkDropListDropped)="drop($event)">
     <mat-expansion-panel #pnl cdkDrag (cdkDragStarted)="dragStarted(true)" #pnl="matExpansionPanel" *ngFor="let item of items; let i = index" hideToggle="true">
 
-      <mat-expansion-panel-header (keydown.Space)="$event.stopImmediatePropagation()" (click)="onClickPnl(pnl, $event, i, item)" (mouseover)="mouseover(i)" (mouseleave)="mouseout()">
+      <mat-expansion-panel-header
+      (keydown.Space)="$event.stopImmediatePropagation()"
+      (keydown.Enter)="$event.stopImmediatePropagation()"
+      (keydown.Enter)="$event.stopImmediatePropagation()"
+      (click)="onClickPnl(pnl, $event, i, item)" (mouseover)="mouseover(i)" (mouseleave)="mouseout()">
         <div class="pnl-header" fxLayout="row" fxLayoutGap="10px">
           <img cdkDragHandle [src]="svgPath + 'drag-icon.svg'" />
+          <div class="venue-img"><img cdkDragHandle [src]="imgPath + 'no-image-40x40x.png'" /></div>
           <div fxFlex="20" fxLayoutAlign="start center">
             <span *ngIf="selectedIndex !== i">{{item?.name}}</span>
             <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
@@ -22,7 +27,8 @@
           </div>
           <div fxFlex="21" fxLayoutAlign="start center">
             <ng-container *ngIf="item?.related_products && item?.related_products.length > 0">
-              <il-pill *ngFor="let product of item?.related_products | slice:0:1; let i = index;" [item]="{ value: product?._id, label: product?.product_name }" (removeEmitter)="onRemoveProduct({ id: $event, venue_id: item?.id })">
+              <il-pill *ngFor="let product of item?.related_products | slice:0:1; let i = index;" [item]="{ value: product?._id, label: product?.product_name }" [hasRemoveIcon]="false"
+                (removeEmitter)="onRemoveProduct({ id: $event, venue_id: item?.id })">
               </il-pill>
             </ng-container>
           </div>
@@ -31,24 +37,14 @@
           </div>
           <div fxFlex="100px" fxLayoutAlign="center center">
             <span>{{item?.inspections}}</span>
-            <!-- <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
-              <input matInput (input)="onEdit(item, 'inspections', $event?.target.value)" (click)="$event.stopPropagation()" [value]="item?.inspections">
-            </mat-form-field> -->
           </div>
           <div fxFlex="100px" fxLayoutAlign="center center">
-            <span *ngIf="selectedIndex !== i">{{item?.avg_pass_fail}}%</span>
-            <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
-              <input matInput (input)="onEdit(item, 'avg_pass_fail', $event?.target.value)" (click)="$event.stopPropagation()" [value]="item?.avg_pass_fail">
-            </mat-form-field>
+            <span>{{item?.avg_pass_fail}}%</span>
           </div>
           <div fxFlex="100px" fxLayoutAlign="start center">
             <span>
               <il-star-rating [rating]="item?.rating"></il-star-rating>
             </span>
-            <!-- <span class="rating-label">{{item?.rating}}</span> -->
-            <!-- <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
-              <input matInput (input)="onEdit(item, 'rating', $event?.target.value)" (click)="$event.stopPropagation()" [value]="item?.rating">
-            </mat-form-field> -->
           </div>
         </div>
 

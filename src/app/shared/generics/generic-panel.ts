@@ -1,4 +1,4 @@
-import { Output, EventEmitter } from '@angular/core';
+import { Output, EventEmitter, HostListener } from '@angular/core';
 export abstract class GenericRowComponent {
   public hoveredIndex: number | null = null;
   public selectedIndex: number | null = null;
@@ -7,6 +7,16 @@ export abstract class GenericRowComponent {
   public modValueEmitter = new EventEmitter<any>();
   @Output()
   public deleteEmitter = new EventEmitter<any>();
+
+  @HostListener('document:keydown.escape', ['$event'])
+  onKeydownHandler(event: KeyboardEvent) {
+    this.onClose();
+  }
+
+  @HostListener('document:keydown.enter', ['$event'])
+  onEnterHandler(event: KeyboardEvent) {
+    this.onClose();
+  }
 
   public mouseout(): void {
     if (this.selectedIndex != null) return;

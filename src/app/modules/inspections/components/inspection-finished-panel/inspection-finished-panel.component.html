@@ -5,7 +5,8 @@
   <mat-accordion cdkDropList (cdkDropListDropped)="drop($event)">
     <mat-expansion-panel (click)="expandPnl(pnl, $event, i)" cdkDrag (cdkDragStarted)="dragStarted(true)" #pnl="matExpansionPanel" *ngFor="let item of items; let i = index" hideToggle="true">
 
-      <mat-expansion-panel-header (keydown.Space)="$event.stopImmediatePropagation()" (click)="onClickPnl(pnl, $event, i)" (mouseover)="mouseover(i)" (mouseleave)="mouseout()">
+      <mat-expansion-panel-header (keydown.Space)="$event.stopImmediatePropagation()"
+      (keydown.Enter)="$event.stopImmediatePropagation()" (click)="onClickPnl(pnl, $event, i)" (mouseover)="mouseover(i)" (mouseleave)="mouseout()">
         <div class="pnl-header" fxLayout="row" fxlayoutGap="20px" fxLayoutGap="10px">
           <div fxFlex="45" fxLayoutGap="8px">
             <img cdkDragHandle [src]="svgPath + 'drag-icon.svg'" />

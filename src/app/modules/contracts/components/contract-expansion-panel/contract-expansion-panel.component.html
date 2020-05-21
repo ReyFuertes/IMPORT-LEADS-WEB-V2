@@ -2,7 +2,8 @@
   <mat-accordion cdkDropList (cdkDropListDropped)="drop($event)">
     <mat-expansion-panel cdkDrag (cdkDragStarted)="dragStarted(true)" #pnl="matExpansionPanel" *ngFor="let p of panels; let i = index" hideToggle="true">
       <!-- In list display -->
-      <mat-expansion-panel-header (keydown.Space)="$event.stopImmediatePropagation()" [ngClass]="{'hidden': pnl?.expanded, 'no-expand': isRightNavOpen}" (click)="expandPnl(pnl, $event, i)" fxLayoutAlign="20px">
+      <mat-expansion-panel-header (keydown.Space)="$event.stopImmediatePropagation()"
+      (keydown.Enter)="$event.stopImmediatePropagation()" [ngClass]="{'hidden': pnl?.expanded, 'no-expand': isRightNavOpen}" (click)="expandPnl(pnl, $event, i)" fxLayoutAlign="20px">
         <div fxLayout="row" fxFlex="25" fxLayoutAlign="start center" (mouseover)="mouseover(i, 0)" (mouseleave)="mouseout()">
           <ng-container *ngTemplateOutlet="titleInLabelMode"></ng-container>
         </div>

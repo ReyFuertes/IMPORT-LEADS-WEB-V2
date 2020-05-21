@@ -9,7 +9,6 @@ import { IVenue } from './../../venues.models';
 import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, Input } from '@angular/core';
 import { deleteVenue } from '../../store/venues.action';
-
 @Component({
   selector: 'il-venue-address',
   templateUrl: './venue-address.component.html',

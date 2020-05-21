@@ -14,8 +14,6 @@
           <il-pill *ngFor="let item of selectedItems" [item]="item" (removeEmitter)="onRemove($event)">
           </il-pill>
         </div>
-        <il-dropdown-multi-select [form]="form" [controlName]="'related_products'" placeHolder="Products" searchItem="true">
-        </il-dropdown-multi-select>
       </div>
     </div>
     <div fxFlex>

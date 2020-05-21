@@ -23,7 +23,6 @@ export class VenuesAddDialogComponent implements OnInit {
         id: [null],
         name: [null, Validators.required],
         location: [null],
-        related_products: [null],
         contact: [null],
         phone: [null],
       });

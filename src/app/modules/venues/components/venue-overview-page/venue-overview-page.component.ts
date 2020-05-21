@@ -108,7 +108,11 @@ export class VenueOverviewPageComponent implements OnInit {
   }
 
   public onAddVenues(): void {
-    const dialogRef = this.dialog.open(VenuesAddDialogComponent, { data: this.isProduct });
+    const dialogRef = this.dialog.open(VenuesAddDialogComponent,
+      {
+        width: '550px', height: '450px',
+        data: this.isProduct
+      });
     dialogRef.afterClosed().subscribe(item => {
       if (item) {
         this.store.dispatch(addVenue({ item }));

@@ -1,6 +1,6 @@
 import { ContractModuleState } from './index';
 import { AppState } from 'src/app/store/app.reducer';
-import { loadContracts, loadContractSuccess, addContractSuccess, cacheImages, clearCachedImages, updateContractSuccess } from '../actions/contracts.action';
+import { loadContracts, loadContractSuccess, addContractSuccess, cacheImages, clearCachedImages, updateContractSuccess, deleteContractSuccess } from '../actions/contracts.action';
 import { IContract, IProductImage, IContractProduct } from './../../contract.model';
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
@@ -11,31 +11,34 @@ export interface ContractsState extends EntityState<IContract> {
   created?: boolean,
   cachedImages: IProductImage[]
 }
-export const contractsAdapter: EntityAdapter<IContract> = createEntityAdapter<IContract>({
+export const adapter: EntityAdapter<IContract> = createEntityAdapter<IContract>({
   sortComparer: (a: IContract, b: IContract) => {
     if (a.created_at < b.created_at) return 1;
     if (a.created_at > b.created_at) return -1;
     return 0;
   }
 });
-export const initialState: ContractsState = contractsAdapter.getInitialState({
+export const initialState: ContractsState = adapter.getInitialState({
   item: null,
   created: null,
   cachedImages: null
 });
 const contractsReducer = createReducer(
   initialState,
+  on(deleteContractSuccess, (state, action) => {
+    return ({ ...adapter.removeOne(action.deleted.id, state) })
+  }),
   on(loadContracts, (state) => {
-    return ({ ...contractsAdapter.removeAll(state) });
+    return ({ ...adapter.removeAll(state) });
   }),
   on(loadContractSuccess, (state, action) => {
-    return ({ ...contractsAdapter.addAll(action.items, state) })
+    return ({ ...adapter.addAll(action.items, state) })
   }),
   on(updateContractSuccess, (state, action) => {
-    return contractsAdapter.updateOne({ id: action.updated.id, changes: action.updated }, state)
+    return adapter.updateOne({ id: action.updated.id, changes: action.updated }, state)
   }),
   on(addContractSuccess, (state, action) => {
-    return contractsAdapter.addOne(action.created, state)
+    return adapter.addOne(action.created, state)
   }),
   on(cacheImages, (state, action) => {
     return ({ ...state, cachedImages: action.images })

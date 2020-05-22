@@ -44,7 +44,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
       contract_name: [null, Validators.required],
       venue: [null, Validators.required],
       start_date: [null, Validators.required],
-      delivery_date: [null],
+      delivery_date: [null, Validators.required],
       details: [null],
       images: [null]
     });

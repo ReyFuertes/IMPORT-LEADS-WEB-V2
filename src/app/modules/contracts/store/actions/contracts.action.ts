@@ -3,6 +3,8 @@ import { IContract, IProductImage } from './../../contract.model';
 import { createAction, props } from '@ngrx/store';
 
 export enum ContractActionTypes {
+  deleteContract = '[Contract] Delete',
+  deleteContractSuccess = '[Contract] Delete (success)',
   LoadContracts = '[Contract] Load',
   LoadContractsSuccess = '[Contract] Load (success)',
   addContract = '[Contract] Add',
@@ -14,6 +16,14 @@ export enum ContractActionTypes {
   updateContract = '[Contract] Update',
   updateContractSuccess = '[Contract] Update (success)',
 }
+export const deleteContract = createAction(
+  ContractActionTypes.deleteContract,
+  props<{ id: string }>()
+);
+export const deleteContractSuccess = createAction(
+  ContractActionTypes.deleteContractSuccess,
+  props<{ deleted: IContract }>()
+);
 export const updateContract = createAction(
   ContractActionTypes.updateContract,
   props<{ item: IContract }>()

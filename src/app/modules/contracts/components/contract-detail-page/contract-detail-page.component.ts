@@ -1,4 +1,5 @@
-import { ReOrderImages } from './../../store/actions/contracts.action';
+import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
+import { ReOrderImages, deleteContract } from './../../store/actions/contracts.action';
 import { tap } from 'rxjs/operators';
 import { getContractCategorySelector } from './../../store/selectors/contract-category.selector';
 import { addContractCategory, loadContractCategory } from './../../store/actions/contract-category.action';
@@ -7,7 +8,7 @@ import { loadContractProducts } from './../../store/actions/products.action';
 import { getContractById } from './../../store/selectors/contracts.selector';
 import { User } from './../../../users/users.models';
 import { AppState } from './../../../../store/app.reducer';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
 import { IContract, IProductImage, IContractCategory, ICategory } from './../../contract.model';
 import { MatDialog } from '@angular/material/dialog';
@@ -47,7 +48,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   public openNavChange = new EventEmitter<boolean>();
   @ViewChild('scrollPnl', { static: false }) public scrollPnl: any;
 
-  constructor(private store: Store<AppState>, private route: ActivatedRoute, public fb: FormBuilder, public dialog: MatDialog) {
+  constructor(private router: Router, private store: Store<AppState>, private route: ActivatedRoute, public fb: FormBuilder, public dialog: MatDialog) {
     super();
     this.form = this.fb.group({
       id: [null],
@@ -89,12 +90,13 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
         id: 5,
         label: 'Create Category',
         icon: 'save-icon-blue.svg',
-        action: this.createCategory
+        action: this.onCreateCategory
       },
       {
         id: 6,
         label: 'Delete contract',
-        icon: 'delete-icon-red.svg'
+        icon: 'delete-icon-red.svg',
+        action: this.onDeleteContract
       }
     ];
 
@@ -125,6 +127,23 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       .subscribe();
   }
 
+  private onDeleteContract = (): void => {
+    const dialogRef = this.dialog.open(ConfirmationComponent, {
+      width: '410px'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && this.form.get('id').value) {
+        this.store.dispatch(deleteContract({ id: this.form.get('id').value }));
+
+        setTimeout(() => {
+          this.router.navigateByUrl('/dashboard/contracts');
+        });
+      } else {
+        //error notification
+      }
+    });
+  }
+
   public onCloseRighNav(event: any): void {
     debugger
     setTimeout(() => {
@@ -132,7 +151,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     }, 100);
   }
 
-  public createCategory = (): void => {
+  public onCreateCategory = (): void => {
     const dialogRef = this.dialog.open(ContractCategoryDialogComponent, {
       height: '200px'
     });

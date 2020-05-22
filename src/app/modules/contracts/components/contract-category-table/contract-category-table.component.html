@@ -4,8 +4,7 @@
     <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay; let i = index">
       <th mat-header-cell *matHeaderCellDef> {{column}}</th>
       <td mat-cell *matCellDef="let element">
-        <div [ngClass]="{'disabled': isRightNavOpen}" [ngClass]="{'hidden': i === (columnsToDisplay.length - 1)}" (mouseover)="mouseover(i)" (mouseleave)="mouseout()"
-             fxLayoutAlign="start center" fxLayoutGap="20px">
+        <div [ngClass]="{'disabled': isRightNavOpen}" [ngClass]="{'hidden': i === (columnsToDisplay.length - 1)}" (mouseover)="mouseover(i)" (mouseleave)="mouseout()" fxLayoutAlign="start center" fxLayoutGap="20px">
           <div fxFlex fxLayout="row">
             <div fxLayoutAlign="start center">
               <span>{{element[column]}}</span>
@@ -15,27 +14,33 @@
             </div>
           </div>
         </div>
-        <div [ngClass]="{'hidden': i !== (columnsToDisplay.length - 1)}" fxLayoutAlign="end center" fxLayoutGap="10px">
-          <il-dropdown-select-search [ngClass]="{'disabled': isRightNavOpen}" matTooltip="Select Tag" *ngIf="($tags | async).length > 0" (click)="getTerm(element)" [placeholder]="'Select Tag'" [items]="($tags | async)" (valueEmitter)="onTagUpdate($event, element?.id)" [selectedItem]="element?.contract_tag?.id"></il-dropdown-select-search>
+
+        <div [ngClass]="{'hidden': i !== (columnsToDisplay.length - 1)}" fxLayoutAlign="start center" fxLayoutGap="10px">
+          <il-dropdown-select-search [ngClass]="{'disabled': isRightNavOpen}" matTooltip="Select Tag" *ngIf="($tags | async).length > 0" (click)="getTerm(element)" [placeholder]="'Select Tag'" [items]="($tags | async)"
+            (valueEmitter)="onTagUpdate($event, element?.id)" [selectedItem]="element?.contract_tag?.id"></il-dropdown-select-search>
           <img matTooltip="Delete Term" (click)="onDeleteTerm(element?.id)" [ngClass]="{'hidden': isRightNavOpen}" [src]="svgPath + 'delete-icon-red.svg'">
           <p-inputSwitch [ngClass]="{'hidden': !isRightNavOpen}"></p-inputSwitch>
         </div>
       </td>
     </ng-container>
 
-    <!-- details -->
+    <!-- collapsed detail -->
     <ng-container matColumnDef="expandedDetail">
       <td mat-cell class="row-detail" *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
-        <div class="element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+        <div class="element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'" fxLayoutGap="20px">
           <div fxFlex="23.5">
+            <span *ngIf="selectedCol && element?.term_name !== selectedCol">{{ element?.term_name }}</span>
             <div *ngIf="element?.term_name === selectedCol">
               <il-input hasBorder="true" [form]="form" isFloatLabel="'true'" [controlName]="'term_name'" placeholder="Name"></il-input>
               <div *ngTemplateOutlet="detailBtnActions"></div>
             </div>
           </div>
-          <div *ngIf=" element?.term_description === selectedCol" fxLayout="column" fxFlex="80">
-            <il-textarea [rows]="5" hasBorder="true" [form]="form" isFloatLabel="true" [controlName]="'term_description'" placeholder="Description"></il-textarea>
-            <div *ngTemplateOutlet="detailBtnActions"></div>
+          <div fxFlex>
+            <span *ngIf="selectedCol && element?.term_description !== selectedCol">{{ element?.term_description }}</span>
+            <div *ngIf=" element?.term_description === selectedCol" fxLayout="column">
+              <il-textarea [rows]="5" hasBorder="true" [form]="form" isFloatLabel="true" [controlName]="'term_description'" placeholder="Description"></il-textarea>
+              <div *ngTemplateOutlet="detailBtnActions"></div>
+            </div>
           </div>
         </div>
       </td>
@@ -47,7 +52,7 @@
     <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
   </table>
 
-  <!-- actions -->
+  <!-- footer actions -->
   <div fxLayout="row" class="table-footer">
     <div [ngClass]="{'hidden': actionState, 'disabled': isRightNavOpen}" fxFlex fxLayoutAlign="center center" fxLayoutGap="15px">
       <img matTooltip="Show Menu Actions" (click)="actionState = !actionState" [src]="svgPath + 'add-icon-gray.svg'" />

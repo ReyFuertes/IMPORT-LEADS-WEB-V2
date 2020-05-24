@@ -145,7 +145,6 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   }
 
   public onCloseRighNav(event: any): void {
-    debugger
     setTimeout(() => {
       this.showRightNav = !event;
     }, 100);

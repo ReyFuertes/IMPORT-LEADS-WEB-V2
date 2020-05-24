@@ -9,7 +9,7 @@ import { ConfirmationComponent } from './../../../dialogs/components/confirmatio
 import { MatDialog } from '@angular/material/dialog';
 import { ISimpleItem } from './../../../../shared/generics/generic.model';
 import { environment } from './../../../../../environments/environment';
-import { Component, OnInit, Input, ChangeDetectorRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { take, takeUntil } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
@@ -21,7 +21,7 @@ import * as _ from 'lodash';
   styleUrls: ['./contract-detail-products.component.scss']
 })
 
-export class ContractDetailProductsComponent implements OnInit, AfterViewInit {
+export class ContractDetailProductsComponent implements OnInit, AfterViewInit, OnChanges {
   private destroy$ = new Subject();
   public svgPath: string = environment.svgPath;
   public productsArray: FormArray;
@@ -138,6 +138,12 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit {
     }
   }
 
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (changes.isRightNavOpen && changes.isRightNavOpen.currentValue) {
+      this.isRightNavOpen = changes.isRightNavOpen.currentValue;
+    }
+  }
+
   public subProductsArr = () => this.form.get('sub_products') as FormArray;
 
   ngAfterViewInit() {
@@ -153,7 +159,7 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit {
 
       this.onResetForm();
     }
-    if(!this.initInputProduct) this.initInputProduct = true;
+    if (!this.initInputProduct) this.initInputProduct = true;
   }
 
   public onSave(): void {
@@ -211,6 +217,7 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit {
 
   public OnEditProduct(product: IProduct): void {
     if (!product) return;
+    this.initInputProduct = !this.initInputProduct;
 
     /* assign selected item to form */
     const { _id, id, product_name, qty, cost, sub_products } = product;
@@ -243,7 +250,7 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit {
     });
 
     this.hasSubProducts = this.formSubProdsArr && this.formSubProdsArr.length > 0;
-    this.isEditProduct = true;
+    this.isEditProduct = !this.isEditProduct;
     if (!this.isEditProduct) this.onResetForm();
   }
 

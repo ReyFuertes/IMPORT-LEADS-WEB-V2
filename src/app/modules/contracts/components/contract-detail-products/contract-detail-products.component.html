@@ -13,11 +13,12 @@
     <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="15px">
       <ng-container *ngFor="let item of ($contractProducts | async); let i = index;">
         <!-- parent -->
-        <il-pill [state]="state" (deSelectEmitter)="deSelectChange()" (stateEmitter)="removeSelection()" (click)="OnEditProduct(item)" [enabled]="!isRightNavOpen ||isRightNavOpen && (item?.sub_products && !item?.sub_products.length > 0)"
-          [item]="fmtToSimpleItem(item)" [enableHighlight]="true" (removeEmitter)="onRemoveProduct(item)" [selectable]="true">
+        <il-pill [state]="state" [reset]="!isRightNavOpen" (deSelectEmitter)="deSelectChange()" (stateEmitter)="removeSelection()" (click)="OnEditProduct(item)"
+          [enabled]="!isRightNavOpen ||isRightNavOpen && (item?.sub_products && !item?.sub_products.length > 0)" [item]="fmtToSimpleItem(item)" [enableHighlight]="true" (removeEmitter)="onRemoveProduct(item)" [selectable]="true">
         </il-pill>
         <!-- child -->
-        <il-pill size="small" [enabled]="isRightNavOpen" *ngFor="let sub of item?.sub_products; let i = index;" [item]="{label: sub.product_name, value: item.id}" [enableHighlight]="true" (removeEmitter)="onRemoveSubProduct(sub)" [selectable]="true">
+        <il-pill size="small" [reset]="!isRightNavOpen" [enabled]="isRightNavOpen" *ngFor="let sub of item?.sub_products; let i = index;" [item]="{label: sub.product_name, value: item.id}" [enableHighlight]="true"
+          (removeEmitter)="onRemoveSubProduct(sub)" [selectable]="true">
         </il-pill>
       </ng-container>
     </div>
@@ -37,12 +38,12 @@
           <div *ngFor="let sub_product of form.get('sub_products')?.controls; let i = index" fxLayout="column">
             <ng-container formArrayName="sub_products">
               <div fxFlex fxLayoutGap="20px" [formGroupName]="i" fxLayout="row" fxLayoutAlign="start center">
-                <il-input-select [form]="sub_product" [controlName]="'product_name'" [suggestions]="suggestions" fxFlex fxFlexOffset="20px">
+                <il-input-select [form]="sub_product" [controlName]="'product_name'" [suggestions]="suggestions" fxFlex fxFlexOffset="20px" [isReadOnly]="isRightNavOpen || isNavOpenAndEdit">
                 </il-input-select>
                 <il-input fxFlex="15" [form]="sub_product" [isReadOnly]="isNavOpenAndEdit" [isNumberOnly]="true" [controlName]="'qty'" placeholder="Enter quantity"></il-input>
                 <il-input fxFlex="15" [form]="sub_product" [isReadOnly]="isNavOpenAndEdit" [isNumberOnly]="true" [controlName]="'cost'" placeholder="Enter unit cost"></il-input>
                 <div fxFlex="5" fxLayoutAlign="start center">
-                  <img class="remove-icon" matTooltip="Remove" (click)="onRemoveSubProduct(sub_product?.value, i)" [src]="svgPath + 'delete-icon-red.svg'">
+                  <img *ngIf="!isRightNavOpen" class="remove-icon" matTooltip="Remove" (click)="onRemoveSubProduct(sub_product?.value, i)" [src]="svgPath + 'delete-icon-red.svg'">
                 </div>
               </div>
             </ng-container>
@@ -51,16 +52,18 @@
       </div>
 
       <div fxFlex="20" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
-        <button matTooltip="Add" *ngIf="!isEditProduct" mat-flat-button class="il-button primary" (click)="onAdd()">
-          {{ initInputProduct ? 'Save' : 'Add' }} Product
-        </button>
-        <button matTooltip="Save" [disabled]="!form.valid" *ngIf="isEditProduct" mat-flat-button class="il-button primary" (click)="onSave()">
-          Update Product
-        </button>
-        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-          <mat-checkbox matTooltip="Remove Child Product" [checked]="hasSubProducts" [disabled]="!form.valid" (change)="onShowSubProduct()"></mat-checkbox>
-          <img *ngIf="form.valid" matTooltip="Add Child Product" (click)="onAddSubProduct()" class="add-icon" [src]="svgPath + 'add-icon-blue.svg'">
-        </div>
+        <ng-container *ngIf="!isRightNavOpen">
+          <button [matTooltip]="initInputProduct ? 'Save' : 'Add'" *ngIf="!isEditProduct" mat-flat-button class="il-button primary" (click)="onAdd()">
+            {{ initInputProduct ? 'Save' : 'Add' }} Product
+          </button>
+          <button matTooltip="Save" [disabled]="!form.valid" *ngIf="isEditProduct" mat-flat-button class="il-button primary" (click)="onSave()">
+            Update Product
+          </button>
+          <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+            <mat-checkbox matTooltip="Remove Child Product" [checked]="hasSubProducts" [disabled]="!form.valid" (change)="onShowSubProduct()"></mat-checkbox>
+            <img *ngIf="form.valid" matTooltip="Add Child Product" (click)="onAddSubProduct()" class="add-icon" [src]="svgPath + 'add-icon-blue.svg'">
+          </div>
+        </ng-container>
       </div>
     </div>
   </div>

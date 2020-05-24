@@ -1,4 +1,4 @@
-<div *ngIf="item" class="pill-container fade-in">
+<div *ngIf="item" class="pill-container fade-in" [ngClass]="{'selected': selected}">
   <div #btn [attr.id]="item?.value" (click)="enabled ? onHighlightProduct($event): null" [ngClass]="{'p-cursor': selectable, 'small': isSizeSmall, 'enabled': enabled && isSizeSmall, 'disabled': !enabled && !isSizeSmall}" class="il-pill"
     fxLayoutGap="5px">
     <div>{{ item?.label }}</div>

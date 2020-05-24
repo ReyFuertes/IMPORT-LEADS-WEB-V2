@@ -215,14 +215,14 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
     };
   }
 
-  public OnEditProduct(product: IProduct): void {
+  public onEdit(product: IProduct): void {
     if (!product) return;
-    this.initInputProduct = !this.initInputProduct;
 
     /* assign selected item to form */
     const { _id, id, product_name, qty, cost, sub_products } = product;
     this.form.reset();
     this.formSubProdsArr = null;
+    this.initInputProduct = true;
 
     /* use contract product id here */
     this.form.controls['id'].patchValue(_id);
@@ -232,9 +232,8 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
     this.form.controls['cost'].patchValue(cost);
     this.form.controls['sub_products'].patchValue(this.fmtSubProducts(sub_products));
 
-    //structure subproducts
+    /* map/format subproducts */
     const subProducts = this.fmtSubProducts(sub_products);
-
     this.formSubProdsArr = this.form.get('sub_products') as FormArray;
     if (this.formSubProdsArr) this.formSubProdsArr.clear();
 
@@ -250,8 +249,7 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
     });
 
     this.hasSubProducts = this.formSubProdsArr && this.formSubProdsArr.length > 0;
-    this.isEditProduct = !this.isEditProduct;
-    if (!this.isEditProduct) this.onResetForm();
+    this.isEditProduct = true;
   }
 
   public onShowSubProduct(): void {
@@ -349,6 +347,7 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
     this.hasSubProducts = false;
     if (this.formSubProdsArr) this.formSubProdsArr.clear();
     this.isEditProduct = false;
+    this.initInputProduct = false;
   }
 
   public createItem = (item: ISimpleItem): FormGroup => this.fb.group(item);

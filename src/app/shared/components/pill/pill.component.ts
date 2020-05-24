@@ -36,7 +36,7 @@ export class PillComponent extends GenericControl<ISimpleItem> implements OnInit
   @Output()
   public deSelectEmitter = new EventEmitter<boolean>(null);
 
-  @ViewChild('btn', { static: false }) ev: any;
+  @ViewChild('pill', { static: false }) pill: any;
   constructor(private cdRef: ChangeDetectorRef) {
     super();
   }
@@ -44,30 +44,33 @@ export class PillComponent extends GenericControl<ISimpleItem> implements OnInit
   ngOnInit() { }
 
   ngAfterViewInit() {
-    // fromEvent(this.ev.nativeElement, 'dblclick')
-    //   .subscribe((e: any) => {
-    //     this.selected = !this.selected;
-    //     this.deSelectEmitter.emit(false);
-    //   });
+    fromEvent(this.pill.nativeElement, 'dblclick')
+      .subscribe((e: any) => {
+        this.resetSelection();
+        this.deSelectEmitter.emit(false);
+      });
+
+    this.cdRef.detectChanges();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes && changes.selected && changes.selected.currentValue) {
-      this.selected = changes.selected.currentValue;
-    }
     /* reset selection */
     if (changes && changes.reset && changes.reset.currentValue) {
-      this.selected = false;
+      this.reset = false;
     }
   }
 
-  public onHighlightProduct(event: any): void {
-    event.preventDefault();
+  private resetSelection(): void {
+    let selectors = document.querySelectorAll('il-pill') as any;
+    selectors.forEach(element => {
+      element.children[0].classList.remove('selected');
+    });
+  }
 
-    this.stateEmitter.emit();
-    this.cdRef.detectChanges();
+  public onSelect(event: any): void {
+    this.resetSelection();
 
-    this.selected = !this.selected;
+    event.currentTarget.classList.add('selected');
   }
 
   public get isSizeSmall(): boolean {

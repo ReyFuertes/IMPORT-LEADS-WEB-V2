@@ -33,6 +33,7 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit {
   public state: PillState = PillState.default;
   public suggestions: ISimpleItem[];
   public isDisabled: boolean = false;
+  public initInputProduct: boolean = false;
 
   @Input()
   public isRightNavOpen: boolean = false;
@@ -145,13 +146,14 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit {
   }
 
   public onAdd(): void {
-    if (this.form.value) {
+    if (this.form.value && this.initInputProduct) {
       let payload: IContractProduct = this.fmtPayload(this.form.value);
       if (payload)
         this.store.dispatch(addContractProducts({ payload }));
 
       this.onResetForm();
     }
+    if(!this.initInputProduct) this.initInputProduct = true;
   }
 
   public onSave(): void {
@@ -315,9 +317,7 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit {
         })
         /* remote sub product from the database */
         if (toRemove) {
-
           this.store.dispatch(deleteContractProduct({ id: toRemove._id }));
-
           this.onResetForm();
         }
       }

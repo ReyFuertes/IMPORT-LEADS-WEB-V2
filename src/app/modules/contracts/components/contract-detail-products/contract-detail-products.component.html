@@ -24,7 +24,7 @@
 
     <!-- product with/without set -->
     <div *ngIf="!isRightNavOpen || isNavOpenAndEdit" class="product-section" fxLayout="row" [formGroup]="form" fxLayoutGap="20px">
-      <div fxFlex fxLayout="column" fxLayoutAlign="start start">
+      <div *ngIf="initInputProduct" fxFlex fxLayout="column" fxLayoutAlign="start start">
         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
           <il-input-select fxFlex [form]="form" [controlName]="'product_name'" [suggestions]="suggestions" [isReadOnly]="isRightNavOpen || isNavOpenAndEdit"></il-input-select>
           <il-input fxFlex="15" [form]="form" [isReadOnly]="isNavOpenAndEdit" [isNumberOnly]="true" [controlName]="'qty'" placeholder="Enter quantity" [isReadOnly]="isRightNavOpen"></il-input>
@@ -51,11 +51,11 @@
       </div>
 
       <div fxFlex="20" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
-        <button matTooltip="Add" [disabled]="!form.valid || isDisabled" *ngIf="!isEditProduct" mat-flat-button class="il-button primary" (click)="onAdd()">
-          Add Product
+        <button matTooltip="Add" *ngIf="!isEditProduct" mat-flat-button class="il-button primary" (click)="onAdd()">
+          {{ initInputProduct ? 'Save' : 'Add' }} Product
         </button>
         <button matTooltip="Save" [disabled]="!form.valid" *ngIf="isEditProduct" mat-flat-button class="il-button primary" (click)="onSave()">
-          Save Product
+          Update Product
         </button>
         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
           <mat-checkbox matTooltip="Remove Child Product" [checked]="hasSubProducts" [disabled]="!form.valid" (change)="onShowSubProduct()"></mat-checkbox>

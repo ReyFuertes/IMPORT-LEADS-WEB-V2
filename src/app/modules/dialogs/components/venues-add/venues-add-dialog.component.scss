@@ -1,7 +1,15 @@
 @import "src/styleguide/shared";
+.venue-image {
+  img {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    border: thin $color-gray-2 dotted;
+  }
+}
 .content {
   background-color: $color-white !important;
-  padding: 0 40px !important;
+  padding: 0 30px !important;
   width: 100%;
 }
 .il-button {
@@ -15,11 +23,12 @@
 }
 .header {
   margin-bottom: 0 !important;
+  padding: 0 6px 0 !important;
 }
 img {
   cursor: pointer;
 }
-.footer  {
+.footer {
   position: absolute;
   bottom: 0px;
 }

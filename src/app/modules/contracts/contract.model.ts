@@ -20,32 +20,6 @@ export class ICategory {
   id?: string;
   category_name: string;
 }
-export class IContractResponse {
-  id?: string;
-  contract_name: string;
-  start_date: any;
-  delivery_date: any;
-  details: string;
-  company: string;
-  responsible_person: string;
-  position: string;
-  upload_date: any;
-  created_at: any;
-  updated_at: any;
-  venue: IVenue;
-  images: any[];
-  user: IUser;
-  contract_products: any[];
-}
-
-export interface IContractProductForm {
-  id?: string;
-  product_name?: string | any;
-  qty?: string | number;
-  cost?: string | number;
-  sub_products?: IProduct[];
-  contract?: IContract;
-}
 
 export interface IContractProduct {
   _id?: string;
@@ -64,11 +38,11 @@ export interface IProductImage {
   mimetype?: string;
   contractId?: string;
 }
+
 export enum PillState {
   default = 0,
   reset = 1
 }
-
 export interface IContract {
   id?: string;
   contract_name: string;

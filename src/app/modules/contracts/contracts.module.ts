@@ -19,7 +19,6 @@ import { ContractRightContentComponent } from './components/contract-right-conte
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ContractExpansionPanelComponent } from './components/contract-expansion-panel/contract-expansion-panel.component';
 import { DialogModule } from './../dialogs/dialog.module';
-import { ContractAddComponent } from './components/contract-add/contract-add.component';
 import { ContractDetailProductsComponent } from './components/contract-detail-products/contract-detail-products.component';
 import { ContractOverviewPageComponent } from './components/contract-overview-page/contract-overview-page.component';
 import { ContractDetailPageComponent } from './components/contract-detail-page/contract-detail-page.component';
@@ -125,7 +124,6 @@ const materialModules = [
     ContractDetailPageComponent,
     ContractOverviewPageComponent,
     ContractDetailProductsComponent,
-    ContractAddComponent,
     ContractExpansionPanelComponent,
     ContractRightContentComponent,
     ContractCategoryComponent,

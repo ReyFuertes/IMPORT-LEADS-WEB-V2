@@ -1,23 +1,22 @@
 import { getContractById, getCachedImages } from './../../../contracts/store/selectors/contracts.selector';
 import { getVenuesSelector } from './../../../venues/store/venues.selector';
 import { ISimpleItem } from './../../../../shared/generics/generic.model';
-import { take, switchMap, tap, debounceTime, concatMap, delay, map } from 'rxjs/operators';
-import { Observable, from, of, forkJoin } from 'rxjs';
-import { IImage } from './../../../../models/image.model';
+import { take, map } from 'rxjs/operators';
 import { AppState } from './../../../../store/app.reducer';
 import { AddEditDialogState } from '../../../../shared/generics/generic.model';
 import { GenericAddEditComponent } from '../../../../shared/generics/generic-ae';
 import { IContract, IProductImage } from '../../../contracts/contract.model';
 import { environment } from '../../../../../environments/environment';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AddEditState } from 'src/app/shared/generics/generic.model';
 import { Store, select } from '@ngrx/store';
-import { addContract, uploadContractImages, cacheImages, clearCachedImages, updateContract } from 'src/app/modules/contracts/store/actions/contracts.action';
+import { addContract, uploadContractImages, cacheImages, updateContract } from 'src/app/modules/contracts/store/actions/contracts.action';
 import { v4 as uuid } from 'uuid';
 import { ActivatedRoute } from '@angular/router';
+import { convertBlobToBase64 } from 'src/app/shared/util/convert-to-blob';
 
 @Component({
   selector: 'il-contract-add-dialog',
@@ -48,7 +47,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
       details: [null],
       images: [null]
     });
-    //manually mark as valid if has value
+    /* manually mark as valid if has value */
     this.form && this.form.get('venue').valueChanges
       .pipe(take(1))
       .subscribe(res => {
@@ -75,6 +74,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
     this.form.controls['delivery_date'].patchValue(delivery_date);
     this.form.controls['details'].patchValue(details);
     this.form.controls['images'].patchValue(images);
+
     this.store.dispatch(cacheImages({ images: Object.assign([], images) }));
   }
   ngOnInit() {
@@ -133,6 +133,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
     this.store.dispatch(uploadContractImages({ files }));
     this.dialogRef.close(true);
   }
+
   public getBg(base64: string): string {
     return `url(${base64})`;
   }
@@ -147,11 +148,11 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
       this.store.dispatch(cacheImages({ images: this.cachedImages }));
     }
   }
-  //when you drop an image this gets executed
+  /* when you drop an image this gets executed */
   public onImageChange(event: File): void {
     this.files.push(event);
-    //collect all drop images in base64 results
-    this.convertBlobToBase64(event)
+    /* collect all drop images in base64 results */
+    convertBlobToBase64(event)
       .pipe(take(1),
         map(b64Result => {
           return {
@@ -165,18 +166,5 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
         }))
       .subscribe((result) => this.store
         .dispatch(cacheImages({ images: this.cachedImages.concat([result]) })));
-  }
-
-  public convertBlobToBase64(blob: Blob): Observable<{}> {
-    const fileReader = new FileReader();
-    const observable = new Observable(observer => {
-      fileReader.onloadend = () => {
-        observer.next(fileReader.result);
-        observer.complete();
-      };
-    });
-    if (blob)
-      fileReader.readAsDataURL(blob);
-    return observable;
   }
 }

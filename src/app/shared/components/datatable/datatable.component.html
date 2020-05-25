@@ -30,4 +30,4 @@
   <tr mat-row *matRowDef="let row; columns: cols; let i = index" (mouseover)="mouseover(row.id, 0)" (mouseleave)="mouseout()">
   </tr>
 </table>
-<mat-paginator [pageSizeOptions]="pageSizeOptions" showFirstLastButtons></mat-paginator>
+<mat-paginator [pageSize]="defaultPageSize" [pageSizeOptions]="pageSizeOptions" showFirstLastButtons></mat-paginator>

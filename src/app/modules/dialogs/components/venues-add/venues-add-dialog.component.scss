@@ -33,6 +33,10 @@ img {
   bottom: 0px;
 }
 :host ::ng-deep {
+  .mat-form-field-label-wrapper {
+    top: -7px !important;
+  }
+
   .mat-focused .mat-form-field-underline {
     background-color: $color-primary !important;
   }

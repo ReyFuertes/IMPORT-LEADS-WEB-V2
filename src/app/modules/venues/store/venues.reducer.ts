@@ -5,10 +5,11 @@ import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 
 export interface VenuesState extends EntityState<IVenue> {
+  imagesToUpload?: any
 }
 export const adapter: EntityAdapter<IVenue> = createEntityAdapter<IVenue>({});
 export const initialState: VenuesState = adapter.getInitialState({
-
+  imagesToUpload: null
 });
 const venuesReducer = createReducer(
   initialState,
@@ -34,5 +35,7 @@ export function VenuesReducer(state: VenuesState, action: Action) {
 export const getVenues = (state: VenuesState) => {
   return state && state.entities ? Object.values(state.entities) : null;
 };
-
+export const getImageToUpload= (state: VenuesState) => {
+  return state && state.imagesToUpload;
+};
 

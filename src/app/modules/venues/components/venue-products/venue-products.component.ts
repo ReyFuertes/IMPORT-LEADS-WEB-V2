@@ -21,6 +21,7 @@ import { IVenue, IRelatedProduct } from '../../venues.models';
 export class VenueProductsComponent extends GenericRowComponent implements OnInit {
   public svgPath: string = environment.svgPath;
   public imgPath: string = environment.imgPath;
+  public imageApiPath: string = environment.apiImagePath
   @Input()
   public items: IVenue[];
   public hoveredIndex: number | null = null;

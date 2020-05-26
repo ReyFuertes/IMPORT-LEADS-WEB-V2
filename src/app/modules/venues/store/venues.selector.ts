@@ -7,3 +7,7 @@ export const getVenuesSelector = createSelector(
   selectedState,
   fromVenues.getVenues
 );
+export const getImageToUploadSelector = createSelector(
+  selectedState,
+  fromVenues.getImageToUpload
+);

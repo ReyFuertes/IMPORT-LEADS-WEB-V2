@@ -10,8 +10,12 @@ export enum VenueActionTypes {
   updateVenueSuccess = '[Venue] Update (success)',
   loadVenues = '[Venue] Load',
   loadVenuesSuccess = '[Venue] Load (success)',
+  uploadVenueImage = '[Venue] Upload',
 }
-
+export const uploadVenueImage = createAction(
+  VenueActionTypes.uploadVenueImage,
+  props<{ file: any }>()
+);
 export const deleteVenue = createAction(
   VenueActionTypes.deleteVenue,
   props<{ id: string }>()

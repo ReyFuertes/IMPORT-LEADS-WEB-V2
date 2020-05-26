@@ -1,3 +1,5 @@
+import { AppState } from './../../../../store/app.reducer';
+import { Store } from '@ngrx/store';
 import { take, map, debounceTime } from 'rxjs/operators';
 import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, Inject } from '@angular/core';
@@ -19,7 +21,7 @@ export class VenuesAddDialogComponent implements OnInit {
   public selectedItems: ISimpleItem[] = [];
   public base64Image: any;
 
-  constructor(public fb: FormBuilder,
+  constructor(private store: Store<AppState>, public fb: FormBuilder,
     public dialogRef: MatDialogRef<VenuesAddDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: boolean) {
     this.isProduct = data;
@@ -29,6 +31,8 @@ export class VenuesAddDialogComponent implements OnInit {
       location: [null],
       contact: [null],
       phone: [null],
+      image: [null],
+      file: [null],
     });
   }
 
@@ -37,20 +41,29 @@ export class VenuesAddDialogComponent implements OnInit {
 
   public uploadImage(event: any): void {
     const file: File = event.target.files[0];
+    const filename = `${uuid()}.${file.name.split('?')[0].split('.').pop()}`;
     convertBlobToBase64(file)
       .pipe(take(1),
         map(b64Result => {
           return {
             id: uuid(),
             image: b64Result,
-            filename: `${uuid()}.${file.name.split('?')[0].split('.').pop()}`,
+            filename,
             file: file,
             size: file.size,
             mimetype: file.type
           }
         }))
       .subscribe(b64 => {
-        this.base64Image = b64.image;
+        if (b64) {
+          this.base64Image = b64.image;
+          this.form.get('image').patchValue(b64);
+
+          /* add the binary file so it can be inserted in the image upload endpoint */
+          const dataFile = new FormData();
+          dataFile.append('file', file, filename);
+          this.form.get('file').patchValue(dataFile);
+        }
       })
   }
 

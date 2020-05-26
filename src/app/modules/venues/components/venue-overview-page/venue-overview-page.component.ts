@@ -1,4 +1,4 @@
-import { updateVenue, addVenue } from './../../store/venues.action';
+import { updateVenue, addVenue, uploadVenueImage } from './../../store/venues.action';
 import { getVenuesSelector } from './../../store/venues.selector';
 import { getVenues } from './../../store/venues.reducer';
 import { Observable } from 'rxjs';
@@ -91,7 +91,8 @@ export class VenueOverviewPageComponent implements OnInit {
           related_products: vp.related_products,
           contact: vp.contact,
           phone: vp.phone,
-          contract_count: vp.contract_count
+          contract_count: vp.contract_count,
+          image: vp.image
         }
       });
     });
@@ -114,8 +115,11 @@ export class VenueOverviewPageComponent implements OnInit {
         height: '450px',
         data: this.isProduct
       });
-    dialogRef.afterClosed().subscribe(item => {
+    dialogRef.afterClosed().subscribe((item: IVenue) => {
       if (item) {
+        this.store.dispatch(uploadVenueImage({ file: item.file }));
+        delete item.file;
+
         this.store.dispatch(addVenue({ item }));
       }
     });

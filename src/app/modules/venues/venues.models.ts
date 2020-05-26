@@ -11,6 +11,8 @@ export interface IVenue {
   contact_person?: string;
   phone?: string;
   contract_count?: number;
+  image?: any;
+  file?: any;
 }
 
 export interface IvenueProduct {

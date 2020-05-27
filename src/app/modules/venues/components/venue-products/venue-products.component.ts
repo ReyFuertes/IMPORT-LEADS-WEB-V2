@@ -1,17 +1,18 @@
-import { IvenueProduct } from './../../venues.models';
+import { take, map } from 'rxjs/operators';
+import { IvenueProduct, IVenue, IRelatedProduct } from './../../venues.models';
 import { removeVenueProduct } from './../../store/venue-product.action';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { MatDialog } from '@angular/material/dialog';
-import { addVenue, deleteVenue } from './../../store/venues.action';
+import { addVenue, deleteVenue, uploadVenueImage, updateVenue } from './../../store/venues.action';
 import { AppState } from './../../../../store/app.reducer';
 import { Store } from '@ngrx/store';
-import { ISimpleItem } from '../../../../shared/generics/generic.model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { environment } from '../../../../../environments/environment';
 import { Component, OnInit, Input, HostListener, Output, EventEmitter } from '@angular/core';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
-import { IVenue, IRelatedProduct } from '../../venues.models';
-
+import { convertBlobToBase64 } from 'src/app/shared/util/convert-to-blob';
+import { v4 as uuid } from 'uuid';
+import * as _ from 'lodash';
 @Component({
   selector: 'il-venue-products',
   templateUrl: './venue-products.component.html',
@@ -36,6 +37,7 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
   public selectedItem: IVenue;
   public selectedId: string;
   public dragStart: boolean = false;
+  public base64Image: any;
 
   public drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.items, event.previousIndex, event.currentIndex);
@@ -48,6 +50,37 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
   }
 
   ngOnInit() { }
+
+  public uploadImage(event: any, item: IVenue): void {
+    const file: File = event.target.files[0];
+    const filename = `${uuid()}.${file.name.split('?')[0].split('.').pop()}`;
+    convertBlobToBase64(file)
+      .pipe(take(1),
+        map(() => {
+          return {
+            size: file.size,
+            mimetype: file.type
+          }
+        }))
+      .subscribe(b64 => {
+        if (b64) {
+          /* upload new image */
+          const dataFile = new FormData();
+          dataFile.append('file', file, filename);
+          this.store.dispatch(uploadVenueImage({ file: dataFile }));
+
+          /* update venue image */
+          const image = _.pickBy({
+            filename,
+            mimetype: b64.mimetype,
+            size: b64.size,
+            id: item.image ? item.image.id : null
+          }, _.identity)
+          item.image = image;
+          this.store.dispatch(updateVenue({ item }));
+        }
+      })
+  }
 
   public onEdit(item: IVenue, key: string, value: string): void {
     if (value)

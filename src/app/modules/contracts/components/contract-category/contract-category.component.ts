@@ -22,28 +22,7 @@ import { updateCategory } from '../../store/actions/category.action';
 export class ContractCategoryComponent implements OnInit, OnChanges {
   public svgPath: string = environment.svgPath;
   public _showTabActions: boolean = false;
-  public panels: Array<{ id: number, title: string, description: string }> = [
-    {
-      id: 1,
-      title: '2G1W Dimmer Picture',
-      description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
-    },
-    {
-      id: 2,
-      title: 'Rated Voltage',
-      description: '<500W'
-    },
-    {
-      id: 3,
-      title: 'Ive seen other answers suggesting animating',
-      description: 'Start editing to see some magic happen :).'
-    },
-    {
-      id: 4,
-      title: 'In case anyone is reading this',
-      description: 'transition '
-    }
-  ];
+  public panels: Array<{ id: number, title: string, description: string }> = [];
   public tabTitle: string;
   @Input()
   public specTitle: string = 'Specification title';

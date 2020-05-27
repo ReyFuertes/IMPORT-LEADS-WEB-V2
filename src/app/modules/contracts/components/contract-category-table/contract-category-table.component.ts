@@ -90,8 +90,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
     this.dataSource = new MatTableDataSource<any>(this.contract_category.terms);
   }
 
-  public getTerm = (term: IContractTerm) =>
-    this.selectedTerm = term
+  public getTerm = (term: IContractTerm) => this.selectedTerm = term;
 
   public onDeleteTerm(id: string): void {
     const dialogRef = this.dialog.open(ConfirmationComponent, {

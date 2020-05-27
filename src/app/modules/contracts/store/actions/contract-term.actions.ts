@@ -1,3 +1,4 @@
+import { IImage } from './../../../../models/image.model';
 import { IContractTerm } from './../../contract.model';
 import { createAction, props } from '@ngrx/store';
 
@@ -10,7 +11,22 @@ export enum TermActionTypes {
   deleteContractTermSuccess = '[Contract Term] Delete (success)',
   updateContractTerm = '[Contract Term] Update',
   updateContractTermSuccess = '[Contract Term] Update (success)',
+  uploadTermImage = '[Contract Term] Upload Image',
+  saveTermImage = '[Contract Term] Save Image',
+  saveTermImageSuccess = '[Contract Term] Save Image (success)'
 }
+export const saveTermImageSuccess = createAction(
+  TermActionTypes.saveTermImageSuccess,
+  props<{ created: any }>()
+);
+export const saveTermImage = createAction(
+  TermActionTypes.saveTermImage,
+  props<{ image: IImage }>()
+);
+export const uploadTermImage = createAction(
+  TermActionTypes.uploadTermImage,
+  props<{ file: any }>()
+);
 export const updateContractTerm = createAction(
   TermActionTypes.updateContractTerm,
   props<{ payload: IContractTerm }>()

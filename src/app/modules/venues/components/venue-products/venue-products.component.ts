@@ -70,13 +70,12 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
           this.store.dispatch(uploadVenueImage({ file: dataFile }));
 
           /* update venue image */
-          const image = _.pickBy({
+          item.image = _.pickBy({
             filename,
             mimetype: b64.mimetype,
             size: b64.size,
             id: item.image ? item.image.id : null
-          }, _.identity)
-          item.image = image;
+          }, _.identity);
           this.store.dispatch(updateVenue({ item }));
         }
       })

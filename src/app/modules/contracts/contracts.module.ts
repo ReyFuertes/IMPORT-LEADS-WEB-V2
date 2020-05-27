@@ -7,7 +7,7 @@ import { ContractCategoryService } from './services/contract-category.service';
 import { ProductsEffects } from './../products/store/products.effects';
 import { ContractProductsEffects } from './store/effects/contract-products.effects';
 import { ContractProductService } from './services/contract-products.service';
-import { ImagesService } from './../../services/images.service';
+import { ImageService } from './../../services/images.service';
 import { UploadService } from './../../services/upload.service';
 import { ContractsEffects } from './store/effects/contracts.effects';
 import { EffectsModule } from '@ngrx/effects';
@@ -134,7 +134,7 @@ const materialModules = [
     ConfirmationService,
     ContractsService,
     UploadService,
-    ImagesService,
+    ImageService,
     ContractProductService,
     ContractCategoryService,
     ContractTermService

@@ -1,4 +1,4 @@
-import { ImagesService } from './../../../../services/images.service';
+import { ImageService } from './../../../../services/images.service';
 import { appNotification } from './../../../../store/notification.action';
 import { AppState } from './../../../../store/app.reducer';
 import { UploadService } from './../../../../services/upload.service';
@@ -68,6 +68,6 @@ export class ContractsEffects {
     private actions$: Actions,
     private contractsService: ContractsService,
     private uploadService: UploadService,
-    private imagesService: ImagesService
+    private imagesService: ImageService
   ) { }
 }

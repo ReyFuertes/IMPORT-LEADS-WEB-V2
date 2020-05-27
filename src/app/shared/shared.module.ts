@@ -1,3 +1,4 @@
+import { EditorComponent } from './components/editor/editor.component';
 import { DropdownSelectSearchComponent } from './components/dropdown-select-search/dropdown-select-search.component';
 import { DropdownPopoverSelectComponent } from './components/dropdown-popover-select/dropdown-popover-select.component';
 import { DropdownSelectRowComponent } from './components/dropdown-select-row/dropdown-select-row.component';
@@ -44,6 +45,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { DropdownModule } from 'primeng/dropdown';
 import { CurrencyFormatterDirective } from './directives/currency-formatter.directive';
 import { customCurrencyPipe } from './pipes/custom-currency.pipe';
+import { QuillModule } from 'ngx-quill'
 
 const materialModules = [
   MatListModule,
@@ -102,7 +104,8 @@ const sharedComponents = [
   DatatableComponent,
   DropdownSelectRowComponent,
   DropdownPopoverSelectComponent,
-  DropdownSelectSearchComponent
+  DropdownSelectSearchComponent,
+  EditorComponent
 ];
 
 const directives = [
@@ -122,7 +125,8 @@ const directives = [
     ...materialModules,
     ...primeNgModules,
     RouterModule,
-    NgxFileDropModule
+    NgxFileDropModule,
+    QuillModule.forRoot()
   ],
   exports: [...sharedComponents, ...directives],
   declarations: [...sharedComponents, ...directives, customCurrencyPipe],

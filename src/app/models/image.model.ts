@@ -6,6 +6,9 @@ export interface IImage {
   mimetype?: string;
   destination?: string;
   filename: string;
-  path: string;
-  size: number;
+  path?: string;
+  size?: number;
+  contract_id?: string;
+  venue_id?: string;
+  term_id?: string;
 }

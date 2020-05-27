@@ -8,7 +8,6 @@ import { VenuesService } from './../venues.service';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap, tap, switchMap, take } from 'rxjs/operators';
-import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class VenuesEffects {

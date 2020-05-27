@@ -37,8 +37,8 @@
           </div>
           <div fxFlex>
             <span *ngIf="selectedCol && element?.term_description !== selectedCol">{{ element?.term_description }}</span>
-            <div *ngIf=" element?.term_description === selectedCol" fxLayout="column">
-              <il-textarea [rows]="5" hasBorder="true" [form]="form" isFloatLabel="true" [controlName]="'term_description'" placeholder="Description"></il-textarea>
+            <div *ngIf=" element?.term_description === selectedCol" fxLayout="column" fxLayoutGap="20px">
+              <il-editor [entityId]="element?.id" (keydown.Space)="$event.stopImmediatePropagation()" (keydown.Enter)="$event.stopImmediatePropagation()"></il-editor>
               <div *ngTemplateOutlet="detailBtnActions"></div>
             </div>
           </div>

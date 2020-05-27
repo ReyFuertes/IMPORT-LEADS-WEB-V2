@@ -150,6 +150,14 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
     this.reloadContractCategory();
   }
 
+  public removeEmptyChar(str: string): string {
+    return str && str.replace(/ /g, '');
+  }
+
+  public getDefaultTerm(str: string, prop: string): string {
+    return str && this.removeEmptyChar(str) === '' ? `Write ${prop.replace(/_/g, ' ')} here...` : str;
+  }
+
   public onExpand(event: any, col: string): void {
     this.expandedElement = (this.expandedElement === event) ? null : event;
     this.selectedCol = event[col];

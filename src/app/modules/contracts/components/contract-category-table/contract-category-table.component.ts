@@ -58,7 +58,6 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
 
   constructor(private store: Store<AppState>, private dialog: MatDialog, private fb: FormBuilder) {
     super();
-
     this.form = this.fb.group({
       id: [null],
       term_name: [null],
@@ -100,7 +99,6 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.store.dispatch(deleteContractTerm({ id }));
-
         /* this is a bad solution, but due to time development i just needs this */
         this.reloadContractCategory();
       }
@@ -153,13 +151,16 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
     return str && str.replace(/ /g, '');
   }
 
-  public getDefaultTerm(str: string, prop: string): string {
-    return str && this.removeEmptyChar(str) === '' ? `Write ${prop.replace(/_/g, ' ')} here...` : str;
+  public getDefaultTerm(str: string, prop: string, collapsed: boolean): string {
+    return (str && this.removeEmptyChar(str) === '') || str === undefined
+      ? `Write ${prop.replace(/_/g, ' ')} here...`
+      : (!collapsed ? str : str.split('</p>')[0].replace(/(<([^>]+)>)/ig, '').substring(0, 100).concat('...'));
   }
 
   public onExpand(event: any, col: string): void {
     this.expandedElement = (this.expandedElement === event) ? null : event;
-    this.selectedCol = event[col];
+    this.selectedCol = `${event.id}${col}`;
+
     /* patch value during expand to prepare for editing */
     this.form.patchValue(event);
   }

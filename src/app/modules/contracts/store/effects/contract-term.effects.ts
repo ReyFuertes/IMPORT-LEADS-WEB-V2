@@ -16,7 +16,6 @@ export class ContractTermEffects {
     mergeMap(({ image }) => this.imageService.post(image)
       .pipe(
         map((created: any) => {
-          debugger
           return saveTermImageSuccess({ created });
         })
       ))

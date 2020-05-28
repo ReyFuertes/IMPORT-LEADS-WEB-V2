@@ -4,10 +4,10 @@
     <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay; let i = index">
       <th mat-header-cell *matHeaderCellDef> {{column}}</th>
       <td mat-cell *matCellDef="let element">
-        <div [ngClass]="{'disabled': isRightNavOpen}" [ngClass]="{'hidden': i === (columnsToDisplay.length - 1)}" (mouseover)="mouseover(i)" (mouseleave)="mouseout()" fxLayoutAlign="start center" fxLayoutGap="20px">
+        <div [ngClass]="{'disabled': isRightNavOpen, 'hidden': i == (columnsToDisplay.length - 1)}" (mouseover)="mouseover(i)" (mouseleave)="mouseout()" fxLayoutAlign="start center" fxLayoutGap="20px">
           <div fxFlex fxLayout="row">
             <div [ngClass]="{'write-term': removeEmptyChar(element[column]) == ''}" fxLayoutAlign="start center">
-              <span>{{ getDefaultTerm(element[column], column) }}</span>
+              <div [innerHTML]="getDefaultTerm(element[column], column, i !== (columnsToDisplay.length - 1))"></div>
             </div>
             <div *ngIf="hoveredIndex === i && selectedIndex === null" fxFlex fxLayoutAlign="end center" [ngClass]="{'hidden': isRightNavOpen}">
               <img (click)="onExpand(element, column)" matTooltip="Edit {{ getToolTipMsg(column) | titlecase }}" [src]="svgPath + 'edit-icon-blue.svg'">
@@ -29,16 +29,16 @@
       <td mat-cell class="row-detail" *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
         <div class="element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'" fxLayoutGap="20px">
           <div fxFlex="23.5">
-            <span *ngIf="selectedCol && element?.term_name !== selectedCol">{{ element?.term_name }}</span>
-            <div *ngIf="element?.term_name === selectedCol">
+            <span *ngIf="selectedCol && (element?.id + 'term_name') !== selectedCol">{{ element?.term_name }}</span>
+            <div *ngIf="(element?.id + 'term_name') == selectedCol">
               <il-input hasBorder="true" [form]="form" isFloatLabel="'true'" [controlName]="'term_name'" placeholder="Name"></il-input>
               <div *ngTemplateOutlet="detailBtnActions"></div>
             </div>
           </div>
           <div fxFlex>
-            <span *ngIf="selectedCol && element?.term_description !== selectedCol">{{ element?.term_description }}</span>
-            <div *ngIf=" element?.term_description === selectedCol" fxLayout="column" fxLayoutGap="20px">
-              <il-editor [entityId]="element?.id" (keydown.Space)="$event.stopImmediatePropagation()" (keydown.Enter)="$event.stopImmediatePropagation()"></il-editor>
+            <div *ngIf="selectedCol && (element?.id + 'term_description') !== selectedCol" [innerHTML]="element?.term_description"></div>
+            <div *ngIf="(element?.id + 'term_description') == selectedCol" fxLayout="column" fxLayoutGap="20px">
+              <il-editor [form]="form" [controlName]="'term_description'" [entityId]="element?.id" (keydown.Space)="$event.stopImmediatePropagation()" (keydown.Enter)="$event.stopImmediatePropagation()"></il-editor>
               <div *ngTemplateOutlet="detailBtnActions"></div>
             </div>
           </div>

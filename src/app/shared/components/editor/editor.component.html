@@ -1,2 +1,4 @@
-<quill-editor #meQuill [modules]="editorModules" name="htmlText" (onEditorCreated)="getMeEditorInstance($event)" [styles]="{'min-height': '200px'}"></quill-editor>
-<input hidden #quillFile type="file" (change)="quillFileSelected($event)">
+<div *ngIf="form" [formGroup]="form">
+  <quill-editor #meQuill [modules]="editorModules" [formControlName]="controlName" name="htmlText" (onEditorCreated)="getMeEditorInstance($event)" [styles]="{'min-height': '200px'}"></quill-editor>
+  <input hidden #quillFile type="file" (change)="quillFileSelected($event)">
+</div>

@@ -1,3 +1,4 @@
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { environment } from './../../../../environments/environment';
 import { saveTermImage } from './../../../modules/contracts/store/actions/contract-term.actions';
 import { AppState } from './../../../store/app.reducer';
@@ -21,6 +22,10 @@ Quill.register('modules/imageResize', ImageResize);
 export class EditorComponent implements OnInit {
   public imageApiPath: string = environment.apiImagePath;
   @Input()
+  public controlName: string;
+  @Input()
+  public form: FormGroup;
+  @Input()
   public entityId: string;
 
   @ViewChild('quillFile', { static: false }) quillFileRef: ElementRef;
@@ -39,9 +44,7 @@ export class EditorComponent implements OnInit {
         ['link', 'image']
       ],
       handlers: {
-        image: (image) => {
-          this.customImageUpload(image);
-        }
+        image: (image) => this.customImageUpload(image)
       }
     },
     imageResize: true,
@@ -49,7 +52,6 @@ export class EditorComponent implements OnInit {
 
   public quillFileSelected(ev: any): void {
     this.quillFile = ev.target.files[0];
-    console.log(ev.target.files[0]);
 
     const filename = `${uuid()}.${this.quillFile.name.split('?')[0].split('.').pop()}`;
 
@@ -67,19 +69,18 @@ export class EditorComponent implements OnInit {
         term_id: this.entityId
       }
     }
-    console.log(imagePayload);
     this.store.dispatch(saveTermImage(imagePayload));
 
     setTimeout(() => {
-      let range = this.meQuillRef.getSelection()
-      const img = `<img src="${this.imageApiPath}${filename}" />`;
-      this.meQuillRef.clipboard.dangerouslyPasteHTML(range.index, img);
+      let range = this.meQuillRef.getSelection();
+      this.meQuillRef.clipboard.dangerouslyPasteHTML(range.index, `<img src="${this.imageApiPath}${filename}" />`);
+
+      /* update value to form */
+      this.form.get(this.controlName).patchValue(this.meQuillRef.root.innerHTML);
     }, 500);
   }
 
   public customImageUpload(image: any): void {
-    console.log(image);
-    /* Here we trigger a click action on the file input field, this will open a file chooser on a client computer */
     this.quillFileRef.nativeElement.click();
   }
 
@@ -87,7 +88,9 @@ export class EditorComponent implements OnInit {
     this.meQuillRef = editorInstance;
   }
 
-  constructor(private store: Store<AppState>) { }
+  constructor(public fb: FormBuilder, private store: Store<AppState>) {
+
+  }
 
   ngOnInit() { }
 }

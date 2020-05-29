@@ -1,10 +1,18 @@
 import { createAction, props } from '@ngrx/store';
 
+export interface INotification {
+  success: boolean;
+  message: string;
+}
+
 export enum NotificationActionTypes {
-  Success = '[Notification] Success',
+  notificationSuccess = '[Notification] Success',
+  removeNotification = '[Notification] Remove',
 }
 export const appNotification = createAction(
-  NotificationActionTypes.Success,
-  props<{ success: boolean }>()
+  NotificationActionTypes.notificationSuccess,
+  props<{ notification: INotification }>()
 );
-
+export const removeNotification = createAction(
+  NotificationActionTypes.removeNotification,
+);

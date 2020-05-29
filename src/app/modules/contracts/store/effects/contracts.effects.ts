@@ -32,7 +32,10 @@ export class ContractsEffects {
     mergeMap(({ item }) => this.contractsService.post(item)
       .pipe(
         map((created: IContract) => {
-          if (created) this.store.dispatch(appNotification({ success: true }));
+          /* create a constant for this. */
+          if (created)
+            this.store.dispatch(appNotification({ notification: { success: true, message: 'Contract successfully Added' } }));
+
           return addContractSuccess({ created });
         })
       ))

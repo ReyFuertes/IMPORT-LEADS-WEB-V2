@@ -143,6 +143,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
     if (this.form.value)
       this.store.dispatch(updateContractTerm({ payload: this.form.value }));
 
+    this.onClose();
     /* this is a bad solution, but due to time development i just needs this */
     this.reloadContractCategory();
   }

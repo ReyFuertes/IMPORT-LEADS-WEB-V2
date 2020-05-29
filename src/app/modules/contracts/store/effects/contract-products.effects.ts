@@ -1,3 +1,5 @@
+import { AppState } from 'src/app/store/app.reducer';
+import { Store } from '@ngrx/store';
 import { IContractProduct } from './../../contract.model';
 import { mergeMap, map } from 'rxjs/operators';
 import { ContractProductService } from './../../services/contract-products.service';
@@ -5,6 +7,7 @@ import { addContractProducts, addContractProductsSuccess, loadContractProducts, 
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { zip, of } from 'rxjs';
+import { appNotification } from 'src/app/store/notification.action';
 
 @Injectable()
 export class ContractProductsEffects {
@@ -23,6 +26,9 @@ export class ContractProductsEffects {
       this.contractProductService.patch(payload)
         .pipe(
           map((updated: any) => {
+            if (updated)
+              this.store.dispatch(appNotification({ notification: { success: true, message: 'Product successfully Updated' } }));
+
             return updateContractProductsSuccess({ updated });
           })
         ))
@@ -34,6 +40,9 @@ export class ContractProductsEffects {
       this.contractProductService.post(payload)
         .pipe(
           map((created: any) => {
+            if (created)
+              this.store.dispatch(appNotification({ notification: { success: true, message: 'Product successfully Added' } }));
+
             return addContractProductsSuccess({ created });
           })
         ))
@@ -46,6 +55,7 @@ export class ContractProductsEffects {
     )), { dispatch: false });
 
   constructor(
+    private store: Store<AppState>,
     private actions$: Actions,
     private contractProductService: ContractProductService
   ) { }

@@ -1,3 +1,5 @@
+import { appNotification } from './../../../../store/notification.action';
+import { AppState } from 'src/app/store/app.reducer';
 import { ImageService } from './../../../../services/images.service';
 import { UploadService } from './../../../../services/upload.service';
 import { updateContractTerm, updateContractTermSuccess, uploadTermImage, saveTermImage, saveTermImageSuccess } from './../actions/contract-term.actions';
@@ -16,6 +18,10 @@ export class ContractTermEffects {
     mergeMap(({ image }) => this.imageService.post(image)
       .pipe(
         map((created: any) => {
+          debugger
+          if (created)
+            this.store.dispatch(appNotification({ notification: { success: true, message: 'Term successfully Saved' } }));
+
           return saveTermImageSuccess({ created });
         })
       ))
@@ -31,6 +37,9 @@ export class ContractTermEffects {
     mergeMap(({ payload }) => this.contractTermService.patch(payload)
       .pipe(
         map((updated: IContractTerm) => {
+          if (updated)
+            this.store.dispatch(appNotification({ notification: { success: true, message: 'Term successfully Updated' } }));
+
           return updateContractTermSuccess({ updated });
         })
       ))
@@ -46,6 +55,9 @@ export class ContractTermEffects {
     mergeMap(({ payload }) => this.contractTermService.post(payload)
       .pipe(
         map((created: IContractTerm) => {
+          if (created)
+            this.store.dispatch(appNotification({ notification: { success: true, message: 'Term successfully Added' } }));
+
 
           return addContractTermSuccess({ created });
         })
@@ -53,6 +65,7 @@ export class ContractTermEffects {
   ));
 
   constructor(
+    private store: Store<AppState>,
     private actions$: Actions,
     private contractTermService: ContractTermService,
     private uploadService: UploadService,

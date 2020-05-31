@@ -1,4 +1,4 @@
-import { addContractTerm, deleteContractTerm, updateContractTerm, saveTermImage } from './../../store/actions/contract-term.actions';
+import { addContractTerm, deleteContractTerm, updateContractTerm, saveTermImage, uploadTermImage } from './../../store/actions/contract-term.actions';
 import { loadContractCategory, updateContractCategorySuccess, updateContractCategory } from './../../store/actions/contract-category.action';
 import { MatTableDataSource } from '@angular/material/table';
 import { IContractTerm } from './../../contract.model';
@@ -63,7 +63,8 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       term_name: [null],
       term_description: [null],
       contact_category: [null],
-      images: [null]
+      images: [[]],
+      files: [[]]
     })
   }
 
@@ -142,9 +143,11 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
 
   public onSave(): void {
     if (this.form.value) {
-        this.store.dispatch(updateContractTerm({ payload: this.form.value }));
+      this.store.dispatch(updateContractTerm({ payload: this.form.value }));
 
-        this.store.dispatch(saveTermImage(this.form.get('images').value));
+      this.store.dispatch(saveTermImage(this.form.get('images').value));
+
+      this.store.dispatch(uploadTermImage({ files: this.form.get('files').value }));
     }
 
     this.onClose();

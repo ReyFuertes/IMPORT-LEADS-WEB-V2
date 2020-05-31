@@ -25,7 +25,7 @@ export class ContractTermEffects {
 
   uploadTermImage$ = createEffect(() => this.actions$.pipe(
     ofType(uploadTermImage),
-    switchMap(({ file }) => this.uploadService.upload(file, 'single'))
+    switchMap(({ files }) => this.uploadService.upload(files, 'multiple'))
   ), { dispatch: false });
 
   update$ = createEffect(() => this.actions$.pipe(

@@ -25,7 +25,7 @@ export const saveTermImage = createAction(
 );
 export const uploadTermImage = createAction(
   TermActionTypes.uploadTermImage,
-  props<{ file: any }>()
+  props<{ files: any[] }>()
 );
 export const updateContractTerm = createAction(
   TermActionTypes.updateContractTerm,

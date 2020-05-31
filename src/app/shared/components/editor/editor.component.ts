@@ -89,13 +89,16 @@ export class EditorComponent implements OnInit {
 
           /* update value to form */
           this.form.get(this.controlName).patchValue(this.meQuillRef.root.innerHTML);
+
+          /* upload the image physical file */
+          const dataFile = new FormData();
+          dataFile.append('file', this.quillFile, filename);
+          let files = this.form.get('files').value || [];
+          files.push(dataFile);
+          this.form.get('files').patchValue(files);
+
         }, 500);
       })
-
-    /* upload the image physical file */
-    const dataFile = new FormData();
-    dataFile.append('file', this.quillFile, filename);
-    this.store.dispatch(uploadTermImage({ file: dataFile }));
   }
 
   public customImageUpload(image: any): void {

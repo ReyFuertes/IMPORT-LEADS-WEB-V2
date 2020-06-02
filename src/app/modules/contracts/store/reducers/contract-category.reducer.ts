@@ -1,3 +1,4 @@
+import { updateContractTermSuccess } from './../actions/contract-term.actions';
 import { sortCreatedAt } from 'src/app/shared/util/sort';
 import { ContractModuleState } from './index';
 import { addContractCategorySuccess, loadContractCategorySuccess, deleteContractCategorySuccess } from './../actions/contract-category.action';
@@ -12,6 +13,17 @@ export const initialState: ContractCategoryState = adapter.getInitialState({
 });
 const reducer = createReducer(
   initialState,
+  on(updateContractTermSuccess, (state, action) => {
+    let entities = Object.values(state.entities);
+    entities.forEach(entity => {
+      entity && entity.terms.forEach(term => {
+        if(term.id === action.updated.id) {
+          term.term_description = action.updated.term_description;
+        }
+      });
+    });
+    return state;
+  }),
   on(deleteContractCategorySuccess, (state, action) => {
     return ({ ...adapter.removeOne(action.deleted.id, state) })
   }),

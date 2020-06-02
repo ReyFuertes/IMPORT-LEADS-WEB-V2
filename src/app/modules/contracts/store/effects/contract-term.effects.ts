@@ -2,7 +2,7 @@ import { appNotification } from './../../../../store/notification.action';
 import { AppState } from 'src/app/store/app.reducer';
 import { ImageService } from './../../../../services/images.service';
 import { UploadService } from './../../../../services/upload.service';
-import { updateContractTerm, updateContractTermSuccess, uploadTermImage, saveTermImage, saveTermImageSuccess } from './../actions/contract-term.actions';
+import { updateContractTerm, updateContractTermSuccess, uploadTermImage, saveTermImageDetail, saveTermImageSuccess } from './../actions/contract-term.actions';
 import { IContractTerm } from './../../contract.model';
 import { ContractTermService } from './../../services/contract-term.service';
 import { Injectable } from '@angular/core';
@@ -13,8 +13,8 @@ import { addContractTerm, addContractTermSuccess, deleteContractTerm, deleteCont
 
 @Injectable()
 export class ContractTermEffects {
-  saveTermImage$ = createEffect(() => this.actions$.pipe(
-    ofType(saveTermImage),
+  saveTermImageDetail$ = createEffect(() => this.actions$.pipe(
+    ofType(saveTermImageDetail),
     mergeMap(({ image }) => this.imageService.post(image)
       .pipe(
         map((created: any) => {
@@ -25,7 +25,7 @@ export class ContractTermEffects {
 
   uploadTermImage$ = createEffect(() => this.actions$.pipe(
     ofType(uploadTermImage),
-    switchMap(({ files }) => this.uploadService.upload(files, 'multiple'))
+    switchMap(({ file }) => this.uploadService.upload(file, 'single'))
   ), { dispatch: false });
 
   update$ = createEffect(() => this.actions$.pipe(

@@ -1,4 +1,4 @@
-import { addContractTerm, deleteContractTerm, updateContractTerm, saveTermImage, uploadTermImage } from './../../store/actions/contract-term.actions';
+import { addContractTerm, deleteContractTerm, updateContractTerm, saveTermImageDetail, uploadTermImage } from './../../store/actions/contract-term.actions';
 import { loadContractCategory, updateContractCategorySuccess, updateContractCategory } from './../../store/actions/contract-category.action';
 import { MatTableDataSource } from '@angular/material/table';
 import { IContractTerm } from './../../contract.model';
@@ -48,8 +48,8 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   public $tags: Observable<ISimpleItem[]>;
   public selectedTerm: IContractTerm;
   public formTag: FormGroup;
-  public hoveredIndex: number | null = null;
-  public selectedIndex: number | null = null;
+  public onPreview: boolean = false;
+  public selectedRow: any;
 
   @Input()
   public isRightNavOpen: boolean = false;
@@ -62,11 +62,13 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       id: [null],
       term_name: [null],
       term_description: [null],
-      contact_category: [null],
-      images: [[]],
-      files: [[]]
+      contact_category: [null]
     })
   }
+
+  public mouseOver = (event: any, col: string) => this.selectedRow = `${event.id}${col}`;
+
+  public mouseOut = () => this.selectedRow = null;
 
   public onTagUpdate(event: any, id: string): void {
     if (event) {
@@ -141,18 +143,16 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
     });
   }
 
-  public onSave(): void {
+  public onSave(e): void {
+    e.stopImmediatePropagation();
+
     if (this.form.value) {
       this.store.dispatch(updateContractTerm({ payload: this.form.value }));
-
-      this.store.dispatch(saveTermImage(this.form.get('images').value));
-
-      this.store.dispatch(uploadTermImage({ files: this.form.get('files').value }));
     }
 
-    this.onClose();
-    /* this is a bad solution, but due to time development i just needs this */
-    this.reloadContractCategory();
+    setTimeout(() => {
+      this.onPreview = true;
+    }, 1000);
   }
 
   public removeEmptyChar(str: string): string {
@@ -169,8 +169,14 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
     this.expandedElement = (this.expandedElement === event) ? null : event;
     this.selectedCol = `${event.id}${col}`;
 
+    this.onPreview = false;
+
     /* patch value during expand to prepare for editing */
     this.form.patchValue(event);
+  }
+
+  public getKey(element: any): string {
+    return Object.keys(element)[0];
   }
 
   public isHidden(element: IContractTerm): boolean {
@@ -181,6 +187,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   public onClose(): void {
     this.expandedElement = null;
     this.selectedCol = null;
+    this.onPreview = false;
   }
 
   public getToolTipMsg(property: string) {

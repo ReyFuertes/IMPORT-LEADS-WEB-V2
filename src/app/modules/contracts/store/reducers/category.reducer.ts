@@ -1,3 +1,4 @@
+import { updateContractTermSuccess } from './../actions/contract-term.actions';
 import { addCategorySuccess, updateCategorysSuccess } from './../actions/category.action';
 import { sortCreatedAt } from 'src/app/shared/util/sort';
 import { ICategory } from './../../contract.model';

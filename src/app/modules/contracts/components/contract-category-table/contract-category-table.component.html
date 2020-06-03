@@ -4,13 +4,15 @@
     <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay; let i = index">
       <th mat-header-cell *matHeaderCellDef> {{column}}</th>
       <td mat-cell *matCellDef="let element">
-        <div [ngClass]="{'disabled': isRightNavOpen, 'hidden': i == (columnsToDisplay.length - 1)}" (mouseover)="mouseover(i)" (mouseleave)="mouseout()" fxLayoutAlign="start center" fxLayoutGap="20px">
+        <div [ngClass]="{'disabled': isRightNavOpen, 'hidden': i == (columnsToDisplay.length - 1)}" fxLayoutAlign="start center" fxLayoutGap="20px" (mouseover)="mouseOver(element, column)" (mouseleave)="mouseOut()">
           <div fxFlex fxLayout="row">
             <div [ngClass]="{'write-term': removeEmptyChar(element[column]) == ''}" fxLayoutAlign="start center">
               <div [innerHTML]="getDefaultTerm(element[column], column, i !== (columnsToDisplay.length - 1))"></div>
             </div>
-            <div *ngIf="hoveredIndex === i && selectedIndex === null" fxFlex fxLayoutAlign="end center" [ngClass]="{'hidden': isRightNavOpen}">
-              <img (click)="onExpand(element, column)" matTooltip="Edit {{ getToolTipMsg(column) | titlecase }}" [src]="svgPath + 'edit-icon-blue.svg'">
+            <div fxFlex fxLayoutAlign="end center" [ngClass]="{'hidden': isRightNavOpen}">
+              <img *ngIf="
+              element.id + 'term_description' === selectedRow ||
+              element.id + 'term_name' === selectedRow" (click)="onExpand(element, column)" matTooltip="Edit {{ getToolTipMsg(column) | titlecase }}" [src]="svgPath + 'edit-icon-blue.svg'">
             </div>
           </div>
         </div>
@@ -36,18 +38,21 @@
             </div>
           </div>
           <div fxFlex>
-            <div *ngIf="selectedCol && (element?.id + 'term_description') !== selectedCol" [innerHTML]="element?.term_description"></div>
-            <div *ngIf="(element?.id + 'term_description') == selectedCol" fxLayout="column" fxLayoutGap="20px">
+            <div *ngIf="selectedCol && (element?.id + 'term_description') !== selectedCol || onPreview === true" [innerHTML]="element?.term_description"></div>
+            <div *ngIf="(element?.id + 'term_description') == selectedCol && onPreview === false" fxLayout="column" fxLayoutGap="20px">
               <il-editor [form]="form" [controlName]="'term_description'" [entityId]="element?.id" (keydown.Space)="$event.stopImmediatePropagation()" (keydown.Enter)="$event.stopImmediatePropagation()"></il-editor>
               <div *ngTemplateOutlet="detailBtnActions"></div>
             </div>
+            <!-- just show close button when previewing -->
+            <button *ngIf="onPreview" mat-flat-button class="il-button default mb-1" (click)="onClose(pnl)">Cancel</button>
           </div>
         </div>
       </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-    <tr mat-row *matRowDef="let row; let element; columns: columnsToDisplay;" class="element-row" [ngClass]="{'element': true, 'hidden': isHidden(element)}">
+    <tr mat-row *matRowDef="let row; let element; columns: columnsToDisplay;" class="element-row" [ngClass]="{'element': true, 'hidden': element.id + 'term_description' == selectedCol
+  || element.id + 'term_name' == selectedCol}">
     </tr>
     <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
   </table>
@@ -80,7 +85,7 @@
 
 <ng-template #detailBtnActions>
   <div class="element-detail__name" fxLayoutGap="10px">
-    <button mat-flat-button class="il-button default" (click)="onClose(pnl)">Cancel</button>
-    <button mat-flat-button class="il-button primary" (click)="onSave()">Save</button>
+    <button type="button" mat-flat-button class="il-button default" (click)="onClose(pnl)">Cancel</button>
+    <button type="button" mat-flat-button class="il-button primary" (click)="onSave($event)">Save</button>
   </div>
 </ng-template>

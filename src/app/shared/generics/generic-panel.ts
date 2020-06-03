@@ -28,6 +28,8 @@ export abstract class GenericRowComponent {
   public mouseover(i: number, colIndctr?: number) {
     if (this.selectedIndex == null)
       this.hoveredIndex = i;
+
+    console.log(i);
   }
 
   public onClose(): void {

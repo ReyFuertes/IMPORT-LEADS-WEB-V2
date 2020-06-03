@@ -7,11 +7,20 @@ import { ContractsService } from './../../services/contracts.service';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap, tap, switchMap } from 'rxjs/operators';
-import { loadContracts, loadContractSuccess, addContract, addContractSuccess, uploadContractImages, uploadContractImageSuccess, ReOrderImages, updateContract, updateContractSuccess, deleteContract, deleteContractSuccess } from '../actions/contracts.action';
+import { loadContracts, loadContractSuccess, addContract, addContractSuccess, uploadContractImages, uploadContractImageSuccess, ReOrderImages, updateContract, updateContractSuccess, deleteContract, deleteContractSuccess, uploadTermImage, addImageUploadState } from '../actions/contracts.action';
 import { Store } from '@ngrx/store';
 
 @Injectable()
 export class ContractsEffects {
+  uploadTermImage$ = createEffect(() => this.actions$.pipe(
+    ofType(uploadTermImage),
+    switchMap(({ file }) => this.uploadService.upload(file, 'single')
+      .pipe(
+        map(() => {
+          return addImageUploadState({ isImageReady: true })
+        }),
+      ))
+  ));
   delete$ = createEffect(() => this.actions$.pipe(
     ofType(deleteContract),
     mergeMap(({ id }) => this.contractsService.delete(id).pipe(

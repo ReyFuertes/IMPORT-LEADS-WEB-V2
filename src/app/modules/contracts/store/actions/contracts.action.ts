@@ -15,7 +15,21 @@ export enum ContractActionTypes {
   ClearCachedImages = '[Contract] Clear Cached Images',
   updateContract = '[Contract] Update',
   updateContractSuccess = '[Contract] Update (success)',
+  addImageUploadState = '[Contract] Add upload (success)',
+  removeImageUploadState = '[Contract] Remove upload (success)',
+  uploadTermImage = '[Contract Term] Upload Image',
 }
+export const uploadTermImage = createAction(
+  ContractActionTypes.uploadTermImage,
+  props<{ file: any }>()
+);
+export const addImageUploadState = createAction(
+  ContractActionTypes.addImageUploadState,
+  props<{ isImageReady: boolean }>()
+);
+export const removeImageUploadState = createAction(
+  ContractActionTypes.removeImageUploadState,
+);
 export const deleteContract = createAction(
   ContractActionTypes.deleteContract,
   props<{ id: string }>()

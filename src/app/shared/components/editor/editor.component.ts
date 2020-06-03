@@ -90,7 +90,6 @@ export class EditorComponent implements OnInit {
   ngOnInit() {
     this.store.pipe(select(getUploadImageStateSelector)).subscribe(res => {
       if (res && this.meQuillRef) {
-        debugger
         /* display to editor */
         let range = this.meQuillRef.getSelection();
         this.meQuillRef.clipboard.dangerouslyPasteHTML(range.index, `<img src="${this.imageApiPath}${this.filename}" />`);

@@ -11,7 +11,6 @@ export enum TermActionTypes {
   deleteContractTermSuccess = '[Contract Term] Delete (success)',
   updateContractTerm = '[Contract Term] Update',
   updateContractTermSuccess = '[Contract Term] Update (success)',
-  uploadTermImage = '[Contract Term] Upload Image',
   saveTermImageDetail = '[Contract Term] Save Image',
   saveTermImageSuccess = '[Contract Term] Save Image (success)'
 }
@@ -22,10 +21,6 @@ export const saveTermImageSuccess = createAction(
 export const saveTermImageDetail = createAction(
   TermActionTypes.saveTermImageDetail,
   props<{ image: IImage }>()
-);
-export const uploadTermImage = createAction(
-  TermActionTypes.uploadTermImage,
-  props<{ file: any }>()
 );
 export const updateContractTerm = createAction(
   TermActionTypes.updateContractTerm,

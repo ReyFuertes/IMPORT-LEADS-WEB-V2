@@ -1,4 +1,4 @@
-import { addContractTerm, deleteContractTerm, updateContractTerm, saveTermImageDetail, uploadTermImage } from './../../store/actions/contract-term.actions';
+import { addContractTerm, deleteContractTerm, updateContractTerm, saveTermImageDetail } from './../../store/actions/contract-term.actions';
 import { loadContractCategory, updateContractCategorySuccess, updateContractCategory } from './../../store/actions/contract-category.action';
 import { MatTableDataSource } from '@angular/material/table';
 import { IContractTerm } from './../../contract.model';
@@ -168,7 +168,6 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   public onExpand(event: any, col: string): void {
     this.expandedElement = (this.expandedElement === event) ? null : event;
     this.selectedCol = `${event.id}${col}`;
-
     this.onPreview = false;
 
     /* patch value during expand to prepare for editing */

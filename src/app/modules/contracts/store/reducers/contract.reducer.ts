@@ -1,3 +1,4 @@
+import { addImageUploadState, removeImageUploadState } from './../actions/contracts.action';
 import { updateContractTermSuccess } from './../actions/contract-term.actions';
 import { ContractModuleState } from './index';
 import { AppState } from 'src/app/store/app.reducer';
@@ -10,7 +11,8 @@ import { sortCreatedAt } from 'src/app/shared/util/sort';
 export interface ContractsState extends EntityState<IContract> {
   item?: IContract,
   created?: boolean,
-  cachedImages: IProductImage[]
+  cachedImages: IProductImage[],
+  isImageReady: boolean
 }
 export const adapter: EntityAdapter<IContract> = createEntityAdapter<IContract>({
   sortComparer: (a: IContract, b: IContract) => {
@@ -22,10 +24,14 @@ export const adapter: EntityAdapter<IContract> = createEntityAdapter<IContract>(
 export const initialState: ContractsState = adapter.getInitialState({
   item: null,
   created: null,
-  cachedImages: null
+  cachedImages: null,
+  isImageReady: null
 });
 const contractsReducer = createReducer(
   initialState,
+  on(addImageUploadState, (state, action) => {
+    return Object.assign({}, state, { isImageReady: action.isImageReady })
+  }),
   on(deleteContractSuccess, (state, action) => {
     return ({ ...adapter.removeOne(action.deleted.id, state) })
   }),

@@ -11,6 +11,8 @@ import { Component, OnInit, Input, OnChanges, Output, EventEmitter, SimpleChange
 import { ConfirmationService } from 'primeng/api';
 import { IContractCategory } from '../../contract.model';
 import { updateCategory } from '../../store/actions/category.action';
+import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
+
 
 @Component({
   selector: 'il-contract-category',
@@ -19,11 +21,14 @@ import { updateCategory } from '../../store/actions/category.action';
   providers: [ConfirmationService]
 })
 
-export class ContractCategoryComponent implements OnInit, OnChanges {
+export class ContractCategoryComponent extends GenericRowComponent implements OnInit, OnChanges {
   public svgPath: string = environment.svgPath;
   public _showTabActions: boolean = false;
   public panels: Array<{ id: number, title: string, description: string }> = [];
   public tabTitle: string;
+  @Input()
+  public hoveredIndex: number | null = null;
+  public selectedIndex: number | null = null;
   @Input()
   public specTitle: string = 'Specification title';
   @Input()
@@ -34,7 +39,9 @@ export class ContractCategoryComponent implements OnInit, OnChanges {
   @Output()
   public removeProductSpecEmitter = new EventEmitter<number>();
 
-  constructor(private store: Store<AppState>, public dialog: MatDialog) { }
+  constructor(private store: Store<AppState>, public dialog: MatDialog) {
+    super();
+  }
 
   ngOnInit() { }
 

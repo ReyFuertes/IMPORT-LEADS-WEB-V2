@@ -1,11 +1,11 @@
 <p-confirmDialog [style]="{width: '50vw'}" key="productSpecs"></p-confirmDialog>
-<div fxLayout="column" (mouseover)="mouseover(i)" (mouseleave)="mouseout()">
+<div fxLayout="column">
   <div>
     <div fxLayout="row" fxLayoutGap="5px">
       <div class="tab-header">
         <div [ngClass]="{'disabled': isRightNavOpen}" fxLayoutAlign="center center">
           <span>{{ contractCategory?.category?.category_name }}</span>
-          <div *ngIf="hoveredIndex === i && selectedIndex === null" fxFlex fxLayoutAlign="end center" [ngClass]="{'hidden': isRightNavOpen}">
+          <div  fxFlex fxLayoutAlign="end center" [ngClass]="{'hidden': isRightNavOpen}">
           <img *ngIf="!isRightNavOpen" matTooltip="Edit Category Name" class="save-icon" (click)="UpdateCategoryName(contractCategory?.category)" [src]="svgPath + 'edit-icon-blue.svg'" />
         </div>
         </div>

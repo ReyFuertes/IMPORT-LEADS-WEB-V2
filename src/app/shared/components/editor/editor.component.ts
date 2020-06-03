@@ -1,4 +1,4 @@
-import { uploadTermImage } from './../../../modules/contracts/store/actions/contracts.action';
+import { uploadTermImage, removeImageUploadState } from './../../../modules/contracts/store/actions/contracts.action';
 import { getUploadImageStateSelector } from './../../../modules/contracts/store/selectors/contracts.selector';
 import { take, map } from 'rxjs/operators';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
@@ -89,13 +89,16 @@ export class EditorComponent implements OnInit {
 
   ngOnInit() {
     this.store.pipe(select(getUploadImageStateSelector)).subscribe(res => {
-      if (res) {
+      if (res && this.meQuillRef) {
+        debugger
         /* display to editor */
         let range = this.meQuillRef.getSelection();
         this.meQuillRef.clipboard.dangerouslyPasteHTML(range.index, `<img src="${this.imageApiPath}${this.filename}" />`);
 
         /* update value to form */
         this.form.get(this.controlName).patchValue(this.meQuillRef.root.innerHTML);
+
+        this.store.dispatch(removeImageUploadState());
       }
     })
   }

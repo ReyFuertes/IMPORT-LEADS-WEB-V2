@@ -29,6 +29,9 @@ export const initialState: ContractsState = adapter.getInitialState({
 });
 const contractsReducer = createReducer(
   initialState,
+  on(removeImageUploadState, (state, action) => {
+    return Object.assign({}, state, { isImageReady: null })
+  }),
   on(addImageUploadState, (state, action) => {
     return Object.assign({}, state, { isImageReady: action.isImageReady })
   }),

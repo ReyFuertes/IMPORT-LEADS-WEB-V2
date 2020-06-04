@@ -1,4 +1,10 @@
 @import "src/styleguide/shared";
+il-editor {
+  margin-bottom: 15px;
+}
+.edit-description {
+  padding: 20px;
+}
 .mb-1 {
   margin-bottom: 10px;
 }
@@ -8,7 +14,6 @@
   font-style: italic;
 }
 .table-footer {
-  height: 40px;
   background-color: $color-white;
   padding: 10px;
   span {
@@ -27,36 +32,6 @@
 table {
   width: 100%;
 }
-tr.detail-row {
-  height: 0;
-}
-tr.element-row:not(.expanded-row):hover {
-  background: $color-white-1;
-}
-tr.element-row:not(.expanded-row):active {
-  background: $color-white-1;
-}
-.element-row td {
-  border-bottom-width: 0;
-}
-.element-detail {
-  overflow: hidden;
-  display: flex;
-  min-height: 150px;
-  max-height: 100%;
-  > div {
-    &:first-child {
-      margin-top: 20px;
-    }
-    &:nth-child(2) {
-      margin-top: 20px;
-    }
-  }
-}
-.element-detail__btn,
-.element-detail__name {
-  margin-bottom: 20px;
-}
 ::ng-deep {
   .mat-tab-header,
   .mat-tab-nav-bar {
@@ -69,7 +44,17 @@ tr.element-row:not(.expanded-row):active {
     box-shadow: $box-shadow;
   }
 }
+.edit-content {
+  height: 20px;
+  margin-top: 15px;
+}
+.btn-edit__actions {
+  margin-bottom: 20px;
+}
 :host ::ng-deep {
+  td.mat-cell {
+    vertical-align: top;
+  }
   .row-detail .mat-form-field-appearance-legacy .mat-form-field-underline {
     height: 0;
     display: none !important;
@@ -77,11 +62,27 @@ tr.element-row:not(.expanded-row):active {
   td.mat-cell {
     &:first-child {
       width: 300px;
+      .text-edit, .text-display {
+        padding-top: 15px;
+      }
+    }
+    &:nth-child(2) {
+      > div > div {
+        &:first-child {
+          padding-top: 14px;
+        }
+        &:nth-child(2) {
+          position: relative;
+          top: -3px;
+        }
+      }
+    }
+    > div {
+      min-height: 32px;
     }
   }
   td.mat-cell:not(:last-child) > div {
     margin-right: 20px;
-    height: 40px;
   }
   mat-footer-row,
   mat-header-row,

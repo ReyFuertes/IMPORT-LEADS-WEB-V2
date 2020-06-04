@@ -66,7 +66,10 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
     })
   }
 
-  public mouseOver = (event: any, col: string) => this.selectedRow = `${event.id}${col}`;
+  public mouseOver = (event: any, col: string) => {
+    this.selectedRow = `${event.id}${col}`;
+    console.log(this.selectedRow);
+  };
 
   public mouseOut = () => this.selectedRow = null;
 
@@ -77,6 +80,14 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
         payload: { id, contract_tag: tag }
       }));
     };
+  }
+
+  public onEdit(element: any, col: string): void {
+    this.selectedRow = null;
+    this.selectedCol = `${element.id}${col}`;
+
+    /* patch value during expand to prepare for editing */
+    this.form.patchValue(element);
   }
 
   ngOnInit() {
@@ -92,6 +103,8 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   ngAfterViewInit(): void {
     this.dataSource = new MatTableDataSource<any>(this.contract_category.terms);
   }
+
+  public getColUuid = (element: any, col: string) => `${element.id}${col}`;
 
   public getTerm = (term: IContractTerm) => this.selectedTerm = term;
 
@@ -151,7 +164,8 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
     }
 
     setTimeout(() => {
-      this.onPreview = true;
+      this.selectedRow = null;
+      this.selectedCol =null;
     }, 1000);
   }
 

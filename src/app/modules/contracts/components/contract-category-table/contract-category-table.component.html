@@ -1,60 +1,52 @@
 <div class="category-table">
-  <table mat-table [dataSource]="dataSource" multiTemplateDataRows>
+  <table mat-table [dataSource]="dataSource">
     <!-- rows and columns -->
     <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay; let i = index">
       <th mat-header-cell *matHeaderCellDef> {{column}}</th>
-      <td mat-cell *matCellDef="let element">
-        <div [ngClass]="{'disabled': isRightNavOpen, 'hidden': i == (columnsToDisplay.length - 1)}" fxLayoutAlign="start center" fxLayoutGap="20px" (mouseover)="mouseOver(element, column)" (mouseleave)="mouseOut()">
-          <div fxFlex fxLayout="row">
-            <div [ngClass]="{'write-term': removeEmptyChar(element[column]) == ''}" fxLayoutAlign="start center">
-              <div [innerHTML]="getDefaultTerm(element[column], column, i !== (columnsToDisplay.length - 1))"></div>
-            </div>
-            <div fxFlex fxLayoutAlign="end center" [ngClass]="{'hidden': isRightNavOpen}">
-              <img *ngIf="
-              element.id + 'term_description' === selectedRow ||
-              element.id + 'term_name' === selectedRow" (click)="onExpand(element, column)" matTooltip="Edit {{ getToolTipMsg(column) | titlecase }}" [src]="svgPath + 'edit-icon-blue.svg'">
-            </div>
+      <td mat-cell *matCellDef="let element" (mouseover)="mouseOver(element, column)" (mouseout)="mouseOut()">
+
+        <!-- 1st and 2nd column -->
+        <div *ngIf="i !== (columnsToDisplay.length - 1)" fxLayout="row" fxLayoutAlign="center start">
+          <div class="text-display" fxFlex [ngClass]="{'hidden': !(selectedCol !== getColUuid(element, column))}" fxLayoutAlign="start center">
+            <div [innerHTML]="element[column]"></div>
+          </div>
+
+          <!-- edit term name -->
+          <div *ngIf="selectedCol == getColUuid(element, column) && i === 0" fxLayout="column">
+            <il-input [form]="form" isFloatLabel="'true'" [controlName]="column" placeholder="Name"></il-input>
+            <div *ngTemplateOutlet="detailBtnActions"></div>
+          </div>
+
+          <!-- edit description -->
+          <div class="edit-description" *ngIf="selectedCol == getColUuid(element, column) && i === 1" fxLayout="column">
+            <il-editor [form]="form" [controlName]="'term_description'" [entityId]="element?.id" (keydown.Space)="$event.stopImmediatePropagation()" (keydown.Enter)="$event.stopImmediatePropagation()"></il-editor>
+            <div *ngTemplateOutlet="detailBtnActions"></div>
+          </div>
+
+          <!-- edit button -->
+          <div class="text-edit" fxFlex="15px" fxLayoutAlign="end center">
+            <img [ngClass]="{'hidden': isRightNavOpen || selectedCol || (!selectedCol && !selectedRow) || selectedRow !== getColUuid(element, column), 'edit-content': i === 1}" (click)="onEdit(element, column)" [src]="svgPath + 'edit-icon-blue.svg'">
+
+            <!-- <img *ngIf="selectedRow === getColUuid(element, column)" (click)="onEdit(element, column)" [src]="svgPath + 'edit-icon-blue.svg'"> -->
           </div>
         </div>
 
-        <div [ngClass]="{'hidden': i !== (columnsToDisplay.length - 1)}" fxLayoutAlign="start center" fxLayoutGap="10px">
+        <div *ngIf="i === (columnsToDisplay.length - 1)" fxLayoutAlign="start center" fxLayoutGap="10px">
+          <!-- dropdown terms -->
           <il-dropdown-select-search [ngClass]="{'disabled': isRightNavOpen}" matTooltip="Select Tag" *ngIf="($tags | async).length > 0" (click)="getTerm(element)" [placeholder]="'Select Tag'" [items]="($tags | async)"
             (valueEmitter)="onTagUpdate($event, element?.id)" [selectedItem]="element?.contract_tag?.id"></il-dropdown-select-search>
+
+          <!-- delete term -->
           <img matTooltip="Delete Term" (click)="onDeleteTerm(element?.id)" [ngClass]="{'hidden': isRightNavOpen}" [src]="svgPath + 'delete-icon-red.svg'">
+
           <p-inputSwitch [ngClass]="{'hidden': !isRightNavOpen}"></p-inputSwitch>
         </div>
       </td>
     </ng-container>
 
-    <!-- collapsed detail -->
-    <ng-container matColumnDef="expandedDetail">
-      <td mat-cell class="row-detail" *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
-        <div class="element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'" fxLayoutGap="20px">
-          <div fxFlex="23.5">
-            <span *ngIf="selectedCol && (element?.id + 'term_name') !== selectedCol">{{ element?.term_name }}</span>
-            <div *ngIf="(element?.id + 'term_name') == selectedCol">
-              <il-input hasBorder="true" [form]="form" isFloatLabel="'true'" [controlName]="'term_name'" placeholder="Name"></il-input>
-              <div *ngTemplateOutlet="detailBtnActions"></div>
-            </div>
-          </div>
-          <div fxFlex>
-            <div *ngIf="selectedCol && (element?.id + 'term_description') !== selectedCol || onPreview === true" [innerHTML]="element?.term_description"></div>
-            <div *ngIf="(element?.id + 'term_description') == selectedCol && onPreview === false" fxLayout="column" fxLayoutGap="20px">
-              <il-editor [form]="form" [controlName]="'term_description'" [entityId]="element?.id" (keydown.Space)="$event.stopImmediatePropagation()" (keydown.Enter)="$event.stopImmediatePropagation()"></il-editor>
-              <div *ngTemplateOutlet="detailBtnActions"></div>
-            </div>
-            <!-- just show close button when previewing -->
-            <button *ngIf="onPreview" mat-flat-button class="il-button default mb-1" (click)="onClose(pnl)">Cancel</button>
-          </div>
-        </div>
-      </td>
-    </ng-container>
-
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-    <tr mat-row *matRowDef="let row; let element; columns: columnsToDisplay;" class="element-row" [ngClass]="{'element': true, 'hidden': element.id + 'term_description' == selectedCol
-  || element.id + 'term_name' == selectedCol}">
+    <tr mat-row *matRowDef="let row; let element; columns: columnsToDisplay;">
     </tr>
-    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
   </table>
 
   <!-- footer actions -->
@@ -84,7 +76,7 @@
 </div>
 
 <ng-template #detailBtnActions>
-  <div class="element-detail__name" fxLayoutGap="10px">
+  <div class="btn-edit__actions" fxLayoutGap="10px">
     <button type="button" mat-flat-button class="il-button default" (click)="onClose(pnl)">Cancel</button>
     <button type="button" mat-flat-button class="il-button primary" (click)="onSave($event)">Save</button>
   </div>

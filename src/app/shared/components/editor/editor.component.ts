@@ -92,7 +92,7 @@ export class EditorComponent implements OnInit {
       if (res && this.meQuillRef) {
         /* display to editor */
         let range = this.meQuillRef.getSelection();
-        this.meQuillRef.clipboard.dangerouslyPasteHTML(range.index, `<img src="${this.imageApiPath}${this.filename}" />`);
+        this.meQuillRef.clipboard.dangerouslyPasteHTML(range.index, `<img width="300px" src="${this.imageApiPath}${this.filename}" />`);
 
         /* update value to form */
         this.form.get(this.controlName).patchValue(this.meQuillRef.root.innerHTML);

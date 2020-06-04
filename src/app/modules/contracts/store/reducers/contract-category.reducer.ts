@@ -15,9 +15,11 @@ const reducer = createReducer(
   initialState,
   on(updateContractTermSuccess, (state, action) => {
     let entities = Object.values(state.entities);
+    /* update the term detail on inline editing in category tab */
     entities.forEach(entity => {
       entity && entity.terms.forEach(term => {
         if(term.id === action.updated.id) {
+          term.term_name = action.updated.term_name;
           term.term_description = action.updated.term_description;
         }
       });

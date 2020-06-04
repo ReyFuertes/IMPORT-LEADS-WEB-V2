@@ -92,6 +92,7 @@ export class EditorComponent implements OnInit {
       if (res && this.meQuillRef) {
         /* display to editor */
         let range = this.meQuillRef.getSelection();
+        /* set a default with for image so it will not ruin the preview */
         this.meQuillRef.clipboard.dangerouslyPasteHTML(range.index, `<img width="300px" src="${this.imageApiPath}${this.filename}" />`);
 
         /* update value to form */

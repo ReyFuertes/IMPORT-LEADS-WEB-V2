@@ -66,10 +66,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
     })
   }
 
-  public mouseOver = (event: any, col: string) => {
-    this.selectedRow = `${event.id}${col}`;
-    console.log(this.selectedRow);
-  };
+  public mouseOver = (event: any, col: string) =>  this.selectedRow = `${event.id}${col}`;
 
   public mouseOut = () => this.selectedRow = null;
 
@@ -141,7 +138,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
 
   public createTerm(): void {
     const dialogRef = this.dialog.open(ContractCategoryTermDialogComponent, {
-      height: '270px'
+      height: '170px'
     });
     dialogRef.afterClosed().subscribe((result: IContractTerm) => {
       if (result) {

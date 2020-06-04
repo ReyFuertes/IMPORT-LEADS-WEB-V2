@@ -66,16 +66,21 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
     })
   }
 
-  public mouseOver = (event: any, col: string) =>  this.selectedRow = `${event.id}${col}`;
+  public mouseOver = (event: any, col: string) => this.selectedRow = `${event.id}${col}`;
 
   public mouseOut = () => this.selectedRow = null;
 
-  public onTagUpdate(event: any, id: string): void {
+  public onTagUpdate(event: any, element: any): void {
     if (event) {
-      const tag = { id: event };
-      this.store.dispatch(updateContractTerm({
-        payload: { id, contract_tag: tag }
-      }));
+        this.store.dispatch(updateContractTerm({
+          payload: {
+            ...{
+              id: element.id,
+              term_name: element.term_name,
+              term_description: element.term_description
+            }, contract_tag: { id: event }
+          }
+        }));
     };
   }
 
@@ -162,7 +167,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
 
     setTimeout(() => {
       this.selectedRow = null;
-      this.selectedCol =null;
+      this.selectedCol = null;
     }, 1000);
   }
 

@@ -34,7 +34,7 @@
         <div *ngIf="i === (columnsToDisplay.length - 1)" fxLayoutAlign="start center" fxLayoutGap="10px">
           <!-- dropdown terms -->
           <il-dropdown-select-search [ngClass]="{'disabled': isRightNavOpen}" matTooltip="Select Tag" *ngIf="($tags | async).length > 0" (click)="getTerm(element)" [placeholder]="'Select Tag'" [items]="($tags | async)"
-            (valueEmitter)="onTagUpdate($event, element?.id)" [selectedItem]="element?.contract_tag?.id"></il-dropdown-select-search>
+            (valueEmitter)="onTagUpdate($event, element)" [selectedItem]="element?.contract_tag?.id"></il-dropdown-select-search>
 
           <!-- delete term -->
           <img matTooltip="Delete Term" (click)="onDeleteTerm(element?.id)" [ngClass]="{'hidden': isRightNavOpen}" [src]="svgPath + 'delete-icon-red.svg'">

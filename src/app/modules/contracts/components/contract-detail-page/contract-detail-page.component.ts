@@ -1,6 +1,10 @@
+import { addToChecklist } from './../../store/actions/contract-checklist.action';
+import { getContractChecklistSelector } from './../../store/selectors/contract-checklist.selector';
+import { sortByAsc } from 'src/app/shared/util/sort';
+import { IProduct } from './../../../products/products.model';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { ReOrderImages, deleteContract } from './../../store/actions/contracts.action';
-import { tap } from 'rxjs/operators';
+import { tap, take } from 'rxjs/operators';
 import { getContractCategorySelector } from './../../store/selectors/contract-category.selector';
 import { addContractCategory, loadContractCategory } from './../../store/actions/contract-category.action';
 import { ContractCategoryDialogComponent } from '../../../dialogs/components/contract-category/contract-category-dialog.component';
@@ -10,7 +14,7 @@ import { User } from './../../../users/users.models';
 import { AppState } from './../../../../store/app.reducer';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
-import { IContract, IProductImage, IContractCategory, ICategory } from './../../contract.model';
+import { IContract, IProductImage, IContractCategory, ICategory, IContractChecklist, IContractCategoryTerm } from './../../contract.model';
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
@@ -35,10 +39,9 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   public svgPath: string = environment.svgPath;
   public imgPath: string = environment.imgPath;
   public options: Array<{ id: number, label: string, icon: string, action?: () => void }>;
-  public _showTabActions: boolean = false;
   public showRightNav: boolean = false;
   public dragStartSpecs: boolean = false;
-  public imgUrl: string = `${environment.apiUrl}contracts/image/`;
+  public imgUrl: string = environment.apiImagePath;
   public contractImages: IProductImage[];
   public images: any[];
   public contract: IContract;
@@ -117,7 +120,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
           this.store.dispatch(loadContractCategory({ id: c.id }));
 
           this.form.patchValue(c);
-          this.contractImages = c.images.sort((a, b) => this.orderByAsc(a, b));
+          this.contractImages = c.images.sort((a, b) => sortByAsc(a, b, 'position'));
         }
       });
     }
@@ -125,22 +128,34 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     this.store.pipe(select(getContractCategorySelector))
       .pipe(tap(cc => this.contract_categories = cc))
       .subscribe();
+
+
+    this.store.pipe(select(getContractChecklistSelector)).subscribe(res => {
+      console.log(res);
+    })
+  }
+
+  public onToggleTerms(categoryTerms: IContractCategoryTerm): void {
+    console.log(categoryTerms);
+  }
+
+  public onCheckListing(products: IProduct[]): void {
+    const payload: IContractChecklist = {
+      contract_product_ids: [...products.map(p => p.id)]
+    }
+    console.log(payload);
+    this.store.dispatch(addToChecklist({ payload }));
   }
 
   private onDeleteContract = (): void => {
-    const dialogRef = this.dialog.open(ConfirmationComponent, {
-      width: '410px'
-    });
+    const dialogRef = this.dialog.open(ConfirmationComponent, { width: '410px' });
     dialogRef.afterClosed().subscribe(result => {
       if (result && this.form.get('id').value) {
         this.store.dispatch(deleteContract({ id: this.form.get('id').value }));
-
         setTimeout(() => {
           this.router.navigateByUrl('/dashboard/contracts');
         });
-      } else {
-        //error notification
-      }
+      } else { }
     });
   }
 
@@ -180,19 +195,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     return user ? `${user.firstname} ${user.lastname}` : '';
   }
 
-  private orderByAsc(a, b): any {
-    return (a, b) => {
-      if (a.position > b.position) return 1;
-      if (a.position < b.position) return -1;
-      return 0;
-    }
-  }
-
   public getBg = (url: string): string => `url(${url})`;
-
-  public showTabActions(): void {
-    this._showTabActions != this._showTabActions;
-  }
 
   public createUpdateTemplate = (): void => {
     this.showRightNav = !this.showRightNav;

@@ -1,3 +1,4 @@
+import { IContractTerm, IContractCategoryTerm } from './../../contract.model';
 import { loadContractCategory } from '../../store/actions/contract-category.action';
 import { AppState } from '../../../../store/app.reducer';
 import { Store } from '@ngrx/store';
@@ -33,6 +34,9 @@ export class ContractCategoryComponent extends GenericRowComponent implements On
   public inCheckListing: boolean = false;
   @Output()
   public removeProductSpecEmitter = new EventEmitter<number>();
+
+  @Output()
+  public categoryTermEmitter = new EventEmitter<IContractCategoryTerm>();
 
   constructor(private store: Store<AppState>, public dialog: MatDialog) {
     super();

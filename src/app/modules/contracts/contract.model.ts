@@ -1,22 +1,31 @@
 import { ITag } from './../tags/tags.model';
 import { IProduct } from './../products/products.model';
-import { IVenue } from './../venues/venues.models';
 import { IUser } from './../../models/user.model';
 
-export class IContractTerm {
+export interface IContractCategoryTerm {
+  category_id: string;
+  term_ids?: string[];
+}
+
+export interface IContractChecklist {
+  id?: string;
+  contract_product_ids: string[];
+  contract_category_term?: IContractCategoryTerm[];
+}
+export interface IContractTerm {
   id?: string;
   term_name?: string;
   term_description?: string;
   contract_category?: IContractCategory;
   contract_tag?: ITag
 }
-export class IContractCategory {
+export interface IContractCategory {
   id?: string;
   category?: ICategory;
   contract?: IContract;
   terms?: IContractTerm[];
 }
-export class ICategory {
+export interface ICategory {
   id?: string;
   category_name: string;
 }

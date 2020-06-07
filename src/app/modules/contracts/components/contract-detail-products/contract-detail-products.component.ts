@@ -9,7 +9,7 @@ import { ConfirmationComponent } from './../../../dialogs/components/confirmatio
 import { MatDialog } from '@angular/material/dialog';
 import { ISimpleItem } from './../../../../shared/generics/generic.model';
 import { environment } from './../../../../../environments/environment';
-import { Component, OnInit, Input, ChangeDetectorRef, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef, AfterViewInit, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { take, takeUntil } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
@@ -35,14 +35,16 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
   public isDisabled: boolean = false;
   public initInputProduct: boolean = false;
   public selectedProducts: IProduct[] = [];
+  public $contractProducts: Observable<IContractProduct[]>;
+  public $products: Observable<IProduct[]>;
+  public children: any[];
 
   @Input()
   public inCheckListing: boolean = false;
   @Input()
   public contract: IContract;
-  public $contractProducts: Observable<IContractProduct[]>;
-  public $products: Observable<IProduct[]>;
-  public children: any[];
+  @Output()
+  public checklistProductsEmitter = new EventEmitter<IProduct[]>();
 
   constructor(private store: Store<AppState>, private dialog: MatDialog, private fb: FormBuilder, private cdRef: ChangeDetectorRef) {
     this.form = this.fb.group({
@@ -250,10 +252,12 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
       this.formSubProdsArr.push(item);
     });
 
-    /* collect the selected product */
-    if (!this.selectedProducts.includes(product))
+    /* emit the selected product/s */
+    if (!this.selectedProducts.includes(product)) {
       this.selectedProducts.push(product);
-    console.log(this.selectedProducts);
+    }
+    this.checklistProductsEmitter.emit(this.selectedProducts);
+
     this.hasSubProducts = this.formSubProdsArr && this.formSubProdsArr.length > 0;
     this.isEditProduct = true;
   }

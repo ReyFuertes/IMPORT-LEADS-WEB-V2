@@ -15,7 +15,7 @@
     <mat-tab-group class="il-tab">
       <mat-tab class="tab-1">
         <ng-template matTabContent>
-          <il-contract-category-table [inCheckListing]="inCheckListing" [contract_category]="contractCategory"></il-contract-category-table>
+          <il-contract-category-table (categoryTermEmitter)="categoryTermEmitter.emit($event)" [inCheckListing]="inCheckListing" [contract_category]="contractCategory"></il-contract-category-table>
         </ng-template>
       </mat-tab>
     </mat-tab-group>

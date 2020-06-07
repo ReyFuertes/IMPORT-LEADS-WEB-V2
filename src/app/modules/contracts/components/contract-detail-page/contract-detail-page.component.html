@@ -50,14 +50,14 @@
       </div>
       <!-- contract products -->
       <div *ngIf="($contract | async)" class="card-row">
-        <il-contract-detail-products [contract]="($contract | async)" [inCheckListing]="showRightNav"></il-contract-detail-products>
+        <il-contract-detail-products (checklistProductsEmitter)="onCheckListing($event)" [contract]="($contract | async)" [inCheckListing]="showRightNav"></il-contract-detail-products>
       </div>
     </div>
   </mat-card>
   <!-- contract category tabs -->
   <div fxLayout="column" fxLayoutGap="20px" cdkDropList (cdkDropListDropped)="dropSpecs($event)">
     <div *ngFor="let category of contract_categories" fxLayoutGap="20px">
-      <il-contract-category [inCheckListing]="showRightNav" [contractCategory]="category" (removeProductSpecEmitter)="handleRemoveProductSpecs($event)"></il-contract-category>
+      <il-contract-category (categoryTermEmitter)="onToggleTerms($event)" [inCheckListing]="showRightNav" [contractCategory]="category" (removeProductSpecEmitter)="handleRemoveProductSpecs($event)"></il-contract-category>
     </div>
   </div>
 

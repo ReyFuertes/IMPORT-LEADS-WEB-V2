@@ -26,8 +26,6 @@
           <!-- edit button -->
           <div class="text-edit" fxFlex="15px" fxLayoutAlign="end center">
             <img [ngClass]="{'hidden': inCheckListing || selectedCol || (!selectedCol && !selectedRow) || selectedRow !== getColUuid(element, column), 'edit-content': i === 1}" (click)="onEdit(element, column)" [src]="svgPath + 'edit-icon-blue.svg'">
-
-            <!-- <img *ngIf="selectedRow === getColUuid(element, column)" (click)="onEdit(element, column)" [src]="svgPath + 'edit-icon-blue.svg'"> -->
           </div>
         </div>
 
@@ -39,7 +37,7 @@
           <!-- delete term -->
           <img matTooltip="Delete Term" (click)="onDeleteTerm(element?.id)" [ngClass]="{'hidden': inCheckListing}" [src]="svgPath + 'delete-icon-red.svg'">
 
-          <p-inputSwitch [ngClass]="{'hidden': !inCheckListing}"></p-inputSwitch>
+          <p-inputSwitch (onChange)="onChange($event, element)" [ngClass]="{'hidden': !inCheckListing}"></p-inputSwitch>
         </div>
       </td>
     </ng-container>

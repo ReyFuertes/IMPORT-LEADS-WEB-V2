@@ -1,7 +1,7 @@
-import { addContractTerm, deleteContractTerm, updateContractTerm, saveTermImageDetail } from './../../store/actions/contract-term.actions';
-import { loadContractCategory, updateContractCategorySuccess, updateContractCategory } from './../../store/actions/contract-category.action';
+import { addContractTerm, deleteContractTerm, updateContractTerm } from './../../store/actions/contract-term.actions';
+import { loadContractCategory } from './../../store/actions/contract-category.action';
 import { MatTableDataSource } from '@angular/material/table';
-import { IContractTerm } from './../../contract.model';
+import { IContractTerm, IContractCategoryTerm } from './../../contract.model';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { getTagsSelector } from '../../../tags/store/selectors/tags.selector';
 import { AppState } from '../../../../store/app.reducer';
@@ -14,7 +14,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ISimpleItem } from '../../../../shared/generics/generic.model';
 import { environment } from '../../../../../environments/environment';
 import { trigger, transition, style, state, animate } from '@angular/animations';
-import { Component, OnInit, Input, OnChanges, SimpleChanges, AfterViewInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, AfterViewInit, ViewEncapsulation, EventEmitter, Output } from '@angular/core';
 import { map, take } from 'rxjs/operators';
 import { IContractCategory } from '../../contract.model';
 import { deleteContractCategory } from '../../store/actions/contract-category.action';
@@ -50,11 +50,15 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   public formTag: FormGroup;
   public onPreview: boolean = false;
   public selectedRow: any;
+  public categoryTerm: IContractCategoryTerm;
+  public selectedTerms: string[] = [];
 
   @Input()
   public inCheckListing: boolean = false;
   @Input()
   public contract_category: IContractCategory;
+  @Output()
+  public categoryTermEmitter = new EventEmitter<IContractCategoryTerm>();
 
   constructor(private store: Store<AppState>, private dialog: MatDialog, private fb: FormBuilder) {
     super();
@@ -66,21 +70,43 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
     })
   }
 
+  public onChange(event: any, term: IContractTerm): void {
+    if (event && this.contract_category) {
+      /* check if there are existing ids or remove */
+      if (!this.selectedTerms.includes(term.id)) {
+        this.selectedTerms.push(term.id);
+      } else {
+        const index = this.selectedTerms.indexOf(term.id);
+        if (index > -1) {
+          this.selectedTerms.splice(index, 1);
+        }
+      }
+      /* if there is no term then do not emit */
+      if (this.selectedTerms && this.selectedTerms.length > 0) {
+        this.categoryTerm = {
+          category_id: this.contract_category.id,
+          term_ids: this.selectedTerms
+        }
+        this.categoryTermEmitter.emit(this.categoryTerm);
+      }
+    }
+  }
+
   public mouseOver = (event: any, col: string) => this.selectedRow = `${event.id}${col}`;
 
   public mouseOut = () => this.selectedRow = null;
 
-  public onTagUpdate(event: any, element: any): void {
+  public onTagUpdate(event: any, element: IContractTerm): void {
     if (event) {
-        this.store.dispatch(updateContractTerm({
-          payload: {
-            ...{
-              id: element.id,
-              term_name: element.term_name,
-              term_description: element.term_description
-            }, contract_tag: { id: event }
-          }
-        }));
+      this.store.dispatch(updateContractTerm({
+        payload: {
+          ...{
+            id: element.id,
+            term_name: element.term_name,
+            term_description: element.term_description
+          }, contract_tag: { id: event }
+        }
+      }));
     };
   }
 

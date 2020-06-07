@@ -17,7 +17,7 @@ import { FormBuilder } from '@angular/forms';
 import { IContract, IProductImage, IContractCategory, ICategory, IContractChecklist, IContractCategoryTerm } from './../../contract.model';
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from './../../../../../environments/environment';
-import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { ContractAddDialogComponent } from 'src/app/modules/dialogs/components/contracts-add/contract-add-dialog.component';
 import { ContractTemplateDialogComponent } from 'src/app/modules/dialogs/components/contract-template/contract-template-dialog.component';
 import { GenericPageDetailComponent } from 'src/app/shared/generics/generic-page-detail';
@@ -33,7 +33,7 @@ import * as _ from 'lodash';
   styleUrls: ['./contract-detail-page.component.scss']
 })
 
-export class ContractDetailPageComponent extends GenericPageDetailComponent<IContract> implements OnInit {
+export class ContractDetailPageComponent extends GenericPageDetailComponent<IContract> implements OnInit, OnChanges {
   public id: string;
   public $contract: Observable<IContract>;
   public svgPath: string = environment.svgPath;
@@ -46,6 +46,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   public images: any[];
   public contract: IContract;
   public contract_categories: IContractCategory[];
+  public contractChecklist: IContractChecklist;
 
   @Output()
   public openNavChange = new EventEmitter<boolean>();
@@ -131,20 +132,34 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
 
 
     this.store.pipe(select(getContractChecklistSelector)).subscribe(res => {
-      console.log(res);
+      console.log('checklist', res);
     })
   }
 
+  public ngOnChanges(changes: SimpleChanges): void {
+  }
+
   public onToggleTerms(categoryTerms: IContractCategoryTerm): void {
-    console.log(categoryTerms);
+    /* checklist should have product ids */
+    if (this.contractChecklist.product_ids && this.id) {
+      this.contractChecklist = Object.assign({},
+        this.contractChecklist,
+        {
+          category_term: categoryTerms
+        })
+        console.log(this.contractChecklist);
+      this.store.dispatch(addToChecklist({ payload: this.contractChecklist }));
+    }
   }
 
   public onCheckListing(products: IProduct[]): void {
-    const payload: IContractChecklist = {
-      contract_product_ids: [...products.map(p => p.id)]
+    const productIds = [...products.map(p => p.id)];
+    if (productIds && productIds.length > 0) {
+      this.contractChecklist = {
+        contract_id: this.id,
+        product_ids: productIds
+      }
     }
-    console.log(payload);
-    this.store.dispatch(addToChecklist({ payload }));
   }
 
   private onDeleteContract = (): void => {

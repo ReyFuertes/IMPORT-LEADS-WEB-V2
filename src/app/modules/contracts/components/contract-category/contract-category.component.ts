@@ -48,7 +48,7 @@ export class ContractCategoryComponent extends GenericRowComponent implements On
     if (changes && changes.contract_category && changes.contract_category.currentValue) {
       this.contractCategory = changes.contract_category.currentValue;
     }
-    this.inCheckListing = this.inCheckListing;
+    this.inCheckListing = changes.inCheckListing.currentValue;
   }
 
   public addTitle(): void {

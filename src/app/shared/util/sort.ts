@@ -1,6 +1,13 @@
-export function sortCreatedAt(a, b) {
-  if (a.created_at < b.created_at) return 1;
-  if (a.created_at > b.created_at) return -1;
+export function sortByDesc(a, b, prop) {
+  if (a[prop] < b[prop]) return 1;
+  if (a[prop] > b[prop]) return -1;
   return 0;
 };
 
+export function sortByAsc(a, b, prop): any {
+  return (a, b) => {
+    if (a[prop] > b[prop]) return 1;
+    if (a[prop] < b[prop]) return -1;
+    return 0;
+  }
+}

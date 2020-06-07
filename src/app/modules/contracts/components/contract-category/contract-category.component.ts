@@ -2,7 +2,6 @@ import { loadContractCategory } from '../../store/actions/contract-category.acti
 import { AppState } from '../../../../store/app.reducer';
 import { Store } from '@ngrx/store';
 import { ICategory } from '../../contract.model';
-import { ConfirmationComponent } from '../../../dialogs/components/confirmation/confirmation.component';
 import { ContractCategoryTitleDialogComponent } from '../../../dialogs/components/contract-category-title/contract-category-title-dialog.component';
 import { ContractCategoryDialogComponent } from '../../../dialogs/components/contract-category/contract-category-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -23,19 +22,15 @@ import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
 
 export class ContractCategoryComponent extends GenericRowComponent implements OnInit, OnChanges {
   public svgPath: string = environment.svgPath;
-  public _showTabActions: boolean = false;
   public panels: Array<{ id: number, title: string, description: string }> = [];
   public tabTitle: string;
-  @Input()
   public hoveredIndex: number | null = null;
   public selectedIndex: number | null = null;
-  @Input()
-  public specTitle: string = 'Specification title';
+  public showToggle: boolean = false;
   @Input()
   public contractCategory: IContractCategory;
   @Input()
   public inCheckListing: boolean = false;
-  public showToggle: boolean = false;
   @Output()
   public removeProductSpecEmitter = new EventEmitter<number>();
 

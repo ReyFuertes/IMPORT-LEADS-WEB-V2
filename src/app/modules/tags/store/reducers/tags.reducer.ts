@@ -3,7 +3,7 @@ import { loadTagsSuccess, addTagSuccess, deleteTagSuccess, updateTagSuccess } fr
 import { ITag, ITagQuestion } from './../../tags.model';
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
-import { sortCreatedAt } from 'src/app/shared/util/sort';
+import { sortByDesc } from 'src/app/shared/util/sort';
 import * as _ from 'lodash';
 
 export interface TagsState extends EntityState<ITag> {
@@ -64,5 +64,5 @@ export function TagsReducer(state: TagsState, action: Action) {
 }
 export const getTags = (state: TagsState) => {
   const contracts: ITag[] = state && state.entities ? Object.values(state.entities) : null;
-  return contracts && contracts.sort((a: ITag, b: ITag) => sortCreatedAt(a, b));
+  return contracts && contracts.sort((a: ITag, b: ITag) => sortByDesc(a, b, 'created_at'));
 };

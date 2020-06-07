@@ -3,7 +3,7 @@ import { loadProducts, loadProductsSuccess, addProductSuccess, deleteProductSucc
 import { IProduct } from './../products.model';
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
-import { sortCreatedAt } from 'src/app/shared/util/sort';
+import { sortByDesc } from 'src/app/shared/util/sort';
 
 export interface ProductsState extends EntityState<IProduct> {
 }
@@ -45,5 +45,5 @@ export const getAllProducts = (state: ProductsState) => {
       updated_at: p.updated_at
     }
   })
-  return products; //.sort((a: IProduct, b: IProduct) => sortCreatedAt(a, b));
+  return products; //.sort((a: IProduct, b: IProduct) => sortByDesc(a, b, 'created_at'));
 };

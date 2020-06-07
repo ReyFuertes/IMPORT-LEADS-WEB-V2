@@ -1,5 +1,5 @@
 import { updateContractTermSuccess } from './../actions/contract-term.actions';
-import { sortCreatedAt } from 'src/app/shared/util/sort';
+import { sortByDesc } from 'src/app/shared/util/sort';
 import { ContractModuleState } from './index';
 import { addContractCategorySuccess, loadContractCategorySuccess, deleteContractCategorySuccess } from './../actions/contract-category.action';
 import { IContractCategory } from './../../contract.model';
@@ -41,5 +41,5 @@ export function ContractCategoryReducer(state: ContractCategoryState, action: Ac
 }
 export const getContractCategory = (state: ContractModuleState) => {
   const contracts: IContractCategory[] = state && state.contractCategory.entities ? Object.values(state.contractCategory.entities) : null;
-  return contracts && contracts.sort((a: IContractCategory, b: IContractCategory) => sortCreatedAt(a, b));
+  return contracts && contracts.sort((a: IContractCategory, b: IContractCategory) => sortByDesc(a, b, 'created_at'));
 };

@@ -1,34 +1,34 @@
 <div *ngIf="form" class="products" fxFlex fxLayout="column" fxLayoutGap="20px">
-  <div *ngIf="!isRightNavOpen && productPillsArr" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+  <div *ngIf="!inCheckListing && productPillsArr" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
     <div class="img-box">
       <img [src]="svgPath + 'doc-icon-blue.svg'" />
     </div>
     <h2>Products</h2>
   </div>
   <div class="cp-container" fxLayout="column">
-    <p *ngIf="isRightNavOpen && productPillsArr && productPillsArr.length > 0">
+    <p *ngIf="inCheckListing && productPillsArr && productPillsArr.length > 0">
       Select the product to select the related terms that you want to inspect
     </p>
 
     <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="15px">
       <ng-container *ngFor="let item of ($contractProducts | async); let i = index;">
         <!-- parent -->
-        <il-pill [state]="state" [reset]="!isRightNavOpen" (deSelectEmitter)="deSelectChange()" (stateEmitter)="removeSelection()" (click)="onEdit(item)"
-          [enabled]="!isRightNavOpen ||isRightNavOpen && (item?.sub_products && !item?.sub_products.length > 0)" [item]="fmtToSimpleItem(item)" [enableHighlight]="true" (removeEmitter)="onRemoveProduct(item)" [selectable]="true">
+        <il-pill [state]="state" [reset]="!inCheckListing" (deSelectEmitter)="deSelectChange()" (stateEmitter)="removeSelection()" (click)="onEdit(item)"
+          [enabled]="!inCheckListing ||inCheckListing && (item?.sub_products && !item?.sub_products.length > 0)" [item]="fmtToSimpleItem(item)" [enableHighlight]="true" (removeEmitter)="onRemoveProduct(item)" [selectable]="true">
         </il-pill>
         <!-- child -->
-        <il-pill size="small" [reset]="!isRightNavOpen" [enabled]="isRightNavOpen" *ngFor="let sub of item?.sub_products; let i = index;" [item]="{label: sub.product_name, value: item.id}" [enableHighlight]="true"
+        <il-pill size="small" [reset]="!inCheckListing" [enabled]="inCheckListing" *ngFor="let sub of item?.sub_products; let i = index;" [item]="{label: sub.product_name, value: item.id}" [enableHighlight]="true"
           (removeEmitter)="onRemoveSubProduct(sub)" [selectable]="true">
         </il-pill>
       </ng-container>
     </div>
 
     <!-- product with/without set -->
-    <div *ngIf="!isRightNavOpen || isNavOpenAndEdit" class="product-section" fxLayout="row" [formGroup]="form" fxLayoutGap="20px">
+    <div *ngIf="!inCheckListing || (isNavOpenAndEdit && !inCheckListing)" class="product-section" fxLayout="row" [formGroup]="form" fxLayoutGap="20px">
       <div *ngIf="initInputProduct" fxFlex fxLayout="column" fxLayoutAlign="start start">
         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
-          <il-input-select fxFlex [form]="form" [controlName]="'product_name'" [suggestions]="suggestions" [isReadOnly]="isRightNavOpen || isNavOpenAndEdit"></il-input-select>
-          <il-input fxFlex="15" [form]="form" [isReadOnly]="isNavOpenAndEdit" [isNumberOnly]="true" [controlName]="'qty'" placeholder="Enter quantity" [isReadOnly]="isRightNavOpen"></il-input>
+          <il-input-select fxFlex [form]="form" [controlName]="'product_name'" [suggestions]="suggestions" [isReadOnly]="inCheckListing || isNavOpenAndEdit"></il-input-select>
+          <il-input fxFlex="15" [form]="form" [isReadOnly]="isNavOpenAndEdit" [isNumberOnly]="true" [controlName]="'qty'" placeholder="Enter quantity" [isReadOnly]="inCheckListing"></il-input>
           <il-input fxFlex="15" [form]="form" [isReadOnly]="isNavOpenAndEdit" [isNumberOnly]="true" [controlName]="'cost'" [showErrors]="hasSubProducts" placeholder="Enter unit cost"></il-input>
           <div fxFlex="5"></div>
         </div>
@@ -38,12 +38,12 @@
           <div *ngFor="let sub_product of form.get('sub_products')?.controls; let i = index" fxLayout="column">
             <ng-container formArrayName="sub_products">
               <div fxFlex fxLayoutGap="20px" [formGroupName]="i" fxLayout="row" fxLayoutAlign="start center">
-                <il-input-select [form]="sub_product" [controlName]="'product_name'" [suggestions]="suggestions" fxFlex fxFlexOffset="20px" [isReadOnly]="isRightNavOpen || isNavOpenAndEdit">
+                <il-input-select [form]="sub_product" [controlName]="'product_name'" [suggestions]="suggestions" fxFlex fxFlexOffset="20px" [isReadOnly]="inCheckListing || isNavOpenAndEdit">
                 </il-input-select>
                 <il-input fxFlex="15" [form]="sub_product" [isReadOnly]="isNavOpenAndEdit" [isNumberOnly]="true" [controlName]="'qty'" placeholder="Enter quantity"></il-input>
                 <il-input fxFlex="15" [form]="sub_product" [isReadOnly]="isNavOpenAndEdit" [isNumberOnly]="true" [controlName]="'cost'" placeholder="Enter unit cost"></il-input>
                 <div fxFlex="5" fxLayoutAlign="start center">
-                  <img *ngIf="!isRightNavOpen" class="remove-icon" matTooltip="Remove" (click)="onRemoveSubProduct(sub_product?.value, i)" [src]="svgPath + 'delete-icon-red.svg'">
+                  <img *ngIf="!inCheckListing" class="remove-icon" matTooltip="Remove" (click)="onRemoveSubProduct(sub_product?.value, i)" [src]="svgPath + 'delete-icon-red.svg'">
                 </div>
               </div>
             </ng-container>
@@ -52,7 +52,7 @@
       </div>
 
       <div fxFlex="20" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
-        <ng-container *ngIf="!isRightNavOpen">
+        <ng-container *ngIf="!inCheckListing">
           <button [matTooltip]="initInputProduct ? 'Save' : 'Add'" *ngIf="!isEditProduct" mat-flat-button class="il-button primary" (click)="onAdd()">
             {{ initInputProduct ? 'Save' : 'Add' }} Product
           </button>

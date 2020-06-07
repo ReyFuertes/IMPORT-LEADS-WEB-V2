@@ -56,7 +56,7 @@ export class PillComponent extends GenericControl<ISimpleItem> implements OnInit
   ngOnChanges(changes: SimpleChanges): void {
     /* reset selection */
     if (changes && changes.reset && changes.reset.currentValue) {
-      this.reset = false;
+      //this.reset = false;
     }
   }
 

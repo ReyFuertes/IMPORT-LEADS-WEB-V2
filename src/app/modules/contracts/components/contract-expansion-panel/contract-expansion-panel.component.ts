@@ -22,7 +22,7 @@ export class ContractExpansionPanelComponent extends GenericRowComponent impleme
   public isEventDialog: boolean = false;
   public dragStart: boolean = false;
   @Input()
-  public isRightNavOpen: boolean = false;
+  public inCheckListing: boolean = false;
 
   constructor() {
     super();
@@ -31,7 +31,7 @@ export class ContractExpansionPanelComponent extends GenericRowComponent impleme
   ngOnInit() {}
 
   ngOnChanges() {
-    this.isRightNavOpen = this.isRightNavOpen;
+    this.inCheckListing = this.inCheckListing;
   }
 
   public onClose(pnl?: any): void {
@@ -62,7 +62,7 @@ export class ContractExpansionPanelComponent extends GenericRowComponent impleme
   }
 
   public mouseover(i: number, colIndctr: number): void {
-    if(this.isRightNavOpen) return;
+    if(this.inCheckListing) return;
     this.dragIndex = i;
     if (colIndctr === 0)
       this.isTitleHover = i;

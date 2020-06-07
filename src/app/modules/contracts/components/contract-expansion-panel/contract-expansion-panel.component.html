@@ -3,11 +3,11 @@
     <mat-expansion-panel cdkDrag (cdkDragStarted)="dragStarted(true)" #pnl="matExpansionPanel" *ngFor="let p of panels; let i = index" hideToggle="true">
       <!-- In list display -->
       <mat-expansion-panel-header (keydown.Space)="$event.stopImmediatePropagation()"
-      (keydown.Enter)="$event.stopImmediatePropagation()" [ngClass]="{'hidden': pnl?.expanded, 'no-expand': isRightNavOpen}" (click)="expandPnl(pnl, $event, i)" fxLayoutAlign="20px">
+      (keydown.Enter)="$event.stopImmediatePropagation()" [ngClass]="{'hidden': pnl?.expanded, 'no-expand': inCheckListing}" (click)="expandPnl(pnl, $event, i)" fxLayoutAlign="20px">
         <div fxLayout="row" fxFlex="25" fxLayoutAlign="start center" (mouseover)="mouseover(i, 0)" (mouseleave)="mouseout()">
           <ng-container *ngTemplateOutlet="titleInLabelMode"></ng-container>
         </div>
-        <div fxFlex fxLayout="row" [ngClass]="{'disabled': isRightNavOpen}" (click)="onSelect(1)" fxLayoutAlign="start center" (mouseover)="mouseover(i, 1)" (mouseleave)="mouseout()">
+        <div fxFlex fxLayout="row" [ngClass]="{'disabled': inCheckListing}" (click)="onSelect(1)" fxLayoutAlign="start center" (mouseover)="mouseover(i, 1)" (mouseleave)="mouseout()">
           <div fxFlex>{{ p?.description }}</div>
           <div [ngClass]="{'hidden': !onDescHover(i)}" fxFlex="25px" fxLayoutAlign="start center">
             <img (click)="onEditMode(i, 1)" [src]="svgPath + 'edit-icon-blue.svg'" />
@@ -44,7 +44,7 @@
 
       <!-- title templates -->
       <ng-template #titleInLabelMode>
-        <div [matTooltip]="p?.title" fxFlex class="title-col" [ngClass]="{'disabled': isRightNavOpen}" (click)="onSelect(0)">
+        <div [matTooltip]="p?.title" fxFlex class="title-col" [ngClass]="{'disabled': inCheckListing}" (click)="onSelect(0)">
           <div fxFlex="20px"><img [ngClass]="{'hidden': !onTitleHover(i) }" cdkDragHandle [src]="svgPath + 'drag-icon.svg'" /></div>
           <div fxFlex fxLayoutAlign="start center">
             <span>{{ p?.title }}</span>
@@ -66,12 +66,12 @@
       <ng-template #rowActions>
         <div class="pnl-actions">
           <div class="no-expand" fxLayoutAlign="end center" fxLayoutGap="10px">
-            <div fxLayoutAlign="end center" fxLayoutGap="10px" [ngClass]="{'disabled': isRightNavOpen}">
+            <div fxLayoutAlign="end center" fxLayoutGap="10px" [ngClass]="{'disabled': inCheckListing}">
               <span>Appearance</span>
               <img [src]="svgPath + 'arrow-down-icon-blue.svg'">
               <img [src]="svgPath + 'delete-icon-red.svg'">
             </div>
-            <p-inputSwitch *ngIf="isRightNavOpen"></p-inputSwitch>
+            <p-inputSwitch *ngIf="inCheckListing"></p-inputSwitch>
           </div>
         </div>
       </ng-template>

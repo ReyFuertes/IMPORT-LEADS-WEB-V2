@@ -34,9 +34,10 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
   public suggestions: ISimpleItem[];
   public isDisabled: boolean = false;
   public initInputProduct: boolean = false;
+  public selectedProducts: IProduct[] = [];
 
   @Input()
-  public isRightNavOpen: boolean = false;
+  public inCheckListing: boolean = false;
   @Input()
   public contract: IContract;
   public $contractProducts: Observable<IContractProduct[]>;
@@ -139,8 +140,8 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
-    if (changes.isRightNavOpen && changes.isRightNavOpen.currentValue) {
-      this.isRightNavOpen = changes.isRightNavOpen.currentValue;
+    if (changes.inCheckListing && changes.inCheckListing.currentValue) {
+      this.inCheckListing = changes.inCheckListing.currentValue;
     }
   }
 
@@ -241,13 +242,18 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
       const item = this.createSubItem({
         _id: subItem._id,
         id: subItem.id,
-        product_name: { label: subItem.product_name, value: subItem.id }, /* we use an object for passing values to suggestion control */
+        /* we use an object for passing values to suggestion control */
+        product_name: { label: subItem.product_name, value: subItem.id },
         qty: subItem.qty,
         cost: subItem.cost
       });
       this.formSubProdsArr.push(item);
     });
 
+    /* collect the selected product */
+    if (!this.selectedProducts.includes(product))
+      this.selectedProducts.push(product);
+    console.log(this.selectedProducts);
     this.hasSubProducts = this.formSubProdsArr && this.formSubProdsArr.length > 0;
     this.isEditProduct = true;
   }
@@ -339,7 +345,7 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
   }
 
   public get isNavOpenAndEdit(): boolean {
-    return this.isRightNavOpen && this.isEditProduct;
+    return this.inCheckListing && this.isEditProduct;
   }
 
   private onResetForm(): void {

@@ -58,7 +58,6 @@ export class ContractTermEffects {
     private store: Store<AppState>,
     private actions$: Actions,
     private contractTermService: ContractTermService,
-    private uploadService: UploadService,
     private imageService: ImageService
   ) { }
 }

@@ -52,7 +52,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   public selectedRow: any;
 
   @Input()
-  public isRightNavOpen: boolean = false;
+  public inCheckListing: boolean = false;
   @Input()
   public contract_category: IContractCategory;
 
@@ -211,8 +211,8 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes && changes.isRightNavOpen)
-      this.isRightNavOpen = changes.isRightNavOpen.currentValue;
+    if (changes && changes.inCheckListing)
+      this.inCheckListing = changes.inCheckListing.currentValue;
 
     if (changes && changes.contract_category)
       this.dataSource = new MatTableDataSource<any>(changes.contract_category.currentValue.terms);

@@ -34,7 +34,7 @@ export class ContractCategoryComponent extends GenericRowComponent implements On
   @Input()
   public contractCategory: IContractCategory;
   @Input()
-  public isRightNavOpen: boolean = false;
+  public inCheckListing: boolean = false;
   public showToggle: boolean = false;
   @Output()
   public removeProductSpecEmitter = new EventEmitter<number>();
@@ -49,7 +49,7 @@ export class ContractCategoryComponent extends GenericRowComponent implements On
     if (changes && changes.contract_category && changes.contract_category.currentValue) {
       this.contractCategory = changes.contract_category.currentValue;
     }
-    this.isRightNavOpen = this.isRightNavOpen;
+    this.inCheckListing = this.inCheckListing;
   }
 
   public addTitle(): void {

@@ -5,10 +5,10 @@ import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import { sortByDesc } from 'src/app/shared/util/sort';
 
-export interface ProductsState extends EntityState<IProduct> {
+export interface ContractProductsState extends EntityState<IProduct> {
 }
 export const adapter: EntityAdapter<IProduct> = createEntityAdapter<IProduct>({});
-export const initialState: ProductsState = adapter.getInitialState({
+export const initialState: ContractProductsState = adapter.getInitialState({
 
 });
 const productsReducer = createReducer(
@@ -29,10 +29,10 @@ const productsReducer = createReducer(
     return ({ ...adapter.addAll(action.items, state) })
   })
 );
-export function ProductsReducer(state: ProductsState, action: Action) {
+export function ProductsReducer(state: ContractProductsState, action: Action) {
   return productsReducer(state, action);
 }
-export const getAllProducts = (state: ProductsState) => {
+export const getAllProducts = (state: ContractProductsState) => {
   let products = state && state.entities ? Object.values(state.entities) : null;
   products = products && products.map(p => {
     return {

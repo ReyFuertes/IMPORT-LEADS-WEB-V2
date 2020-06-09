@@ -1,7 +1,8 @@
+import { getContractCategorySelector } from './../../store/selectors/contract-category.selector';
 import { getProductsSelector } from './../../../products/store/products.selector';
 import { IProduct } from './../../../products/products.model';
 import { getAllContractProductsSelector } from './../../store/selectors/contracts.selector';
-import { addContractProducts, deleteContractProduct, updateContractProduct } from './../../store/actions/products.action';
+import { addContractProducts, deleteContractProduct, updateContractProduct, setChecklistProduct } from './../../store/actions/contract-products.action';
 import { AppState } from 'src/app/store/app.reducer';
 import { Store, select } from '@ngrx/store';
 import { PillState, IContract, IContractProduct } from './../../contract.model';
@@ -11,7 +12,7 @@ import { ISimpleItem } from './../../../../shared/generics/generic.model';
 import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, Input, ChangeDetectorRef, AfterViewInit, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
-import { take, takeUntil } from 'rxjs/operators';
+import { take, takeUntil, tap } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
 import * as _ from 'lodash';
 
@@ -37,7 +38,8 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
   public selectedProducts: IProduct[] = [];
   public $contractProducts: Observable<IContractProduct[]>;
   public $products: Observable<IProduct[]>;
-  public children: any[];
+  public checklistOfProducts: IContractProduct[] = [];
+  public $checklistProducts: Observable<IContractProduct[]>;
 
   @Input()
   public inCheckListing: boolean = false;
@@ -106,6 +108,12 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
           })
         }
       })
+
+    /* get pre selected checklist products */
+    this.store.pipe(select(getContractCategorySelector)).subscribe(res => {
+      this.checklistOfProducts.concat(res);
+      console.log(this.checklistOfProducts);
+    })
   }
 
   ngOnDestroy() { }
@@ -132,6 +140,10 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
         })
       }
     })
+  }
+
+  public isProductSelected(id: string): boolean {
+    return this.checklistOfProducts.filter(c => c.id === id).shift() ? true : false;
   }
 
   public fmtToSimpleItem(p: IProduct): ISimpleItem {
@@ -339,7 +351,25 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
     });
   }
 
-  public deSelectChange = (): void => this.onResetForm();
+  public deSelectChange(payload: ISimpleItem): void {
+    const match = this.checklistOfProducts.filter(cp => cp.id === payload.value).shift()
+    if(match) {
+      const index: number = this.checklistOfProducts.indexOf(match);
+      if (index !== -1) {
+        this.checklistOfProducts.splice(index, 1);
+        this.store.dispatch(setChecklistProduct({ payload: this.checklistOfProducts }));
+      }
+    }
+    this.onResetForm()
+  };
+
+  public preSelectChange(payload: ISimpleItem): void {
+    const match = this.checklistOfProducts.filter(cp => cp.id === payload.value).shift();
+    if (!match) {
+      this.checklistOfProducts.push({ id: payload.value });
+      this.store.dispatch(setChecklistProduct({ payload: this.checklistOfProducts }));
+    }
+  }
 
   public removeSelection(): void {
     const pillArrContainer = document.querySelectorAll('.pill-container');
@@ -355,9 +385,10 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
   private onResetForm(): void {
     this.form.reset();
     this.hasSubProducts = false;
-    if (this.formSubProdsArr) this.formSubProdsArr.clear();
     this.isEditProduct = false;
     this.initInputProduct = false;
+
+    if (this.formSubProdsArr) this.formSubProdsArr.clear();
   }
 
   public createItem = (item: ISimpleItem): FormGroup => this.fb.group(item);

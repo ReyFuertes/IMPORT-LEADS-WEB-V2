@@ -1,5 +1,4 @@
 import { addToChecklist } from './../../store/actions/contract-checklist.action';
-import { getContractChecklistSelector } from './../../store/selectors/contract-checklist.selector';
 import { sortByAsc } from 'src/app/shared/util/sort';
 import { IProduct } from './../../../products/products.model';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
@@ -8,7 +7,7 @@ import { tap, take } from 'rxjs/operators';
 import { getContractCategorySelector } from './../../store/selectors/contract-category.selector';
 import { addContractCategory, loadContractCategory } from './../../store/actions/contract-category.action';
 import { ContractCategoryDialogComponent } from '../../../dialogs/components/contract-category/contract-category-dialog.component';
-import { loadContractProducts } from './../../store/actions/products.action';
+import { loadContractProducts } from './../../store/actions/contract-products.action';
 import { getContractById } from './../../store/selectors/contracts.selector';
 import { User } from './../../../users/users.models';
 import { AppState } from './../../../../store/app.reducer';
@@ -129,11 +128,6 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     this.store.pipe(select(getContractCategorySelector))
       .pipe(tap(cc => this.contract_categories = cc))
       .subscribe();
-
-
-    this.store.pipe(select(getContractChecklistSelector)).subscribe(res => {
-      console.log('checklist', res);
-    })
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
@@ -147,7 +141,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
         {
           category_term: categoryTerms
         })
-        console.log(this.contractChecklist);
+      console.log(this.contractChecklist);
       this.store.dispatch(addToChecklist({ payload: this.contractChecklist }));
     }
   }

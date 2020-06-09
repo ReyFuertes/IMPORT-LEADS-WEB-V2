@@ -69,8 +69,8 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       contact_category: [null]
     })
   }
-
-  public onChange(event: any, term: IContractTerm): void {
+  /* toggling terms for checklist */
+  public onToggleTerms(event: any, term: IContractTerm): void {
     if (event && this.contract_category) {
       /* check if there are existing ids or remove */
       if (!this.selectedTerms.includes(term.id)) {

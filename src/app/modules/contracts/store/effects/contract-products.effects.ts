@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { IContractProduct } from './../../contract.model';
 import { mergeMap, map } from 'rxjs/operators';
 import { ContractProductService } from './../../services/contract-products.service';
-import { addContractProducts, addContractProductsSuccess, loadContractProducts, loadContractProductSuccess, deleteContractProduct, updateContractProductsSuccess, updateContractProduct } from './../actions/products.action';
+import { addContractProducts, addContractProductsSuccess, loadContractProducts, loadContractProductSuccess, deleteContractProduct, updateContractProductsSuccess, updateContractProduct } from './../actions/contract-products.action';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { zip, of } from 'rxjs';

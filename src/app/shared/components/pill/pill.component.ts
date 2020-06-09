@@ -1,4 +1,4 @@
-import { PillState } from './../../../modules/contracts/contract.model';
+import { PillState, IContractProduct } from './../../../modules/contracts/contract.model';
 import { ISimpleItem } from './../../generics/generic.model';
 import { GenericControl } from './../../generics/generic-control';
 import { environment } from './../../../../environments/environment';
@@ -29,25 +29,34 @@ export class PillComponent extends GenericControl<ISimpleItem> implements OnInit
   public reset: boolean = false;
   @Input()
   public hasRemoveIcon: boolean = true;
+  @Input()
+  public isSelected: boolean = false;
   @Output()
   public removeEmitter = new EventEmitter<number>();
   @Output()
   public stateEmitter = new EventEmitter<PillState>();
   @Output()
-  public deSelectEmitter = new EventEmitter<boolean>(null);
+  public deSelectEmitter = new EventEmitter<ISimpleItem>();
+  @Output()
+  public preSelectEmitter = new EventEmitter<ISimpleItem>();
 
   @ViewChild('pill', { static: false }) pill: any;
   constructor(private cdRef: ChangeDetectorRef) {
     super();
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+
+  }
 
   ngAfterViewInit() {
     fromEvent(this.pill.nativeElement, 'dblclick')
       .subscribe((e: any) => {
         this.resetSelection();
-        this.deSelectEmitter.emit(false);
+        this.deSelectEmitter.emit({
+          label: e.target.innerText.trim(),
+          value: e.currentTarget.id
+        });
       });
 
     this.cdRef.detectChanges();
@@ -58,6 +67,14 @@ export class PillComponent extends GenericControl<ISimpleItem> implements OnInit
     if (changes && changes.reset && changes.reset.currentValue) {
       //this.reset = false;
     }
+
+    if (changes && changes.selections && changes.selections.currentValue) {
+      const match = changes.selections && changes.selections.currentValue.filter(s => s.id === this.item.value).shift();
+      console.log(changes.selections.currentValue, this.item);
+      if (match) {
+
+      }
+    }
   }
 
   private resetSelection(): void {
@@ -67,10 +84,11 @@ export class PillComponent extends GenericControl<ISimpleItem> implements OnInit
     });
   }
 
-  public onSelect(event: any): void {
+  public onSelect(e: any, item: ISimpleItem): void {
     this.resetSelection();
 
-    event.currentTarget.classList.add('selected');
+    e.currentTarget.classList.add('selected');
+    this.preSelectEmitter.emit(item);
   }
 
   public get isSizeSmall(): boolean {

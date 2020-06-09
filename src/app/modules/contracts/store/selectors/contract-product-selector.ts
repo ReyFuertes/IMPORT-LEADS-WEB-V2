@@ -1,9 +1,10 @@
 import { ContractModuleState } from './../reducers/index';
 import { createSelector, createFeatureSelector } from '@ngrx/store';
+import * as fromContractCategory from '../reducers/contract-products.reducer'
 
 export const selectContractModuleState = createFeatureSelector<ContractModuleState>('contractsModule');
 
-export const getContractChecklistSelector = createSelector(
+export const getContractCategorySelector = createSelector(
   selectContractModuleState,
-  (state: ContractModuleState) => state.contractChecklist.entities || []
+  (state) => state.contractProduct.checklistProducts
 );

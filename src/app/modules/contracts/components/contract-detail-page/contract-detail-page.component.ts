@@ -1,13 +1,14 @@
-import { addToChecklist } from './../../store/actions/contract-checklist.action';
+import { getPreSelectedProductsSelector } from './../../store/selectors/contract-product-selector';
+import { saveToChecklist } from './../../store/actions/contract-checklist.action';
 import { sortByAsc } from 'src/app/shared/util/sort';
 import { IProduct } from './../../../products/products.model';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { ReOrderImages, deleteContract } from './../../store/actions/contracts.action';
-import { tap, take } from 'rxjs/operators';
+import { tap, take, map } from 'rxjs/operators';
 import { getContractCategorySelector } from './../../store/selectors/contract-category.selector';
 import { addContractCategory, loadContractCategory } from './../../store/actions/contract-category.action';
 import { ContractCategoryDialogComponent } from '../../../dialogs/components/contract-category/contract-category-dialog.component';
-import { loadContractProducts } from './../../store/actions/contract-products.action';
+import { loadContractProducts } from './../../store/actions/contract-product.action';
 import { getContractById } from './../../store/selectors/contracts.selector';
 import { User } from './../../../users/users.models';
 import { AppState } from './../../../../store/app.reducer';
@@ -25,6 +26,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AddEditState } from 'src/app/shared/generics/generic.model';
 import { Store, select } from '@ngrx/store';
 import * as _ from 'lodash';
+import { getContractChecklistSelector } from '../../store/selectors/contract-checklist.selector';
 
 @Component({
   selector: 'il-contract-detail-page',
@@ -45,7 +47,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   public images: any[];
   public contract: IContract;
   public contract_categories: IContractCategory[];
-  public contractChecklist: IContractChecklist;
+  public contractChecklist: IContractChecklist = {};
 
   @Output()
   public openNavChange = new EventEmitter<boolean>();
@@ -128,21 +130,35 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     this.store.pipe(select(getContractCategorySelector))
       .pipe(tap(cc => this.contract_categories = cc))
       .subscribe();
+
+    /* get the preselected product ids */
+    this.store.pipe(select(getPreSelectedProductsSelector),
+      map(pp => pp.selectedProducts))
+      .subscribe(product_ids => {
+        if (product_ids && product_ids.length > 0) {
+          this.contractChecklist = {
+            product_ids: [...product_ids.map(p => p.id)]
+          }
+        }
+      })
   }
 
-  public ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: SimpleChanges): void { }
+
+  public onSaveChecklist(): void {
+    console.log(this.contractChecklist);
   }
 
-  public onToggleTerms(categoryTerms: IContractCategoryTerm): void {
+  public onToggleTerms(categoryTerm: IContractCategoryTerm): void {
     /* checklist should have product ids */
     if (this.contractChecklist.product_ids && this.id) {
-      this.contractChecklist = Object.assign({},
-        this.contractChecklist,
-        {
-          category_term: categoryTerms
-        })
-      console.log(this.contractChecklist);
-      this.store.dispatch(addToChecklist({ payload: this.contractChecklist }));
+      const match = this.contractChecklist.category_term
+        .filter(c => c.category_id === categoryTerm.category_id).shift();
+
+      if (!match) {
+        this.contractChecklist.category_term.push(categoryTerm);
+        this.store.dispatch(saveToChecklist({ payload: this.contractChecklist }));
+      }
     }
   }
 
@@ -151,7 +167,8 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     if (productIds && productIds.length > 0) {
       this.contractChecklist = {
         contract_id: this.id,
-        product_ids: productIds
+        product_ids: productIds,
+        category_term: []
       }
     }
   }

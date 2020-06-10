@@ -9,10 +9,10 @@ export enum ProductActionTypes {
   updateContractProduct = '[Product] Update',
   updateContractProductsSuccess = '[Product] Update (success)',
   deleteContractProduct = '[Product] Delete',
-  setChecklistProduct = '[Product] Preselect checklist',
+  preSelectProducts = '[Contract Product] PreSelect Products',
 }
-export const setChecklistProduct = createAction(
-  ProductActionTypes.setChecklistProduct,
+export const preSelectProducts = createAction(
+  ProductActionTypes.preSelectProducts,
   props<{ payload: IContractProduct[] }>()
 );
 export const updateContractProduct = createAction(

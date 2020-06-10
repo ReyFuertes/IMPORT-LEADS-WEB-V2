@@ -9,8 +9,8 @@ import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 export interface ContractCategoryState extends EntityState<IContractCategory> {
 }
 export const adapter: EntityAdapter<IContractCategory> = createEntityAdapter<IContractCategory>({});
-export const initialState: ContractCategoryState = adapter.getInitialState({
-});
+export const initialState: ContractCategoryState = adapter.getInitialState({});
+
 const reducer = createReducer(
   initialState,
   on(updateContractTermSuccess, (state, action) => {

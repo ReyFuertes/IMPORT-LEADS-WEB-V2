@@ -11,7 +11,7 @@
       <mat-tab label="New Checklist">
         <div class="new-template" fxLayout="column" fxLayoutGap="10px">
           <div>
-            <il-dropdown-select [form]="form" [controlName]="'assignedTo'" placeholder="Assigned To" ></il-dropdown-select>
+            <il-dropdown-select [items]="assignments" [form]="form" [controlName]="'assignedTo'" placeholder="Assigned To"></il-dropdown-select>
             <il-datepicker [form]="form" [controlName]="'designedRunDate'" [placeholder]="'Desired run date'"></il-datepicker>
           </div>
           <div class="content" fxLayout="column" fxLayoutAlign="start start">
@@ -22,25 +22,6 @@
             <div>
               <h5>Select terms for inspection</h5>
             </div>
-            <!-- <div class="inner-container" fxLayout="column" fxLayoutGap="104px">
-              <mat-list *ngFor="let o of [0, 1, 2]; let i = index" [ngClass]="'scroll-' + i">
-                <ng-container *ngFor="let i of [0, 1, 2, 3]; let last = last">
-                  <mat-list-item fxLayoutAlign="center center">
-                    <p-inputSwitch></p-inputSwitch>
-                  </mat-list-item>
-                  <mat-divider></mat-divider>
-                </ng-container>
-              </mat-list>
-              <mat-list>
-                <ng-container *ngFor="let i of [0, 1, 2, 3]; let last = last">
-                  <mat-list-item fxLayoutAlign="center center">
-                    <p-inputSwitch></p-inputSwitch>
-                  </mat-list-item>
-                  <mat-divider></mat-divider>
-                </ng-container>
-              </mat-list>
-
-            </div> -->
           </div>
 
         </div>

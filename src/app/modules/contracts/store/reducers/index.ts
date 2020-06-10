@@ -1,6 +1,6 @@
 import { ContractChecklistState } from './contract-checklist.reducer';
 import * as fromContract from '../reducers/contract.reducer';
-import * as fromContractProducts from '../reducers/contract-products.reducer';
+import * as fromContractProducts from '../reducers/contract-product.reducer';
 import * as fromContractCategory from '../reducers/contract-category.reducer';
 import * as fromCategory from '../reducers/category.reducer';
 import { ActionReducerMap } from '@ngrx/store';
@@ -12,6 +12,7 @@ export interface ContractModuleState {
   contractProduct: fromContractProducts.ContractProductsState;
   contractCategory: fromContractCategory.ContractCategoryState,
   category: fromCategory.CategoryState,
+  checkList: fromChecklist.ContractChecklistState
 }
 
 export const reducers: ActionReducerMap<ContractModuleState> = {
@@ -19,6 +20,7 @@ export const reducers: ActionReducerMap<ContractModuleState> = {
   contractProduct: fromContractProducts.ContractProductsReducer,
   contractCategory: fromContractCategory.ContractCategoryReducer,
   category: fromCategory.CategoryReducer,
+  checkList: fromChecklist.ContractChecklistReducer
 };
 
 export interface AppState extends fromRoot.AppState {

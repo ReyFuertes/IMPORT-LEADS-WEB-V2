@@ -1,3 +1,4 @@
+import { ContractModuleState } from './../modules/contracts/store/reducers/index';
 import { TagsState, TagsReducer } from './../modules/tags/store/reducers/tags.reducer';
 import { ContractProductsState, ProductsReducer } from './../modules/products/store/products.reducer';
 import { NotificationState } from './notification.reducer';

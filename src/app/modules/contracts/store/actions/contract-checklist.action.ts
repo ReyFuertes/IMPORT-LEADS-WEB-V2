@@ -2,11 +2,11 @@ import { ICategory, IContractChecklist } from './../../contract.model';
 import { createAction, props } from '@ngrx/store';
 
 export enum CategoryActionTypes {
-  addToChecklist = '[Contract Checklist] Add',
-  addToChecklistSuccess = '[Contract Checklist] Add (success)',
+  saveToChecklist = '[Contract Checklist] Add',
+  saveToChecklistSuccess = '[Contract Checklist] Add (success)',
 }
 
-export const addToChecklist = createAction(
-  CategoryActionTypes.addToChecklist,
+export const saveToChecklist = createAction(
+  CategoryActionTypes.saveToChecklist,
   props<{ payload: IContractChecklist }>()
 );

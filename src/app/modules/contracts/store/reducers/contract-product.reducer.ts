@@ -1,20 +1,21 @@
-import { loadContractProductSuccess, updateContractProductsSuccess, setChecklistProduct } from './../actions/contract-products.action';
+import { ContractModuleState } from './index';
+import { loadContractProductSuccess, updateContractProductsSuccess, preSelectProducts } from './../actions/contract-product.action';
 import { IContractProduct } from './../../contract.model';
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
-import { addContractProductsSuccess } from '../actions/contract-products.action';
+import { addContractProductsSuccess } from '../actions/contract-product.action';
 
 export interface ContractProductsState extends EntityState<IContractProduct> {
-  checklistProducts?: IContractProduct[]
+  selectedProducts?: IContractProduct[]
 }
 export const adapter: EntityAdapter<IContractProduct> = createEntityAdapter<IContractProduct>({});
 export const initialState: ContractProductsState = adapter.getInitialState({
-  checklistProducts: null
+  selectedProducts: null
 });
 const reducer = createReducer(
   initialState,
-  on(setChecklistProduct, (state, action) => {
-    return Object.assign({}, state, { checklistProducts: action.payload });
+  on(preSelectProducts, (state, action) => {
+    return Object.assign({}, state, { selectedProducts: action.payload });
   }),
   on(addContractProductsSuccess, (state, action) => {
     return ({ ...adapter.addOne(action.created, state) })
@@ -29,4 +30,3 @@ const reducer = createReducer(
 export function ContractProductsReducer(state: ContractProductsState, action: Action) {
   return reducer(state, action);
 }
-export const getChecklistProducts = (state: ContractProductsState) => state.checklistProducts;

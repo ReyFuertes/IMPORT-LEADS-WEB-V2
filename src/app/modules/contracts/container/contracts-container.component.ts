@@ -1,6 +1,6 @@
 import { loadContractCategory } from './../store/actions/contract-category.action';
 import { loadTags } from './../../tags/store/actions/tags.actions';
-import { ContractProductsState } from './../store/reducers/contract-products.reducer';
+import { ContractProductsState } from './../store/reducers/contract-product.reducer';
 import { loadContracts } from './../store/actions/contracts.action';
 import { AppState } from './../../../store/app.reducer';
 import { GenericContainer } from './../../../shared/generics/generic-container';

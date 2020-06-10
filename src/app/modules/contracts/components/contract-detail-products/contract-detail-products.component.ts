@@ -2,7 +2,7 @@ import { getContractCategorySelector } from './../../store/selectors/contract-ca
 import { getProductsSelector } from './../../../products/store/products.selector';
 import { IProduct } from './../../../products/products.model';
 import { getAllContractProductsSelector } from './../../store/selectors/contracts.selector';
-import { addContractProducts, deleteContractProduct, updateContractProduct, setChecklistProduct } from './../../store/actions/contract-products.action';
+import { addContractProducts, deleteContractProduct, updateContractProduct, preSelectProducts } from './../../store/actions/contract-product.action';
 import { AppState } from 'src/app/store/app.reducer';
 import { Store, select } from '@ngrx/store';
 import { PillState, IContract, IContractProduct } from './../../contract.model';
@@ -109,11 +109,6 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
         }
       })
 
-    /* get pre selected checklist products */
-    this.store.pipe(select(getContractCategorySelector)).subscribe(res => {
-      this.checklistOfProducts.concat(res);
-      console.log(this.checklistOfProducts);
-    })
   }
 
   ngOnDestroy() { }
@@ -357,7 +352,7 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
       const index: number = this.checklistOfProducts.indexOf(match);
       if (index !== -1) {
         this.checklistOfProducts.splice(index, 1);
-        this.store.dispatch(setChecklistProduct({ payload: this.checklistOfProducts }));
+        this.store.dispatch(preSelectProducts({ payload: this.checklistOfProducts }));
       }
     }
     this.onResetForm()
@@ -367,7 +362,7 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
     const match = this.checklistOfProducts.filter(cp => cp.id === payload.value).shift();
     if (!match) {
       this.checklistOfProducts.push({ id: payload.value });
-      this.store.dispatch(setChecklistProduct({ payload: this.checklistOfProducts }));
+      this.store.dispatch(preSelectProducts({ payload: this.checklistOfProducts }));
     }
   }
 

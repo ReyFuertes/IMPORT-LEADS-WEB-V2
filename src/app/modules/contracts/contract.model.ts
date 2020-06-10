@@ -11,7 +11,7 @@ export interface IContractChecklist {
   id?: string;
   contract_id?: string;
   product_ids?: string[];
-  category_term?: IContractCategoryTerm;
+  category_term?: IContractCategoryTerm[];
 }
 export interface IContractTerm {
   id?: string;

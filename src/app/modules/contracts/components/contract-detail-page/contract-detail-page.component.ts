@@ -46,7 +46,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   public contractImages: IProductImage[];
   public images: any[];
   public contract: IContract;
-  public contract_categories: IContractCategory[];
+  public contractCategories: IContractCategory[];
   public contractChecklist: IContractChecklist = {};
 
   @Output()
@@ -128,7 +128,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     }
 
     this.store.pipe(select(getContractCategorySelector))
-      .pipe(tap(cc => this.contract_categories = cc))
+      .pipe(tap(cc => this.contractCategories = cc))
       .subscribe();
 
     /* get the preselected product ids */
@@ -138,7 +138,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
         if (product_ids && product_ids.length > 0) {
           this.contractChecklist = {
             product_ids: [...product_ids.map(p => p.id)]
-          }
+          };
         }
       })
   }
@@ -147,17 +147,55 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
 
   public onSaveChecklist(): void {
     console.log(this.contractChecklist);
+
   }
 
-  public onToggleTerms(categoryTerm: IContractCategoryTerm): void {
+  public onToggleTerms(categoryTerm: { term_id: string, category_id: string }): void {
     /* checklist should have product ids */
     if (this.contractChecklist.product_ids && this.id) {
-      const match = this.contractChecklist.category_term
-        .filter(c => c.category_id === categoryTerm.category_id).shift();
+      this.matchFields('term_ids', categoryTerm.term_id);
+      this.matchFields('category_ids', categoryTerm.category_id, false);
 
-      if (!match) {
-        this.contractChecklist.category_term.push(categoryTerm);
-        this.store.dispatch(saveToChecklist({ payload: this.contractChecklist }));
+      /* check if category has terms */
+      this.contractCategories && this.contractCategories.forEach(category => {
+        if (Object.keys(this.contractChecklist).shift() && this.contractChecklist.category_ids) {
+          const exist = this.contractChecklist.category_ids.filter(c => c === category.id).shift();
+          if (exist) {
+            debugger
+            const termExist = this.contractChecklist.term_ids
+              .filter(term_id => category.terms.filter(t => t.id === term_id)).shift();
+
+            console.log('termExist', termExist);
+            if (!termExist) {
+              /* remove category */
+              debugger
+              const index = this.contractChecklist.category_ids.indexOf(category.id);
+              if (index > -1) {
+                this.contractChecklist.category_ids.splice(index, 1);
+              }
+            }
+          }
+        }
+      });
+
+      console.log(this.contractChecklist);
+    }
+  }
+
+  private matchFields(prop: string, value: any, splice: boolean = true): any {
+    /* if the property doesnt exist then add it */
+    if (!this.contractChecklist[prop])
+      Object.assign(this.contractChecklist, { [prop]: [] });
+
+    const categoryMatch = this.contractChecklist[prop].filter(c => c === value).shift();
+    if (!categoryMatch) {
+      Object.assign({}, this.contractChecklist, { [prop]: this.contractChecklist[prop].push(value) });
+    } else {
+      if (!splice) return;
+      /* check if there are existing ids or remove */
+      const index = this.contractChecklist[prop].indexOf(value);
+      if (index > -1) {
+        this.contractChecklist[prop].splice(index, 1);
       }
     }
   }
@@ -168,8 +206,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       this.contractChecklist = {
         contract_id: this.id,
         product_ids: productIds,
-        category_term: []
-      }
+      };
     }
   }
 
@@ -259,7 +296,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   }
 
   public dropSpecs(event: CdkDragDrop<any[]>) {
-    moveItemInArray(this.contract_categories, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.contractCategories, event.previousIndex, event.currentIndex);
   }
 
   public dragStartedSpecs(event: any) {
@@ -267,10 +304,10 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   }
 
   public handleRemoveSpecsTitle(id: string) {
-    this.contract_categories.find(cc => cc.id === id).category.category_name = '';
+    this.contractCategories.find(cc => cc.id === id).category.category_name = '';
   }
 
   public handleRemoveProductSpecs(id: string) {
-    this.contract_categories = this.contract_categories.filter(cc => cc.id !== id);
+    this.contractCategories = this.contractCategories.filter(cc => cc.id !== id);
   }
 }

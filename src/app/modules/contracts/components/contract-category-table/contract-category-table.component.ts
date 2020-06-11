@@ -58,7 +58,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   @Input()
   public contract_category: IContractCategory;
   @Output()
-  public categoryTermEmitter = new EventEmitter<IContractCategoryTerm>();
+  public categoryTermEmitter = new EventEmitter<any>();
 
   constructor(private store: Store<AppState>, private dialog: MatDialog, private fb: FormBuilder) {
     super();
@@ -71,24 +71,13 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   }
   /* toggling terms for checklist */
   public onToggleTerms(event: any, term: IContractTerm): void {
-    if (event && this.contract_category) {
-      /* check if there are existing ids or remove */
-      if (!this.selectedTerms.includes(term.id)) {
-        this.selectedTerms.push(term.id);
-      } else {
-        const index = this.selectedTerms.indexOf(term.id);
-        if (index > -1) {
-          this.selectedTerms.splice(index, 1);
-        }
-      }
+    if (this.contract_category) {
       /* if there is no term then do not emit */
-      if (this.selectedTerms && this.selectedTerms.length > 0) {
-        this.categoryTerm = {
-          category_id: this.contract_category.id,
-          term_ids: this.selectedTerms
-        }
-        this.categoryTermEmitter.emit(this.categoryTerm);
+      const category_term = {
+        category_id: this.contract_category.id,
+        term_id: term.id
       }
+      this.categoryTermEmitter.emit(category_term);
     }
   }
 

@@ -3,7 +3,7 @@ import { IProduct } from './../products/products.model';
 import { IUser } from './../../models/user.model';
 
 export interface IContractCategoryTerm {
-  category_id: string;
+  category_ids: string;
   term_ids?: string[];
 }
 
@@ -11,7 +11,8 @@ export interface IContractChecklist {
   id?: string;
   contract_id?: string;
   product_ids?: string[];
-  category_term?: IContractCategoryTerm[];
+  term_ids?: string[];
+  category_ids?: string[];
 }
 export interface IContractTerm {
   id?: string;

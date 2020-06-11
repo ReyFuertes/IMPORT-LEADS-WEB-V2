@@ -1,4 +1,4 @@
-import { VenueProductsEffects } from './store/venue-product.effects';
+import { VenueProductsEffect } from './store/venue-product.effects';
 import { VenueProductsService } from './venue-product.service';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
@@ -72,7 +72,7 @@ const materialModules = [
     DialogModule,
     RouterModule.forChild(routes),
     StoreModule.forFeature('venues', VenuesReducer),
-    EffectsModule.forFeature([VenuesEffects, VenueProductsEffects])
+    EffectsModule.forFeature([VenuesEffects, VenueProductsEffect])
   ],
   exports: [],
   declarations: [

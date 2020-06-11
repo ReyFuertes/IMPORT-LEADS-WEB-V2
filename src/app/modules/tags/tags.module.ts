@@ -1,5 +1,5 @@
 import { TagQuestionsService } from './services/tag-questions.service';
-import { TagsEffects } from './store/effects/tags.effects';
+import { TagsEffect } from './store/effects/tags.effects';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { TagsService } from './tags.service';
@@ -71,7 +71,7 @@ const materialModules = [
     DialogModule,
     RouterModule.forChild(routes),
     StoreModule.forFeature('tag', TagsReducer),
-    EffectsModule.forFeature([TagsEffects, TagQuestionsEffects])
+    EffectsModule.forFeature([TagsEffect, TagQuestionsEffects])
   ],
   exports: [],
   declarations: [

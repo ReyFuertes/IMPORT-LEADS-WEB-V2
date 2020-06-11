@@ -1,15 +1,16 @@
-import { ContractTermEffects } from './store/effects/contract-term.effects';
+import { ChecklistService } from './services/contract-checklist.service';
+import { ContractTermEffect } from './store/effects/contract-term.effects';
 import { ContractTermService } from './services/contract-term.service';
-import { CategoryEffects } from './store/effects/category.effects';
-import { TagsEffects } from './../tags/store/effects/tags.effects';
-import { ContractCategoryEffects } from './store/effects/contract-category.effects';
+import { CategoryEffect } from './store/effects/category.effects';
+import { TagsEffect } from './../tags/store/effects/tags.effects';
+import { ContractCategoryEffect } from './store/effects/contract-category.effects';
 import { ContractCategoryService } from './services/contract-category.service';
-import { ProductsEffects } from './../products/store/products.effects';
-import { ContractProductsEffects } from './store/effects/contract-products.effects';
+import { ProductsEffect } from './../products/store/products.effects';
+import { ContractProductsEffect } from './store/effects/contract-products.effects';
 import { ContractProductService } from './services/contract-products.service';
 import { ImageService } from './../../services/images.service';
 import { UploadService } from './../../services/upload.service';
-import { ContractsEffects } from './store/effects/contracts.effects';
+import { ContractsEffect } from './store/effects/contracts.effects';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { ContractsService } from './services/contracts.service';
@@ -44,6 +45,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { reducers } from './store/reducers';
 import { ContractCategoryTableComponent } from './components/contract-category-table/contract-category-table.component';
+import { ChecklistEffect } from './store/effects/contract-checklist.effect';
 
 const routes: Routes = [
   {
@@ -107,13 +109,14 @@ const materialModules = [
     RouterModule.forChild(routes),
     StoreModule.forFeature('contractsModule', reducers),
     EffectsModule.forFeature([
-      ContractsEffects,
-      ContractProductsEffects,
-      ProductsEffects,
-      ContractCategoryEffects,
-      TagsEffects,
-      CategoryEffects,
-      ContractTermEffects
+      ContractsEffect,
+      ContractProductsEffect,
+      ProductsEffect,
+      ContractCategoryEffect,
+      TagsEffect,
+      CategoryEffect,
+      ContractTermEffect,
+      ChecklistEffect
     ])
   ],
   exports: [],
@@ -137,7 +140,8 @@ const materialModules = [
     ImageService,
     ContractProductService,
     ContractCategoryService,
-    ContractTermService
+    ContractTermService,
+    ChecklistService
   ],
 })
 export class ContractsModule { }

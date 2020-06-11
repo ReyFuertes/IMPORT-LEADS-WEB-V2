@@ -144,7 +144,8 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
   public fmtToSimpleItem(p: IProduct): ISimpleItem {
     return {
       value: p.id,
-      label: p.product_name
+      label: p.product_name,
+      _id: p._id
     }
   }
 
@@ -361,7 +362,7 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
   public preSelectChange(payload: ISimpleItem): void {
     const match = this.checklistOfProducts.filter(cp => cp.id === payload.value).shift();
     if (!match) {
-      this.checklistOfProducts.push({ id: payload.value });
+      this.checklistOfProducts.push({ id: payload.value, _id: payload._id });
       this.store.dispatch(preSelectProducts({ payload: this.checklistOfProducts }));
     }
   }

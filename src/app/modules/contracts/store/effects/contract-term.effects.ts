@@ -12,7 +12,7 @@ import { Store } from '@ngrx/store';
 import { addContractTerm, addContractTermSuccess, deleteContractTerm, deleteContractTermSuccess } from '../actions/contract-term.actions';
 
 @Injectable()
-export class ContractTermEffects {
+export class ContractTermEffect {
   saveTermImageDetail$ = createEffect(() => this.actions$.pipe(
     ofType(saveTermImageDetail),
     mergeMap(({ image }) => this.imageService.post(image)

@@ -9,7 +9,7 @@ import { map, mergeMap } from 'rxjs/operators';
 import { appNotification } from 'src/app/store/notification.action';
 
 @Injectable()
-export class ContractCategoryEffects {
+export class ContractCategoryEffect {
   delete$ = createEffect(() => this.actions$.pipe(
     ofType(deleteContractCategory),
     mergeMap(({ id }) => this.contractCategoryService.delete(id).pipe(

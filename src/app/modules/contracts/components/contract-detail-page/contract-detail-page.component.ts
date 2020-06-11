@@ -1,5 +1,5 @@
 import { getPreSelectedProductsSelector } from './../../store/selectors/contract-product-selector';
-import { saveToChecklist } from './../../store/actions/contract-checklist.action';
+import { saveToChecklist, addToChecklist } from './../../store/actions/contract-checklist.action';
 import { sortByAsc } from 'src/app/shared/util/sort';
 import { IProduct } from './../../../products/products.model';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
@@ -47,7 +47,8 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   public images: any[];
   public contract: IContract;
   public contractCategories: IContractCategory[];
-  public contractChecklist: IContractChecklist = {};
+  public contractChecklist: IContractChecklist[] = [];
+  public checkListProductIds: string[] = [];
 
   @Output()
   public openNavChange = new EventEmitter<boolean>();
@@ -131,55 +132,45 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       .pipe(tap(cc => this.contractCategories = cc))
       .subscribe();
 
-    /* get the preselected product ids */
+    /* collect the preselected product ids */
     this.store.pipe(select(getPreSelectedProductsSelector),
       map(pp => pp.selectedProducts))
       .subscribe(product_ids => {
-        if (product_ids && product_ids.length > 0) {
-          this.contractChecklist = {
-            product_ids: [...product_ids.map(p => p.id)]
-          };
-        }
+        if (product_ids && product_ids.length > 0)
+          this.checkListProductIds = product_ids.map(p => p._id);
       })
   }
 
   public ngOnChanges(changes: SimpleChanges): void { }
 
   public onSaveChecklist(): void {
-    console.log(this.contractChecklist);
-
+    this.store.pipe(select(getContractChecklistSelector), map(c => c.checklist))
+      .subscribe(checklist => {
+        checklist && checklist.forEach(item => Object.assign(item, { checklist_product: this.checkListProductIds }));
+        /* save checklist */
+        this.store.dispatch(saveToChecklist({ payload: checklist }))
+      })
   }
 
-  public onToggleTerms(categoryTerm: { term_id: string, category_id: string }): void {
-    /* checklist should have product ids */
-    if (this.contractChecklist.product_ids && this.id) {
-      this.matchFields('term_ids', categoryTerm.term_id);
-      this.matchFields('category_ids', categoryTerm.category_id, false);
-
-      /* check if category has terms */
-      this.contractCategories && this.contractCategories.forEach(category => {
-        if (Object.keys(this.contractChecklist).shift() && this.contractChecklist.category_ids) {
-          const exist = this.contractChecklist.category_ids.filter(c => c === category.id).shift();
-          if (exist) {
-            debugger
-            const termExist = this.contractChecklist.term_ids
-              .filter(term_id => category.terms.filter(t => t.id === term_id)).shift();
-
-            console.log('termExist', termExist);
-            if (!termExist) {
-              /* remove category */
-              debugger
-              const index = this.contractChecklist.category_ids.indexOf(category.id);
-              if (index > -1) {
-                this.contractChecklist.category_ids.splice(index, 1);
-              }
-            }
-          }
-        }
-      });
-
-      console.log(this.contractChecklist);
+  public onToggleTerm(categoryTerm: IContractCategoryTerm): void {
+    const ctPayload = {
+      checklist_contract: { id: this.id },
+      checklist_category: { id: categoryTerm.category_id },
+      checklist_term: { id: categoryTerm.term_id },
     }
+
+    const match = this.contractChecklist.filter(c => c.checklist_category.id === ctPayload.checklist_category.id
+      && c.checklist_term.id === ctPayload.checklist_term.id).shift();
+    if (!match) {
+      this.contractChecklist.push({
+        checklist_contract: { id: this.id },
+        checklist_category: { id: categoryTerm.category_id },
+        checklist_term: { id: categoryTerm.term_id },
+      })
+    } else {
+      _.remove(this.contractChecklist, ctPayload);
+    }
+    this.store.dispatch(addToChecklist({ payload: this.contractChecklist }))
   }
 
   private matchFields(prop: string, value: any, splice: boolean = true): any {
@@ -202,12 +193,12 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
 
   public onCheckListing(products: IProduct[]): void {
     const productIds = [...products.map(p => p.id)];
-    if (productIds && productIds.length > 0) {
-      this.contractChecklist = {
-        contract_id: this.id,
-        product_ids: productIds,
-      };
-    }
+    // if (productIds && productIds.length > 0) {
+    //   this.contractChecklist = {
+    //     contract_id: this.id,
+    //     product_ids: productIds,
+    //   };
+    // }
   }
 
   private onDeleteContract = (): void => {

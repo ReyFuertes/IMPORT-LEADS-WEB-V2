@@ -3,16 +3,16 @@ import { IProduct } from './../products/products.model';
 import { IUser } from './../../models/user.model';
 
 export interface IContractCategoryTerm {
-  category_ids: string;
-  term_ids?: string[];
+  category_id?: string;
+  term_id?: string;
 }
 
 export interface IContractChecklist {
   id?: string;
-  contract_id?: string;
-  product_ids?: string[];
-  term_ids?: string[];
-  category_ids?: string[];
+  checklist_contract?: { id };
+  contract_product?: { id }[];
+  checklist_term?: { id };
+  checklist_category?: { id };
 }
 export interface IContractTerm {
   id?: string;

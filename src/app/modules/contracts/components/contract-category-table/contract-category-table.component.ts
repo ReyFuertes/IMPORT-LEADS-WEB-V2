@@ -70,7 +70,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
     })
   }
   /* toggling terms for checklist */
-  public onToggleTerms(event: any, term: IContractTerm): void {
+  public onToggleTerms(term: IContractTerm): void {
     if (this.contract_category) {
       /* if there is no term then do not emit */
       const category_term = {

@@ -44,6 +44,10 @@ export class ContractCategoryComponent extends GenericRowComponent implements On
 
   ngOnInit() { }
 
+  public onToggleTerm(event: IContractCategoryTerm): void {
+    this.categoryTermEmitter.emit(event);
+  }
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes && changes.contract_category && changes.contract_category.currentValue) {
       this.contractCategory = changes.contract_category.currentValue;

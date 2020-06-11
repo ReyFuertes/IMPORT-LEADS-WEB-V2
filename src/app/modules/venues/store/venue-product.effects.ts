@@ -10,7 +10,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap, tap, switchMap } from 'rxjs/operators';
 
 @Injectable()
-export class VenueProductsEffects {
+export class VenueProductsEffect {
   removeVenueProduct$ = createEffect(() => this.actions$.pipe(
     ofType(removeVenueProduct),
     mergeMap(({ item }) =>

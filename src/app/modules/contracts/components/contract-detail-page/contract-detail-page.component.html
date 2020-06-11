@@ -57,7 +57,7 @@
   <!-- contract category tabs -->
   <div fxLayout="column" fxLayoutGap="20px" cdkDropList (cdkDropListDropped)="dropSpecs($event)">
     <div *ngFor="let category of contractCategories" fxLayoutGap="20px">
-      <il-contract-category (categoryTermEmitter)="onToggleTerms($event)" [inCheckListing]="showRightNav" [contractCategory]="category" (removeProductSpecEmitter)="handleRemoveProductSpecs($event)"></il-contract-category>
+      <il-contract-category (categoryTermEmitter)="onToggleTerm($event)" [inCheckListing]="showRightNav" [contractCategory]="category" (removeProductSpecEmitter)="handleRemoveProductSpecs($event)"></il-contract-category>
     </div>
   </div>
 

@@ -11,7 +11,7 @@ import { loadContracts, loadContractSuccess, addContract, addContractSuccess, up
 import { Store } from '@ngrx/store';
 
 @Injectable()
-export class ContractsEffects {
+export class ContractsEffect {
   uploadTermImage$ = createEffect(() => this.actions$.pipe(
     ofType(uploadTermImage),
     switchMap(({ file }) => this.uploadService.upload(file, 'single')

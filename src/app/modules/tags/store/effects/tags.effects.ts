@@ -8,7 +8,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap, tap } from 'rxjs/operators';
 
 @Injectable()
-export class TagsEffects {
+export class TagsEffect {
   updateTag$ = createEffect(() => this.actions$.pipe(
     ofType(updateTag),
     mergeMap(({ item }) => this.tagsService.patch(item)

@@ -10,7 +10,7 @@ import { zip, of } from 'rxjs';
 import { appNotification } from 'src/app/store/notification.action';
 
 @Injectable()
-export class ContractProductsEffects {
+export class ContractProductsEffect {
   loadContractProducts$ = createEffect(() => this.actions$.pipe(
     ofType(loadContractProducts),
     mergeMap(({ id }) => this.contractProductService.getById(id).pipe(

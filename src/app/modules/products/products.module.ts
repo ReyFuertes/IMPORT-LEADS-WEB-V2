@@ -1,4 +1,4 @@
-import { ProductsEffects } from './store/products.effects';
+import { ProductsEffect } from './store/products.effects';
 import { ProductsService } from './products.service';
 import { ProductListComponent } from './components/products-list/product-list.component';
 import { ProductsPageComponent } from './components/products-page/products-page.component';
@@ -81,7 +81,7 @@ const materialModules = [
     DialogModule,
     RouterModule.forChild(routes),
     StoreModule.forFeature('products', ProductsReducer),
-    EffectsModule.forFeature([ProductsEffects])
+    EffectsModule.forFeature([ProductsEffect])
   ],
   exports: [],
   declarations: [

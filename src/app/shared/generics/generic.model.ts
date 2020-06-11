@@ -10,6 +10,7 @@ export interface AddEditDialogState {
 export interface ISimpleItem {
   label: string;
   value?: string;
+  _id?: string;
 }
 export interface Menu {
   label: string;

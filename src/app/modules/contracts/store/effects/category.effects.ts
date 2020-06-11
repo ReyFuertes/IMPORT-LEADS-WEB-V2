@@ -9,7 +9,7 @@ import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 @Injectable()
-export class CategoryEffects {
+export class CategoryEffect {
   updateCategory$ = createEffect(() => this.actions$.pipe(
     ofType(updateCategory),
     mergeMap(({ payload }) => {

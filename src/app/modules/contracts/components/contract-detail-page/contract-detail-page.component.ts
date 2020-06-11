@@ -8,7 +8,7 @@ import { tap, take, map } from 'rxjs/operators';
 import { getContractCategorySelector } from './../../store/selectors/contract-category.selector';
 import { addContractCategory, loadContractCategory } from './../../store/actions/contract-category.action';
 import { ContractCategoryDialogComponent } from '../../../dialogs/components/contract-category/contract-category-dialog.component';
-import { loadContractProducts } from './../../store/actions/contract-product.action';
+import { loadContractProducts, clearPreSelectProducts } from './../../store/actions/contract-product.action';
 import { getContractById } from './../../store/selectors/contracts.selector';
 import { User } from './../../../users/users.models';
 import { AppState } from './../../../../store/app.reducer';
@@ -135,9 +135,10 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     /* collect the preselected product ids */
     this.store.pipe(select(getPreSelectedProductsSelector),
       map(pp => pp.selectedProducts))
-      .subscribe(product_ids => {
-        if (product_ids && product_ids.length > 0)
-          this.checkListProductIds = product_ids.map(p => p._id);
+      .subscribe(productIds => {
+        if (productIds && productIds.length > 0) {
+          this.checkListProductIds = productIds.map(p => p._id);
+        }
       })
   }
 
@@ -146,9 +147,15 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   public onSaveChecklist(): void {
     this.store.pipe(select(getContractChecklistSelector), map(c => c.checklist))
       .subscribe(checklist => {
+        /* add product to checklist items */
         checklist && checklist.forEach(item => Object.assign(item, { checklist_product: this.checkListProductIds }));
         /* save checklist */
-        this.store.dispatch(saveToChecklist({ payload: checklist }))
+        this.store.dispatch(saveToChecklist({ payload: checklist }));
+
+        setTimeout(() => {
+          this.store.dispatch(clearPreSelectProducts());
+          this.onCloseRighNav(true);
+        }, 2000);
       })
   }
 
@@ -158,7 +165,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       checklist_category: { id: categoryTerm.category_id },
       checklist_term: { id: categoryTerm.term_id },
     }
-
+    /* build the checklist payload */
     const match = this.contractChecklist.filter(c => c.checklist_category.id === ctPayload.checklist_category.id
       && c.checklist_term.id === ctPayload.checklist_term.id).shift();
     if (!match) {
@@ -171,34 +178,6 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       _.remove(this.contractChecklist, ctPayload);
     }
     this.store.dispatch(addToChecklist({ payload: this.contractChecklist }))
-  }
-
-  private matchFields(prop: string, value: any, splice: boolean = true): any {
-    /* if the property doesnt exist then add it */
-    if (!this.contractChecklist[prop])
-      Object.assign(this.contractChecklist, { [prop]: [] });
-
-    const categoryMatch = this.contractChecklist[prop].filter(c => c === value).shift();
-    if (!categoryMatch) {
-      Object.assign({}, this.contractChecklist, { [prop]: this.contractChecklist[prop].push(value) });
-    } else {
-      if (!splice) return;
-      /* check if there are existing ids or remove */
-      const index = this.contractChecklist[prop].indexOf(value);
-      if (index > -1) {
-        this.contractChecklist[prop].splice(index, 1);
-      }
-    }
-  }
-
-  public onCheckListing(products: IProduct[]): void {
-    const productIds = [...products.map(p => p.id)];
-    // if (productIds && productIds.length > 0) {
-    //   this.contractChecklist = {
-    //     contract_id: this.id,
-    //     product_ids: productIds,
-    //   };
-    // }
   }
 
   private onDeleteContract = (): void => {

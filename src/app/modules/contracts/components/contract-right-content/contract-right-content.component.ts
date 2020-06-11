@@ -20,12 +20,16 @@ import { getContractChecklistSelector } from '../../store/selectors/contract-che
 export class ContractRightContentComponent implements OnInit {
   public svgPath: string = environment.svgPath;
   public assignments: ISimpleItem[] = [{
-    label: 'Pedro Kalungsod',
+    label: 'Rey Fuertes',
     value: '1'
   },
   {
     label: 'Juan dela Cruz',
-    value: '1'
+    value: '2'
+  },
+  {
+    label: 'Ben Booterkooper',
+    value: '3'
   }];
 
   @Output()

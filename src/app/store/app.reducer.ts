@@ -1,3 +1,4 @@
+import { InspectionState, InspectionReducer } from './../modules/inspections/store/inspection.reducer';
 import { ContractModuleState } from './../modules/contracts/store/reducers/index';
 import { TagsState, TagsReducer } from './../modules/tags/store/reducers/tags.reducer';
 import { ContractProductsState, ProductsReducer } from './../modules/products/store/products.reducer';
@@ -10,11 +11,13 @@ export interface AppState {
   notification?: NotificationState,
   venues?: VenuesState,
   products?: ContractProductsState,
-  tags?: TagsState
+  tags?: TagsState,
+  inspection?: InspectionState
 }
 export const reducers: ActionReducerMap<AppState> = {
   notification: NotificationReducer,
   venues: VenuesReducer,
   products: ProductsReducer,
-  tags: TagsReducer
+  tags: TagsReducer,
+  inspection: InspectionReducer
 };

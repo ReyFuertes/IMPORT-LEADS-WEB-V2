@@ -1,7 +1,9 @@
+import { loadChecklist } from './../store/inspection.action';
+import { getInspectionChecklistSelector } from './../store/inspection.selector';
 import { AppState } from 'src/app/store/app.reducer';
 import { GenericContainer } from './../../../shared/generics/generic-container';
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 
 @Component({
   selector: 'il-inspections-container',
@@ -12,5 +14,6 @@ import { Store } from '@ngrx/store';
 export class InspectionsContainerComponent extends GenericContainer implements OnInit {
   constructor(private store: Store<AppState>) {
     super();
+    this.store.dispatch(loadChecklist());
   }
 }

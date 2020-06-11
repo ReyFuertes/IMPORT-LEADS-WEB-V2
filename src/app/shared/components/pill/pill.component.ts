@@ -62,12 +62,14 @@ export class PillComponent extends GenericControl<ISimpleItem> implements OnInit
     this.cdRef.detectChanges();
   }
 
-  ngOnChanges(changes: SimpleChanges): void { }
+  ngOnChanges(changes: SimpleChanges): void {
+    this.resetSelection();
+  }
 
   private resetSelection(): void {
     let selectors = document.querySelectorAll('il-pill') as any;
     selectors.forEach(element => {
-      element.children[0].classList.remove('selected');
+      element.children[0].classList.remove('sel');
     });
   }
 

@@ -1,3 +1,4 @@
+import { getPreSelectedProductsSelector } from './../../store/selectors/contract-product-selector';
 import { getContractCategorySelector } from './../../store/selectors/contract-category.selector';
 import { getProductsSelector } from './../../../products/store/products.selector';
 import { IProduct } from './../../../products/products.model';
@@ -45,8 +46,6 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
   public inCheckListing: boolean = false;
   @Input()
   public contract: IContract;
-  @Output()
-  public checklistProductsEmitter = new EventEmitter<IProduct[]>();
 
   constructor(private store: Store<AppState>, private dialog: MatDialog, private fb: FormBuilder, private cdRef: ChangeDetectorRef) {
     this.form = this.fb.group({
@@ -134,11 +133,22 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
           }
         })
       }
-    })
+    });
+
+    this.store.pipe(select(getPreSelectedProductsSelector),
+      tap(pp => {
+        if (pp && pp.selectedProducts) {
+          this.checklistOfProducts = pp.selectedProducts
+        } else {
+          this.checklistOfProducts = [];
+        }
+      })).subscribe()
   }
 
   public isProductSelected(id: string): boolean {
-    return this.checklistOfProducts.filter(c => c.id === id).shift() ? true : false;
+    return this.checklistOfProducts
+      && this.checklistOfProducts.length > 0
+      && this.checklistOfProducts.filter(c => c.id === id).shift() ? true : false;
   }
 
   public fmtToSimpleItem(p: IProduct): ISimpleItem {
@@ -260,12 +270,6 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
       this.formSubProdsArr.push(item);
     });
 
-    /* emit the selected product/s */
-    if (!this.selectedProducts.includes(product)) {
-      this.selectedProducts.push(product);
-    }
-    this.checklistProductsEmitter.emit(this.selectedProducts);
-
     this.hasSubProducts = this.formSubProdsArr && this.formSubProdsArr.length > 0;
     this.isEditProduct = true;
   }
@@ -348,8 +352,9 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
   }
 
   public deSelectChange(payload: ISimpleItem): void {
-    const match = this.checklistOfProducts.filter(cp => cp.id === payload.value).shift()
-    if(match) {
+    const match = this.checklistOfProducts &&
+      this.checklistOfProducts.filter(cp => cp.id === payload.value).shift()
+    if (match) {
       const index: number = this.checklistOfProducts.indexOf(match);
       if (index !== -1) {
         this.checklistOfProducts.splice(index, 1);
@@ -360,7 +365,8 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
   };
 
   public preSelectChange(payload: ISimpleItem): void {
-    const match = this.checklistOfProducts.filter(cp => cp.id === payload.value).shift();
+    const match = this.checklistOfProducts &&
+      this.checklistOfProducts.filter(cp => cp.id === payload.value).shift();
     if (!match) {
       this.checklistOfProducts.push({ id: payload.value, _id: payload._id });
       this.store.dispatch(preSelectProducts({ payload: this.checklistOfProducts }));

@@ -11,7 +11,7 @@
     <mat-tab label="Active Inspections">
       <ng-template matTabContent>
         <div fxLayout="column" fxLayoutAlign="start center">
-          <il-inspection-active-panel [colsHeaders]="ctCols" [items]="items"></il-inspection-active-panel>
+          <il-inspection-active-panel [colsHeaders]="ctCols" [inspectionChecklist]="($inspectionChecklist | async)"></il-inspection-active-panel>
         </div>
       </ng-template>
     </mat-tab>

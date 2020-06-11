@@ -14,7 +14,7 @@
       <ng-container *ngFor="let item of ($contractProducts | async); let i = index;">
         <!-- parent -->
         <il-pill [state]="state" [reset]="!inCheckListing" (preSelectEmitter)="preSelectChange($event)" (deSelectEmitter)="deSelectChange($event)" (stateEmitter)="removeSelection()" (click)="onEdit(item)" [ngClass]="{'sel': isProductSelected(item?.id)}"
-          [enabled]="!inCheckListing ||inCheckListing && (item?.sub_products && !item?.sub_products.length > 0)" [item]="fmtToSimpleItem(item)" [enableHighlight]="true" (removeEmitter)="onRemoveProduct(item)" [selectable]="true">
+          [enabled]="!inCheckListing || inCheckListing && (item?.sub_products && !item?.sub_products.length > 0)" [item]="fmtToSimpleItem(item)" [enableHighlight]="true" (removeEmitter)="onRemoveProduct(item)" [selectable]="true">
         </il-pill>
         <!-- child -->
         <il-pill size="small" [reset]="!inCheckListing" [enabled]="inCheckListing" *ngFor="let sub of item?.sub_products; let i = index;" [item]="{label: sub.product_name, value: item.id}" [enableHighlight]="true"

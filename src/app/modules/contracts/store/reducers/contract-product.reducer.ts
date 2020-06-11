@@ -1,5 +1,5 @@
 import { ContractModuleState } from './index';
-import { loadContractProductSuccess, updateContractProductsSuccess, preSelectProducts } from './../actions/contract-product.action';
+import { loadContractProductSuccess, updateContractProductsSuccess, preSelectProducts, clearPreSelectProducts } from './../actions/contract-product.action';
 import { IContractProduct } from './../../contract.model';
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
@@ -14,6 +14,9 @@ export const initialState: ContractProductsState = adapter.getInitialState({
 });
 const reducer = createReducer(
   initialState,
+  on(clearPreSelectProducts, (state, action) => {
+    return Object.assign({}, state, { selectedProducts: null });
+  }),
   on(preSelectProducts, (state, action) => {
     return Object.assign({}, state, { selectedProducts: action.payload });
   }),

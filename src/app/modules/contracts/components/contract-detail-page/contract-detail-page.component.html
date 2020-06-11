@@ -50,7 +50,7 @@
       </div>
       <!-- contract products -->
       <div *ngIf="($contract | async)" class="card-row">
-        <il-contract-detail-products (checklistProductsEmitter)="onCheckListing($event)" [contract]="($contract | async)" [inCheckListing]="showRightNav"></il-contract-detail-products>
+        <il-contract-detail-products [contract]="($contract | async)" [inCheckListing]="showRightNav"></il-contract-detail-products>
       </div>
     </div>
   </mat-card>

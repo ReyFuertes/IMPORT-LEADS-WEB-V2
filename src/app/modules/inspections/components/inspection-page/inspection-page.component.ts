@@ -1,4 +1,8 @@
-import { InspectionPanelModel } from './../../inspections.models';
+import { Observable } from 'rxjs';
+import { getInspectionChecklistSelector } from './../../store/inspection.selector';
+import { AppState } from './../../../contracts/store/reducers/index';
+import { Store, select } from '@ngrx/store';
+import { InspectionPanelModel, IInspectionChecklist } from './../../inspections.models';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -8,68 +12,8 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class InspectionPageComponent implements OnInit {
-  public items: InspectionPanelModel[] = [
-    {
-      id: '1',
-      title: 'Wood bead bracelet production contract',
-      assignedTo: "Rey Fuertes",
-      dateRun: '06.10.2019',
-      startDate: '06.10.2019',
-      endDate: '06.10.2019',
-      totalAmount: 200,
-      products: [
-        {
-          label: 'Touch Dimmer Switch',
-          value: 'Touch Dimmer Switch'
-        }
-      ]
-    },
-    {
-      id: '2',
-      title: 'Wood bead bracelet inspection (WW)',
-      assignedTo: "Tammy Li | CIL China | Procurement officer",
-      dateRun: '06.10.2019',
-      startDate: '06.10.2019',
-      endDate: '06.10.2019',
-      totalAmount: 200,
-      products: [
-        {
-          label: 'Touch Dimmer Switch',
-          value: 'Touch Dimmer Switch'
-        }
-      ]
-    },
-    {
-      id: '3',
-      title: 'CH EUS20190529',
-      assignedTo: "Tammy Li | CIL China | Procurement officer",
-      dateRun: '06.10.2019',
-      startDate: '06.10.2019',
-      endDate: '06.10.2019',
-      totalAmount: 200,
-      products: [
-        {
-          label: 'Touch Dimmer Switch',
-          value: 'Touch Dimmer Switch'
-        }
-      ]
-    },
-    {
-      id: '4',
-      title: 'ZS-4665 New Square watch',
-      assignedTo: "Tammy Li | CIL China | Procurement officer",
-      dateRun: '06.10.2019',
-      startDate: '06.10.2019',
-      endDate: '06.10.2019',
-      totalAmount: 200,
-      products: [
-        {
-          label: 'Touch Dimmer Switch',
-          value: 'Touch Dimmer Switch'
-        }
-      ]
-    }
-  ];
+  public $inspectionChecklist: Observable<IInspectionChecklist[]>;
+
   public ctCols: Array<{ label: string, width?: string | number }> = [
     {
       label: 'Contract Name',
@@ -118,7 +62,9 @@ export class InspectionPageComponent implements OnInit {
       width: 10
     }
   ];
-  constructor() { }
+  constructor(private store: Store<AppState>) {
+    this.$inspectionChecklist = this.store.pipe(select(getInspectionChecklistSelector))
+  }
 
   ngOnInit() { }
 }

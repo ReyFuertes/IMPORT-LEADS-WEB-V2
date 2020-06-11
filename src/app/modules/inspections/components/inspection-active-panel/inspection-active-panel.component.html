@@ -3,26 +3,26 @@
 </div>
 <div class="il-draggable-expansion">
   <mat-accordion cdkDropList (cdkDropListDropped)="drop($event)">
-    <mat-expansion-panel (click)="expandPnl(pnl, $event, i)" cdkDrag (cdkDragStarted)="dragStarted(true)" #pnl="matExpansionPanel" *ngFor="let item of items; let i = index" hideToggle="true">
+    <mat-expansion-panel (click)="expandPnl(pnl, $event, i)" cdkDrag (cdkDragStarted)="dragStarted(true)" #pnl="matExpansionPanel" *ngFor="let item of inspectionChecklist; let i = index" hideToggle="true">
 
       <mat-expansion-panel-header (keydown.Space)="$event.stopImmediatePropagation()"
       (keydown.Enter)="$event.stopImmediatePropagation()" (click)="onClickPnl(pnl, $event, i)" (mouseover)="mouseover(i)" (mouseleave)="mouseout()">
         <div class="pnl-header" fxLayout="row" fxLayoutGap="10px">
           <img cdkDragHandle [src]="svgPath + 'drag-icon.svg'" />
           <div fxFlex="35" class="contact-title" [matTooltip]="item?.title" fxLayoutAlign="start center">
-            <span>{{item?.title}}</span>
+            <span>{{item?.contract?.contract_name}}</span>
           </div>
           <div fxFlex="35" class="assigned-to" [matTooltip]="item?.assignedTo" fxLayoutAlign="start center" fxLayoutGap="10px">
             <div class="img-circle">
               <img [src]="imgPath + 'profile.png'" />
             </div>
-            <span>{{item?.assignedTo}}</span>
+            <span>Ben Booterkooper</span>
           </div>
           <div fxFlex="20" [matTooltip]="item?.dateRun" fxLayoutAlign="start center">
-            <span>{{item?.dateRun}}</span>
+            <span>6/12/2020</span>
           </div>
           <div fxFlex="10" [matTooltip]="item?.dateRun" fxLayoutAlign="start center">
-            <span>{{item?.totalAmount}}</span>
+            <span>{{i}}</span>
           </div>
           <div class="action-col" fxFlex="5" fxLayoutAlign="end center">
             <il-popover-menu [menus]="menus" class="action-col" (click)="$event.stopPropagation();"></il-popover-menu>

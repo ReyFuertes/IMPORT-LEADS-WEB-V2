@@ -1,7 +1,10 @@
+import { getInspectionChecklistSelector } from './../../store/inspection.selector';
+import { AppState } from './../../../contracts/store/reducers/index';
+import { Store, select } from '@ngrx/store';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Router } from '@angular/router';
 import { Menu } from './../../../../shared/generics/generic.model';
-import { InspectionPanelModel } from './../../inspections.models';
+import { InspectionPanelModel, IInspectionChecklist } from './../../inspections.models';
 import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, Input } from '@angular/core';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
@@ -18,10 +21,12 @@ export class InspectionActivePanelComponent extends GenericRowComponent implemen
   @Input()
   public colsHeaders: Array<{ label: string, width?: string | number }>;
   @Input()
-  public items: InspectionPanelModel[];
+  public items: InspectionPanelModel[]; /* remove this later on */
+  @Input()
+  public inspectionChecklist: IInspectionChecklist[];
   @Input()
   public isCategory: boolean = false;
-  constructor(private router: Router) {
+  constructor(private store: Store<AppState>, private router: Router) {
     super();
   }
 

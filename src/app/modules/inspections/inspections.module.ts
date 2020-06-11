@@ -1,3 +1,7 @@
+import { EffectsModule } from '@ngrx/effects';
+import { InspectionEffect } from './store/inspection.effect';
+import { StoreModule } from '@ngrx/store';
+import { ChecklistService } from './../contracts/services/contract-checklist.service';
 import { InspectionReportCommentsComponent } from './components/inspection-report-comments/inspection-report-comments.component';
 import { InspectionReportFailuresComponent } from './components/inspection-report-failures/inspection-report-failures.component';
 import { InspectionReportTagsComponent } from './components/inspection-report-tags/inspection-report-tags.component';
@@ -23,6 +27,8 @@ import { MatIconModule, MatTabsModule, MatButtonModule, MatListModule, MatFormFi
 import { ChartsModule } from 'ng2-charts';
 import { InspectionActivePanelComponent } from './components/inspection-active-panel/inspection-active-panel.component';
 import { InspectionFinishedPanelComponent } from './components/inspection-finished-panel/inspection-finished-panel.component';
+import { ChecklistEffect } from '../contracts/store/effects/contract-checklist.effect';
+import { InspectionReducer } from './store/inspection.reducer';
 
 const routes: Routes = [
   {
@@ -79,7 +85,12 @@ const primeNgModules = [];
     ChartsModule,
     ...materialModules,
     ...primeNgModules,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    StoreModule.forFeature('inspection', InspectionReducer),
+    EffectsModule.forFeature([
+      InspectionEffect,
+      ChecklistEffect
+    ])
   ],
   exports: [],
   declarations: [
@@ -99,6 +110,6 @@ const primeNgModules = [];
     InspectionActivePanelComponent,
     InspectionFinishedPanelComponent
   ],
-  providers: [],
+  providers: [ChecklistService],
 })
 export class InspectionModule { }

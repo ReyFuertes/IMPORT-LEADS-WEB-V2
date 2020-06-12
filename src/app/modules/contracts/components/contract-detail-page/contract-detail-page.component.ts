@@ -154,6 +154,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       .subscribe(checklist => {
         /* add product to checklist items */
         checklist && checklist.forEach(item => Object.assign(item, { checklist_product: this.checkListProductIds }));
+
         /* save checklist */
         this.store.dispatch(saveToChecklist({ payload: checklist }));
 
@@ -174,7 +175,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     const ctPayload = {
       checklist_contract: { id: this.id },
       checklist_category: { id: categoryTerm.category_id },
-      checklist_term: { id: categoryTerm.term_id },
+      checklist_term: { id: categoryTerm.term_id }
     }
     /* build the checklist payload */
     const match = this.contractChecklist.filter(c => c.checklist_category.id === ctPayload.checklist_category.id
@@ -184,6 +185,8 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
         checklist_contract: { id: this.id },
         checklist_category: { id: categoryTerm.category_id },
         checklist_term: { id: categoryTerm.term_id },
+        desired_run_date: this.formChecklist.get('desiredRunDate').value,
+        assigned_to: this.formChecklist.get('assignedTo').value
       })
     } else {
       _.remove(this.contractChecklist, ctPayload);

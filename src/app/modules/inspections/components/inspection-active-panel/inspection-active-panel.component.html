@@ -15,13 +15,13 @@
             <div class="img-circle">
               <img [src]="imgPath + 'profile.png'" />
             </div>
-            <span>Ben Booterkooper</span>
+            <span>{{ item?.assigned_to }}</span>
           </div>
           <div fxFlex="20" [matTooltip]="item?.dateRun" fxLayoutAlign="start center">
-            <span>6/12/2020</span>
+            <span>{{ item?.desired_run_date | date: 'MM/dd/yyyy' }}</span>
           </div>
           <div fxFlex="10" [matTooltip]="item?.dateRun" fxLayoutAlign="start center">
-            <span>{{i}}</span>
+            <span>Test: {{i}}</span>
           </div>
           <div class="action-col" fxFlex="5" fxLayoutAlign="end center">
             <il-popover-menu [menus]="menus" class="action-col" (click)="$event.stopPropagation();"></il-popover-menu>

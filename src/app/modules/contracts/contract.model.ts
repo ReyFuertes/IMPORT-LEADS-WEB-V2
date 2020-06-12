@@ -11,6 +11,8 @@ export interface IContractChecklist {
   contract_product?: { id }[];
   checklist_term?: { id };
   checklist_category?: { id };
+  desired_run_date?: string;
+  assigned_to?: string;
 }
 export interface IContractTerm {
   id?: string;

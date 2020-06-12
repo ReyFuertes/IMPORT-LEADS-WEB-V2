@@ -21,15 +21,15 @@ export class ContractRightContentComponent implements OnInit {
   public svgPath: string = environment.svgPath;
   public assignments: ISimpleItem[] = [{
     label: 'Rey Fuertes',
-    value: '1'
+    value: 'Rey Fuertes'
   },
   {
     label: 'Juan dela Cruz',
-    value: '2'
+    value: 'Juan dela Cruz'
   },
   {
     label: 'Ben Booterkooper',
-    value: '3'
+    value: 'Ben Booterkooper'
   }];
   @Input()
   public form: FormGroup;

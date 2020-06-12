@@ -6,7 +6,7 @@ import { BriefDialogComponent } from './../../../dialogs/components/brief/brief-
 import { AQLDialogComponent } from './../../../dialogs/components/aql/aql-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from './../../../../../environments/environment';
-import { Component, OnInit, Output, EventEmitter, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, AfterViewInit, ElementRef, Input } from '@angular/core';
 import { fromEvent } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { getContractChecklistSelector } from '../../store/selectors/contract-checklist.selector';
@@ -31,17 +31,13 @@ export class ContractRightContentComponent implements OnInit {
     label: 'Ben Booterkooper',
     value: '3'
   }];
-
+  @Input()
+  public form: FormGroup;
   @Output()
   public closeEmitter = new EventEmitter<boolean>();
   @ViewChild('scrollPnl', { static: true }) public scrollPnl: any;
-  public form: FormGroup;
 
   constructor(private store: Store<AppState>, public dialog: MatDialog, private fb: FormBuilder) {
-    this.form = this.fb.group({
-      assignedTo: [null],
-      designedRunDate: [null]
-    });
   }
 
   ngOnInit() { }

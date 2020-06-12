@@ -13,7 +13,7 @@ import { getContractById } from './../../store/selectors/contracts.selector';
 import { User } from './../../../users/users.models';
 import { AppState } from './../../../../store/app.reducer';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IContract, IProductImage, IContractCategory, ICategory, IContractChecklist, IContractCategoryTerm } from './../../contract.model';
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from './../../../../../environments/environment';
@@ -49,6 +49,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   public contractCategories: IContractCategory[];
   public contractChecklist: IContractChecklist[] = [];
   public checkListProductIds: string[] = [];
+  public formChecklist: FormGroup;
 
   @Output()
   public openNavChange = new EventEmitter<boolean>();
@@ -64,6 +65,10 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       delivery_date: [null],
       details: [null],
       images: [null]
+    });
+    this.formChecklist = this.fb.group({
+      assignedTo: [null, Validators.required],
+      desiredRunDate: [null, Validators.required]
     });
   }
 
@@ -157,6 +162,12 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
           this.onCloseRighNav(true);
         }, 2000);
       })
+  }
+
+  public get isChecklistValid(): boolean {
+    return this.formChecklist.valid
+      && (this.checkListProductIds && this.checkListProductIds.length > 0)
+      && (this.contractChecklist && this.contractChecklist.length > 0);
   }
 
   public onToggleTerm(categoryTerm: IContractCategoryTerm): void {

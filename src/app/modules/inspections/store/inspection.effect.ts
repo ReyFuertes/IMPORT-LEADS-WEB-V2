@@ -13,7 +13,6 @@ export class InspectionEffect {
     ofType(loadChecklist),
     mergeMap(() => this.checklistService.getAll().pipe(
       map((items: IInspectionChecklist[]) => {
-        debugger
         return loadChecklistSuccess({ items });
       })
     ))

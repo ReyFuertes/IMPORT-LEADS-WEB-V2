@@ -12,7 +12,7 @@
         <div class="new-template" fxLayout="column" fxLayoutGap="10px">
           <div>
             <il-dropdown-select [items]="assignments" [form]="form" [controlName]="'assignedTo'" placeholder="Assigned To"></il-dropdown-select>
-            <il-datepicker [form]="form" [controlName]="'designedRunDate'" [placeholder]="'Desired run date'"></il-datepicker>
+            <il-datepicker [form]="form" [controlName]="'desiredRunDate'" [placeholder]="'Desired run date'"></il-datepicker>
           </div>
           <div class="content" fxLayout="column" fxLayoutAlign="start start">
             <div fxLayout="row" fxLayoutAlign="center center">
@@ -23,7 +23,6 @@
               <h5>Select terms for inspection</h5>
             </div>
           </div>
-
         </div>
       </mat-tab>
       <mat-tab label="Saved Checklist">

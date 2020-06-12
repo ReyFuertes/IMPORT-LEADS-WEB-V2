@@ -63,13 +63,13 @@
 
   <p-sidebar class="il-rightnav" [(visible)]="showRightNav" position="right" [showCloseIcon]="false">
     <div class="upper-pane">
-      <il-contract-right-content (closeEmitter)="onCloseRighNav($event)"></il-contract-right-content>
+      <il-contract-right-content [form]="formChecklist" (closeEmitter)="onCloseRighNav($event)"></il-contract-right-content>
     </div>
   </p-sidebar>
 
   <p-sidebar class="il-rightnav-bottom" [(visible)]="showRightNav" position="right" [showCloseIcon]="false">
     <div fxlayout="row" fxLayoutAlign="center center" fxFlexFill>
-      <button (click)="onSaveChecklist()" mat-flat-button class="il-button primary">Save</button>
+      <button (click)="onSaveChecklist()" [disabled]="!isChecklistValid" mat-flat-button class="il-button primary">Save</button>
     </div>
   </p-sidebar>
 </div>

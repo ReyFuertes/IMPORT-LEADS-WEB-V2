@@ -29,7 +29,9 @@ export class ContractTermEffect {
       .pipe(
         map((updated: IContractTerm) => {
           if (updated)
-            this.store.dispatch(appNotification({ notification: { success: true, message: 'Term successfully Updated' } }));
+            this.store.dispatch(appNotification({
+              notification: { success: true, message: 'Term successfully Updated' }
+            }));
 
           return updateContractTermSuccess({ updated });
         })

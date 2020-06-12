@@ -1,5 +1,5 @@
 import { ContractModuleState } from './index';
-import { saveToChecklist, addToChecklist } from './../actions/contract-checklist.action';
+import { saveToChecklist, addToChecklist, clearChecklist } from './../actions/contract-checklist.action';
 import { IContractChecklist } from './../../contract.model';
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
@@ -13,6 +13,9 @@ export const initialState: ContractChecklistState = adapter.getInitialState({
 });
 const reducer = createReducer(
   initialState,
+  on(clearChecklist, (state) => {
+    return Object.assign({}, state, { checklist: null });
+  }),
   on(addToChecklist, (state, action) => {
     return Object.assign({}, state, { checklist: action.payload });
   })

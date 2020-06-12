@@ -5,7 +5,11 @@ export enum CategoryActionTypes {
   addToChecklist = '[Contract Checklist] Add',
   saveToChecklist = '[Contract Checklist] Save',
   saveToChecklistSuccess = '[Contract Checklist] Save (success)',
+  clearChecklist = '[Contract Checklist] Clear'
 }
+export const clearChecklist = createAction(
+  CategoryActionTypes.clearChecklist
+);
 export const addToChecklist = createAction(
   CategoryActionTypes.addToChecklist,
   props<{ payload: IContractChecklist[] }>()

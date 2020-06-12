@@ -20,7 +20,10 @@ export class ChecklistEffect {
       .pipe(
         map((payload: IContractChecklist[]) => {
           if (payload) {
-            this.store.dispatch(appNotification({ notification: { success: true, message: 'Checklist successfully Created' } }));
+            this.store.dispatch(appNotification({
+              notification:
+                { success: true, message: 'Checklist successfully Created' }
+            }));
           }
           return saveToChecklistSuccess({ payload });
         })

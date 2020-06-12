@@ -1,5 +1,5 @@
 import { getPreSelectedProductsSelector } from './../../store/selectors/contract-product-selector';
-import { saveToChecklist, addToChecklist } from './../../store/actions/contract-checklist.action';
+import { saveToChecklist, addToChecklist, clearChecklist } from './../../store/actions/contract-checklist.action';
 import { sortByAsc } from 'src/app/shared/util/sort';
 import { IProduct } from './../../../products/products.model';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
@@ -48,7 +48,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   public contract: IContract;
   public contractCategories: IContractCategory[];
   public contractChecklist: IContractChecklist[] = [];
-  public checkListProductIds: string[] = [];
+  public checkListProductIds: { id: string }[] = [];
   public formChecklist: FormGroup;
 
   @Output()
@@ -142,15 +142,17 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       map(pp => pp.selectedProducts))
       .subscribe(productIds => {
         if (productIds && productIds.length > 0) {
-          this.checkListProductIds = productIds.map(p => p._id);
-        }
+          this.checkListProductIds = productIds.map(p => {
+            return { id: p._id };
+          });
+        } else this.checkListProductIds = [];
       })
   }
 
   public ngOnChanges(changes: SimpleChanges): void { }
 
   public onSaveChecklist(): void {
-    this.store.pipe(select(getContractChecklistSelector), map(c => c.checklist))
+    this.store.pipe(take(1), select(getContractChecklistSelector), map(c => c.checklist))
       .subscribe(checklist => {
         /* add product to checklist items */
         checklist && checklist.forEach(item => Object.assign(item, { checklist_product: this.checkListProductIds }));
@@ -160,8 +162,10 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
 
         setTimeout(() => {
           this.store.dispatch(clearPreSelectProducts());
+          this.store.dispatch(clearChecklist());
+
           this.onCloseRighNav(true);
-        }, 2000);
+        }, 500);
       })
   }
 
@@ -172,10 +176,14 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   }
 
   public onToggleTerm(categoryTerm: IContractCategoryTerm): void {
+    if (this.checkListProductIds && this.checkListProductIds.length === 0) return;
+
     const ctPayload = {
       checklist_contract: { id: this.id },
       checklist_category: { id: categoryTerm.category_id },
-      checklist_term: { id: categoryTerm.term_id }
+      checklist_term: { id: categoryTerm.term_id },
+      desired_run_date: this.formChecklist.get('desiredRunDate').value,
+      assigned_to: this.formChecklist.get('assignedTo').value
     }
     /* build the checklist payload */
     const match = this.contractChecklist.filter(c => c.checklist_category.id === ctPayload.checklist_category.id
@@ -191,7 +199,8 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     } else {
       _.remove(this.contractChecklist, ctPayload);
     }
-    this.store.dispatch(addToChecklist({ payload: this.contractChecklist }))
+
+    this.store.dispatch(addToChecklist({ payload: this.contractChecklist }));
   }
 
   private onDeleteContract = (): void => {
@@ -209,6 +218,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   public onCloseRighNav(event: any): void {
     setTimeout(() => {
       this.showRightNav = !event;
+      this.formChecklist.reset();
     }, 100);
   }
 
@@ -245,6 +255,10 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   public getBg = (url: string): string => `url(${url})`;
 
   public createUpdateTemplate = (): void => {
+    if(this.checkListProductIds && this.checkListProductIds.length === 0) {
+      alert('select a product');
+      return;
+    }
     this.showRightNav = !this.showRightNav;
     this.openNavChange.emit(this.showRightNav);
   }

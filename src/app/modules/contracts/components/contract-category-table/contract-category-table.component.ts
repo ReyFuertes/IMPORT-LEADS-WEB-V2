@@ -52,6 +52,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   public selectedRow: any;
   public categoryTerm: IContractCategoryTerm;
   public selectedTerms: string[] = [];
+  public someValues: any;
 
   @Input()
   public inCheckListing: boolean = false;
@@ -226,8 +227,13 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes && changes.inCheckListing)
+    if (changes && changes.inCheckListing) {
       this.inCheckListing = changes.inCheckListing.currentValue;
+
+      if (!this.inCheckListing) {
+        this.someValues = null;
+      }
+    }
 
     if (changes && changes.contract_category)
       this.dataSource = new MatTableDataSource<any>(changes.contract_category.currentValue.terms);

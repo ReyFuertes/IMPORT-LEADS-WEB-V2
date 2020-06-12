@@ -40,9 +40,6 @@ table {
   p-inputswitch {
     @include il-input-switch;
   }
-  .mat-tab-group {
-    box-shadow: $box-shadow;
-  }
 }
 .edit-content {
   height: 20px;

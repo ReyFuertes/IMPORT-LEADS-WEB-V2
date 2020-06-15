@@ -152,11 +152,15 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   public ngOnChanges(changes: SimpleChanges): void { }
 
   public onSaveChecklist(): void {
+    console.log(this.formChecklist);
+    console.log(this.checkListProductIds.length );
+    console.log(this.contractChecklist);
+    debugger
     this.store.pipe(take(1), select(getContractChecklistSelector), map(c => c.checklist))
       .subscribe(checklist => {
         /* add product to checklist items */
         checklist && checklist.forEach(item => Object.assign(item, { checklist_product: this.checkListProductIds }));
-
+        debugger
         /* save checklist */
         this.store.dispatch(saveToChecklist({ payload: checklist }));
 
@@ -255,10 +259,10 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   public getBg = (url: string): string => `url(${url})`;
 
   public createUpdateTemplate = (): void => {
-    if(this.checkListProductIds && this.checkListProductIds.length === 0) {
-      alert('select a product');
-      return;
-    }
+    // if(this.checkListProductIds && this.checkListProductIds.length === 0) {
+    //   alert('select a product');
+    //   return;
+    // }
     this.showRightNav = !this.showRightNav;
     this.openNavChange.emit(this.showRightNav);
   }

@@ -1,3 +1,5 @@
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { InputSwitchComponent } from './components/input-switch/input-switch.component';
 import { EditorComponent } from './components/editor/editor.component';
 import { DropdownSelectSearchComponent } from './components/dropdown-select-search/dropdown-select-search.component';
 import { DropdownPopoverSelectComponent } from './components/dropdown-popover-select/dropdown-popover-select.component';
@@ -72,7 +74,8 @@ const primeNgModules = [
   AccordionModule,
   CalendarModule,
   AutoCompleteModule,
-  DropdownModule
+  DropdownModule,
+  InputSwitchModule,
 ];
 
 const sharedComponents = [
@@ -105,7 +108,8 @@ const sharedComponents = [
   DropdownSelectRowComponent,
   DropdownPopoverSelectComponent,
   DropdownSelectSearchComponent,
-  EditorComponent
+  EditorComponent,
+  InputSwitchComponent
 ];
 
 const directives = [

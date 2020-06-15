@@ -52,7 +52,6 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   public selectedRow: any;
   public categoryTerm: IContractCategoryTerm;
   public selectedTerms: string[] = [];
-  public someValues: any;
 
   @Input()
   public inCheckListing: boolean = false;
@@ -67,7 +66,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       id: [null],
       term_name: [null],
       term_description: [null],
-      contact_category: [null]
+      contact_category: [null],
     })
   }
   /* toggling terms for checklist */
@@ -231,7 +230,6 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       this.inCheckListing = changes.inCheckListing.currentValue;
 
       if (!this.inCheckListing) {
-        this.someValues = null;
       }
     }
 

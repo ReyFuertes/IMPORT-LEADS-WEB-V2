@@ -21,6 +21,7 @@ export class ContractsEffect {
         }),
       ))
   ));
+
   delete$ = createEffect(() => this.actions$.pipe(
     ofType(deleteContract),
     mergeMap(({ id }) => this.contractsService.delete(id).pipe(
@@ -58,7 +59,7 @@ export class ContractsEffect {
       })
     ))
   ));
-
+  
   uploadImages$ = createEffect(() => this.actions$.pipe(
     ofType(uploadContractImages),
     mergeMap(({ files }) => {

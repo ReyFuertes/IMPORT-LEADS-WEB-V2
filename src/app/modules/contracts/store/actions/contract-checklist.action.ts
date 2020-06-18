@@ -5,8 +5,13 @@ export enum CategoryActionTypes {
   addToChecklist = '[Contract Checklist] Add',
   saveToChecklist = '[Contract Checklist] Save',
   saveToChecklistSuccess = '[Contract Checklist] Save (success)',
-  clearChecklist = '[Contract Checklist] Clear'
+  clearChecklist = '[Contract Checklist] Clear',
+  highlightChecklist = '[Contract Checklist] Highlight'
 }
+export const highlightChecklist = createAction(
+  CategoryActionTypes.highlightChecklist,
+  props<{ highlight: boolean }>()
+);
 export const clearChecklist = createAction(
   CategoryActionTypes.clearChecklist
 );

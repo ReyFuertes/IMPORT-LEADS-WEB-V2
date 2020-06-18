@@ -5,10 +5,10 @@
     </div>
   </div>
   <div class="content">
-    <h2>Are you sure to delete this item?</h2>
+    <h2>{{ actionText[data?.action]?.message }}</h2>
   </div>
   <div class="footer" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
     <button mat-flat-button class="il-button default large" (click)="dialogRef.close(false)">Cancel</button>
-    <button mat-flat-button class="il-button danger large" (click)="dialogRef.close(true)">Delete</button>
+    <button mat-flat-button class="il-button danger large" (click)="dialogRef.close(true)">{{ actionText[data?.action]?.label }}</button>
   </div>
 </div>

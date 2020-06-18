@@ -104,7 +104,10 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
 
   public onRemoveProduct(item: IvenueProduct): void {
     const dialogRef = this.dialog.open(ConfirmationComponent, {
-      width: '410px'
+      width: '410px',
+      data: {
+        action: 0
+      }
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -138,7 +141,9 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
     if (event.target.classList.contains('delete')) {
       const dialogRef = this.dialog.open(ConfirmationComponent, {
         width: '410px',
-        data: {}
+        data: {
+          action: 0
+        }
       });
       dialogRef.afterClosed().subscribe(result => {
         if (result) {

@@ -1,5 +1,5 @@
 import { getPreSelectedProductsSelector } from './../../store/selectors/contract-product-selector';
-import { saveToChecklist, addToChecklist, clearChecklist } from './../../store/actions/contract-checklist.action';
+import { saveToChecklist, addToChecklist, clearChecklist, highlightChecklist } from './../../store/actions/contract-checklist.action';
 import { sortByAsc } from 'src/app/shared/util/sort';
 import { IProduct } from './../../../products/products.model';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
@@ -27,6 +27,7 @@ import { AddEditState } from 'src/app/shared/generics/generic.model';
 import { Store, select } from '@ngrx/store';
 import * as _ from 'lodash';
 import { getContractChecklistSelector } from '../../store/selectors/contract-checklist.selector';
+import { getInspectionChecklistSelector } from 'src/app/modules/inspections/store/inspection.selector';
 
 @Component({
   selector: 'il-contract-detail-page',
@@ -47,7 +48,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   public images: any[];
   public contract: IContract;
   public contractCategories: IContractCategory[];
-  public contractChecklist: IContractChecklist[] = [];
+  public contractChecklistPayload: IContractChecklist[] = [];
   public checkListProductIds: { id: string }[] = [];
   public formChecklist: FormGroup;
 
@@ -146,21 +147,17 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
             return { id: p._id };
           });
         } else this.checkListProductIds = [];
-      })
+      });
   }
 
   public ngOnChanges(changes: SimpleChanges): void { }
 
   public onSaveChecklist(): void {
-    console.log(this.formChecklist);
-    console.log(this.checkListProductIds.length );
-    console.log(this.contractChecklist);
-    debugger
     this.store.pipe(take(1), select(getContractChecklistSelector), map(c => c.checklist))
       .subscribe(checklist => {
         /* add product to checklist items */
         checklist && checklist.forEach(item => Object.assign(item, { checklist_product: this.checkListProductIds }));
-        debugger
+
         /* save checklist */
         this.store.dispatch(saveToChecklist({ payload: checklist }));
 
@@ -176,7 +173,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   public get isChecklistValid(): boolean {
     return this.formChecklist.valid
       && (this.checkListProductIds && this.checkListProductIds.length > 0)
-      && (this.contractChecklist && this.contractChecklist.length > 0);
+      && (this.contractChecklistPayload && this.contractChecklistPayload.length > 0);
   }
 
   public onToggleTerm(categoryTerm: IContractCategoryTerm): void {
@@ -190,10 +187,10 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       assigned_to: this.formChecklist.get('assignedTo').value
     }
     /* build the checklist payload */
-    const match = this.contractChecklist.filter(c => c.checklist_category.id === ctPayload.checklist_category.id
+    const match = this.contractChecklistPayload.filter(c => c.checklist_category.id === ctPayload.checklist_category.id
       && c.checklist_term.id === ctPayload.checklist_term.id).shift();
     if (!match) {
-      this.contractChecklist.push({
+      this.contractChecklistPayload.push({
         checklist_contract: { id: this.id },
         checklist_category: { id: categoryTerm.category_id },
         checklist_term: { id: categoryTerm.term_id },
@@ -201,14 +198,19 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
         assigned_to: this.formChecklist.get('assignedTo').value
       })
     } else {
-      _.remove(this.contractChecklist, ctPayload);
+      _.remove(this.contractChecklistPayload, ctPayload);
     }
 
-    this.store.dispatch(addToChecklist({ payload: this.contractChecklist }));
+    this.store.dispatch(addToChecklist({ payload: this.contractChecklistPayload }));
   }
 
   private onDeleteContract = (): void => {
-    const dialogRef = this.dialog.open(ConfirmationComponent, { width: '410px' });
+    const dialogRef = this.dialog.open(ConfirmationComponent, {
+      width: '410px',
+      data: {
+        action: 0
+      }
+    });
     dialogRef.afterClosed().subscribe(result => {
       if (result && this.form.get('id').value) {
         this.store.dispatch(deleteContract({ id: this.form.get('id').value }));
@@ -221,6 +223,8 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
 
   public onCloseRighNav(event: any): void {
     setTimeout(() => {
+      /* remove checklist highlight */
+      this.store.dispatch(highlightChecklist({ highlight: false }));
       this.showRightNav = !event;
       this.formChecklist.reset();
     }, 100);
@@ -265,6 +269,12 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     // }
     this.showRightNav = !this.showRightNav;
     this.openNavChange.emit(this.showRightNav);
+
+    /* clear existing checklists */
+    this.store.dispatch(clearPreSelectProducts());
+
+    /* set checklist to highlight when opening right nav */
+    this.store.dispatch(highlightChecklist({ highlight: true }));
   }
 
   public editContract = (): void => {

@@ -128,7 +128,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   public onDeleteTerm(id: string): void {
     const dialogRef = this.dialog.open(ConfirmationComponent, {
       width: '410px',
-      data: {}
+      data: { action: 0 }
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -142,7 +142,9 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   public onDelete = (id: string): void => {
     const dialogRef = this.dialog.open(ConfirmationComponent, {
       width: '410px',
-      data: {}
+      data: {
+        action: 0
+      }
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {

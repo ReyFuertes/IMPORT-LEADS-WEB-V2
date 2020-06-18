@@ -5,10 +5,19 @@ export interface IContractCategoryTerm {
   category_id?: string;
   term_id?: string;
 }
+export interface IContractChecklistItem {
+  id?: string;
+  checklist_contract?: { id };
+  checklist_product?: { id };
+  checklist_term?: { id };
+  checklist_category?: { id };
+  desired_run_date?: string;
+  assigned_to?: string;
+}
 export interface IContractChecklist {
   id?: string;
   checklist_contract?: { id };
-  contract_product?: { id }[];
+  checklist_product?: { id }[];
   checklist_term?: { id };
   checklist_category?: { id };
   desired_run_date?: string;

@@ -79,7 +79,9 @@ export class VenueAddressComponent extends GenericRowComponent implements OnInit
     if (event.target.classList.contains('delete')) {
       const dialogRef = this.dialog.open(ConfirmationComponent, {
         width: '410px',
-        data: {}
+        data: {
+          action: 0
+        }
       });
       dialogRef.afterClosed().subscribe(result => {
         if (result) {

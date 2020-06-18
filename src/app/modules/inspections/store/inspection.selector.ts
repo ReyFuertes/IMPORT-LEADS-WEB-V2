@@ -7,3 +7,7 @@ export const getInspectionChecklistSelector = createSelector(
   selectedState,
   state => state.inspectionChecklist || []
 );
+export const getInspectionChecklistByIdSelector = (id: string) => createSelector(
+  selectedState,
+  state => state.inspectionChecklist[id]
+);

@@ -12,14 +12,14 @@
 
     <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="15px">
       <ng-container *ngFor="let item of ($contractProducts | async); let i = index;">
-        <!-- parent -->
-        <il-pill [state]="state" [reset]="!inCheckListing" (preSelectEmitter)="preSelectChange($event)" (deSelectEmitter)="deSelectChange($event)" (stateEmitter)="removeSelection()" (click)="onEdit(item)"
-          [ngClass]="{'sel': isProductSelected(item?.id)}" [enabled]="!inCheckListing || inCheckListing && (item?.sub_products && !item?.sub_products.length > 0)" [item]="fmtToSimpleItem(item)" [enableHighlight]="true"
-          (removeEmitter)="onRemoveProduct(item)" [selectable]="true">
+        <!-- parent product -->
+        <il-pill [state]="state" [reset]="!inCheckListing" (preSelectEmitter)="preSelectChange($event, isProductSelected(item?.id))" (deSelectEmitter)="deSelectChange($event)" (stateEmitter)="removeSelection()" (click)="onEdit(item)" [ngClass]="{'sel': isProductSelected(item?.id),
+          'highlighted': (hasChecklist(item?._id))
+        }" [enabled]="!inCheckListing || inCheckListing && (item?.sub_products && !item?.sub_products.length > 0)" [item]="fmtToSimpleItem(item)" [enableHighlight]="true" (removeEmitter)="onRemoveProduct(item)" [selectable]="true">
         </il-pill>
-        <!-- child -->
-        <il-pill *ngFor="let sub of item?.sub_products; let i = index;" size="small" (preSelectEmitter)="preSelectChange($event)" (deSelectEmitter)="deSelectChange($event)" [reset]="!inCheckListing" [ngClass]="{'sel': isProductSelected(sub?.id)}" [enabled]="inCheckListing"
-          [item]="{label: sub.product_name, value: sub.id}" [enableHighlight]="true" (removeEmitter)="onRemoveSubProduct(sub)" [selectable]="true">
+        <!-- child product -->
+        <il-pill *ngFor="let sub of item?.sub_products; let i = index;" size="small" (preSelectEmitter)="preSelectChange($event)" (deSelectEmitter)="deSelectChange($event)" [reset]="!inCheckListing" [ngClass]="{'sel': isSubProductSelected(sub?.id)}"
+          [enabled]="inCheckListing" [item]="{label: sub.product_name, value: sub.id}" [enableHighlight]="true" (removeEmitter)="onRemoveSubProduct(sub)" [selectable]="true">
         </il-pill>
       </ng-container>
     </div>

@@ -1,3 +1,4 @@
+import { InspectionEffect } from './../inspections/store/inspection.effect';
 import { ChecklistService } from './services/contract-checklist.service';
 import { ContractTermEffect } from './store/effects/contract-term.effects';
 import { ContractTermService } from './services/contract-term.service';
@@ -116,7 +117,8 @@ const materialModules = [
       TagsEffect,
       CategoryEffect,
       ContractTermEffect,
-      ChecklistEffect
+      ChecklistEffect,
+      InspectionEffect
     ])
   ],
   exports: [],

@@ -6,13 +6,15 @@ import * as fromCategory from '../reducers/category.reducer';
 import { ActionReducerMap } from '@ngrx/store';
 import * as fromRoot from 'src/app/store/app.reducer';
 import * as fromChecklist from '../reducers/contract-checklist.reducer';
+import * as fromInspection from '../../../inspections/store/inspection.reducer';
 
 export interface ContractModuleState {
   contract: fromContract.ContractsState;
   contractProduct: fromContractProducts.ContractProductsState;
   contractCategory: fromContractCategory.ContractCategoryState,
   category: fromCategory.CategoryState,
-  checkList: fromChecklist.ContractChecklistState
+  checkList: fromChecklist.ContractChecklistState,
+  inspection: fromInspection.InspectionState
 }
 
 export const reducers: ActionReducerMap<ContractModuleState> = {
@@ -20,7 +22,8 @@ export const reducers: ActionReducerMap<ContractModuleState> = {
   contractProduct: fromContractProducts.ContractProductsReducer,
   contractCategory: fromContractCategory.ContractCategoryReducer,
   category: fromCategory.CategoryReducer,
-  checkList: fromChecklist.ContractChecklistReducer
+  checkList: fromChecklist.ContractChecklistReducer,
+  inspection: fromInspection.InspectionReducer
 };
 
 export interface AppState extends fromRoot.AppState {

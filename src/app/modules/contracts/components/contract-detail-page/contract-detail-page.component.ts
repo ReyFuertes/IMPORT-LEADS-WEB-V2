@@ -1,3 +1,4 @@
+import { loadChecklist } from './../../../inspections/store/inspection.action';
 import { getPreSelectedProductsSelector } from './../../store/selectors/contract-product-selector';
 import { saveToChecklist, addToChecklist, clearChecklist, highlightChecklist } from './../../store/actions/contract-checklist.action';
 import { sortByAsc } from 'src/app/shared/util/sort';
@@ -163,7 +164,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
 
         setTimeout(() => {
           this.store.dispatch(clearPreSelectProducts());
-          this.store.dispatch(clearChecklist());
+          this.store.dispatch(loadChecklist());
 
           this.onCloseRighNav(true);
         }, 500);

@@ -15,6 +15,7 @@ export const initialState: InspectionState = adapter.getInitialState({
 const inspectionReducer = createReducer(
   initialState,
   on(loadChecklistSuccess, (state, action) => {
+    debugger
     return Object.assign({}, state, { inspectionChecklist: action.items });
   })
 );

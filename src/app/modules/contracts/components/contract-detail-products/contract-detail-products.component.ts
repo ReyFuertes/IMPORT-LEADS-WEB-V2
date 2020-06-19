@@ -1,3 +1,4 @@
+import { loadChecklist } from './../../../inspections/store/inspection.action';
 import { getHighlightChecklist } from './../../store/selectors/contract-checklist.selector';
 import { highlightChecklist } from './../../store/actions/contract-checklist.action';
 import { getPreSelectedProductsSelector } from './../../store/selectors/contract-product-selector';
@@ -212,6 +213,9 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
 
       this.store.dispatch(updateContractProduct({ payload }));
       this.onResetForm();
+
+      /* reload checklist so it will be shown when checklisting */
+      this.store.dispatch(loadChecklist());
     }
   }
 

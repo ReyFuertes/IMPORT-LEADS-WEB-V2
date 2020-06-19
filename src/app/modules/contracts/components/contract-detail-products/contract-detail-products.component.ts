@@ -5,7 +5,7 @@ import { getContractCategorySelector } from './../../store/selectors/contract-ca
 import { getProductsSelector } from './../../../products/store/products.selector';
 import { IProduct } from './../../../products/products.model';
 import { getAllContractProductsSelector } from './../../store/selectors/contracts.selector';
-import { addContractProducts, deleteContractProduct, updateContractProduct, preSelectProducts } from './../../store/actions/contract-product.action';
+import { addContractProducts, deleteContractProduct, updateContractProduct, preSelectProducts, removePreSelectProduct } from './../../store/actions/contract-product.action';
 import { AppState } from 'src/app/store/app.reducer';
 import { Store, select } from '@ngrx/store';
 import { PillState, IContract, IContractProduct, IContractChecklist, IContractChecklistItem } from './../../contract.model';
@@ -414,8 +414,11 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
         data: { action: 1 }
       });
       dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-
+        if (!result) {
+          /* remove preselected product when override cancel */
+          delete Object.assign(payload, {['id']: payload['value'] })['value'];
+          delete payload.label;
+          this.store.dispatch(removePreSelectProduct({ payload }));
         }
       });
     }

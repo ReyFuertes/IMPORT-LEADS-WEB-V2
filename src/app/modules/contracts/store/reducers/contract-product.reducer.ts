@@ -1,9 +1,10 @@
 import { ContractModuleState } from './index';
-import { loadContractProductSuccess, updateContractProductsSuccess, preSelectProducts, clearPreSelectProducts } from './../actions/contract-product.action';
+import { loadContractProductSuccess, updateContractProductsSuccess, preSelectProducts, clearPreSelectProducts, removePreSelectProduct } from './../actions/contract-product.action';
 import { IContractProduct } from './../../contract.model';
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import { addContractProductsSuccess } from '../actions/contract-product.action';
+import * as _ from 'lodash';
 
 export interface ContractProductsState extends EntityState<IContractProduct> {
   selectedProducts?: IContractProduct[]
@@ -14,6 +15,13 @@ export const initialState: ContractProductsState = adapter.getInitialState({
 });
 const reducer = createReducer(
   initialState,
+  on(removePreSelectProduct, (state, action) => {
+    /* remove from preselected products */
+    const newProducts = state.selectedProducts;
+    _.remove(newProducts,
+      (p: { id: string, _id: string }) => p.id === action.payload.id);
+    return Object.assign({}, state, { selectedProducts: newProducts });
+  }),
   on(clearPreSelectProducts, (state, action) => {
     return Object.assign({}, state, { selectedProducts: null });
   }),

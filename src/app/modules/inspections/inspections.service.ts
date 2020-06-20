@@ -6,6 +6,6 @@ import { Injectable } from '@angular/core';
 @Injectable({ providedIn: 'root' })
 export class InspectionsService extends BaseService<IInspection> {
   constructor(http: HttpClient) {
-    super(http, 'contract-category');
+    super(http, 'contract-inspection');
   }
 }

@@ -4,6 +4,7 @@ import { IUser } from './../../models/user.model';
 export interface IContractCategoryTerm {
   category_id?: string;
   term_id?: string;
+  checked: boolean;
 }
 export interface IContractChecklistItem {
   id?: string;

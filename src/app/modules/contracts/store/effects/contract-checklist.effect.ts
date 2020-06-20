@@ -1,11 +1,11 @@
 import { clearPreSelectProducts } from './../actions/contract-product.action';
 import { ChecklistService } from './../../services/contract-checklist.service';
-import { saveToChecklist, saveToChecklistSuccess } from './../actions/contract-checklist.action';
+import { loadChecklist, loadChecklistSuccess, saveToChecklistSuccess, addToChecklist, addToChecklistSuccess, deleteChecklistSuccess, deleteChecklist } from './../actions/contract-checklist.action';
 import { loadContractCategory } from './../actions/contract-category.action';
 import { addCategory, addCategorySuccess, updateCategory, updateCategorysSuccess } from './../actions/category.action';
 import { CategoryService } from './../../../../services/category.service';
 import { AppState } from './../../../../store/app.reducer';
-import { ICategory, IContractChecklist } from './../../contract.model';
+import { ICategory, IContractChecklist, IContractChecklistItem } from './../../contract.model';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
@@ -14,18 +14,40 @@ import { appNotification } from 'src/app/store/notification.action';
 
 @Injectable()
 export class ChecklistEffect {
-  saveToChecklist$ = createEffect(() => this.actions$.pipe(
-    ofType(saveToChecklist),
+  loadChecklist$ = createEffect(() => this.actions$.pipe(
+    ofType(loadChecklist),
+    mergeMap(() => this.checklistService.getAll().pipe(
+      map((items: IContractChecklistItem[]) => {
+        return loadChecklistSuccess({ items });
+      })
+    ))
+  ));
+
+  deleteChecklist$ = createEffect(() => this.actions$.pipe(
+    ofType(deleteChecklist),
+    mergeMap(({ payload }) => {
+
+      return this.checklistService.delete(payload.id)
+        .pipe(
+          map((payload: IContractChecklistItem) => {
+            if (payload) {
+              console.log('%c Checklist created Deleted', 'background: red; color: #ffffff');
+            }
+            return deleteChecklistSuccess({ payload });
+          })
+        )
+    })
+  ));
+
+  addChecklist$ = createEffect(() => this.actions$.pipe(
+    ofType(addToChecklist),
     mergeMap(({ payload }) => this.checklistService.post(payload)
       .pipe(
-        map((payload: IContractChecklist[]) => {
-          if (payload) {
-            this.store.dispatch(appNotification({
-              notification:
-                { success: true, message: 'Checklist successfully Created' }
-            }));
+        map((item: IContractChecklistItem) => {
+          if (item) {
+            console.log('%c Checklist created succesfully', 'background: green; color: #ffffff');
           }
-          return saveToChecklistSuccess({ payload });
+          return addToChecklistSuccess({ item });
         })
       ))
   ));

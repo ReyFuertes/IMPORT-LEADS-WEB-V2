@@ -4,7 +4,7 @@ import { createSelector, createFeatureSelector } from '@ngrx/store';
 export const selectContractModuleState = createFeatureSelector<ContractModuleState>('contractsModule');
 
 export const getContractChecklistSelector = createSelector(
-  selectContractModuleState, state => state.checkList
+  selectContractModuleState, state => state.checkList.checklist
 );
 export const getHighlightChecklist = createSelector(
   selectContractModuleState, state => state.checkList.isHighlighting

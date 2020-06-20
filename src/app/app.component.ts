@@ -24,6 +24,7 @@ export class AppComponent {
       if (res) {
         this.store.dispatch(removeNotification())
       }
-    })
+    });
+    this.store.subscribe(res => console.log(res))
   }
 }

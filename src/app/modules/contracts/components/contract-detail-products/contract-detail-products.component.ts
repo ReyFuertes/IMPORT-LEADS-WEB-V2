@@ -400,7 +400,25 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
     this.onResetForm()
   };
 
+  private fmtToChecklist(payload: ISimpleItem): void {
+    delete Object.assign(payload, { ['id']: payload['value'] })['value'];
+    delete payload.label;
+  }
+
   public preSelectChange(payload: ISimpleItem, isPreselected?: boolean): void {
+    /* if not checklisting then product is greater that 1, delect the previous product */
+    if (!this.inCheckListing &&
+      this.checklistOfProducts && this.checklistOfProducts.length > 0) {
+      this.fmtToChecklist(payload);
+        debugger
+      /* remove previous product */
+      _.remove(this.checklistOfProducts,
+        (p: { id: string, _id: string }) => p.id !== payload._id);
+
+      /* add the selected product */
+      this.store.dispatch(preSelectProducts({ payload: [payload] }));
+      return;
+    }
     /* check if the product is in the preselected checklist payload */
     const match = this.checklistOfProducts &&
       this.checklistOfProducts.filter(cp => cp.id === payload.value).shift();
@@ -420,8 +438,7 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
       dialogRef.afterClosed().subscribe(result => {
         if (!result) {
           /* remove preselected product when override cancel */
-          delete Object.assign(payload, {['id']: payload['value'] })['value'];
-          delete payload.label;
+          this.fmtToChecklist(payload);
           this.store.dispatch(removePreSelectProduct({ payload }));
         }
       });

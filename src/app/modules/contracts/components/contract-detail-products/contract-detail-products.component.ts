@@ -2,14 +2,14 @@ import { loadChecklist } from './../../../inspections/store/inspection.action';
 import { getHighlightChecklist, getContractChecklistSelector } from './../../store/selectors/contract-checklist.selector';
 import { highlightChecklist } from './../../store/actions/contract-checklist.action';
 import { getPreSelectedProductsSelector } from './../../store/selectors/contract-product-selector';
-import { getContractCategorySelector } from './../../store/selectors/contract-category.selector';
+import { getContractCategorySelector, getCategoryTermsSelector } from './../../store/selectors/contract-category.selector';
 import { getProductsSelector } from './../../../products/store/products.selector';
 import { IProduct } from './../../../products/products.model';
 import { getAllContractProductsSelector } from './../../store/selectors/contracts.selector';
 import { addContractProducts, deleteContractProduct, updateContractProduct, preSelectProducts, removePreSelectProduct } from './../../store/actions/contract-product.action';
 import { AppState } from 'src/app/store/app.reducer';
 import { Store, select } from '@ngrx/store';
-import { PillState, IContract, IContractProduct, IContractChecklist, IContractChecklistItem } from './../../contract.model';
+import { PillState, IContract, IContractProduct, IContractChecklist, IContractChecklistItem, IContractTerm } from './../../contract.model';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ISimpleItem } from './../../../../shared/generics/generic.model';
@@ -43,10 +43,10 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
   public selectedProducts: IProduct[] = [];
   public $contractProducts: Observable<IContractProduct[]>;
   public $products: Observable<IProduct[]>;
-  public checklistOfProducts: IContractProduct[] = [];
+  public preSelectedProducts: IContractProduct[] = [];
   public $checklistProducts: Observable<IContractProduct[]>;
-  public checklistView: IContractChecklistItem[] = [];
-  public isHighlightingChecklist: boolean = true;
+  public preSelectedCheckItems: IContractChecklistItem[] = [];
+  public selCategoryTerms: IContractTerm[] = [];
 
   @Input()
   public inCheckListing: boolean = false;
@@ -112,6 +112,16 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
           })
         }
       })
+
+    /* get selected terms */
+    this.store.pipe(select(getCategoryTermsSelector),
+      tap(terms => {
+        if (terms)
+          this.selCategoryTerms = terms;
+
+        console.log(this.selCategoryTerms);
+      }))
+      .subscribe();
   }
 
   ngOnDestroy() { }
@@ -141,46 +151,91 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
     /* selected products */
     this.store.pipe(select(getPreSelectedProductsSelector),
       tap(pp => {
-        if (pp && pp.selectedProducts) {
-          this.checklistOfProducts = pp.selectedProducts
-        } else {
-          this.checklistOfProducts = [];
-        }
+        if (pp.selectedProducts)
+          this.preSelectedProducts = pp.selectedProducts;
+        else
+          this.preSelectedProducts = []
       })).subscribe();
 
-    /* get all checklist so we can highlight */
+    /* get all checklist so we can highlight green */
     this.store.pipe(select(getContractChecklistSelector))
       .subscribe(res => {
-        if(res && res.length > 0) {
-          console.log('this.checklistView', this.checklistView);
-          this.checklistView = res;
+        this.preSelectedCheckItems = res;
+      });
+  }
+
+  public preSelectChange(payload: ISimpleItem | any, isPreselected?: boolean): void {
+    this.fmtToChecklist(payload);
+
+    const spMatch = this.preSelectedProducts
+      && this.preSelectedProducts.length > 0
+      && this.preSelectedProducts.filter(p => p.id === payload.id).shift();
+    if (!spMatch) {
+      this.preSelectedProducts.push(payload);
+      this.store.dispatch(preSelectProducts({ payload: this.preSelectedProducts }));
+
+      /* add notification if the product has already a checklist, yes = to override, no remove selection */
+      this.overrideProduct(isPreselected, payload);
+    } else {
+      this.store.dispatch(preSelectProducts({ payload: this.preSelectedProducts }));
+    }
+
+    /* if not checklisting, then product is greater that 1, delect the previous product */
+    if (!this.inCheckListing) {
+      this.fmtToChecklist(payload);
+      _.remove(this.preSelectedProducts,
+        (p: { id: string, _id: string }) => p.id !== payload._id);
+
+      this.store.dispatch(preSelectProducts({ payload: this.preSelectedProducts }));
+      return;
+    }
+  }
+
+  private overrideProduct(isPreselected: boolean, payload: ISimpleItem): void {
+    const hasSource = this.preSelectedProducts && this.preSelectedProducts.length > 1;
+    const inChecklist = this.preSelectedCheckItems.filter(c => c.checklist_product.id === payload._id).shift();
+    if (hasSource && !isPreselected && this.inCheckListing && inChecklist) {
+      const dialogRef = this.dialog.open(ConfirmationComponent, {
+        width: '410px',
+        data: { action: 1 }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        if (!result) {
+          /* remove preselected product when override cancel */
+          this.fmtToChecklist(payload);
+          this.store.dispatch(removePreSelectProduct({ payload }));
         }
       });
-
-    /* get products in a checklist */
-    this.store.pipe(select(getHighlightChecklist),
-      pipe(tap((res) => this.isHighlightingChecklist = res)))
-      .subscribe();
+    }
   }
 
   public hasChecklist(id: string): boolean {
-    return this.checklistView &&
-      this.isHighlightingChecklist &&
+    let preSelected = this.preSelectedCheckItems
+      .filter(c => c.checklist_product && c.checklist_product.id === id).shift();
+    const hasTerms = this.selCategoryTerms && this.selCategoryTerms.length > 0;
+
+    if(!hasTerms) {
+      //preSelected = null;
+    }
+
+    const ret = this.preSelectedCheckItems &&
       this.inCheckListing &&
-      this.checklistView.filter(c => c.checklist_product && c.checklist_product.id === id).shift()
-      ? true : false;
+      preSelected
+      // || (hasTerms && this.inCheckListing && this.preSelectedCheckItems)
+
+    return ret ? true : false;
   }
 
   public isProductSelected(id: string): boolean {
-    return this.checklistOfProducts
-      && this.checklistOfProducts.length > 0
-      && this.checklistOfProducts.filter(c => c.id === id).shift() ? true : false;
+    return this.preSelectedProducts
+      && this.preSelectedProducts.length > 0
+      && this.preSelectedProducts.filter(c => c.id === id).shift() ? true : false;
   }
 
   public isSubProductSelected(id: string): boolean {
-    return this.checklistOfProducts
-      && this.checklistOfProducts.length > 0
-      && this.checklistOfProducts.filter(c => c.sub_products && c.sub_products.filter(sp => sp._id === id)).shift() ? true : false;
+    return this.preSelectedProducts
+      && this.preSelectedProducts.length > 0
+      && this.preSelectedProducts.filter(c => c.sub_products && c.sub_products.filter(sp => sp._id === id)).shift() ? true : false;
   }
 
   public fmtToSimpleItem(p: IProduct): ISimpleItem {
@@ -393,13 +448,13 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
   }
 
   public deSelectChange(payload: ISimpleItem): void {
-    const match = this.checklistOfProducts &&
-      this.checklistOfProducts.filter(cp => cp.id === payload.value).shift()
+    const match = this.preSelectedProducts &&
+      this.preSelectedProducts.filter(cp => cp.id === payload.value).shift()
     if (match) {
-      const index: number = this.checklistOfProducts.indexOf(match);
+      const index: number = this.preSelectedProducts.indexOf(match);
       if (index !== -1) {
-        this.checklistOfProducts.splice(index, 1);
-        this.store.dispatch(preSelectProducts({ payload: this.checklistOfProducts }));
+        this.preSelectedProducts.splice(index, 1);
+        this.store.dispatch(preSelectProducts({ payload: this.preSelectedProducts }));
       }
     }
     this.onResetForm()
@@ -408,50 +463,6 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
   private fmtToChecklist(payload: ISimpleItem): void {
     delete Object.assign(payload, { ['id']: payload['value'] })['value'];
     delete payload.label;
-  }
-
-  public preSelectChange(payload: ISimpleItem, isPreselected?: boolean): void {
-    /* if not checklisting, then product is greater that 1, delect the previous product */
-    if (!this.inCheckListing &&
-      this.checklistOfProducts && this.checklistOfProducts.length > 0) {
-      this.fmtToChecklist(payload);
-
-      _.remove(this.checklistOfProducts,
-        (p: { id: string, _id: string }) => p.id !== payload._id);
-
-      this.store.dispatch(preSelectProducts({ payload: [payload] }));
-      return;
-    }
-
-    /* if the product is inchecklisting */
-    const match = this.checklistOfProducts &&
-      this.checklistOfProducts.filter(cp => cp.id === payload.value).shift();
-    /* check if the product is in the preselected checklist payload,
-    if not then add to checklist payload */
-    if (!match) {
-      this.checklistOfProducts.push({ id: payload.value, _id: payload._id });
-      this.store.dispatch(preSelectProducts({ payload: this.checklistOfProducts }));
-    }
-
-    /* add notification if the product has already a checklist, yes = to override, no remove selection */
-    this.overrideProduct(isPreselected, payload);
-  }
-
-  private overrideProduct(isPreselected: boolean, payload: ISimpleItem): void {
-    const inChecklist = this.checklistView.filter(c => c.checklist_product.id === payload._id).shift();
-    if (!isPreselected && this.inCheckListing && inChecklist) {
-      const dialogRef = this.dialog.open(ConfirmationComponent, {
-        width: '410px',
-        data: { action: 1 }
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        if (!result) {
-          /* remove preselected product when override cancel */
-          this.fmtToChecklist(payload);
-          this.store.dispatch(removePreSelectProduct({ payload }));
-        }
-      });
-    }
   }
 
   public removeSelection(): void {

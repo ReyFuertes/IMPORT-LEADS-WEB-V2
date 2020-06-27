@@ -1,5 +1,5 @@
 import { addContractTerm, deleteContractTerm, updateContractTerm } from './../../store/actions/contract-term.actions';
-import { loadContractCategory } from './../../store/actions/contract-category.action';
+import { loadContractCategoryAction, selTermsForChecklistAction } from './../../store/actions/contract-category.action';
 import { MatTableDataSource } from '@angular/material/table';
 import { IContractTerm, IContractCategoryTerm } from './../../contract.model';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
@@ -17,7 +17,7 @@ import { trigger, transition, style, state, animate } from '@angular/animations'
 import { Component, OnInit, Input, OnChanges, SimpleChanges, AfterViewInit, ViewEncapsulation, EventEmitter, Output } from '@angular/core';
 import { map, take } from 'rxjs/operators';
 import { IContractCategory } from '../../contract.model';
-import { deleteContractCategory } from '../../store/actions/contract-category.action';
+import { deleteContractCategoryAction } from '../../store/actions/contract-category.action';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
 
 
@@ -69,16 +69,18 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       contact_category: [null],
     })
   }
-  /* toggling terms for checklist */
+
   public onToggleTerms(term: IContractTerm, checked: boolean): void {
+    /* toggling terms for checklisting */
     if (this.contract_category) {
-      /* if there is no term then do not emit */
       const category_term = {
         category_id: this.contract_category.id,
         term_id: term.id,
         checked
       }
       this.categoryTermEmitter.emit(category_term);
+      /* store selected checklists */
+      this.store.dispatch(selTermsForChecklistAction({ term }));
     }
   }
 
@@ -149,14 +151,14 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.store.dispatch(deleteContractCategory({ id }));
+        this.store.dispatch(deleteContractCategoryAction({ id }));
       }
     });
   }
 
   private reloadContractCategory = () =>
     setTimeout(() => {
-      this.store.dispatch(loadContractCategory({ id: this.contract_category.contract.id }))
+      this.store.dispatch(loadContractCategoryAction({ id: this.contract_category.contract.id }))
     }, 1000);
 
   public createTerm(): void {

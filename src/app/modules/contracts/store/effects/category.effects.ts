@@ -1,4 +1,4 @@
-import { loadContractCategory } from './../actions/contract-category.action';
+import { loadContractCategoryAction } from './../actions/contract-category.action';
 import { addCategory, addCategorySuccess, updateCategory, updateCategorysSuccess } from './../actions/category.action';
 import { CategoryService } from './../../../../services/category.service';
 import { AppState } from './../../../../store/app.reducer';

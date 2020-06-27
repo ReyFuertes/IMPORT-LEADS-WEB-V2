@@ -22,11 +22,11 @@ export const loadChecklistSuccess = createAction(
 );
 export const deleteChecklist = createAction(
   CategoryActionTypes.deleteChecklist,
-  props<{ payload: IContractChecklistItem }>()
+  props<{ payload: IContractChecklistItem[] }>()
 );
 export const deleteChecklistSuccess = createAction(
   CategoryActionTypes.deleteChecklistSuccess,
-  props<{ payload: IContractChecklistItem }>()
+  props<{ deleted: IContractChecklistItem[] }>()
 );
 export const highlightChecklist = createAction(
   CategoryActionTypes.highlightChecklist,
@@ -41,7 +41,7 @@ export const addToChecklist = createAction(
 );
 export const addToChecklistSuccess = createAction(
   CategoryActionTypes.addToChecklistSuccess,
-  props<{ item: IContractChecklistItem }>()
+  props<{ items: IContractChecklistItem[] }>()
 );
 export const saveToChecklist = createAction(
   CategoryActionTypes.saveToChecklist,

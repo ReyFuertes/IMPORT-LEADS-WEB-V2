@@ -6,8 +6,8 @@ import { IProduct } from './../../../products/products.model';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { ReOrderImages, deleteContract } from './../../store/actions/contracts.action';
 import { tap, take, map } from 'rxjs/operators';
-import { getContractCategorySelector } from './../../store/selectors/contract-category.selector';
-import { addContractCategory, loadContractCategory } from './../../store/actions/contract-category.action';
+import { getContractCategorySelector, getCategoryTermsSelector } from './../../store/selectors/contract-category.selector';
+import { addContractCategoryAction, loadContractCategoryAction } from './../../store/actions/contract-category.action';
 import { ContractCategoryDialogComponent } from '../../../dialogs/components/contract-category/contract-category-dialog.component';
 import { loadContractProducts, clearPreSelectProducts, removePreSelectProduct } from './../../store/actions/contract-product.action';
 import { getContractById } from './../../store/selectors/contracts.selector';
@@ -127,7 +127,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       this.$contract && this.$contract.subscribe(c => {
         if (c) {
           /* get category by contract id */
-          this.store.dispatch(loadContractCategory({ id: c.id }));
+          this.store.dispatch(loadContractCategoryAction({ id: c.id }));
 
           this.form.patchValue(c);
           this.contractImages = c.images.sort((a, b) => sortByAsc(a, b, 'position'));
@@ -150,13 +150,11 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
         } else this.checkListProductIds = [];
       });
 
+    /* collect product added to checklists */
     this.store.pipe(select(getContractChecklistSelector),
       tap(checklist => {
         if (checklist && checklist.length > 0) {
           this.contractChecklistPayload = checklist;
-
-          console.log('addToChecklistSuccess', this.contractChecklistPayload);
-
         }
       }))
       .subscribe();
@@ -190,6 +188,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
 
   public onToggleTerm(categoryTerm: IContractCategoryTerm): void {
     if (this.checkListProductIds && this.checkListProductIds.length === 0) return;
+
     /* build the checklist payload */
     const payload: IContractChecklist = {
       checklist_contract: { id: this.id },
@@ -199,26 +198,19 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       desired_run_date: this.formChecklist.get('desiredRunDate').value,
       assigned_to: this.formChecklist.get('assignedTo').value,
     }
-
+    
+    /* look for matches in the state */
     const match = this.contractChecklistPayload
       .filter(c => c.checklist_category.id === categoryTerm.category_id
-        && c.checklist_term.id === categoryTerm.term_id).shift();
+        && c.checklist_term.id === categoryTerm.term_id);
 
-    if (match && match.checklist_product)
-      delete match.checklist_product;
-
+    /* transform product to array of ids */
     Object.assign(payload, match);
 
     /* if the selected product doesnt exist, then add to the payload */
     if (categoryTerm.checked) {
-      // this.checkListProductIds.forEach(id => {
-      //   Object.assign(payload, { checklist_product: id });
-      //   this.contractChecklistPayload.push(payload);
-      // });
-
       this.store.dispatch(addToChecklist({ payload }));
     } else {
-
       this.store.dispatch(deleteChecklist({ payload: match }));
     }
   }
@@ -262,7 +254,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
             contract_name: this.form.get('contract_name').value
           }
         }
-        this.store.dispatch(addContractCategory({ payload }));
+        this.store.dispatch(addContractCategoryAction({ payload }));
       }
     });
   }

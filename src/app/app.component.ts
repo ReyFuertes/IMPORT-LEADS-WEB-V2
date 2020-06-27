@@ -19,12 +19,14 @@ export class AppComponent {
   constructor(private store: Store<AppState>) {
     this.store.dispatch(loadVenues());
     this.$notify = this.store.pipe(select(getSuccessSelector), delay(500));
+
     /* remove notification 2seconds */
     this.$notify.pipe(debounceTime(2000)).subscribe((res) => {
       if (res) {
         this.store.dispatch(removeNotification())
       }
     });
+
     this.store.subscribe(res => console.log(res))
   }
 }

@@ -27,12 +27,10 @@ const reducer = createReducer(
     return Object.assign({}, state, { checklist: null });
   }),
   on(addToChecklistSuccess, (state, action) => {
-    const checklist = Object.assign([], state.checklist);
-    const match = checklist.filter(c => c.id === action.item.id).shift();
-    if (!match) {
-      checklist.push(action.item);
-    }
-
+    let checklist = Object.assign([], state.checklist);
+    action && action.items.forEach(item => {
+      checklist.push(item);
+    });
     return Object.assign({}, state, { checklist });
   }),
   on(saveToChecklistSuccess, (state, action) => {
@@ -40,11 +38,13 @@ const reducer = createReducer(
   }),
   on(deleteChecklistSuccess, (state, action) => {
     /* remove from preselected products */
-    const newCheckList = state.checklist;
-    _.remove(newCheckList,
-      (p: { id: string, _id: string }) => p.id === action.payload.id);
-
-    return Object.assign({}, state, { checklist: newCheckList });
+    const checklist = Object.assign([], state.checklist);
+    action.deleted.forEach(item => {
+      _.remove(checklist, {
+        id: item.id
+      });
+    });
+    return Object.assign({}, state, { checklist });
   })
 );
 export function ContractChecklistReducer(state: ContractChecklistState, action: Action) {

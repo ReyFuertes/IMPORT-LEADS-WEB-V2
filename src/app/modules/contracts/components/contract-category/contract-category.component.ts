@@ -1,5 +1,5 @@
 import { IContractTerm, IContractCategoryTerm } from './../../contract.model';
-import { loadContractCategory } from '../../store/actions/contract-category.action';
+import { loadContractCategoryAction } from '../../store/actions/contract-category.action';
 import { AppState } from '../../../../store/app.reducer';
 import { Store } from '@ngrx/store';
 import { ICategory } from '../../contract.model';
@@ -72,7 +72,7 @@ export class ContractCategoryComponent extends GenericRowComponent implements On
       if (payload) {
         this.store.dispatch(updateCategory({ payload }));
         /* just refresh all contract categories, may not be idea but temporary solution */
-        this.store.dispatch(loadContractCategory({ id: this.contractCategory.contract.id }))
+        this.store.dispatch(loadContractCategoryAction({ id: this.contractCategory.contract.id }))
       }
     });
   }

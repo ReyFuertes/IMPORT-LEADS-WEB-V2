@@ -1,7 +1,7 @@
 import { clearPreSelectProducts } from './../actions/contract-product.action';
 import { ChecklistService } from './../../services/contract-checklist.service';
 import { loadChecklist, loadChecklistSuccess, saveToChecklistSuccess, addToChecklist, addToChecklistSuccess, deleteChecklistSuccess, deleteChecklist } from './../actions/contract-checklist.action';
-import { loadContractCategory } from './../actions/contract-category.action';
+import { loadContractCategoryAction } from './../actions/contract-category.action';
 import { addCategory, addCategorySuccess, updateCategory, updateCategorysSuccess } from './../actions/category.action';
 import { CategoryService } from './../../../../services/category.service';
 import { AppState } from './../../../../store/app.reducer';
@@ -26,14 +26,14 @@ export class ChecklistEffect {
   deleteChecklist$ = createEffect(() => this.actions$.pipe(
     ofType(deleteChecklist),
     mergeMap(({ payload }) => {
-
-      return this.checklistService.delete(payload.id)
+      return this.checklistService.post(payload, 'multi-delete')
         .pipe(
-          map((payload: IContractChecklistItem) => {
-            if (payload) {
-              console.log('%c Checklist created Deleted', 'background: red; color: #ffffff');
+          map((deleted: IContractChecklistItem[]) => {
+            if (deleted) {
+              console.log('%c Checklist created Deleted',
+                'background: red; color: #ffffff');
             }
-            return deleteChecklistSuccess({ payload });
+            return deleteChecklistSuccess({ deleted });
           })
         )
     })
@@ -43,11 +43,12 @@ export class ChecklistEffect {
     ofType(addToChecklist),
     mergeMap(({ payload }) => this.checklistService.post(payload)
       .pipe(
-        map((item: IContractChecklistItem) => {
-          if (item) {
-            console.log('%c Checklist created succesfully', 'background: green; color: #ffffff');
+        map((items: IContractChecklistItem[]) => {
+          if (items) {
+            console.log('%c Checklist created succesfully',
+              'background: green; color: #ffffff');
           }
-          return addToChecklistSuccess({ item });
+          return addToChecklistSuccess({ items });
         })
       ))
   ));

@@ -9,7 +9,7 @@ export interface IContractCategoryTerm {
 export interface IContractChecklistItem {
   id?: string;
   checklist_contract?: { id };
-  checklist_product?: { id };
+  checklist_product?: { id: string, product: IProduct };
   checklist_term?: { id };
   checklist_category?: { id };
   desired_run_date?: string;

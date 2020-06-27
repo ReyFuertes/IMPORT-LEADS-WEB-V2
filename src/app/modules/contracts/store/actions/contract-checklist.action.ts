@@ -12,7 +12,17 @@ export enum CategoryActionTypes {
   highlightChecklist = '[Contract Checklist] Highlight',
   loadChecklist = '[Inspection Checklist] load',
   loadChecklistSuccess = '[Inspection Checklist] load (success)',
+  selectTerm = '[Contract Checklist] select Term',
+  removeSelectedTerm = '[Contract Checklist] remove selected Term',
 }
+export const removeSelectedTerm = createAction(
+  CategoryActionTypes.removeSelectedTerm,
+  props<{ id: string }>()
+);
+export const selectTerm = createAction(
+  CategoryActionTypes.selectTerm,
+  props<{ items: IContractChecklistItem[] }>()
+);
 export const loadChecklist = createAction(
   CategoryActionTypes.loadChecklist,
 );

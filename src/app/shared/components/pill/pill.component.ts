@@ -55,7 +55,8 @@ export class PillComponent extends GenericControl<ISimpleItem> implements OnInit
         this.resetSelection();
         this.deSelectEmitter.emit({
           label: e.target.innerText.trim(),
-          value: e.currentTarget.id
+          value: e.currentTarget.id,
+          _id: e.currentTarget.attributes._id.value
         });
       });
 

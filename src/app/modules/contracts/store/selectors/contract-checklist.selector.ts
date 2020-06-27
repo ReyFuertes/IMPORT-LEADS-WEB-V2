@@ -9,3 +9,6 @@ export const getContractChecklistSelector = createSelector(
 export const getHighlightChecklist = createSelector(
   selectContractModuleState, state => state.checkList.isHighlighting
 );
+export const getSelectedProductTermsSelector = createSelector(
+  selectContractModuleState, state => state.checkList.selectedTerms
+);

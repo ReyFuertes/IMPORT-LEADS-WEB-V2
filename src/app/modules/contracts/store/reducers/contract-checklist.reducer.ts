@@ -1,6 +1,6 @@
 import { loadChecklistSuccess } from './../../../inspections/store/inspection.action';
 import { ContractModuleState } from './index';
-import { saveToChecklist, deleteChecklistSuccess, clearChecklist, highlightChecklist, addToChecklistSuccess, saveToChecklistSuccess } from './../actions/contract-checklist.action';
+import { saveToChecklist, deleteChecklistSuccess, clearChecklist, highlightChecklist, addToChecklistSuccess, saveToChecklistSuccess, selectTerm, removeSelectedTerm } from './../actions/contract-checklist.action';
 import { IContractChecklist, IContractChecklistItem } from './../../contract.model';
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
@@ -8,15 +8,40 @@ import * as _ from 'lodash';
 
 export interface ContractChecklistState extends EntityState<IContractChecklist> {
   checklist?: IContractChecklistItem[],
-  isHighlighting?: boolean
+  isHighlighting?: boolean,
+  selectedTerms?: IContractChecklistItem[]
 }
 export const adapter: EntityAdapter<IContractChecklist> = createEntityAdapter<IContractChecklist>({});
 export const initialState: ContractChecklistState = adapter.getInitialState({
   checklist: null,
-  isHighlighting: null
+  isHighlighting: null,
+  selectedTerms: null
 });
 const reducer = createReducer(
   initialState,
+  on(removeSelectedTerm, (state, action) => {
+    const selectedTerms = Object.assign([], state.selectedTerms);
+    _.remove(selectedTerms, {
+      checklist_product: { id: action.id }
+    });
+    return Object.assign({}, state, { selectedTerms });
+  }),
+  on(selectTerm, (state, action) => {
+    const selectedTerms = Object.assign([], state.selectedTerms);
+
+    if (selectedTerms && selectedTerms.length === 0) {
+      selectedTerms.push(...action.items);
+    } else {
+      action.items && action.items.forEach(item => {
+        selectedTerms && selectedTerms.forEach(term => {
+          if (term.id !== item.id) {
+            selectedTerms.push(item);
+          }
+        });
+      });
+    }
+    return Object.assign({}, state, { selectedTerms });
+  }),
   on(loadChecklistSuccess, (state, action) => {
     return Object.assign({}, state, { checklist: action.items });
   }),

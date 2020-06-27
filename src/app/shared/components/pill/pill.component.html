@@ -1,5 +1,5 @@
-<div [attr.id]="item?.value" class="pill-container fade-in" (click)="onSelect($event, item)" [attr.class]="isSelected ? 'selected': ''">
-  <div #pill [attr.id]="item?.value" [ngClass]="{'p-cursor': selectable, 'small': isSizeSmall, 'enabled': enabled && isSizeSmall, 'disabled': !enabled && !isSizeSmall}" class="il-pill noselect"
+<div [attr.id]="item?.value" [attr._id]="item?._id" class="pill-container fade-in" (click)="onSelect($event, item)" [attr.class]="isSelected ? 'selected': ''">
+  <div #pill [attr.id]="item?.value" [attr._id]="item?._id" [ngClass]="{'p-cursor': selectable, 'small': isSizeSmall, 'enabled': enabled && isSizeSmall, 'disabled': !enabled && !isSizeSmall}" class="il-pill noselect"
     fxLayoutGap="5px">
     <div>{{ item?.label }}</div>
     <img *ngIf="hasRemoveIcon" class="no-expand" matTooltip="Remove" (click)="removeEmitter.emit(item?.value)" [src]="svgPath + 'close-icon-white.svg'" />

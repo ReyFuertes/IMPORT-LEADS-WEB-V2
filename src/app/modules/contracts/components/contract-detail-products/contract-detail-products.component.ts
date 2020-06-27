@@ -1,6 +1,6 @@
 import { loadChecklist } from './../../../inspections/store/inspection.action';
 import { getHighlightChecklist, getContractChecklistSelector } from './../../store/selectors/contract-checklist.selector';
-import { highlightChecklist } from './../../store/actions/contract-checklist.action';
+import { highlightChecklist, selectTerm, removeSelectedTerm } from './../../store/actions/contract-checklist.action';
 import { getPreSelectedProductsSelector } from './../../store/selectors/contract-product-selector';
 import { getContractCategorySelector, getCategoryTermsSelector } from './../../store/selectors/contract-category.selector';
 import { getProductsSelector } from './../../../products/store/products.selector';
@@ -16,10 +16,10 @@ import { ISimpleItem } from './../../../../shared/generics/generic.model';
 import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, Input, ChangeDetectorRef, AfterViewInit, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
-import { take, takeUntil, tap } from 'rxjs/operators';
-import { Subject, Observable, pipe } from 'rxjs';
+import { take, takeUntil, tap, debounceTime } from 'rxjs/operators';
+import { Subject, Observable, pipe, of } from 'rxjs';
 import * as _ from 'lodash';
-import { getInspectionChecklistSelector } from 'src/app/modules/inspections/store/inspection.selector';
+import { interval } from 'rxjs';
 
 @Component({
   selector: 'il-contract-detail-products',
@@ -116,10 +116,8 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
     /* get selected terms */
     this.store.pipe(select(getCategoryTermsSelector),
       tap(terms => {
-        if (terms)
+        if (terms && terms.length > 0)
           this.selCategoryTerms = terms;
-
-        console.log(this.selCategoryTerms);
       }))
       .subscribe();
   }
@@ -166,6 +164,12 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
 
   public preSelectChange(payload: ISimpleItem | any, isPreselected?: boolean): void {
     this.fmtToChecklist(payload);
+
+    /* preselect terms base on product selection */
+    const items: IContractChecklistItem[] = this.preSelectedCheckItems
+      .filter(i => i.checklist_product.id === payload._id);
+    if (!isPreselected)
+      this.store.dispatch(selectTerm({ items }));
 
     const spMatch = this.preSelectedProducts
       && this.preSelectedProducts.length > 0
@@ -214,14 +218,14 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
       .filter(c => c.checklist_product && c.checklist_product.id === id).shift();
     const hasTerms = this.selCategoryTerms && this.selCategoryTerms.length > 0;
 
-    if(!hasTerms) {
+    if (!hasTerms) {
       //preSelected = null;
     }
 
     const ret = this.preSelectedCheckItems &&
       this.inCheckListing &&
       preSelected
-      // || (hasTerms && this.inCheckListing && this.preSelectedCheckItems)
+    // || (hasTerms && this.inCheckListing && this.preSelectedCheckItems)
 
     return ret ? true : false;
   }
@@ -448,6 +452,11 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
   }
 
   public deSelectChange(payload: ISimpleItem): void {
+    /* remove selected term of a product/s */
+    interval(100).pipe(take(1)).subscribe(() => {
+      this.store.dispatch(removeSelectedTerm({ id: payload._id }));
+    })
+
     const match = this.preSelectedProducts &&
       this.preSelectedProducts.filter(cp => cp.id === payload.value).shift()
     if (match) {

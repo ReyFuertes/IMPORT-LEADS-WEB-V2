@@ -1,7 +1,7 @@
 import { addContractTerm, deleteContractTerm, updateContractTerm } from './../../store/actions/contract-term.actions';
 import { loadContractCategoryAction, selTermsForChecklistAction } from './../../store/actions/contract-category.action';
 import { MatTableDataSource } from '@angular/material/table';
-import { IContractTerm, IContractCategoryTerm } from './../../contract.model';
+import { IContractTerm, IContractCategoryTerm, IContractChecklistItem } from './../../contract.model';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { getTagsSelector } from '../../../tags/store/selectors/tags.selector';
 import { AppState } from '../../../../store/app.reducer';
@@ -15,10 +15,11 @@ import { ISimpleItem } from '../../../../shared/generics/generic.model';
 import { environment } from '../../../../../environments/environment';
 import { trigger, transition, style, state, animate } from '@angular/animations';
 import { Component, OnInit, Input, OnChanges, SimpleChanges, AfterViewInit, ViewEncapsulation, EventEmitter, Output } from '@angular/core';
-import { map, take } from 'rxjs/operators';
+import { map, take, tap } from 'rxjs/operators';
 import { IContractCategory } from '../../contract.model';
 import { deleteContractCategoryAction } from '../../store/actions/contract-category.action';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
+import { getContractChecklistSelector, getSelectedProductTermsSelector } from '../../store/selectors/contract-checklist.selector';
 
 
 @Component({
@@ -67,7 +68,19 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       term_name: [null],
       term_description: [null],
       contact_category: [null],
+    });
+
+    this.store.pipe(select(getSelectedProductTermsSelector),
+      map((c: any) => {
+        return [...new Set(c && c.map(item => item.checklist_term.id))];
+      }),
+    ).subscribe((t: string[]) => {
+      this.selectedTerms = t;
     })
+  }
+
+  public isTermChecked(item: string): boolean {
+    return this.selectedTerms.includes(item);
   }
 
   public onToggleTerms(term: IContractTerm, checked: boolean): void {

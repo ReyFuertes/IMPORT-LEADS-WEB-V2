@@ -1,6 +1,6 @@
 import { loadChecklist } from './../../../inspections/store/inspection.action';
 import { getPreSelectedProductsSelector } from './../../store/selectors/contract-product-selector';
-import { saveToChecklist, addToChecklist, clearChecklist, highlightChecklist, deleteChecklist } from './../../store/actions/contract-checklist.action';
+import { saveToChecklist, addToChecklist, clearChecklist, highlightChecklist, deleteChecklist, selectTerm } from './../../store/actions/contract-checklist.action';
 import { sortByAsc } from 'src/app/shared/util/sort';
 import { IProduct } from './../../../products/products.model';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
@@ -198,7 +198,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       desired_run_date: this.formChecklist.get('desiredRunDate').value,
       assigned_to: this.formChecklist.get('assignedTo').value,
     }
-    
+
     /* look for matches in the state */
     const match = this.contractChecklistPayload
       .filter(c => c.checklist_category.id === categoryTerm.category_id

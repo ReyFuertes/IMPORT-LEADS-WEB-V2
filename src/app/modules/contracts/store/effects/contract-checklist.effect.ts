@@ -1,6 +1,6 @@
 import { clearPreSelectProducts } from './../actions/contract-product.action';
 import { ChecklistService } from './../../services/contract-checklist.service';
-import { loadChecklist, loadChecklistSuccess, saveToChecklistSuccess, addToChecklist, addToChecklistSuccess, deleteChecklistSuccess, deleteChecklist } from './../actions/contract-checklist.action';
+import { loadChecklist, loadChecklistSuccess, saveToChecklistSuccess, addToChecklist, addToChecklistSuccess, deleteChecklistSuccess, deleteChecklist, selectTerm, removeSelectedTerm } from './../actions/contract-checklist.action';
 import { loadContractCategoryAction } from './../actions/contract-category.action';
 import { addCategory, addCategorySuccess, updateCategory, updateCategorysSuccess } from './../actions/category.action';
 import { CategoryService } from './../../../../services/category.service';
@@ -11,6 +11,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { appNotification } from 'src/app/store/notification.action';
+import { zip } from 'rxjs';
 
 @Injectable()
 export class ChecklistEffect {
@@ -33,6 +34,12 @@ export class ChecklistEffect {
               console.log('%c Checklist created Deleted',
                 'background: red; color: #ffffff');
             }
+
+            /* preselect terms base on product selection */
+            deleted && Object.values(deleted).forEach(item => {
+              this.store.dispatch(removeSelectedTerm({ id: item.id }));
+            });
+
             return deleteChecklistSuccess({ deleted });
           })
         )
@@ -48,6 +55,10 @@ export class ChecklistEffect {
             console.log('%c Checklist created succesfully',
               'background: green; color: #ffffff');
           }
+
+          /* preselect terms base on product selection */
+          this.store.dispatch(selectTerm({ items }));
+
           return addToChecklistSuccess({ items });
         })
       ))

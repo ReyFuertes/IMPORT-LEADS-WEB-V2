@@ -20,10 +20,10 @@ export const initialState: ContractChecklistState = adapter.getInitialState({
 const reducer = createReducer(
   initialState,
   on(removeSelectedTerm, (state, action) => {
+    
     const selectedTerms = Object.assign([], state.selectedTerms);
-    _.remove(selectedTerms, {
-      checklist_product: { id: action.id }
-    });
+    _.remove(selectedTerms, { id: action.id });
+
     return Object.assign({}, state, { selectedTerms });
   }),
   on(selectTerm, (state, action) => {

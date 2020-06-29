@@ -162,13 +162,36 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
       });
   }
 
+
+  public deSelectChange(payload: ISimpleItem): void {
+    
+    /* remove selected term of a product/s */
+    interval(100).pipe(take(1)).subscribe(() => {
+      debugger
+      this.store.dispatch(removeSelectedTerm({ id: payload._id }));
+    })
+
+    const match = this.preSelectedProducts &&
+      this.preSelectedProducts.filter(cp => cp.id === payload.value).shift()
+    if (match) {
+      const index: number = this.preSelectedProducts.indexOf(match);
+      if (index !== -1) {
+        this.preSelectedProducts.splice(index, 1);
+        this.store.dispatch(preSelectProducts({ payload: this.preSelectedProducts }));
+      }
+    }
+    this.onResetForm()
+  };
+
   public preSelectChange(payload: ISimpleItem | any, isPreselected?: boolean): void {
+    if (isPreselected) return;
+
     this.fmtToChecklist(payload);
 
     /* preselect terms base on product selection */
     const items: IContractChecklistItem[] = this.preSelectedCheckItems
       .filter(i => i.checklist_product.id === payload._id);
-    if (!isPreselected)
+    if (!isPreselected && (items && items.length > 0))
       this.store.dispatch(selectTerm({ items }));
 
     const spMatch = this.preSelectedProducts
@@ -450,24 +473,6 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
       }
     });
   }
-
-  public deSelectChange(payload: ISimpleItem): void {
-    /* remove selected term of a product/s */
-    interval(100).pipe(take(1)).subscribe(() => {
-      this.store.dispatch(removeSelectedTerm({ id: payload._id }));
-    })
-
-    const match = this.preSelectedProducts &&
-      this.preSelectedProducts.filter(cp => cp.id === payload.value).shift()
-    if (match) {
-      const index: number = this.preSelectedProducts.indexOf(match);
-      if (index !== -1) {
-        this.preSelectedProducts.splice(index, 1);
-        this.store.dispatch(preSelectProducts({ payload: this.preSelectedProducts }));
-      }
-    }
-    this.onResetForm()
-  };
 
   private fmtToChecklist(payload: ISimpleItem): void {
     delete Object.assign(payload, { ['id']: payload['value'] })['value'];

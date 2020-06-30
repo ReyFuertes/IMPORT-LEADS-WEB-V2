@@ -164,7 +164,7 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
 
 
   public deSelectChange(payload: ISimpleItem): void {
-    
+
     /* remove selected term of a product/s */
     interval(100).pipe(take(1)).subscribe(() => {
       debugger
@@ -237,7 +237,7 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
   }
 
   public hasChecklist(id: string): boolean {
-    let preSelected = this.preSelectedCheckItems
+    let preSelected = this.preSelectedCheckItems && this.preSelectedCheckItems
       .filter(c => c.checklist_product && c.checklist_product.id === id).shift();
     const hasTerms = this.selCategoryTerms && this.selCategoryTerms.length > 0;
 

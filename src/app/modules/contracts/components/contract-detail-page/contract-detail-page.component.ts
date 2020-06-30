@@ -161,23 +161,6 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   }
 
   public onSaveChecklist(): void {
-    // this.store.pipe(take(1), select(getContractChecklistSelector), map(c => c.checklist))
-    //   .subscribe(checklist => {
-    //     /* add product to checklist items */
-    //     checklist && checklist.forEach(item => Object.assign(item, { checklist_product: this.checkListProductIds }));
-
-    //     /* save checklist */
-    //     this.store.dispatch(saveToChecklist({ payload: checklist }));
-
-    //     setTimeout(() => {
-    //       this.store.dispatch(clearPreSelectProducts());
-
-    //       /** */
-    //       this.store.dispatch(loadChecklist());
-
-    //       this.onCloseRighNav(true);
-    //     }, 500);
-    //   })
   }
 
   public get isChecklistValid(): boolean {
@@ -274,10 +257,12 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   public getBg = (url: string): string => `url(${url})`;
 
   public createUpdateTemplate = (): void => {
-    // if(this.checkListProductIds && this.checkListProductIds.length === 0) {
-    //   alert('select a product');
-    //   return;
-    // }
+    if (!this.contractCategories ||
+      (this.contractCategories && this.contractCategories.length === 0)) {
+      alert('Please add a category and terms');
+      return;
+    }
+    
     this.showRightNav = !this.showRightNav;
     this.openNavChange.emit(this.showRightNav);
 

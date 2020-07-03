@@ -11,6 +11,7 @@ export interface ISimpleItem {
   label: string;
   value?: string;
   _id?: string;
+  id?: string;
 }
 export interface Menu {
   label: string;

@@ -1,6 +1,6 @@
 import { loadChecklist } from './../../../inspections/store/inspection.action';
 import { getPreSelectedProductsSelector } from './../../store/selectors/contract-product-selector';
-import { saveToChecklist, addToChecklist, clearChecklist, highlightChecklist, deleteChecklist, selectTerm } from './../../store/actions/contract-checklist.action';
+import { saveToChecklist, addToChecklist, clearChecklist, highlightChecklist, deleteChecklist, addTermToChecklistAction } from './../../store/actions/contract-checklist.action';
 import { sortByAsc } from 'src/app/shared/util/sort';
 import { IProduct } from './../../../products/products.model';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
@@ -27,8 +27,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AddEditState } from 'src/app/shared/generics/generic.model';
 import { Store, select } from '@ngrx/store';
 import * as _ from 'lodash';
-import { getContractChecklistSelector } from '../../store/selectors/contract-checklist.selector';
-import { getInspectionChecklistSelector } from 'src/app/modules/inspections/store/inspection.selector';
+import { getChecklistItemsSelector } from '../../store/selectors/contract-checklist.selector';
 
 @Component({
   selector: 'il-contract-detail-page',
@@ -150,14 +149,12 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
         } else this.checkListProductIds = [];
       });
 
-    /* collect product added to checklists */
-    this.store.pipe(select(getContractChecklistSelector),
+    /* collect items added to checklists */
+    this.store.pipe(select(getChecklistItemsSelector),
       tap(checklist => {
-        if (checklist && checklist.length > 0) {
+        if (checklist && checklist.length > 0)
           this.contractChecklistPayload = checklist;
-        }
-      }))
-      .subscribe();
+      })).subscribe();
   }
 
   public onSaveChecklist(): void {
@@ -262,7 +259,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       alert('Please add a category and terms');
       return;
     }
-    
+
     this.showRightNav = !this.showRightNav;
     this.openNavChange.emit(this.showRightNav);
 

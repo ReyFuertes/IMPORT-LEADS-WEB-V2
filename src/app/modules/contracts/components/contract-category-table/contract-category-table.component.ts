@@ -19,7 +19,7 @@ import { map, take, tap } from 'rxjs/operators';
 import { IContractCategory } from '../../contract.model';
 import { deleteContractCategoryAction } from '../../store/actions/contract-category.action';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
-import { getContractChecklistSelector, getSelectedProductTermsSelector } from '../../store/selectors/contract-checklist.selector';
+import { getSelectedProductTermsSelector } from '../../store/selectors/contract-checklist.selector';
 
 
 @Component({

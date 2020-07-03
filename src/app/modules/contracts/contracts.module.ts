@@ -96,7 +96,6 @@ const materialModules = [
   ScrollingModule,
   MatTableModule
 ];
-
 @NgModule({
   imports: [
     CommonModule,

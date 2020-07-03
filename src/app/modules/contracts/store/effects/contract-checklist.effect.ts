@@ -1,6 +1,6 @@
 import { clearPreSelectProducts } from './../actions/contract-product.action';
 import { ChecklistService } from './../../services/contract-checklist.service';
-import { loadChecklist, loadChecklistSuccess, saveToChecklistSuccess, addToChecklist, addToChecklistSuccess, deleteChecklistSuccess, deleteChecklist, selectTerm, removeSelectedTerm } from './../actions/contract-checklist.action';
+import { loadChecklist, loadChecklistSuccess, saveToChecklistSuccess, addToChecklist, addToChecklistSuccess, deleteChecklistSuccess, deleteChecklist, addTermToChecklistAction, removeSelectedTerm } from './../actions/contract-checklist.action';
 import { loadContractCategoryAction } from './../actions/contract-category.action';
 import { addCategory, addCategorySuccess, updateCategory, updateCategorysSuccess } from './../actions/category.action';
 import { CategoryService } from './../../../../services/category.service';
@@ -34,7 +34,6 @@ export class ChecklistEffect {
               console.log('%c Checklist created Deleted',
                 'background: red; color: #ffffff');
             }
-
             /* preselect terms base on product selection */
             deleted && Object.values(deleted).forEach(item => {
               this.store.dispatch(removeSelectedTerm({ id: item.id }));
@@ -57,7 +56,7 @@ export class ChecklistEffect {
           }
 
           /* preselect terms base on product selection */
-          this.store.dispatch(selectTerm({ items }));
+          this.store.dispatch(addTermToChecklistAction({ items }));
 
           return addToChecklistSuccess({ items });
         })

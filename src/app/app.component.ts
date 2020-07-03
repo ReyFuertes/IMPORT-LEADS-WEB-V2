@@ -27,6 +27,6 @@ export class AppComponent {
       }
     });
 
-    this.store.subscribe(res => console.log(res))
+ 
   }
 }

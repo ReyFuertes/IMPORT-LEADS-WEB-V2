@@ -5,7 +5,7 @@ export const selectContractModuleState = createFeatureSelector<ContractModuleSta
 
 export const getChecklistItemsSelector = createSelector(
   selectContractModuleState, state => {
-    debugger
+    
     return Object.values(state.checkList.entities);
   }
 );

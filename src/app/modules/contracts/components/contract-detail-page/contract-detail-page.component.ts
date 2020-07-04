@@ -166,7 +166,6 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
 
   public onToggleTerm(categoryTerm: IContractCategoryTerm): void {
     if (this.checkListProductIds && this.checkListProductIds.length === 0) return;
-
     /* 
       we will build the checklist payload here
       so we can update it easily when toggling the terms
@@ -183,8 +182,9 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     /* look for matches in the state */
     const match = this.checklistItems
       .filter(c => c.checklist_category.id === categoryTerm.category_id
-        && c.checklist_term.id === categoryTerm.term_id);
-
+        && c.checklist_term.id === categoryTerm.term_id
+        && this.checkListProductIds.filter(cp => cp.id === c.checklist_product.id).shift());
+     
     /* transform product to array of ids */
     Object.assign(payload, match);
 

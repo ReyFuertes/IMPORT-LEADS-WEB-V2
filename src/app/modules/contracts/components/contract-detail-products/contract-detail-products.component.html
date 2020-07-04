@@ -23,7 +23,7 @@
             (inCheckListing &&
               item?.sub_products &&
               !item?.sub_products.length > 0)
-          " [item]="fmtToSimpleItem(item)" [enableHighlight]="true" (removeEmitter)="onRemoveProduct(item)" [selectable]="true">
+          " [item]="fmtToSimpleItem(item)" [enableHighlight]="true" (removeEmitter)="onRemoveProduct(item)" [selectable]="true" [hasRemoveIcon]="!inCheckListing">
         </il-pill>
         <!-- child product -->
         <il-pill *ngFor="let sub of item?.sub_products; let i = index" size="small" (preSelectEmitter)="preSelectChange($event)" (deSelectEmitter)="deSelectChange($event)" [reset]="!inCheckListing" [ngClass]="{ sel: isSubProductSelected(sub?.id) }"

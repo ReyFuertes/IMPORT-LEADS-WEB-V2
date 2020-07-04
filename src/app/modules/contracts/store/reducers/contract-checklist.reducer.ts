@@ -3,7 +3,8 @@ import { ContractModuleState } from './index';
 import {
   addTermToChecklistAction, removeSelectedTerms, addToChecklistProductsAction, addToChecklistSourceAction, removeToChecklistSourceAction, removeToChecklistProductsAction, highlightChecklist, overrideChecklistItemActionSuccess,
   removeChecklistItemAction,
-  addToChecklistSuccess
+  addToChecklistSuccess,
+  deleteChecklistItemSuccess
 } from './../actions/contract-checklist.action';
 import { IContractChecklist, IContractChecklistItem, IContractProduct } from './../../contract.model';
 import { createReducer, on, Action } from "@ngrx/store";
@@ -27,17 +28,11 @@ export const initialState: ContractChecklistState = adapter.getInitialState({
 const reducer = createReducer(
   initialState,
   on(overrideChecklistItemActionSuccess, (state, action) => {
-    let selectedTerms = Object.assign([], state.selectedTerms);
-    const match = selectedTerms && selectedTerms.filter((st: IContractChecklistItem) =>
-      action.items.filter(i => st.checklist_term.id === i.id)).shift();
-
-    if (!match) {
-      selectedTerms.push(match);
-    }
-    return Object.assign({}, state, { selectedTerms });
+    debugger
+    return Object.assign({}, state, { selectedTerms: action.items.map(st => st.checklist_term.id) });
   }),
-  on(removeChecklistItemAction, (state, action) => {
-    return ({ ...adapter.removeOne(action.item.id, state) });
+  on(deleteChecklistItemSuccess, (state, action) => {
+    return ({ ...adapter.removeMany(action.deleted.map(i => i.id), state) });
   }),
   /* add & remove checklist source */
   on(removeToChecklistSourceAction, (state, action) => {
@@ -130,16 +125,6 @@ const reducer = createReducer(
   // on(saveToChecklistSuccess, (state, action) => {
   //   return Object.assign({}, state, { checklist: action.payload });
   // }),
-  // on(deleteChecklistItemSuccess, (state, action) => {
-  //   /* remove from preselected products */
-  //   const checklist = Object.assign([], state.checklist);
-  //   action.deleted.forEach(item => {
-  //     _.remove(checklist, {
-  //       id: item.id
-  //     });
-  //   });
-  //   return Object.assign({}, state, { checklist });
-  // })
 );
 export function ContractChecklistReducer(state: ContractChecklistState, action: Action) {
   return reducer(state, action);

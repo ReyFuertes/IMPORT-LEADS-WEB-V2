@@ -1,7 +1,7 @@
 import { loadChecklistSuccess } from './../../../inspections/store/inspection.action';
 import { ContractModuleState } from './index';
 import {
-  addTermToChecklistAction, removeSelectedTerm, addToChecklistProductsAction, addToChecklistSourceAction, removeToChecklistSourceAction, removeToChecklistProductsAction, highlightChecklist, overrideChecklistItemActionSuccess,
+  addTermToChecklistAction, removeSelectedTerms, addToChecklistProductsAction, addToChecklistSourceAction, removeToChecklistSourceAction, removeToChecklistProductsAction, highlightChecklist, overrideChecklistItemActionSuccess,
   removeChecklistItemAction,
   addToChecklistSuccess
 } from './../actions/contract-checklist.action';
@@ -13,7 +13,7 @@ import { act } from '@ngrx/effects';
 
 export interface ContractChecklistState extends EntityState<IContractChecklistItem> {
   isHighlighting?: boolean,
-  selectedTerms?: IContractChecklistItem[];
+  selectedTerms?: string[];
   checklistProducts?: IContractProduct[];
   checklistSource?: IContractChecklistItem;
 }
@@ -27,14 +27,13 @@ export const initialState: ContractChecklistState = adapter.getInitialState({
 const reducer = createReducer(
   initialState,
   on(overrideChecklistItemActionSuccess, (state, action) => {
-    debugger
     let selectedTerms = Object.assign([], state.selectedTerms);
-    const match = selectedTerms.filter((st: IContractChecklistItem) =>
-      st.checklist_term.id === action.item.checklist_term.id).shift();
-    if (!match) {
-      selectedTerms.push(action.item);
-    }
+    const match = selectedTerms && selectedTerms.filter((st: IContractChecklistItem) =>
+      action.items.filter(i => st.checklist_term.id === i.id)).shift();
 
+    if (!match) {
+      selectedTerms.push(match);
+    }
     return Object.assign({}, state, { selectedTerms });
   }),
   on(removeChecklistItemAction, (state, action) => {
@@ -70,11 +69,16 @@ const reducer = createReducer(
   on(loadChecklistSuccess, (state, action) => {
     return ({ ...adapter.addAll(action.items, state) })
   }),
-  on(removeSelectedTerm, (state, action) => {
+  on(removeSelectedTerms, (state, action) => {
+    /* when the product is deselected we want to remove also the selected terms using the product id */
     let selectedTerms = Object.assign([], state.selectedTerms);
-    _.remove(selectedTerms, {
-      checklist_product: { id: action.id }
+    action.ids && action.ids.length > 0 && action.ids.forEach(id => {
+      const index: number = selectedTerms.indexOf(id);
+      if (index !== -1) {
+        selectedTerms.splice(index, 1);
+      }
     });
+
     return Object.assign({}, state, { selectedTerms });
   }),
   on(addTermToChecklistAction, (state, action) => {
@@ -83,10 +87,10 @@ const reducer = createReducer(
     if (selectedTerms && selectedTerms.length === 0) {
       selectedTerms.push(...action.items);
     } else {
-      action.items && action.items.forEach(item => {
+      action.items && action.items.forEach(termId => {
         selectedTerms && selectedTerms.forEach(term => {
-          if (term.id !== item.id) {
-            selectedTerms.push(item);
+          if (term.id !== termId) {
+            selectedTerms.push(termId);
           }
         });
       });

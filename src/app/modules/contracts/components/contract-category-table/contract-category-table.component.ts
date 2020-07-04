@@ -19,8 +19,7 @@ import { map, take, tap } from 'rxjs/operators';
 import { IContractCategory } from '../../contract.model';
 import { deleteContractCategoryAction } from '../../store/actions/contract-category.action';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
-import { getSelectedProductTermsSelector } from '../../store/selectors/contract-checklist.selector';
-
+import { getSelectedTermsSelector } from '../../store/selectors/contract-checklist.selector';
 
 @Component({
   selector: 'il-contract-category-table',
@@ -70,11 +69,10 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       contact_category: [null],
     });
 
-    this.store.pipe(select(getSelectedProductTermsSelector),
-      tap((terms: IContractChecklistItem[]) => {
-        this.selectedTerms = terms
-          && terms.length > 0
-          && terms.map(t => t && t.checklist_term && t.checklist_term.id);
+    this.store.pipe(select(getSelectedTermsSelector),
+      tap((terms: string[]) => {
+        this.selectedTerms = terms;
+        console.log('selectedTerms', this.selectedTerms);
       })).subscribe();
   }
 

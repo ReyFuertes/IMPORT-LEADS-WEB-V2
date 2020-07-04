@@ -1,12 +1,11 @@
 import { ChecklistService } from './../../services/contract-checklist.service';
-import { loadChecklist, loadChecklistSuccess, addToChecklist, addToChecklistSuccess, deleteChecklistItemSuccess, deleteChecklistItem, addTermToChecklistAction, removeSelectedTerm, overrideChecklistItemAction, overrideChecklistItemActionSuccess, removeChecklistItemAction, addToChecklistSourceAction } from './../actions/contract-checklist.action';
+import { loadChecklist, loadChecklistSuccess, addToChecklist, addToChecklistSuccess, deleteChecklistItemSuccess, deleteChecklistItem, addTermToChecklistAction, overrideChecklistItemAction, overrideChecklistItemActionSuccess, removeSelectedTerms } from './../actions/contract-checklist.action';
 import { AppState } from './../../../../store/app.reducer';
-import { IContractChecklistItem } from './../../contract.model';
+import { IContractChecklistItem, IContractTerm } from './../../contract.model';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap, tap, take } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
-import { getChecklistSourceSelector } from '../selectors/contract-checklist.selector';
 
 @Injectable()
 export class ChecklistEffect {
@@ -15,8 +14,8 @@ export class ChecklistEffect {
     mergeMap(({ item }) => {
       return this.checklistService.post(item, 'override')
         .pipe(
-          map((item: IContractChecklistItem) => {
-            return overrideChecklistItemActionSuccess({ item });
+          map((items: IContractChecklistItem[]) => {
+            return overrideChecklistItemActionSuccess({ items });
           })
         )
     })
@@ -36,15 +35,16 @@ export class ChecklistEffect {
     mergeMap(({ payload }) => {
       return this.checklistService.post(payload, 'multi-delete')
         .pipe(
-          map((deleted: IContractChecklistItem[]) => {
+          tap((deleted: IContractChecklistItem[]) =>
+            /* preselect terms base on product selection */
+            this.store.dispatch(removeSelectedTerms({ ids: deleted.map(t => t.checklist_term.id) }))),
+          tap((deleted: IContractChecklistItem[]) => {
             if (deleted) {
               console.log('%c Checklist created Deleted',
                 'background: red; color: #ffffff');
             }
-            /* preselect terms base on product selection */
-            deleted && Object.values(deleted).forEach(item => {
-              this.store.dispatch(removeSelectedTerm({ id: item.id }));
-            });
+          }),
+          map((deleted: IContractChecklistItem[]) => {
             return deleteChecklistItemSuccess({ deleted });
           })
         )
@@ -55,8 +55,9 @@ export class ChecklistEffect {
     ofType(addToChecklist),
     mergeMap(({ payload }) => this.checklistService.post(payload)
       .pipe(
-        /* preselect terms base on product selection */
-        tap((items: IContractChecklistItem[]) => this.store.dispatch(addTermToChecklistAction({ items }))),
+        /* when adding checklist item also preselect terms */
+        tap((items: IContractChecklistItem[]) =>
+          this.store.dispatch(addTermToChecklistAction({ items: items.map(i => i.checklist_term.id) }))),
         map((items: IContractChecklistItem[]) => {
           if (items) {
             console.log('%c Checklist created succesfully',

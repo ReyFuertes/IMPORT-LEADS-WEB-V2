@@ -1,4 +1,4 @@
-import { ICategory, IContractChecklist, IContractChecklistItem, IContractProduct, IOverrideChecklistItem } from './../../contract.model';
+import { ICategory, IContractChecklist, IContractChecklistItem, IContractProduct, IOverrideChecklistItem, IContractTerm } from './../../contract.model';
 import { createAction, props } from '@ngrx/store';
 
 export enum CheckListActionTypes {
@@ -10,8 +10,8 @@ export enum CheckListActionTypes {
   highlightChecklist = '[Contract Checklist] Highlight',
   loadChecklist = '[Inspection Checklist] load',
   loadChecklistSuccess = '[Inspection Checklist] load (success)',
-  addTermToChecklistAction = '[Contract Checklist] select Term',
-  removeSelectedTerm = '[Contract Checklist] remove selected Term',
+  addTermToChecklistAction = '[Contract Checklist] add Term',
+  removeSelectedTerms = '[Contract Checklist] remove selected Terms',
   addToChecklistProductsAction = '[Contract Checklist] add product to checklist',
   removeToChecklistProductsAction = '[Contract Checklist] remove product to checklist',
   addToChecklistSourceAction = '[Contract Checklist] add to checklist source',
@@ -30,7 +30,7 @@ export const overrideChecklistItemAction = createAction(
 );
 export const overrideChecklistItemActionSuccess = createAction(
   CheckListActionTypes.overrideChecklistItemActionSuccess,
-  props<{ item: IContractChecklistItem }>()
+  props<{ items: IContractChecklistItem[] }>()
 );
 export const removeToChecklistProductsAction = createAction(
   CheckListActionTypes.removeToChecklistProductsAction,
@@ -48,14 +48,13 @@ export const removeToChecklistSourceAction = createAction(
   CheckListActionTypes.removeToChecklistSourceAction,
   props<{ item: IContractProduct }>()
 );
-export const removeSelectedTerm = createAction(
-  CheckListActionTypes.removeSelectedTerm,
-  props<{ id: string }>()
+export const removeSelectedTerms = createAction(
+  CheckListActionTypes.removeSelectedTerms,
+  props<{ ids: string[] }>()
 );
-
 export const addTermToChecklistAction = createAction(
   CheckListActionTypes.addTermToChecklistAction,
-  props<{ items: IContractChecklistItem[] }>()
+  props<{ items: string[] }>()
 );
 export const loadChecklist = createAction(
   CheckListActionTypes.loadChecklist,

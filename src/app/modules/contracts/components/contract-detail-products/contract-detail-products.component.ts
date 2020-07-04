@@ -1,6 +1,6 @@
 import { loadChecklist } from './../../../inspections/store/inspection.action';
-import { getChecklistSourceSelector, getChecklistItemsSelector, getChecklist, getChecklistItemByContractProductIds } from './../../store/selectors/contract-checklist.selector';
-import { addToChecklistSourceAction, addTermToChecklistAction, removeSelectedTerm, addToChecklistProductsAction, removeToChecklistSourceAction, removeToChecklistProductsAction, overrideChecklistItemAction, removeChecklistItemAction } from './../../store/actions/contract-checklist.action';
+import { getChecklistSourceSelector, getChecklistItemsSelector, getChecklist, getChecklistItemByContractProductIds, getChecklistTermsById } from './../../store/selectors/contract-checklist.selector';
+import { addToChecklistSourceAction, addTermToChecklistAction, removeSelectedTerms, addToChecklistProductsAction, removeToChecklistSourceAction, removeToChecklistProductsAction, overrideChecklistItemAction, removeChecklistItemAction } from './../../store/actions/contract-checklist.action';
 import { getPreSelectedProductsSelector } from './../../store/selectors/contract-product-selector';
 import { getContractCategorySelector, getCategoryTermsSelector } from './../../store/selectors/contract-category.selector';
 import { getProductsSelector } from './../../../products/store/products.selector';
@@ -178,9 +178,12 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
     this.store.dispatch(removeToChecklistProductsAction({ item: payload }))
 
     /* remove selected term of a product/s */
-    interval(100).pipe(take(1)).subscribe(() => {
-      this.store.dispatch(removeSelectedTerm({ id: payload._id }));
-    })
+    this.store.pipe(
+      take(1),
+      select(getChecklistTermsById(payload._id)),
+      tap((items: IContractChecklistItem[]) => {
+        this.store.dispatch(removeSelectedTerms({ ids: items.map(i => i.checklist_term.id) }));
+      })).subscribe();
 
     /* if product exist then remove it and update the state  */
     const match = this.checklistProducts &&
@@ -227,7 +230,7 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
 
     /* if the selection doesnt have a source and not preselected the  */
     if (!isPreselected && (items && items.length > 0) && !hasSource)
-      this.store.dispatch(addTermToChecklistAction({ items }));
+      this.store.dispatch(addTermToChecklistAction({ items: items.map(i => i.checklist_term.id) }));
 
     /* check if the selected item exist already in the preselected products */
     const spMatch = this.checklistProducts
@@ -272,7 +275,7 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
                 source: this.checklistSource,
                 destination
               };
-       
+
               this.store.dispatch(overrideChecklistItemAction({ item }));
               /* we need to remove the destination because we need to replace it */
               this.store.dispatch(removeChecklistItemAction({ item: item.destination }))

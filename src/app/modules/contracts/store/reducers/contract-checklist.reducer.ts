@@ -47,8 +47,6 @@ const reducer = createReducer(
   on(loadChecklistSuccess, (state, action) => {
     return ({ ...adapter.addAll(action.items, state) })
   }),
-
-
   on(removeSelectedTerm, (state, action) => {
     const selectedTerms = Object.assign([], state.selectedTerms);
     _.remove(selectedTerms, {
@@ -72,7 +70,6 @@ const reducer = createReducer(
     }
     return Object.assign({}, state, { selectedTerms });
   }),
-
   on(highlightChecklist, (state, action) => {
     return Object.assign({}, state, { isHighlighting: action.highlight });
   }),
@@ -89,7 +86,7 @@ const reducer = createReducer(
   // on(saveToChecklistSuccess, (state, action) => {
   //   return Object.assign({}, state, { checklist: action.payload });
   // }),
-  // on(deleteChecklistSuccess, (state, action) => {
+  // on(deleteChecklistItemSuccess, (state, action) => {
   //   /* remove from preselected products */
   //   const checklist = Object.assign([], state.checklist);
   //   action.deleted.forEach(item => {

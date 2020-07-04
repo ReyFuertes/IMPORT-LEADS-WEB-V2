@@ -1,17 +1,11 @@
-import { clearPreSelectProducts } from './../actions/contract-product.action';
 import { ChecklistService } from './../../services/contract-checklist.service';
-import { loadChecklist, loadChecklistSuccess, saveToChecklistSuccess, addToChecklist, addToChecklistSuccess, deleteChecklistSuccess, deleteChecklist, addTermToChecklistAction, removeSelectedTerm } from './../actions/contract-checklist.action';
-import { loadContractCategoryAction } from './../actions/contract-category.action';
-import { addCategory, addCategorySuccess, updateCategory, updateCategorysSuccess } from './../actions/category.action';
-import { CategoryService } from './../../../../services/category.service';
+import { loadChecklist, loadChecklistSuccess, addToChecklist, addToChecklistSuccess, deleteChecklistItemSuccess, deleteChecklistItem, addTermToChecklistAction, removeSelectedTerm } from './../actions/contract-checklist.action';
 import { AppState } from './../../../../store/app.reducer';
-import { ICategory, IContractChecklist, IContractChecklistItem } from './../../contract.model';
+import { IContractChecklistItem } from './../../contract.model';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import { appNotification } from 'src/app/store/notification.action';
-import { zip } from 'rxjs';
 
 @Injectable()
 export class ChecklistEffect {
@@ -24,8 +18,8 @@ export class ChecklistEffect {
     ))
   ));
 
-  deleteChecklist$ = createEffect(() => this.actions$.pipe(
-    ofType(deleteChecklist),
+  deleteChecklistItem$ = createEffect(() => this.actions$.pipe(
+    ofType(deleteChecklistItem),
     mergeMap(({ payload }) => {
       return this.checklistService.post(payload, 'multi-delete')
         .pipe(
@@ -38,8 +32,7 @@ export class ChecklistEffect {
             deleted && Object.values(deleted).forEach(item => {
               this.store.dispatch(removeSelectedTerm({ id: item.id }));
             });
-
-            return deleteChecklistSuccess({ deleted });
+            return deleteChecklistItemSuccess({ deleted });
           })
         )
     })
@@ -54,10 +47,8 @@ export class ChecklistEffect {
             console.log('%c Checklist created succesfully',
               'background: green; color: #ffffff');
           }
-
           /* preselect terms base on product selection */
           this.store.dispatch(addTermToChecklistAction({ items }));
-
           return addToChecklistSuccess({ items });
         })
       ))

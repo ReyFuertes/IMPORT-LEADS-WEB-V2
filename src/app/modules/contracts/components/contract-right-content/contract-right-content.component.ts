@@ -10,7 +10,6 @@ import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, Output, EventEmitter, ViewChild, AfterViewInit, ElementRef, Input } from '@angular/core';
 import { fromEvent } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { getContractChecklistSelector } from '../../store/selectors/contract-checklist.selector';
 
 @Component({
   selector: 'il-contract-right-content',

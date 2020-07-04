@@ -1,6 +1,11 @@
 import { ITag } from './../tags/tags.model';
 import { IProduct } from './../products/products.model';
 import { IUser } from './../../models/user.model';
+
+export interface IOverrideChecklistItem {
+  source: IContractChecklistItem;
+  destination: IContractChecklistItem;
+}
 export interface IContractCategoryTerm {
   category_id?: string;
   term_id?: string;

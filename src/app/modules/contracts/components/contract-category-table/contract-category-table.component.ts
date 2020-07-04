@@ -71,16 +71,15 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
     });
 
     this.store.pipe(select(getSelectedProductTermsSelector),
-      map((c: any) => {
-        return [...new Set(c && c.map(item => item.checklist_term.id))];
-      }),
-    ).subscribe((t: string[]) => {
-      this.selectedTerms = t;
-    })
+      tap((terms: IContractChecklistItem[]) => {
+        this.selectedTerms = terms
+          && terms.length > 0
+          && terms.map(t => t && t.checklist_term && t.checklist_term.id);
+      })).subscribe();
   }
 
   public isTermChecked(item: string): boolean {
-    return this.selectedTerms.includes(item);
+    return this.selectedTerms && this.selectedTerms.includes(item);
   }
 
   public onToggleTerms(term: IContractTerm, checked: boolean): void {

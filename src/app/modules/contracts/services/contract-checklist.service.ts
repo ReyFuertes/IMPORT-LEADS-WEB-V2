@@ -1,10 +1,10 @@
-import { IContractProduct, IContractChecklist, IContractChecklistItem } from './../contract.model';
+import { IContractProduct, IContractChecklist, IContractChecklistItem, IOverrideChecklistItem } from './../contract.model';
 import { HttpClient } from '@angular/common/http';
 import { BaseService } from 'src/app/services/base.service';
 import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
-export class ChecklistService extends BaseService<IContractChecklist | IContractChecklistItem> {
+export class ChecklistService extends BaseService<IContractChecklist | IContractChecklistItem | IOverrideChecklistItem> {
   constructor(http: HttpClient) {
     super(http, 'contract-checklist');
   }

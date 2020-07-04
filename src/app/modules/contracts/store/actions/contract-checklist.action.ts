@@ -1,4 +1,4 @@
-import { ICategory, IContractChecklist, IContractChecklistItem, IContractProduct } from './../../contract.model';
+import { ICategory, IContractChecklist, IContractChecklistItem, IContractProduct, IOverrideChecklistItem } from './../../contract.model';
 import { createAction, props } from '@ngrx/store';
 
 export enum CheckListActionTypes {
@@ -16,7 +16,22 @@ export enum CheckListActionTypes {
   removeToChecklistProductsAction = '[Contract Checklist] remove product to checklist',
   addToChecklistSourceAction = '[Contract Checklist] add to checklist source',
   removeToChecklistSourceAction = '[Contract Checklist] remove to checklist source',
+  overrideChecklistItemAction = '[Contract Checklist] override checklist item',
+  overrideChecklistItemActionSuccess = '[Contract Checklist] override checklist item (success)',
+  removeChecklistItemAction = '[Contract Checklist] remove checklist item',
 }
+export const removeChecklistItemAction = createAction(
+  CheckListActionTypes.removeChecklistItemAction,
+  props<{ item: IContractChecklistItem }>()
+);
+export const overrideChecklistItemAction = createAction(
+  CheckListActionTypes.overrideChecklistItemAction,
+  props<{ item: IOverrideChecklistItem }>()
+);
+export const overrideChecklistItemActionSuccess = createAction(
+  CheckListActionTypes.overrideChecklistItemActionSuccess,
+  props<{ item: IContractChecklistItem }>()
+);
 export const removeToChecklistProductsAction = createAction(
   CheckListActionTypes.removeToChecklistProductsAction,
   props<{ item: IContractProduct }>()
@@ -27,7 +42,7 @@ export const addToChecklistProductsAction = createAction(
 );
 export const addToChecklistSourceAction = createAction(
   CheckListActionTypes.addToChecklistSourceAction,
-  props<{ item: IContractProduct }>()
+  props<{ item: IContractChecklistItem }>()
 );
 export const removeToChecklistSourceAction = createAction(
   CheckListActionTypes.removeToChecklistSourceAction,

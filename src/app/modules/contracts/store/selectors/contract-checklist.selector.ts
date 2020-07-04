@@ -2,12 +2,20 @@ import { ContractModuleState } from './../reducers/index';
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 
 export const selectContractModuleState = createFeatureSelector<ContractModuleState>('contractsModule');
-
-export const getChecklistItemsSelector = createSelector(
+export const getChecklist = createSelector(
+  selectContractModuleState, state => state
+);
+export const getChecklistItemByContractProductIds = (productId: string, contractId: string) => createSelector(
   selectContractModuleState, state => {
-    
-    return Object.values(state.checkList.entities);
+    const items = Object.values(state.checkList.entities);
+    const ret = items.filter(ci => ci.checklist_product.id === productId
+      && ci.checklist_contract.id === contractId).shift();
+
+    return ret;
   }
+);
+export const getChecklistItemsSelector = createSelector(
+  selectContractModuleState, state => Object.values(state.checkList.entities)
 );
 export const getChecklistSourceSelector = createSelector(
   selectContractModuleState, state => state.checkList.checklistSource

@@ -1,6 +1,6 @@
 import { loadChecklist } from './../../../inspections/store/inspection.action';
-import { getChecklistSourceSelector, getChecklistItemsSelector } from './../../store/selectors/contract-checklist.selector';
-import { addToChecklistSourceAction, addTermToChecklistAction, removeSelectedTerm, addToChecklistProductsAction, removeToChecklistSourceAction, removeToChecklistProductsAction } from './../../store/actions/contract-checklist.action';
+import { getChecklistSourceSelector, getChecklistItemsSelector, getChecklist, getChecklistItemByContractProductIds } from './../../store/selectors/contract-checklist.selector';
+import { addToChecklistSourceAction, addTermToChecklistAction, removeSelectedTerm, addToChecklistProductsAction, removeToChecklistSourceAction, removeToChecklistProductsAction, overrideChecklistItemAction, removeChecklistItemAction } from './../../store/actions/contract-checklist.action';
 import { getPreSelectedProductsSelector } from './../../store/selectors/contract-product-selector';
 import { getContractCategorySelector, getCategoryTermsSelector } from './../../store/selectors/contract-category.selector';
 import { getProductsSelector } from './../../../products/store/products.selector';
@@ -118,10 +118,9 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
       tap(terms => {
         if (terms && terms.length > 0)
           this.selCategoryTerms = terms;
-      }))
-      .subscribe();
+      })).subscribe();
 
-    this.store.pipe()
+    this.store.pipe(select(getChecklist))
       .subscribe(res => console.log(res))
   }
 
@@ -204,7 +203,12 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
     this.fmtToChecklist(payload);
     /* if product is the first selection then add it to the source checklist*/
     if (!this.checklistSource) {
-      this.store.dispatch(addToChecklistSourceAction({ item: payload }))
+      this.store.dispatch(addToChecklistSourceAction({
+        item: {
+          checklist_product: { id: payload._id },
+          checklist_contract: { id: this.contract.id }
+        }
+      }))
     }
     /* add to checklist of preselected products */
     this.store.dispatch(addToChecklistProductsAction({ item: payload }));
@@ -259,7 +263,20 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
       });
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
-
+          /* get the item from the state entities and use it to override the checklist item */
+          this.store.pipe(
+            take(1),
+            select(getChecklistItemByContractProductIds(payload._id, this.contract.id)),
+            tap(destination => {
+              const item = {
+                source: this.checklistSource,
+                destination
+              };
+       
+              this.store.dispatch(overrideChecklistItemAction({ item }));
+              /* we need to remove the destination because we need to replace it */
+              this.store.dispatch(removeChecklistItemAction({ item: item.destination }))
+            })).subscribe();
         } else {
           this.fmtToChecklist(payload);
           /* remove preselected product when override cancel */
@@ -274,8 +291,6 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
   public hasChecklist(id: string): boolean {
     let preSelected = this.checklistItems && this.checklistItems
       .filter(c => c.checklist_product && c.checklist_product.id === id).shift();
-
-    const hasTerms = this.selCategoryTerms && this.selCategoryTerms.length > 0;
 
     const ret = this.checklistItems &&
       this.inCheckListing &&

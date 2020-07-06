@@ -1,5 +1,5 @@
 import { getPreSelectedProductsSelector } from './../../store/selectors/contract-product-selector';
-import { addToChecklist, highlightChecklist, deleteChecklistItem, addTermToChecklistAction } from './../../store/actions/contract-checklist.action';
+import { addToChecklist, highlightChecklist, deleteChecklistItem, addTermToChecklistAction, removeAllSelectedTerms } from './../../store/actions/contract-checklist.action';
 import { sortByAsc } from 'src/app/shared/util/sort';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { ReOrderImages, deleteContract } from './../../store/actions/contracts.action';
@@ -266,6 +266,9 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
 
     /* clear existing checklists */
     this.store.dispatch(clearPreSelectProducts());
+
+    /* clear all checklist terms  */
+    this.store.dispatch(removeAllSelectedTerms());
 
     /* set checklist to highlight when opening right nav */
     this.store.dispatch(highlightChecklist({ highlight: true }));

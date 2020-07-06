@@ -19,7 +19,11 @@ export enum CheckListActionTypes {
   overrideChecklistItemAction = '[Contract Checklist] override checklist item',
   overrideChecklistItemActionSuccess = '[Contract Checklist] override checklist item (success)',
   removeChecklistItemAction = '[Contract Checklist] remove checklist item',
+  removeAllSelectedTerms = '[Contract Checklist] remove all terms'
 }
+export const removeAllSelectedTerms = createAction(
+  CheckListActionTypes.removeAllSelectedTerms
+);
 export const removeChecklistItemAction = createAction(
   CheckListActionTypes.removeChecklistItemAction,
   props<{ item: IContractChecklistItem }>()

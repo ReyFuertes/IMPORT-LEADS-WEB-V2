@@ -191,7 +191,6 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
         if (this.checklistProductItems && this.checklistProductItems.length === 0) {
           this.store.dispatch(removeSelectedTerms({ ids: items.map(i => i.checklist_term.id) }));
         }
-
       })).subscribe();
 
     /* if product exist then remove it and update the state  */
@@ -204,7 +203,6 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
         this.store.dispatch(preSelectProducts({ payload: this.checklistProducts }));
       }
     }
-
     if (!this.inCheckListing)
       this.onResetForm();
   };

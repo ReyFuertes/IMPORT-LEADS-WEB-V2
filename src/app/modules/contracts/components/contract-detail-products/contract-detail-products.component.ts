@@ -1,5 +1,5 @@
 import { loadChecklist } from './../../../inspections/store/inspection.action';
-import { getChecklistSourceSelector, getChecklistItemsSelector, getChecklist, getChecklistItemByContractProductIds, getChecklistTermsById } from './../../store/selectors/contract-checklist.selector';
+import { getChecklistSourceSelector, getChecklistItemsSelector, getChecklist, getChecklistItemByContractProductIds, getChecklistTermsById, getchecklistProductsSelector } from './../../store/selectors/contract-checklist.selector';
 import { addToChecklistSourceAction, addTermToChecklistAction, removeSelectedTerms, addToChecklistProductsAction, removeToChecklistSourceAction, removeToChecklistProductsAction, overrideChecklistItemAction, removeChecklistItemAction } from './../../store/actions/contract-checklist.action';
 import { getPreSelectedProductsSelector } from './../../store/selectors/contract-product-selector';
 import { getContractCategorySelector, getCategoryTermsSelector } from './../../store/selectors/contract-category.selector';
@@ -47,7 +47,7 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
   public checklistItems: IContractChecklistItem[] = [];
   public selCategoryTerms: IContractTerm[] = [];
   public checklistSource: IContractChecklistItem;
-
+  public checklistProductItems: IContractChecklistItem[];
   @Input()
   public inCheckListing: boolean = false;
   @Input()
@@ -166,6 +166,11 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
       tap(source => {
         this.checklistSource = source;
       })).subscribe()
+
+    /* get selected checklist products */
+    this.store.pipe(select(getchecklistProductsSelector),
+      tap(res => this.checklistProductItems = res))
+      .subscribe();
   }
 
   public deSelectChange(payload: ISimpleItem): void {
@@ -182,7 +187,11 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
       take(1),
       select(getChecklistTermsById(payload._id)),
       tap((items: IContractChecklistItem[]) => {
-        this.store.dispatch(removeSelectedTerms({ ids: items.map(i => i.checklist_term.id) }));
+        /* if the checklist products is not 0 then do not remove the terms */
+        if (this.checklistProductItems && this.checklistProductItems.length === 0) {
+          this.store.dispatch(removeSelectedTerms({ ids: items.map(i => i.checklist_term.id) }));
+        }
+
       })).subscribe();
 
     /* if product exist then remove it and update the state  */

@@ -5,6 +5,9 @@ export const selectContractModuleState = createFeatureSelector<ContractModuleSta
 export const getChecklist = createSelector(
   selectContractModuleState, state => state.checkList
 );
+export const getchecklistProductsSelector = createSelector(
+  selectContractModuleState, state => state.checkList.checklistProducts
+);
 export const getChecklistTermsById = (productId: string) => createSelector(
   selectContractModuleState, state => {
     const items = Object.values(state.checkList.entities);

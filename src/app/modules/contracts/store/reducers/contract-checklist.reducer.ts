@@ -28,7 +28,6 @@ export const initialState: ContractChecklistState = adapter.getInitialState({
 const reducer = createReducer(
   initialState,
   on(overrideChecklistItemActionSuccess, (state, action) => {
-    debugger
     return Object.assign({}, state, { selectedTerms: action.items.map(st => st.checklist_term.id) });
   }),
   on(deleteChecklistItemSuccess, (state, action) => {

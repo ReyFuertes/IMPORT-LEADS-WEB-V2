@@ -3,25 +3,25 @@
   @include il-button;
 }
 .il-dialog {
-  height: 180px !important;
+  height: 200px !important;
   padding: 20px;
   > div {
     &:first-child {
       width: 100%;
-      height: 40px;
+      height: 20px;
     }
   }
   .content {
     width: 100%;
     text-align: center;
-    height: 52px;
+    height: 65px;
   }
   .footer {
     height: 66px;
   }
   button {
     min-width: 100px;
-    width: 107px !important;
+    width: 125px !important;
   }
 }
 :host ::ng-deep {

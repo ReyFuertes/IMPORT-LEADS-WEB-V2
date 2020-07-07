@@ -13,19 +13,19 @@ export interface IContractCategoryTerm {
 }
 export interface IContractChecklistItem {
   id?: string;
-  checklist_contract?: { id };
+  checklist_contract?: { id: string };
   checklist_product?: { id?: string, product?: IProduct };
-  checklist_term?: { id };
-  checklist_category?: { id };
+  checklist_term?: { id: string };
+  checklist_category?: { id: string };
   desired_run_date?: string;
   assigned_to?: string;
 }
 export interface IContractChecklist {
   id?: string;
-  checklist_contract?: { id };
-  checklist_product?: { id }[];
-  checklist_term?: { id };
-  checklist_category?: { id };
+  checklist_contract?: { id: string };
+  checklist_product?: { id: string }[];
+  checklist_term?: { id: string };
+  checklist_category?: { id: string };
   desired_run_date?: string;
   assigned_to?: string;
 }

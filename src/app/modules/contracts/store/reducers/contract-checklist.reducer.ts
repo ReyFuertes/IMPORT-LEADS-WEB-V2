@@ -112,8 +112,8 @@ const reducer = createReducer(
       selectedTerms.push(...action.items);
     } else {
       action.items && action.items.forEach(termId => {
-        selectedTerms && selectedTerms.forEach(term => {
-          if (term.id !== termId) {
+        selectedTerms && selectedTerms.forEach(selTermId => {
+          if (selTermId !== termId) {
             selectedTerms.push(termId);
           }
         });

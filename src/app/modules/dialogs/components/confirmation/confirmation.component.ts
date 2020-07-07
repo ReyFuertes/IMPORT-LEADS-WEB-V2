@@ -20,6 +20,10 @@ export class ConfirmationComponent implements OnInit {
     {
       label: 'Override',
       message: 'Are you sure to Override this item?'
+    },
+    {
+      label: 'Apply Changes',
+      message: 'Are you sure to apply changes to this item?'
     }
   ];
   constructor(

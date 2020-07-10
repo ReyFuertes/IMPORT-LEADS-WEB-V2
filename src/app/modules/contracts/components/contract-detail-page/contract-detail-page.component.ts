@@ -13,7 +13,7 @@ import { User } from './../../../users/users.models';
 import { AppState } from './../../../../store/app.reducer';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IContract, IProductImage, IContractCategory, ICategory, IContractChecklist, IContractCategoryTerm, IContractChecklistItem } from './../../contract.model';
+import { IContract, IProductImage, IContractCategory, ICategory, IContractChecklist, IContractCategoryTerm, IContractChecklistItem, IContractProduct } from './../../contract.model';
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, ViewChild, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
@@ -25,7 +25,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AddEditState } from 'src/app/shared/generics/generic.model';
 import { Store, select } from '@ngrx/store';
 import * as _ from 'lodash';
-import { getChecklistItemsSelector } from '../../store/selectors/contract-checklist.selector';
+import { getChecklistItemsSelector, getchecklistProductsSelector } from '../../store/selectors/contract-checklist.selector';
 
 @Component({
   selector: 'il-contract-detail-page',
@@ -47,7 +47,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   public contract: IContract;
   public contractCategories: IContractCategory[];
   public checklistItems: IContractChecklistItem[] = [];
-  public checkListProductIds: { id: string }[] = [];
+  public checkListProducts: IContractProduct[] = [];
   public formChecklist: FormGroup;
 
   @Output()
@@ -136,15 +136,10 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       .pipe(tap(cc => this.contractCategories = cc))
       .subscribe();
 
-    /* collect the preselected product ids */
-    this.store.pipe(select(getPreSelectedProductsSelector),
-      map(pp => pp.selectedProducts))
-      .subscribe(productIds => {
-        if (productIds && productIds.length > 0) {
-          this.checkListProductIds = productIds.map(p => {
-            return { id: p._id };
-          });
-        } else this.checkListProductIds = [];
+    /* get checklist products */
+    this.store.pipe(select(getchecklistProductsSelector))
+      .subscribe(items => {
+        this.checkListProducts = items || [];
       });
 
     /* collect all items that is added to checklists */
@@ -160,12 +155,12 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
 
   public get isChecklistValid(): boolean {
     return this.formChecklist.valid
-      && (this.checkListProductIds && this.checkListProductIds.length > 0)
+      && (this.checkListProducts && this.checkListProducts.length > 0)
       && (this.checklistItems && this.checklistItems.length > 0);
   }
 
   public onToggleTerm(categoryTerm: IContractCategoryTerm): void {
-    if (this.checkListProductIds && this.checkListProductIds.length === 0) return;
+    if (this.checkListProducts && this.checkListProducts.length === 0) return;
     /* 
       we will build the checklist payload here
       so we can update it easily when toggling the terms
@@ -174,7 +169,9 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       checklist_contract: { id: this.id },
       checklist_category: { id: categoryTerm.category_id },
       checklist_term: { id: categoryTerm.term_id },
-      checklist_product: [...this.checkListProductIds],
+      checklist_product: [...this.checkListProducts.map(i => {
+        return { id: i._id };
+      })],
       desired_run_date: this.formChecklist.get('desiredRunDate').value,
       assigned_to: this.formChecklist.get('assignedTo').value,
     }
@@ -183,8 +180,8 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     const match = this.checklistItems
       .filter(c => c.checklist_category.id === categoryTerm.category_id
         && c.checklist_term.id === categoryTerm.term_id
-        && this.checkListProductIds.filter(cp => cp.id === c.checklist_product.id).shift());
-     
+        && this.checkListProducts.filter(cp => cp._id === c.checklist_product.id).shift());
+
     /* transform product to array of ids */
     Object.assign(payload, match);
 

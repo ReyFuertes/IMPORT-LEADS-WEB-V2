@@ -13,7 +13,10 @@
     <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="15px">
       <ng-container *ngFor="let item of $contractProducts | async; let i = index">
         <!-- parent product -->
-        <il-pill [state]="state" [reset]="!inCheckListing" (preSelectEmitter)="
+        <il-pill
+          [attr.id1]="item?.id"
+          [attr.id2]="item?._id"
+        [state]="state" [reset]="!inCheckListing" (preSelectEmitter)="
             preSelectChange($event, isProductSelected(item?.id))
           " (deSelectEmitter)="deSelectChange($event)" (stateEmitter)="removeSelection()" (click)="onEdit(item)" [ngClass]="{
             sel: isProductSelected(item?.id),

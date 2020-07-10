@@ -5,13 +5,13 @@ import {
   removeChecklistItemAction,
   addToChecklistSuccess,
   deleteChecklistItemSuccess,
-  removeAllSelectedTerms
+  removeAllSelectedTerms,
+  preSelectChecklistProducts
 } from './../actions/contract-checklist.action';
-import { IContractChecklist, IContractChecklistItem, IContractProduct } from './../../contract.model';
+import { IContractChecklist, IContractChecklistItem, IContractProduct, IContractTerm } from './../../contract.model';
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import * as _ from 'lodash';
-import { act } from '@ngrx/effects';
 
 export interface ContractChecklistState extends EntityState<IContractChecklistItem> {
   isHighlighting?: boolean,
@@ -28,46 +28,51 @@ export const initialState: ContractChecklistState = adapter.getInitialState({
 });
 const reducer = createReducer(
   initialState,
-  on(overrideChecklistItemActionSuccess, (state, action) => {
-    return Object.assign({}, state, { selectedTerms: action.items.map(st => st.checklist_term.id) });
-  }),
-  /* after override we also need to remove the entities */
-  on(overrideChecklistItemActionSuccess, (state, action) => {
-    let entities: IContractChecklistItem[] = Object.values(Object.assign([], state.entities));
-    let ids: string[] = [];
-    entities && entities.forEach(entity => {
-      const match = action.items.filter(o => o.checklist_term.id === entity.checklist_term.id &&
-        entity.checklist_product.id === o.checklist_product.id).shift();
-      if (match) {
-        ids.push(entity.id);
-      }
-    });
-    return ({ ...adapter.removeMany(ids, state) });
+  /* clear the checklist entities first */
+  on(overrideChecklistItemActionSuccess, (state) => {
+    return adapter.removeAll(state);
   }),
   on(overrideChecklistItemActionSuccess, (state, action) => {
-    let entities: IContractChecklistItem[] = Object.values(Object.assign([], state.entities));
-    let changes: any[] = [];
-    const sourceTermId: string = Object.assign({}, action.items.shift().checklist_term).id;
-
-    entities && entities.forEach(entity => {
-      entity = Object.assign({}, entity, { checklist_term: { id: sourceTermId } });
-      changes.push({
-        id: entity.id,
-        changes: entity
-      })
-    });
-    return adapter.updateMany(changes, state);
+    return adapter.addAll(action.items, state);
+  }),
+  /* set selected terms from overriden checklist */
+  on(overrideChecklistItemActionSuccess, (state, action) => {
+    /* we need to get the checklist product terms */
+    const checklistProducts = state.checklistProducts;
+    const entities = Object.values(state.entities);
+    const checklistItems = entities.filter(e => checklistProducts.filter(cp => cp._id === e.checklist_product.id));
+    const selectedTerms = _.uniq(checklistItems.map(st => st.checklist_term.id));
+    
+    return Object.assign({}, state, { selectedTerms });
   }),
   on(deleteChecklistItemSuccess, (state, action) => {
     return ({ ...adapter.removeMany(action.deleted.map(i => i.id), state) });
   }),
-  /* add & remove checklist source */
+  /* update checklist source */
   on(removeToChecklistSourceAction, (state, action) => {
     let checklistSource = Object.assign({}, state.checklistSource);
+    let terms: string[] =  Object.assign([], state.selectedTerms);
+
+    /* if the action item is a source */
     if (checklistSource && action.item && checklistSource.checklist_product.id === action.item._id) {
       checklistSource = null;
+      
+      /* if the source is removed then replace it with first first item of product checklist */
+      const checklistProductId = state.checklistProducts.shift()._id;
+      const entities = Object.values(state.entities);
+      const newSource = entities.filter(e => {
+        return e.checklist_product.id === checklistProductId;
+      }).shift();
+      checklistSource = newSource;
+
+      /* we also need to update the selected term using the new source */
+      terms = entities.filter(e => {
+        return e.checklist_term.id === newSource.checklist_term.id
+          && e.checklist_product.id === checklistProductId;
+      }).map(ci => ci.checklist_term.id);
     }
-    return Object.assign({}, state, { checklistSource });
+    
+    return Object.assign({}, state, { checklistSource, selectedTerms: _.uniq(terms) });
   }),
   on(addToChecklistSourceAction, (state, action) => {
     const items = Object.values(state.entities);
@@ -84,8 +89,9 @@ const reducer = createReducer(
   }),
   on(addToChecklistProductsAction, (state, action) => {
     let checklistProducts: IContractProduct[] = Object.assign([], state.checklistProducts) || null;
-    let match = checklistProducts.filter(cp => cp.id === action.item.id).shift();
-    if (!match) checklistProducts.push(action.item);
+    let match = checklistProducts.filter(cp => action.items.filter(i => i.id === cp.id)).shift();
+    if (!match) checklistProducts.push(...action.items);
+
     return Object.assign({}, state, { checklistProducts });
   }),
   on(loadChecklistSuccess, (state, action) => {
@@ -95,14 +101,17 @@ const reducer = createReducer(
     return Object.assign({}, state, { selectedTerms: null });
   }),
   on(removeSelectedTerms, (state, action) => {
+    
     /* when the product is deselected we want to remove also the selected terms using the product id */
     let selectedTerms = Object.assign([], state.selectedTerms);
     action.ids && action.ids.length > 0 && action.ids.forEach(id => {
+      
       const index: number = selectedTerms.indexOf(id);
       if (index !== -1) {
         selectedTerms.splice(index, 1);
       }
     });
+    
     return Object.assign({}, state, { selectedTerms });
   }),
   on(addTermToChecklistAction, (state, action) => {
@@ -134,26 +143,7 @@ const reducer = createReducer(
       checklistSource = action.items.shift();
     }
     return Object.assign({}, state, { checklistSource });
-  }),
-
-  // tap((items) => {
-  //   const item = items.shift();
-  //   debugger
-  //   /* listen to checklist source */
-  //   this.store.pipe(select(getChecklistSourceSelector),
-  //     tap(source => {
-  //       debugger
-  //       if (!source && item)
-  //         this.store.dispatch(addToChecklistSourceAction({ item }))
-  //     })).subscribe();
-  // }),
-  // on(clearChecklist, (state) => {
-  //   return Object.assign({}, state, { checklist: null });
-  // }),
-
-  // on(saveToChecklistSuccess, (state, action) => {
-  //   return Object.assign({}, state, { checklist: action.payload });
-  // }),
+  })
 );
 export function ContractChecklistReducer(state: ContractChecklistState, action: Action) {
   return reducer(state, action);

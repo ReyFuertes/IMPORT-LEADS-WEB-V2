@@ -46,7 +46,6 @@ export interface ICategory {
   id?: string;
   category_name: string;
 }
-
 export interface IContractProduct {
   _id?: string;
   id?: string;

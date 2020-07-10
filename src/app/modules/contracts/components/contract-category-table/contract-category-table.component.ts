@@ -71,7 +71,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
 
     this.store.pipe(select(getSelectedTermsSelector),
       tap((terms: string[]) => {
-        this.selectedTerms = terms;
+        this.selectedTerms = terms || [];
       })).subscribe();
   }
 

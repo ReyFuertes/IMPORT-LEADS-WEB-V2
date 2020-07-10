@@ -19,8 +19,13 @@ export enum CheckListActionTypes {
   overrideChecklistItemAction = '[Contract Checklist] override checklist item',
   overrideChecklistItemActionSuccess = '[Contract Checklist] override checklist item (success)',
   removeChecklistItemAction = '[Contract Checklist] remove checklist item',
-  removeAllSelectedTerms = '[Contract Checklist] remove all terms'
+  removeAllSelectedTerms = '[Contract Checklist] remove all terms',
+  preSelectChecklistProducts = '[Contract Checklist] preselect checklist products'
 }
+export const preSelectChecklistProducts = createAction(
+  CheckListActionTypes.preSelectChecklistProducts,
+  props<{ item: IContractProduct[] }>()
+);
 export const removeAllSelectedTerms = createAction(
   CheckListActionTypes.removeAllSelectedTerms
 );
@@ -42,7 +47,7 @@ export const removeToChecklistProductsAction = createAction(
 );
 export const addToChecklistProductsAction = createAction(
   CheckListActionTypes.addToChecklistProductsAction,
-  props<{ item: IContractProduct }>()
+  props<{ items: IContractProduct[] }>()
 );
 export const addToChecklistSourceAction = createAction(
   CheckListActionTypes.addToChecklistSourceAction,

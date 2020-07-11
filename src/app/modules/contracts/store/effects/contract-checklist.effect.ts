@@ -1,5 +1,5 @@
 import { ChecklistService } from './../../services/contract-checklist.service';
-import { loadChecklist, loadChecklistSuccess, addToChecklist, addToChecklistSuccess, deleteChecklistItemSuccess, deleteChecklistItem, addTermToChecklistAction, overrideChecklistItemAction, overrideChecklistItemActionSuccess, removeSelectedTerms } from './../actions/contract-checklist.action';
+import { loadChecklist, loadChecklistSuccess, addToChecklist, addToChecklistSuccess, removeChecklistItemSuccess, deleteChecklistItem, addTermToChecklistAction, overrideChecklistItemAction, overrideChecklistItemActionSuccess, removeSelectedTerms } from './../actions/contract-checklist.action';
 import { AppState } from './../../../../store/app.reducer';
 import { IContractChecklistItem, IContractTerm } from './../../contract.model';
 import { Injectable } from '@angular/core';
@@ -45,7 +45,7 @@ export class ChecklistEffect {
             }
           }),
           map((deleted: IContractChecklistItem[]) => {
-            return deleteChecklistItemSuccess({ deleted });
+            return removeChecklistItemSuccess({ deleted });
           })
         )
     })

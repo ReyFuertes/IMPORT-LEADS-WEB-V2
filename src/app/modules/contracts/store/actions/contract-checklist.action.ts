@@ -5,7 +5,7 @@ export enum CheckListActionTypes {
   addToChecklist = '[Contract Checklist] Add',
   addToChecklistSuccess = '[Contract Checklist] Add (success)',
   deleteChecklistItem = '[Contract Checklist] Delete',
-  deleteChecklistItemSuccess = '[Contract Checklist] Delete (success)',
+  removeChecklistItemSuccess = '[Contract Checklist] Delete (success)',
   clearChecklist = '[Contract Checklist] Clear',
   highlightChecklist = '[Contract Checklist] Highlight',
   loadChecklist = '[Inspection Checklist] load',
@@ -20,8 +20,12 @@ export enum CheckListActionTypes {
   overrideChecklistItemActionSuccess = '[Contract Checklist] override checklist item (success)',
   removeChecklistItemAction = '[Contract Checklist] remove checklist item',
   removeAllSelectedTerms = '[Contract Checklist] remove all terms',
-  preSelectChecklistProducts = '[Contract Checklist] preselect checklist products'
+  preSelectChecklistProducts = '[Contract Checklist] preselect checklist products',
+  removeAllChecklistProducts = '[Contract Checklist] remove all checklist products',
 }
+export const removeAllChecklistProducts = createAction(
+  CheckListActionTypes.removeAllChecklistProducts
+);
 export const preSelectChecklistProducts = createAction(
   CheckListActionTypes.preSelectChecklistProducts,
   props<{ item: IContractProduct[] }>()
@@ -76,8 +80,8 @@ export const deleteChecklistItem = createAction(
   CheckListActionTypes.deleteChecklistItem,
   props<{ payload: IContractChecklistItem[] }>()
 );
-export const deleteChecklistItemSuccess = createAction(
-  CheckListActionTypes.deleteChecklistItemSuccess,
+export const removeChecklistItemSuccess = createAction(
+  CheckListActionTypes.removeChecklistItemSuccess,
   props<{ deleted: IContractChecklistItem[] }>()
 );
 export const highlightChecklist = createAction(

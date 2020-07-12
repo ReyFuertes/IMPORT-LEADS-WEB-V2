@@ -1,5 +1,5 @@
 import { ContractModuleState } from './index';
-import { loadContractProductSuccess, updateContractProductsSuccess, preSelectProducts, clearPreSelectProducts, removePreSelectProduct } from './../actions/contract-product.action';
+import { loadContractProductSuccess, updateContractProductsSuccess, removeSelectedProductAction, selectProductAction } from './../actions/contract-product.action';
 import { IContractProduct } from './../../contract.model';
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
@@ -7,26 +7,25 @@ import { addContractProductsSuccess } from '../actions/contract-product.action';
 import * as _ from 'lodash';
 
 export interface ContractProductsState extends EntityState<IContractProduct> {
-  selectedProducts?: IContractProduct[]
+  selectedProduct: IContractProduct
 }
 export const adapter: EntityAdapter<IContractProduct> = createEntityAdapter<IContractProduct>({});
 export const initialState: ContractProductsState = adapter.getInitialState({
-  selectedProducts: null
+  selectedProduct: null
 });
 const reducer = createReducer(
   initialState,
-  on(removePreSelectProduct, (state, action) => {
-    /* remove from preselected products */
-    const newProducts = state.selectedProducts;
-    _.remove(newProducts,
-      (p: { id: string, _id: string }) => p.id === action.payload.id);
-    return Object.assign({}, state, { selectedProducts: newProducts });
+  on(removeSelectedProductAction, (state, action) => {
+    return Object.assign({}, state, { selectedProduct: null });
   }),
-  on(clearPreSelectProducts, (state, action) => {
-    return Object.assign({}, state, { selectedProducts: null });
-  }),
-  on(preSelectProducts, (state, action) => {
-    return Object.assign({}, state, { selectedProducts: action.payload });
+  on(selectProductAction, (state, action) => {
+    let selectedProduct: IContractProduct = state.selectedProduct;
+    if (state.selectedProduct && state.selectedProduct.id === action.item.id) {
+      selectedProduct = null;
+    } else {
+      selectedProduct = action.item;
+    }
+    return Object.assign({}, state, { selectedProduct });
   }),
   on(addContractProductsSuccess, (state, action) => {
     return ({ ...adapter.addOne(action.created, state) })

@@ -1,12 +1,12 @@
 import { loadChecklist } from './../../../inspections/store/inspection.action';
 import { getChecklistSourceSelector, getChecklistItemsSelector, getChecklist, getChecklistItemByContractProductIds, getChecklistTermsById, getchecklistProductsSelector } from './../../store/selectors/contract-checklist.selector';
 import { addToChecklistSourceAction, addTermToChecklistAction, removeSelectedTerms, addToChecklistProductsAction, removeToChecklistSourceAction, removeToChecklistProductsAction, overrideChecklistItemAction, removeChecklistItemAction, addToChecklist, removeAllChecklistProducts, removeAllSelectedTerms } from './../../store/actions/contract-checklist.action';
-import { getPreSelectedProductsSelector } from './../../store/selectors/contract-product-selector';
+import { getSelectedProductsSelector } from './../../store/selectors/contract-product-selector';
 import { getContractCategorySelector, getCategoryTermsSelector } from './../../store/selectors/contract-category.selector';
 import { getProductsSelector } from './../../../products/store/products.selector';
 import { IProduct } from './../../../products/products.model';
 import { getAllContractProductsSelector } from './../../store/selectors/contracts.selector';
-import { addContractProducts, deleteContractProduct, updateContractProduct, preSelectProducts, removePreSelectProduct } from './../../store/actions/contract-product.action';
+import { addContractProducts, deleteContractProduct, updateContractProduct, selectProductAction, removeSelectedProductAction } from './../../store/actions/contract-product.action';
 import { AppState } from 'src/app/store/app.reducer';
 import { Store, select } from '@ngrx/store';
 import { PillState, IContract, IContractProduct, IContractChecklist, IContractChecklistItem, IContractTerm, IOverrideChecklistItem } from './../../contract.model';
@@ -42,7 +42,7 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
   public initInputProduct: boolean = false;
   public $contractProducts: Observable<IContractProduct[]>;
   public $products: Observable<IProduct[]>;
-  public selectedProducts: IContractProduct[] = [];
+  public selectedProduct: IContractProduct;
   public checklistItems: IContractChecklistItem[] = [];
   public selCategoryTerms: IContractTerm[] = [];
   public checklistSource: IContractChecklistItem;
@@ -120,7 +120,7 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
           this.selCategoryTerms = terms;
       })).subscribe();
 
-    this.store.pipe(select(getChecklist))
+    this.store//.pipe(select(getChecklist))
       .subscribe(res => console.log(res))
   }
 
@@ -149,8 +149,8 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
     });
 
     /* listen to selected products */
-    this.store.pipe(select(getPreSelectedProductsSelector),
-      tap(pp => this.selectedProducts = pp.selectedProducts || [])
+    this.store.pipe(select(getSelectedProductsSelector),
+      tap(sp => this.selectedProduct = sp)
     ).subscribe();
 
     /* listen to all checklist so we can highlight to green */
@@ -172,44 +172,37 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
   }
 
   public deSelectChange(payload: ISimpleItem): void {
-    this.fmtToChecklist(payload);
+    if (this.inCheckListing) {
+      /* remove source checklist if matched */
+      this.store.dispatch(removeToChecklistSourceAction({ item: payload }));
 
-    /* remove source checklist if matched */
-    this.store.dispatch(removeToChecklistSourceAction({ item: payload }));
+      /* remove to checklist products */
+      this.store.dispatch(removeToChecklistProductsAction({ item: payload }))
 
-    /* remove to checklist products */
-    this.store.dispatch(removeToChecklistProductsAction({ item: payload }))
-
-    /* remove selected term of a product/s */
-    this.store.pipe(
-      take(1),
-      select(getChecklistTermsById(payload._id)),
-      tap((items: IContractChecklistItem[]) => {
-        /* if the checklist products is not 0 then do not remove the terms */
-        if (this.checklistProductItems && this.checklistProductItems.length === 0) {
-          this.store.dispatch(removeSelectedTerms({ ids: items.map(i => i.checklist_term.id) }));
-        }
-      })).subscribe();
-
-    /* if product exist then remove it and update the state  */
-    const match = this.selectedProducts &&
-      this.selectedProducts.filter(cp => cp.id === payload.id).shift();
-    if (match) {
-      const index: number = this.selectedProducts.indexOf(match);
-      if (index !== -1) {
-        this.selectedProducts.splice(index, 1);
-      }
+      /* remove selected term of a product/s */
+      this.store.pipe(
+        take(1),
+        select(getChecklistTermsById(payload._id)),
+        tap((items: IContractChecklistItem[]) => {
+          /* if the checklist products is not 0 then do not remove the terms */
+          if (this.checklistProductItems && this.checklistProductItems.length === 0) {
+            this.store.dispatch(removeSelectedTerms({ ids: items.map(i => i.checklist_term.id) }));
+          }
+        })).subscribe();
+    } else {
+      this.store.dispatch(removeSelectedProductAction({ item: payload }));
     }
+    /* if product exist then remove it and update the state  */
+
     if (!this.inCheckListing)
       this.onResetForm();
   };
 
   public preSelectChange(payload: ISimpleItem, isPreselected?: boolean): void {
-    if (isPreselected) return;
     this.fmtToChecklist(payload);
 
     /* in checklisting */
-    if (this.inCheckListing) {
+    if (!isPreselected && this.inCheckListing) {
       /* if product is the first selection then add it to the source checklist*/
       if (!this.checklistSource) {
         this.store.dispatch(addToChecklistSourceAction({
@@ -248,12 +241,7 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
         this.store.dispatch(addTermToChecklistAction({ items: items.map(i => i.checklist_term.id) }));
 
     } else {
-      const index = this.selectedProducts.indexOf(payload);
-      if (index > -1) {
-        this.selectedProducts.splice(index, 1);
-      } else {
-        this.selectedProducts.push(payload);
-      }
+      this.store.dispatch(selectProductAction({ item: payload }));
     }
   }
 
@@ -300,7 +288,7 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
             this.store.dispatch(removeAllSelectedTerms());
             const sourceTerms = this.checklistItems.filter(
               s => s.checklist_term.id === source.checklist_term.id
-              && s.checklist_product.id === source.checklist_product.id);
+                && s.checklist_product.id === source.checklist_product.id);
             this.store.dispatch(addTermToChecklistAction({ items: sourceTerms.map(t => t.checklist_term.id) }));
           }
 
@@ -328,10 +316,17 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
     return ret ? true : false;
   }
 
-  public isProductSelected(id: string): boolean {
-    return this.checklistProductItems
+  public isChecklistProductSelected(id: string): boolean {
+    return this.inCheckListing
+      && this.checklistProductItems
       && this.checklistProductItems.length > 0
       && this.checklistProductItems.filter(c => c.id === id).shift() ? true : false;
+  }
+
+  public isProductSelected(id: string): boolean {
+    return !this.inCheckListing
+      && this.selectedProduct
+      && this.selectedProduct.id === id ? true : false;
   }
 
   public isSubProductSelected(id: string): boolean {
@@ -459,7 +454,6 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
     });
 
     this.hasSubProducts = this.formSubProdsArr && this.formSubProdsArr.length > 0;
-    this.isEditProduct = true;
   }
 
   public onShowSubProduct(): void {

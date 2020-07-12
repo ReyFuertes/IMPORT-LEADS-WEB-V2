@@ -1,4 +1,3 @@
-import { getPreSelectedProductsSelector } from './../../store/selectors/contract-product-selector';
 import { addToChecklist, highlightChecklist, deleteChecklistItem, addTermToChecklistAction, removeAllSelectedTerms } from './../../store/actions/contract-checklist.action';
 import { sortByAsc } from 'src/app/shared/util/sort';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';

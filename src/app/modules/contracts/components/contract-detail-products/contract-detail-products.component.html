@@ -13,13 +13,10 @@
     <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="15px">
       <ng-container *ngFor="let item of $contractProducts | async; let i = index">
         <!-- parent product -->
-        <il-pill
-          [attr.id1]="item?.id"
-          [attr.id2]="item?._id"
-        [state]="state" [reset]="!inCheckListing" (preSelectEmitter)="
-            preSelectChange($event, isProductSelected(item?.id))
-          " (deSelectEmitter)="deSelectChange($event)" (stateEmitter)="removeSelection()" (click)="onEdit(item)" [ngClass]="{
-            sel: isProductSelected(item?.id),
+        <il-pill [attr.id1]="item?.id" [attr.id2]="item?._id" [state]="state" [reset]="!inCheckListing" (preSelectEmitter)="
+            preSelectChange($event, isChecklistProductSelected(item?.id))
+          " (deSelectEmitter)="deSelectChange($event, isChecklistProductSelected(item?.id))" (stateEmitter)="removeSelection()" (click)="onEdit(item)" [ngClass]="{
+            sel: (isChecklistProductSelected(item?.id) || isProductSelected(item?.id)),
             highlighted: hasChecklist(item?._id)
           }" [enabled]="
             !inCheckListing ||
@@ -36,7 +33,7 @@
     </div>
 
     <!-- product with/without set -->
-    <div *ngIf="!inCheckListing || (isNavOpenAndEdit && !inCheckListing)" class="product-section" fxLayout="row" [formGroup]="form" fxLayoutGap="20px">
+    <div *ngIf="(!inCheckListing && selectedProduct) || isNavOpenAndEdit" class="product-section" fxLayout="row" [formGroup]="form" fxLayoutGap="20px">
       <div *ngIf="initInputProduct" fxFlex fxLayout="column" fxLayoutAlign="start start">
         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
           <il-input-select fxFlex [form]="form" [controlName]="'product_name'" [suggestions]="suggestions" [isReadOnly]="inCheckListing || isNavOpenAndEdit"></il-input-select>

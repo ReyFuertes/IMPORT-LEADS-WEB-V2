@@ -14,8 +14,7 @@ export enum ProductActionTypes {
   removeSelectedProductAction = '[Contract Product] Remove select Product'
 }
 export const removeSelectedProductAction = createAction(
-  ProductActionTypes.removeSelectedProductAction,
-  props<{ item: IContractProduct }>()
+  ProductActionTypes.removeSelectedProductAction
 );
 export const clearPreSelectProducts = createAction(
   ProductActionTypes.clearPreSelectProducts,

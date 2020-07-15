@@ -1,4 +1,10 @@
 @import "src/styleguide/shared";
+.view {
+  max-height: 50px;
+  img {
+    cursor: pointer;
+  }
+}
 .product-section {
   > div {
     &:nth-child(2) {

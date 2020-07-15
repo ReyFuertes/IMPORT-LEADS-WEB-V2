@@ -1,8 +1,8 @@
 import { loadChecklist } from './../../../inspections/store/inspection.action';
 import { getChecklistSourceSelector, getChecklistItemsSelector, getChecklist, getChecklistItemByContractProductIds, getChecklistTermsById, getchecklistProductsSelector } from './../../store/selectors/contract-checklist.selector';
-import { addToChecklistSourceAction, addTermToChecklistAction, removeSelectedTerms, addToChecklistProductsAction, removeToChecklistSourceAction, removeToChecklistProductsAction, overrideChecklistItemAction, removeChecklistItemAction, addToChecklist, removeAllChecklistProducts, removeAllSelectedTerms } from './../../store/actions/contract-checklist.action';
+import { addToChecklistSourceAction, addTermToChecklistAction, removeSelectedTerms, addToChecklistProductsAction, updateChecklistSourceAction, removeToChecklistProductsAction, overrideChecklistItemAction, removeChecklistItemAction, addToChecklist, removeAllChecklistProducts, removeAllSelectedTerms, removeChecklistSourceAction } from './../../store/actions/contract-checklist.action';
 import { getSelectedProductsSelector } from './../../store/selectors/contract-product-selector';
-import { getContractCategorySelector, getCategoryTermsSelector } from './../../store/selectors/contract-category.selector';
+import { getCategoryTermsSelector } from './../../store/selectors/contract-category.selector';
 import { getProductsSelector } from './../../../products/store/products.selector';
 import { IProduct } from './../../../products/products.model';
 import { getAllContractProductsSelector } from './../../store/selectors/contracts.selector';
@@ -47,6 +47,7 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
   public selCategoryTerms: IContractTerm[] = [];
   public checklistSource: IContractChecklistItem;
   public checklistProductItems: IContractProduct[] = [];
+  public isAddState: boolean = false;
 
   @Input()
   public inCheckListing: boolean = false;
@@ -120,7 +121,7 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
           this.selCategoryTerms = terms;
       })).subscribe();
 
-    this.store//.pipe(select(getChecklist))
+    this.store.pipe(select(getChecklist))
       .subscribe(res => console.log(res))
   }
 
@@ -128,6 +129,8 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
 
   ngOnInit() {
     this.$contractProducts = this.store.pipe(select(getAllContractProductsSelector));
+
+    /* product suggestions */
     this.$products = this.store.pipe(select(getProductsSelector));
     this.$products.subscribe(p => {
       if (p) {
@@ -173,11 +176,13 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
 
   public deSelectChange(payload: ISimpleItem): void {
     if (this.inCheckListing) {
-      /* remove source checklist if matched */
-      this.store.dispatch(removeToChecklistSourceAction({ item: payload }));
+      this.fmtToChecklist(payload);
 
       /* remove to checklist products */
       this.store.dispatch(removeToChecklistProductsAction({ item: payload }))
+
+      /* remove source checklist if matched */
+      this.store.dispatch(updateChecklistSourceAction({ item: payload }));
 
       /* remove selected term of a product/s */
       this.store.pipe(
@@ -186,11 +191,15 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
         tap((items: IContractChecklistItem[]) => {
           /* if the checklist products is not 0 then do not remove the terms */
           if (this.checklistProductItems && this.checklistProductItems.length === 0) {
+            debugger
+            /* remove checklist source */
+            this.store.dispatch(removeChecklistSourceAction());
             this.store.dispatch(removeSelectedTerms({ ids: items.map(i => i.checklist_term.id) }));
           }
         })).subscribe();
     } else {
-      this.store.dispatch(removeSelectedProductAction({ item: payload }));
+      debugger
+      this.store.dispatch(removeSelectedProductAction());
     }
     /* if product exist then remove it and update the state  */
 
@@ -420,13 +429,13 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
   }
 
   public onEdit(product: IProduct): void {
-    if (!product) return;
+    if (!product && !this.inCheckListing) return;
 
     /* assign selected item to form */
     const { _id, id, product_name, qty, cost, sub_products } = product;
     this.form.reset();
     this.formSubProdsArr = null;
-    this.initInputProduct = true;
+    this.initInputProduct = this.selectedProduct ? true : false;
 
     /* use contract product id here */
     this.form.controls['id'].patchValue(_id);
@@ -454,6 +463,26 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
     });
 
     this.hasSubProducts = this.formSubProdsArr && this.formSubProdsArr.length > 0;
+    this.isEditProduct = this.selectedProduct ? true : false;
+    if (this.selectedProduct) {
+      this.isAddState = this.isEditProduct;
+    } else {
+      this.isAddState = this.isAddState ? false : true;
+    }
+
+    if (!this.selectedProduct) {
+      setTimeout(() => this.onResetForm(), 100);
+    }
+  }
+
+  public onView(): void {
+    this.isAddState = !this.isAddState;
+    if (!this.isAddState) {
+      setTimeout(() => this.onResetForm(), 100);
+      this.store.dispatch(removeSelectedProductAction());
+    } else {
+
+    }
   }
 
   public onShowSubProduct(): void {
@@ -564,8 +593,7 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
     this.hasSubProducts = false;
     this.isEditProduct = false;
     this.initInputProduct = false;
-
-    if (this.formSubProdsArr) this.formSubProdsArr.clear();
+    this.formSubProdsArr.clear();
   }
 
   public createItem = (item: ISimpleItem): FormGroup => this.fb.group(item);

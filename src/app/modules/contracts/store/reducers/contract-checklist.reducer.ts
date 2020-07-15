@@ -1,8 +1,8 @@
 import { loadChecklistSuccess } from './../../../inspections/store/inspection.action';
 import { ContractModuleState } from './index';
 import {
-  addTermToChecklistAction, removeSelectedTerms, addToChecklistProductsAction, addToChecklistSourceAction, removeToChecklistSourceAction, removeToChecklistProductsAction, highlightChecklist, overrideChecklistItemActionSuccess,
-  removeChecklistItemAction,
+  addTermToChecklistAction, removeSelectedTerms, addToChecklistProductsAction, addToChecklistSourceAction, updateChecklistSourceAction, removeToChecklistProductsAction, highlightChecklist, overrideChecklistItemActionSuccess,
+  removeChecklistSourceAction,
   addToChecklistSuccess,
   removeChecklistItemSuccess,
   removeAllSelectedTerms,
@@ -42,36 +42,43 @@ const reducer = createReducer(
     const entities = Object.values(state.entities);
     const checklistItems = entities.filter(e => checklistProducts.filter(cp => cp._id === e.checklist_product.id));
     const selectedTerms = _.uniq(checklistItems.map(st => st.checklist_term.id));
-    
+
     return Object.assign({}, state, { selectedTerms });
   }),
   on(removeChecklistItemSuccess, (state, action) => {
     return ({ ...adapter.removeMany(action.deleted.map(i => i.id), state) });
   }),
   /* update checklist source */
-  on(removeToChecklistSourceAction, (state, action) => {
+  on(updateChecklistSourceAction, (state, action) => {
     let checklistSource = Object.assign({}, state.checklistSource);
-    let terms: string[] =  Object.assign([], state.selectedTerms);
+    let terms: string[] = Object.assign([], state.selectedTerms);
+    const checklistProducts = Object.assign([], state.checklistProducts);
 
     /* if the action item is a source */
     if (checklistSource && action.item && checklistSource.checklist_product.id === action.item._id) {
+      /* remove the product */
       checklistSource = null;
-      
+  
       /* if the source is removed then replace it with first first item of product checklist */
-      const checklistProductId = state.checklistProducts.shift()._id;
+      const checklistProductId = checklistProducts
+        && checklistProducts.length > 0
+        && checklistProducts.shift()._id
+        || null;
       const entities = Object.values(state.entities);
-      const newSource = entities.filter(e => {
-        return e.checklist_product.id === checklistProductId;
-      }).shift();
-      checklistSource = newSource;
+      
+      if (checklistProductId) {
+        const newSource = entities.filter(e => {
+          return e.checklist_product.id === checklistProductId;
+        }).shift();
 
-      /* we also need to update the selected term using the new source */
-      terms = entities.filter(e => {
-        return e.checklist_term.id === newSource.checklist_term.id
-          && e.checklist_product.id === checklistProductId;
-      }).map(ci => ci.checklist_term.id);
+        checklistSource = newSource;
+        /* we also need to update the selected term using the new source */
+        terms = entities.filter(e => {
+          return e.checklist_contract.id === newSource.checklist_contract.id
+            && e.checklist_product.id === checklistProductId;
+        }).map(ci => ci.checklist_term.id);
+      }
     }
-    
     return Object.assign({}, state, { checklistSource, selectedTerms: _.uniq(terms) });
   }),
   on(addToChecklistSourceAction, (state, action) => {
@@ -81,10 +88,15 @@ const reducer = createReducer(
 
     return Object.assign({}, state, { checklistSource });
   }),
+  /* remove all source */
+  on(removeChecklistSourceAction, (state) => {
+    return Object.assign({}, state, { checklistSource: null });
+  }),
   /* add & remove checklist products */
   on(removeToChecklistProductsAction, (state, action) => {
     let checklistProducts = Object.assign([], state.checklistProducts);
     _.remove(checklistProducts, { id: action.item.id });
+    debugger
     return Object.assign({}, state, { checklistProducts });
   }),
   on(addToChecklistProductsAction, (state, action) => {
@@ -107,13 +119,13 @@ const reducer = createReducer(
     /* when the product is deselected we want to remove also the selected terms using the product id */
     let selectedTerms = Object.assign([], state.selectedTerms);
     action.ids && action.ids.length > 0 && action.ids.forEach(id => {
-      
+
       const index: number = selectedTerms.indexOf(id);
       if (index !== -1) {
         selectedTerms.splice(index, 1);
       }
     });
-    
+
     return Object.assign({}, state, { selectedTerms });
   }),
   on(addTermToChecklistAction, (state, action) => {

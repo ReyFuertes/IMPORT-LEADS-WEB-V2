@@ -191,14 +191,14 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
         tap((items: IContractChecklistItem[]) => {
           /* if the checklist products is not 0 then do not remove the terms */
           if (this.checklistProductItems && this.checklistProductItems.length === 0) {
-            debugger
+
             /* remove checklist source */
             this.store.dispatch(removeChecklistSourceAction());
             this.store.dispatch(removeSelectedTerms({ ids: items.map(i => i.checklist_term.id) }));
           }
         })).subscribe();
     } else {
-      debugger
+
       this.store.dispatch(removeSelectedProductAction());
     }
     /* if product exist then remove it and update the state  */
@@ -226,7 +226,7 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
       const hasSource = this.checklistProductItems && this.checklistProductItems.length > 0;
       const hasChecklistItems = this.checklistItems
         .filter(c => c.checklist_product.id === payload._id).shift();
-
+      debugger
       /* if product is a source then preselect immediately */
       if (!hasSource) {
         this.checklistProductItems.push(payload);
@@ -305,11 +305,17 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
           /* apply terms changes to a product from source */
           const newChecklistItem: IContractChecklist = {
             ...this.checklistSource,
-            checklist_product: [{ id: payload._id }], /* override the obj to array */
+            /* override the obj to array */
+            checklist_product: [{ id: payload._id }],
           }
 
+          /* add selected item to checklist items */
           delete newChecklistItem.id;
           this.store.dispatch(addToChecklist({ payload: newChecklistItem }));
+
+          /* also add the selected item to checklist product */
+          this.checklistProductItems.push(payload);
+          this.store.dispatch(addToChecklistProductsAction({ items: this.checklistProductItems }));
         }
       });
     }
@@ -400,7 +406,7 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
   }
 
   private fmtSubProducts(sp: IProduct[]): any {
-    return sp.map(sp => {
+    return sp && sp.map(sp => {
       const ret = _.pickBy({
         _id: sp._id,
         id: sp.id ? sp.id : this.getId(sp.product_name),
@@ -409,7 +415,7 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
         cost: sp.cost
       }, _.identity);
       return ret;
-    })
+    }) || [];
   }
 
   private fmtPayload(formValue: IProduct): any {
@@ -429,7 +435,7 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
   }
 
   public onEdit(product: IProduct): void {
-    if (!product && !this.inCheckListing) return;
+    if (!this.inCheckListing) return;
 
     /* assign selected item to form */
     const { _id, id, product_name, qty, cost, sub_products } = product;

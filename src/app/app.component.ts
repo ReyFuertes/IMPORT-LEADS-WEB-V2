@@ -26,7 +26,5 @@ export class AppComponent {
         this.store.dispatch(removeNotification())
       }
     });
-
- 
   }
 }

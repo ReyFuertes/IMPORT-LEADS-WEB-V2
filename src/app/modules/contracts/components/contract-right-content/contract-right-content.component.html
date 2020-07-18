@@ -6,7 +6,7 @@
     </div>
   </div>
 
-  <div>
+  <div class="tab-group">
     <mat-tab-group>
       <mat-tab label="New Checklist">
         <div class="new-template" fxLayout="column" fxLayoutGap="10px">
@@ -26,15 +26,15 @@
         </div>
       </mat-tab>
       <mat-tab label="Saved Checklist">
-        <mat-list class="saved-template">
-          <mat-list-item *ngFor="let i of [0, 1, 2, 3, 4, 5]">
-            <div class="temp-row" fxLayout="column">
+        <div fxLayout="column" fxLayoutAlign="start start">
+          <div fxLayout="column" class="saved-checklist-list" fxLayoutGap="20px">
+            <div *ngFor="let i of [0, 1, 2, 3, 4, 5, 6, 7, 8]" class="temp-row" fxLayout="column">
               <div>Checklist Name 1</div>
               <div>Inspector: John Doe</div>
               <div>Date: 20.09.2019</div>
             </div>
-          </mat-list-item>
-        </mat-list>
+          </div>
+        </div>
       </mat-tab>
     </mat-tab-group>
   </div>

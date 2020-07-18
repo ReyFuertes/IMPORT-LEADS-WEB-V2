@@ -11,27 +11,38 @@
     </p>
 
     <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="15px">
-      <ng-container *ngFor="let item of $contractProducts | async; let i = index">
+      <ng-container *ngFor="let item of ($contractProducts | async); let i = index">
         <!-- parent product -->
-        <il-pill [attr.id1]="item?.id" [attr.id2]="item?._id" [state]="state" [reset]="!inCheckListing" (preSelectEmitter)="
-            preSelectChange($event, isChecklistProductSelected(item?.id))
-          " (deSelectEmitter)="deSelectChange($event, isChecklistProductSelected(item?.id))" (stateEmitter)="removeSelection()" (click)="onEdit(item)" [ngClass]="{
-            sel: (isChecklistProductSelected(item?.id) || isProductSelected(item?.id)),
-            highlighted: hasChecklist(item?._id)
-          }" [enabled]="
-            !inCheckListing ||
-            (inCheckListing &&
-              item?.sub_products &&
-              !item?.sub_products.length > 0)
-          " [item]="fmtToSimpleItem(item)" [enableHighlight]="true" (removeEmitter)="onRemoveProduct(item)" [selectable]="true" [hasRemoveIcon]="!inCheckListing">
+        <il-pill [attr.id1]="item?.id" [attr.id2]="item?._id" [state]="state" 
+            [reset]="!inCheckListing" (preSelectEmitter)="preSelectChange($event, isChecklistProductSelected(item?.id))"
+            (deSelectEmitter)="deSelectChange($event, isChecklistProductSelected(item?.id))" (stateEmitter)="removeSelection()" 
+            (click)="onEdit(item)" 
+            [ngClass]="{sel: (isChecklistProductSelected(item?.id) || isProductSelected(item?.id)),highlighted: hasChecklist(item?._id)}" 
+            [enabled]="!inCheckListing || (inCheckListing && item?.sub_products && !item?.sub_products.length > 0)" 
+            [item]="fmtToSimpleItem(item)" 
+            [enableHighlight]="true" 
+            (removeEmitter)="onRemoveProduct(item)" 
+            [selectable]="true" 
+            [hasRemoveIcon]="!inCheckListing">
         </il-pill>
         <!-- child product -->
-        <il-pill *ngFor="let sub of item?.sub_products; let i = index" size="small" (preSelectEmitter)="preSelectChange($event)" (deSelectEmitter)="deSelectChange($event)" [reset]="!inCheckListing" [ngClass]="{ sel: isSubProductSelected(sub?.id) }"
-          [enabled]="inCheckListing" [item]="{ label: sub.product_name, value: sub.id }" [enableHighlight]="true" (removeEmitter)="onRemoveSubProduct(sub)" [selectable]="true">
+        <il-pill *ngFor="let sub of item?.sub_products; let i = index" size="small" 
+          (preSelectEmitter)="preSelectChange($event, isChecklistProductSelected(sub?.id))" 
+          (deSelectEmitter)="deSelectChange($event, isChecklistProductSelected(sub?.id))"
+          (stateEmitter)="removeSelection()" 
+          (click)="onEdit(sub)" 
+          [reset]="!inCheckListing" 
+          [ngClass]="{sel: (isChecklistProductSelected(sub?.id) || isProductSelected(sub?.id)),highlighted: hasChecklist(sub?._id)}"
+          [enabled]="inCheckListing" 
+          [item]="fmtToSimpleItem(sub)" 
+          [enableHighlight]="true" 
+          (removeEmitter)="onRemoveSubProduct(sub)" 
+          [selectable]="true" 
+          [hasRemoveIcon]="!inCheckListing">
         </il-pill>
       </ng-container>
     </div>
-
+    <!--  [item]="{ label: sub.product_name, value: sub.id }"  -->
     <!-- product with/without set -->
     <div *ngIf="!inCheckListing || isNavOpenAndEdit" class="product-section" fxLayout="row" [formGroup]="form" fxLayoutGap="20px">
       <div *ngIf="isAddState || (!inCheckListing && isAddState)" fxFlex fxLayout="column" fxLayoutAlign="start start">
@@ -82,7 +93,7 @@
       </div>
 
       <div *ngIf="!inCheckListing" class="view" fxFlex="50px" fxLayout="row" fxLayoutAlign="start center">
-        <img matTooltip="Show add product" (click)="onView()" [src]="svgPath + 'view-black.svg'" /> 
+        <img matTooltip="Show add product" (click)="onView()" [src]="svgPath + 'view-black.svg'" />
       </div>
     </div>
   </div>

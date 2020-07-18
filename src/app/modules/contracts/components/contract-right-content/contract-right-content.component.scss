@@ -1,4 +1,30 @@
 @import "src/styleguide/shared";
+.saved-checklist-list {
+  width: 100%;
+  height: calc(100% - 48px);
+  padding: 10px;
+  .temp-row {
+    border-radius: 2px;
+    padding: 5px;
+    height: 60px;
+    cursor: pointer;
+    &:hover {
+      background-color: $color-gray-3;
+    }
+    > div {
+      height: 20px;
+      &:first-child {
+        font-size: 14px;
+        font-weight: 500;
+      }
+      &:nth-child(2),
+      &:nth-child(3) {
+        font-size: 12px;
+        font-weight: normal;
+      }
+    }
+  }
+}
 .inner-container {
   display: none;
   overflow-y: auto;
@@ -15,8 +41,7 @@
       font-weight: 550;
     }
     &:nth-child(2) {
-      height: 100%;
-      min-height: 100%;
+      height: calc(100% - 48px);
     }
     &:nth-child(3) {
       min-height: calc(100% - 310px) !important;
@@ -67,26 +92,13 @@
 .close-icon {
   cursor: pointer;
 }
-.temp-row {
-  > div {
-    &:first-child {
-      font-size: 14px;
-      font-weight: 500;
-    }
-    &:nth-child(2),
-    &:nth-child(3) {
-      font-size: 12px;
-      font-weight: normal;
-    }
-  }
-}
 :host ::ng-deep {
   .mat-form-field-appearance-legacy .mat-form-field-label {
     top: 16px !important;
   }
-  ::-webkit-scrollbar {
-    width: 0;
-  }
+  // ::-webkit-scrollbar {
+  //   width: 0;
+  // }
   .saved-template {
     .mat-list-item {
       height: 85px !important;
@@ -102,8 +114,7 @@
     min-height: 100%;
   }
   .mat-tab-body-wrapper {
-    height: 100%;
-    min-height: 100%;
+    height: calc(100% - 48px);
   }
   .mat-tab-body.mat-tab-body-active {
     height: 100%;
@@ -139,6 +150,5 @@
   .mat-tab-body-content {
     height: 100%;
     min-height: 100%;
-    overflow-y: scroll;
   }
 }

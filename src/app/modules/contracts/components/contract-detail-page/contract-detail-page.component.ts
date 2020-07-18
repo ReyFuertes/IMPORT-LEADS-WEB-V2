@@ -149,8 +149,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       })).subscribe();
   }
 
-  public onSaveChecklist(): void {
-  }
+  public onSaveChecklist(): void {  }
 
   public get isChecklistValid(): boolean {
     return this.formChecklist.valid

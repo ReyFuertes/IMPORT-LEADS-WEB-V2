@@ -53,7 +53,7 @@ const reducer = createReducer(
     let checklistSource = Object.assign({}, state.checklistSource);
     let terms: string[] = Object.assign([], state.selectedTerms);
     const checklistProducts = Object.assign([], state.checklistProducts);
-
+    debugger
     /* if the action item is a source */
     if (checklistSource && action.item && checklistSource.checklist_product.id === action.item._id) {
       /* remove the product */
@@ -96,10 +96,10 @@ const reducer = createReducer(
   on(removeToChecklistProductsAction, (state, action) => {
     let checklistProducts = Object.assign([], state.checklistProducts);
     _.remove(checklistProducts, { id: action.item.id });
-    debugger
     return Object.assign({}, state, { checklistProducts });
   }),
   on(addToChecklistProductsAction, (state, action) => {
+    debugger
     let checklistProducts: IContractProduct[] = Object.assign([], state.checklistProducts) || null;
     let match = checklistProducts.filter(cp => action.items.filter(i => i.id === cp.id)).shift();
     if (!match) checklistProducts.push(...action.items);

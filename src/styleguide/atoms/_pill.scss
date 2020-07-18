@@ -40,7 +40,7 @@
     cursor: default;
     &.enabled {
       cursor: pointer !important;
-      background-color: $color-blue !important;
+      background-color: $color-blue;
     }
   }
 }

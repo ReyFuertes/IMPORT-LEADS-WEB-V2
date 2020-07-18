@@ -7,7 +7,7 @@ import { addContractProducts, addContractProductsSuccess, loadContractProducts, 
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { zip, of } from 'rxjs';
-import { appNotification } from 'src/app/store/notification.action';
+import { appNotification } from 'src/app/store/actions/notification.action';
 
 @Injectable()
 export class ContractProductsEffect {

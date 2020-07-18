@@ -6,7 +6,7 @@ import { IContractCategory } from './../../contract.model';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap } from 'rxjs/operators';
-import { appNotification } from 'src/app/store/notification.action';
+import { appNotification } from 'src/app/store/actions/notification.action';
 
 @Injectable()
 export class ContractCategoryEffect {

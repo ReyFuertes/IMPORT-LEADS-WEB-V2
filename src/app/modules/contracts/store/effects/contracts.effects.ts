@@ -1,5 +1,4 @@
 import { ImageService } from './../../../../services/images.service';
-import { appNotification } from './../../../../store/notification.action';
 import { AppState } from './../../../../store/app.reducer';
 import { UploadService } from './../../../../services/upload.service';
 import { IContract } from './../../contract.model';
@@ -9,6 +8,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap, tap, switchMap } from 'rxjs/operators';
 import { loadContracts, loadContractSuccess, addContract, addContractSuccess, uploadContractImages, uploadContractImageSuccess, ReOrderImages, updateContract, updateContractSuccess, deleteContract, deleteContractSuccess, uploadTermImage, addImageUploadState } from '../actions/contracts.action';
 import { Store } from '@ngrx/store';
+import { appNotification } from 'src/app/store/actions/notification.action';
 
 @Injectable()
 export class ContractsEffect {
@@ -41,12 +41,10 @@ export class ContractsEffect {
     ofType(addContract),
     mergeMap(({ item }) => this.contractsService.post(item)
       .pipe(
+        tap(() => this.store.dispatch(appNotification({ notification: { success: true, message: 'Contract successfully Added' } }))),
         map((created: IContract) => {
-          /* create a constant for this. */
           if (created)
-            this.store.dispatch(appNotification({ notification: { success: true, message: 'Contract successfully Added' } }));
-
-          return addContractSuccess({ created });
+            return addContractSuccess({ created });
         })
       ))
   ));
@@ -59,7 +57,7 @@ export class ContractsEffect {
       })
     ))
   ));
-  
+
   uploadImages$ = createEffect(() => this.actions$.pipe(
     ofType(uploadContractImages),
     mergeMap(({ files }) => {

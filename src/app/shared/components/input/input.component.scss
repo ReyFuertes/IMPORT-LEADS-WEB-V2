@@ -21,14 +21,30 @@
   }
 }
 :host ::ng-deep {
+  input.mat-input-element {
+    line-height: 20px;
+    height: 35px;
+  }
   .has-border {
     .mat-form-field-infix {
       border: thin $color-gray-2 solid !important;
       padding-left: 4px !important;
       border-radius: 2px;
+      padding: 0;
+      margin: 0;
     }
     .mat-form-field-label {
       padding-left: 4px !important;
+      line-height: 25px;
     }
+    .mat-form-field-underline {
+      display: none !important;
+    }
+  }
+  .mat-form-field.mat-form-field-invalid .mat-form-field-label {
+    color: $color-black-2;
+  }
+  .errors .mat-form-field-infix {
+    border: thin $color-red solid !important;
   }
 }

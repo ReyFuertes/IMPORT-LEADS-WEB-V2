@@ -1,4 +1,3 @@
-import { appNotification } from './../../../../store/notification.action';
 import { AppState } from 'src/app/store/app.reducer';
 import { ImageService } from './../../../../services/images.service';
 import { UploadService } from './../../../../services/upload.service';
@@ -10,6 +9,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { addContractTerm, addContractTermSuccess, deleteContractTerm, deleteContractTermSuccess } from '../actions/contract-term.actions';
+import { appNotification } from 'src/app/store/actions/notification.action';
 
 @Injectable()
 export class ContractTermEffect {
@@ -27,13 +27,12 @@ export class ContractTermEffect {
     ofType(updateContractTerm),
     mergeMap(({ payload }) => this.contractTermService.patch(payload)
       .pipe(
+        tap(() => this.store.dispatch(appNotification({
+          notification: { success: true, message: 'Term successfully Updated' }
+        }))),
         map((updated: IContractTerm) => {
           if (updated)
-            this.store.dispatch(appNotification({
-              notification: { success: true, message: 'Term successfully Updated' }
-            }));
-
-          return updateContractTermSuccess({ updated });
+            return updateContractTermSuccess({ updated });
         })
       ))
   ));
@@ -47,11 +46,10 @@ export class ContractTermEffect {
     ofType(addContractTerm),
     mergeMap(({ payload }) => this.contractTermService.post(payload)
       .pipe(
+        tap(() => this.store.dispatch(appNotification({ notification: { success: true, message: 'Term successfully Added' } }))),
         map((created: IContractTerm) => {
           if (created)
-            this.store.dispatch(appNotification({ notification: { success: true, message: 'Term successfully Added' } }));
-
-          return addContractTermSuccess({ created });
+            return addContractTermSuccess({ created });
         })
       ))
   ));

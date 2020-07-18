@@ -1,0 +1,43 @@
+import { tap } from 'rxjs/operators';
+import { environment } from './../../../../../environments/environment';
+import { AppState } from './../../../../store/app.reducer';
+import { Store, select } from '@ngrx/store';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { emailRegex } from 'src/app/shared/util/email';
+
+@Component({
+  selector: 'il-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
+})
+
+export class LoginComponent implements OnInit {
+  public imgPath: string = environment.imgPath;
+  public svgPath: string = environment.svgPath;
+  public form: FormGroup;
+  public $isLogging: Observable<boolean>;
+  public hasError: boolean = false;
+  public failedMsg: string;
+
+  constructor(private router: Router, private store: Store<AppState>, private fb: FormBuilder) {
+    this.form = this.fb.group({
+      email: [null,
+        Validators.compose([Validators.required, Validators.pattern(emailRegex.email)])],
+      password: [null, Validators.required]
+    });
+  }
+
+  ngOnInit() {
+
+
+  }
+
+  public onSubmit(): void {
+    if (this.form.valid) {
+      const { username, password } = this.form.value;
+    }
+  }
+}

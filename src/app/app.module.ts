@@ -10,6 +10,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { HttpClientModule } from '@angular/common/http';
 import { VenuesEffects } from './modules/venues/store/venues.effects';
+import { AuthModule } from './modules/auth/auth.module';
 
 const materialModules = [
 ];
@@ -24,6 +25,7 @@ const materialModules = [
     ...materialModules,
     SharedModule,
     HttpClientModule,
+    AuthModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([VenuesEffects]),
     AppRoutingModule,

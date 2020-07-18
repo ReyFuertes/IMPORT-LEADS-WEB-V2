@@ -11,7 +11,7 @@ export class InputComponent implements OnInit, OnChanges {
   @Input()
   public placeholder: string;
   @Input()
-  public controlName: FormControlName;
+  public controlName: any;
   @Input()
   public form: FormGroup;
   @Input()
@@ -21,7 +21,7 @@ export class InputComponent implements OnInit, OnChanges {
   @Input()
   public isRequired: boolean = false;
   @Input()
-  public inputType: string = '';
+  public inputType: string = 'text';
   @Input()
   public inputMaxLen: number = 225;
   @Input()
@@ -32,6 +32,7 @@ export class InputComponent implements OnInit, OnChanges {
   public isCenter: boolean = false;
   @Input()
   public hasBorder: boolean = false;
+
   constructor() { }
 
   ngOnInit() { }
@@ -40,5 +41,11 @@ export class InputComponent implements OnInit, OnChanges {
     if (changes && changes.isReadOnly && changes.isReadOnly.currentValue) {
       this.isReadOnly = changes.isReadOnly.currentValue;
     }
+  }
+
+  public get hasError(): boolean {
+    return this.form
+      && this.form.get(this.controlName).errors
+      && this.form.get(this.controlName).touched;
   }
 }

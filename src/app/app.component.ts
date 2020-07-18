@@ -1,6 +1,6 @@
-import { getSuccessSelector } from './store/notification.selector';
+import { getSuccessSelector } from './store/selectors/notification.selector';
 import { Observable } from 'rxjs';
-import { appNotification, INotification, removeNotification } from './store/notification.action';
+import { appNotification, INotification, removeNotification } from './store/actions/notification.action';
 import { getVenuesSelector } from './modules/venues/store/venues.selector';
 import { AppState } from 'src/app/store/app.reducer';
 import { Component } from '@angular/core';
@@ -14,8 +14,10 @@ import { delay, take, debounceTime } from 'rxjs/operators';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  public title = 'Import Leads';
+  public title: string = 'Import Leads';
   public $notify: Observable<INotification>;
+  public $hasLoggedIn: Observable<boolean>;
+
   constructor(private store: Store<AppState>) {
     this.store.dispatch(loadVenues());
     this.$notify = this.store.pipe(select(getSuccessSelector), delay(500));
@@ -26,5 +28,10 @@ export class AppComponent {
         this.store.dispatch(removeNotification())
       }
     });
+
+    /* check if user islogin */
+    setTimeout(() => {
+      //this.$hasLoggedIn = this.store.pipe(select(getHasLoggedInSelector));
+    }, 200);
   }
 }

@@ -1,7 +1,7 @@
-import { appNotification, INotification, removeNotification } from './notification.action';
 import { on } from '@ngrx/store';
 import { Action } from '@ngrx/store';
 import { createReducer } from '@ngrx/store';
+import { INotification, removeNotification, appNotification } from '../actions/notification.action';
 
 export interface NotificationState {
   notification: INotification,

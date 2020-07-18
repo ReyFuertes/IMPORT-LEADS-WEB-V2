@@ -2,7 +2,10 @@
 .mat-pseudo-checkbox.mat-pseudo-checkbox-checked {
   background: $color-primary !important;
 }
-
 .mat-primary .mat-option.mat-selected {
   color: $color-primary !important;
+}
+.ui-chkbox-label {
+  font-size: 12px;
+  color: $color-black-2;
 }

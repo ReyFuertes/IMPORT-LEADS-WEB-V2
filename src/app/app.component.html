@@ -4,7 +4,7 @@
 
 <div fxFlexFill>
   <div class="contents" fxFlex>
-    <il-topnav></il-topnav>
+    <il-topnav *ngIf="!!($hasLoggedIn | async)"></il-topnav>
     <div class="router-outlet">
       <router-outlet></router-outlet>
     </div>

@@ -3,7 +3,6 @@ import { ContractsState } from './../../store/reducers/contract.reducer';
 import { getAllContractsSelector } from './../../store/selectors/contracts.selector';
 import { clearCachedImages } from './../../store/actions/contracts.action';
 import { AddEditState } from 'src/app/shared/generics/generic.model';
-import { appNotification } from './../../../../store/notification.action';
 import { tap, delay, take, debounceTime } from 'rxjs/operators'
 import { AppState, reducers } from './../../../../store/app.reducer';
 import { IContract } from './../../contract.model';

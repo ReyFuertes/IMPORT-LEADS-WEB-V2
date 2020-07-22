@@ -226,7 +226,7 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
       const hasSource = this.checklistProductItems && this.checklistProductItems.length > 0;
       const hasChecklistItems = this.checklistItems
         .filter(c => c.checklist_product.id === payload._id).shift();
-      debugger
+
       /* if product is a source then preselect immediately */
       if (!hasSource) {
         this.checklistProductItems.push(payload);

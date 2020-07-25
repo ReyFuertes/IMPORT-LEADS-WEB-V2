@@ -15,7 +15,7 @@ import { ISimpleItem } from '../../../../shared/generics/generic.model';
 import { environment } from '../../../../../environments/environment';
 import { trigger, transition, style, state, animate } from '@angular/animations';
 import { Component, OnInit, Input, OnChanges, SimpleChanges, AfterViewInit, ViewEncapsulation, EventEmitter, Output } from '@angular/core';
-import { map, take, tap } from 'rxjs/operators';
+import { map, take, tap, takeUntil } from 'rxjs/operators';
 import { IContractCategory } from '../../contract.model';
 import { deleteContractCategoryAction } from '../../store/actions/contract-category.action';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
@@ -70,6 +70,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
     });
 
     this.store.pipe(select(getSelectedTermsSelector),
+      takeUntil(this.$unsubscribe),
       tap((terms: string[]) => {
         this.selectedTerms = terms || [];
       })).subscribe();

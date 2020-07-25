@@ -37,7 +37,7 @@ export class ContractRightContentComponent implements OnInit {
   public closeEmitter = new EventEmitter<boolean>();
   @ViewChild('scrollPnl', { static: true }) public scrollPnl: any;
 
-  constructor(private store: Store<AppState>, public dialog: MatDialog, private fb: FormBuilder) {
+  constructor(public dialog: MatDialog, private fb: FormBuilder) {
   }
 
   ngOnInit() {

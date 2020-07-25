@@ -17,7 +17,7 @@ import { loadProducts } from '../../products/store/products.actions';
 })
 
 export class ContractsContainerComponent extends GenericContainer implements OnInit {
-  constructor(private productStore: Store<ContractProductsState>, private store: Store<AppState>) {
+  constructor(private store: Store<AppState>) {
     super();
     this.store.dispatch(loadContracts(null));
     this.store.dispatch(loadProducts());

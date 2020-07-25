@@ -3,7 +3,7 @@ import { ContractsState } from './../../store/reducers/contract.reducer';
 import { getAllContractsSelector } from './../../store/selectors/contracts.selector';
 import { clearCachedImages } from './../../store/actions/contracts.action';
 import { AddEditState } from 'src/app/shared/generics/generic.model';
-import { tap, delay, take, debounceTime } from 'rxjs/operators'
+import { tap, delay, take, debounceTime, takeUntil } from 'rxjs/operators'
 import { AppState, reducers } from './../../../../store/app.reducer';
 import { IContract } from './../../contract.model';
 import { ContractAddDialogComponent } from 'src/app/modules/dialogs/components/contracts-add/contract-add-dialog.component';
@@ -12,6 +12,7 @@ import { environment } from './../../../../../environments/environment';
 import { Component, OnInit } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Store, select } from '@ngrx/store';
+import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 
 @Component({
   selector: 'il-contract-overview-page',
@@ -19,7 +20,7 @@ import { Store, select } from '@ngrx/store';
   styleUrls: ['./contract-overview-page.component.scss']
 })
 
-export class ContractOverviewPageComponent implements OnInit {
+export class ContractOverviewPageComponent extends GenericDestroyPageComponent implements OnInit {
   public svgPath: string = environment.svgPath;
   public contracts: IContract[] = [];
 
@@ -30,12 +31,15 @@ export class ContractOverviewPageComponent implements OnInit {
   }
 
   constructor(public store: Store<ContractModuleState>, public dialog: MatDialog) {
+    super();
+
     this.store.pipe(select(getAllContractsSelector),
+      takeUntil(this.$unsubscribe),
       tap(res => this.contracts = res))
       .subscribe();
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   public get hasRecords(): boolean {
     return this.contracts && Object.keys(this.contracts).length > 0;
@@ -49,6 +53,6 @@ export class ContractOverviewPageComponent implements OnInit {
     const dialogRef = this.dialog.open(ContractAddDialogComponent, {
       data: { state: AddEditState.Add }
     });
-    dialogRef.afterClosed().pipe(take(1)).subscribe((res) => {});
+    dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe), take(1)).subscribe((res) => { });
   }
 }

@@ -2,7 +2,7 @@ import { addToChecklist, highlightChecklist, deleteChecklistItem, addTermToCheck
 import { sortByAsc } from 'src/app/shared/util/sort';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { ReOrderImages, deleteContract } from './../../store/actions/contracts.action';
-import { tap, take, map } from 'rxjs/operators';
+import { tap, take, map, takeUntil } from 'rxjs/operators';
 import { getContractCategorySelector } from './../../store/selectors/contract-category.selector';
 import { addContractCategoryAction, loadContractCategoryAction } from './../../store/actions/contract-category.action';
 import { ContractCategoryDialogComponent } from '../../../dialogs/components/contract-category/contract-category-dialog.component';
@@ -131,25 +131,28 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       });
     }
 
-    this.store.pipe(select(getContractCategorySelector))
-      .pipe(tap(cc => this.contractCategories = cc))
+    this.store.pipe(select(getContractCategorySelector),
+      takeUntil(this.$unsubscribe),
+      tap(cc => this.contractCategories = cc))
       .subscribe();
 
     /* get checklist products */
-    this.store.pipe(select(getchecklistProductsSelector))
+    this.store.pipe(select(getchecklistProductsSelector),
+      takeUntil(this.$unsubscribe))
       .subscribe(items => {
         this.checkListProducts = items || [];
       });
 
     /* collect all items that is added to checklists */
     this.store.pipe(select(getChecklistItemsSelector),
+      takeUntil(this.$unsubscribe),
       tap(checklist => {
         if (checklist && checklist.length > 0)
           this.checklistItems = checklist;
       })).subscribe();
   }
 
-  public onSaveChecklist(): void {  }
+  public onSaveChecklist(): void { }
 
   public get isChecklistValid(): boolean {
     return this.formChecklist.valid

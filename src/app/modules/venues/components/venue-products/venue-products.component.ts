@@ -1,4 +1,4 @@
-import { take, map } from 'rxjs/operators';
+import { take, map, takeUntil } from 'rxjs/operators';
 import { IvenueProduct, IVenue, IRelatedProduct } from './../../venues.models';
 import { removeVenueProduct } from './../../store/venue-product.action';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
@@ -56,6 +56,7 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
     const filename = `${uuid()}.${file.name.split('?')[0].split('.').pop()}`;
     convertBlobToBase64(file)
       .pipe(take(1),
+        takeUntil(this.$unsubscribe),
         map(() => {
           return {
             size: file.size,

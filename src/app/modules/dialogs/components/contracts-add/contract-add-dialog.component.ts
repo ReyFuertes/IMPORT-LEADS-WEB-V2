@@ -1,7 +1,7 @@
 import { getContractById, getCachedImages } from './../../../contracts/store/selectors/contracts.selector';
 import { getVenuesSelector } from './../../../venues/store/venues.selector';
 import { ISimpleItem } from './../../../../shared/generics/generic.model';
-import { take, map } from 'rxjs/operators';
+import { take, map, takeUntil } from 'rxjs/operators';
 import { AppState } from './../../../../store/app.reducer';
 import { AddEditDialogState } from '../../../../shared/generics/generic.model';
 import { GenericAddEditComponent } from '../../../../shared/generics/generic-ae';
@@ -49,14 +49,16 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
     });
     /* manually mark as valid if has value */
     this.form && this.form.get('venue').valueChanges
-      .pipe(take(1))
+      .pipe(take(1),
+        takeUntil(this.$unsubscribe))
       .subscribe(res => {
         if (res) this.form.controls['venue'].setErrors(null);
       })
 
     this.state = data && data.state || null;
     if (this.state === this.AddEditState.Edit && data.id) {
-      this.store.pipe(select(getContractById(data.id)))
+      this.store.pipe(select(getContractById(data.id)),
+        takeUntil(this.$unsubscribe))
         .subscribe(c => this.formToEntity(c));
 
       this.modalTitle = 'Edit ' + data.formValues['contract_name'];
@@ -79,15 +81,18 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
   }
   ngOnInit() {
     /* we call these from state because the data that is stored/pushed in here is from dropped images */
-    this.store.pipe(select(getCachedImages))
+    this.store.pipe(select(getCachedImages),
+      takeUntil(this.$unsubscribe))
       .subscribe(result => {
         if (result) this.cachedImages = result;
       });
 
-    this.store.pipe(select(getVenuesSelector)).subscribe(venues => {
-      this.venues = <ISimpleItem[]>venues.map(venue => Object.assign([],
-        { label: venue.name, value: venue.id }));
-    });
+    this.store.pipe(select(getVenuesSelector),
+      takeUntil(this.$unsubscribe))
+      .subscribe(venues => {
+        this.venues = <ISimpleItem[]>venues.map(venue => Object.assign([],
+          { label: venue.name, value: venue.id }));
+      });
   }
 
   public get isUploadDisabled(): boolean {
@@ -154,6 +159,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
     /* collect all drop images in base64 results */
     convertBlobToBase64(event)
       .pipe(take(1),
+        takeUntil(this.$unsubscribe),
         map(b64Result => {
           return {
             id: uuid(),

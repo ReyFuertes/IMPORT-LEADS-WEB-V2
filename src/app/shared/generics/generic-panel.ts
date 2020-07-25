@@ -1,5 +1,6 @@
 import { Output, EventEmitter, HostListener } from '@angular/core';
-export abstract class GenericRowComponent {
+import { GenericDestroyPageComponent } from './generic-destroy-page';
+export abstract class GenericRowComponent extends GenericDestroyPageComponent {
   public hoveredIndex: number | null = null;
   public selectedIndex: number | null = null;
   public modifiedValue: any;
@@ -7,6 +8,10 @@ export abstract class GenericRowComponent {
   public modValueEmitter = new EventEmitter<any>();
   @Output()
   public deleteEmitter = new EventEmitter<any>();
+
+  constructor() {
+    super();
+  }
 
   @HostListener('document:keydown.escape', ['$event'])
   onKeydownHandler(event: KeyboardEvent) {

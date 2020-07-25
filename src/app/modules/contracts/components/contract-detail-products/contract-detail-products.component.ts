@@ -20,6 +20,7 @@ import { take, takeUntil, tap, debounceTime } from 'rxjs/operators';
 import { Subject, Observable, pipe, of } from 'rxjs';
 import * as _ from 'lodash';
 import { interval } from 'rxjs';
+import { GenericDetailPageComponent } from 'src/app/shared/generics/generic-detail-page';
 
 @Component({
   selector: 'il-contract-detail-products',
@@ -27,8 +28,7 @@ import { interval } from 'rxjs';
   styleUrls: ['./contract-detail-products.component.scss']
 })
 
-export class ContractDetailProductsComponent implements OnInit, AfterViewInit, OnChanges {
-  private destroy$ = new Subject();
+export class ContractDetailProductsComponent extends GenericDetailPageComponent implements OnInit, AfterViewInit, OnChanges {
   public svgPath: string = environment.svgPath;
   public productsArray: FormArray;
   public formSubProdsArr: FormArray;
@@ -55,6 +55,8 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
   public contract: IContract;
 
   constructor(private store: Store<AppState>, private dialog: MatDialog, private fb: FormBuilder, private cdRef: ChangeDetectorRef) {
+    super();
+
     this.form = this.fb.group({
       id: [null],
       product_name: [null, Validators.required],
@@ -67,7 +69,7 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
 
     /* get the sub total of all productSet */
     this.form.get('sub_products').valueChanges
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntil(this.$unsubscribe))
       .subscribe(children => {
         if (children) {
           const childsCost = children.reduce((sum, current) => parseInt(sum) + parseInt(current.cost), 0) || 0;
@@ -116,22 +118,26 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
 
     /* get selected terms */
     this.store.pipe(select(getCategoryTermsSelector),
+      takeUntil(this.$unsubscribe),
       tap(terms => {
         if (terms && terms.length > 0)
           this.selCategoryTerms = terms;
       })).subscribe();
 
-    this.store.pipe(select(getChecklist))
+    this.store.pipe(select(getChecklist),
+      takeUntil(this.$unsubscribe))
       .subscribe(res => console.log(res))
   }
 
   ngOnDestroy() { }
 
   ngOnInit() {
-    this.$contractProducts = this.store.pipe(select(getAllContractProductsSelector));
+    this.$contractProducts = this.store.pipe(select(getAllContractProductsSelector),
+      takeUntil(this.$unsubscribe));
 
     /* product suggestions */
-    this.$products = this.store.pipe(select(getProductsSelector));
+    this.$products = this.store.pipe(select(getProductsSelector),
+      takeUntil(this.$unsubscribe));
     this.$products.subscribe(p => {
       if (p) {
         const parent = p.filter(o => o.parent).filter(Boolean);
@@ -153,22 +159,27 @@ export class ContractDetailProductsComponent implements OnInit, AfterViewInit, O
 
     /* listen to selected products */
     this.store.pipe(select(getSelectedProductsSelector),
+      takeUntil(this.$unsubscribe),
       tap(sp => this.selectedProduct = sp)
     ).subscribe();
 
     /* listen to all checklist so we can highlight to green */
-    this.store.pipe(select(getChecklistItemsSelector), tap(res => {
-      this.checklistItems = res || [];
-    })).subscribe();
+    this.store.pipe(select(getChecklistItemsSelector),
+      takeUntil(this.$unsubscribe),
+      tap(res => {
+        this.checklistItems = res || [];
+      })).subscribe();
 
     /* listen to checklist source */
     this.store.pipe(select(getChecklistSourceSelector),
+      takeUntil(this.$unsubscribe),
       tap(source => {
         this.checklistSource = source;
       })).subscribe()
 
     /* get selected checklist products */
     this.store.pipe(select(getchecklistProductsSelector),
+      takeUntil(this.$unsubscribe),
       tap((res: IContractProduct[]) => {
         this.checklistProductItems = res || [];
       })).subscribe();

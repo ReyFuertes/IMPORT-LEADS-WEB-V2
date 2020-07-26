@@ -81,7 +81,6 @@ export class TagExpansionPanelComponent extends GenericRowComponent implements O
     }
 
     if (event.target.classList.contains('delete')) {
-
       const dialogRef = this.dialog.open(ConfirmationComponent, {
         width: '410px',
         data: {

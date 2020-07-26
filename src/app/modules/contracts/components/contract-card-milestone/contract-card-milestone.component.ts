@@ -9,7 +9,6 @@ import { IContract } from '../../contract.model';
 })
 
 export class ContractCardMilestoneComponent implements OnInit {
-
   @Input()
   public contract: IContract;
 

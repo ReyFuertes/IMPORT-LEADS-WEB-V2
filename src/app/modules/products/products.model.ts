@@ -7,6 +7,7 @@ export interface IProduct {
   sub_products?: IProduct[];
   parent?: IProduct | any;
   pos?: number;
+  child_id?: string;
   created_at?: Date;
   updated_at?: Date;
 }

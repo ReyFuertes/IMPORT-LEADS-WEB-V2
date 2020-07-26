@@ -13,7 +13,6 @@ import { IContractCategory } from '../../contract.model';
 import { updateCategory } from '../../store/actions/category.action';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
 
-
 @Component({
   selector: 'il-contract-category',
   templateUrl: './contract-category.component.html',

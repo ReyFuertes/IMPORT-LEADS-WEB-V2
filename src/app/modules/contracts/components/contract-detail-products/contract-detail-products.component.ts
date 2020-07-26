@@ -124,8 +124,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
           this.selCategoryTerms = terms;
       })).subscribe();
 
-    this.store.pipe(select(getChecklist),
-      takeUntil(this.$unsubscribe))
+    this.store//.pipe(select(getChecklist),takeUntil(this.$unsubscribe))
       .subscribe(res => console.log(res))
   }
 
@@ -134,17 +133,18 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   ngOnInit() {
     this.$contractProducts = this.store.pipe(select(getAllContractProductsSelector),
       takeUntil(this.$unsubscribe));
+    this.$contractProducts.subscribe(res => console.log('$contractProducts', res))
 
     /* product suggestions */
     this.$products = this.store.pipe(select(getProductsSelector),
       takeUntil(this.$unsubscribe));
+
     this.$products.subscribe(p => {
       if (p) {
         const parent = p.filter(o => o.parent).filter(Boolean);
         const child = p.map(p => {
           return { id: p.id, product_name: p.product_name }
         });
-
         /* get all suggestions */
         this.suggestions = child.map(cp => {
           const _parents = parent.filter(_p => _p.parent.id === cp.id)
@@ -156,7 +156,6 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
         })
       }
     });
-
     /* listen to selected products */
     this.store.pipe(select(getSelectedProductsSelector),
       takeUntil(this.$unsubscribe),
@@ -168,6 +167,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       takeUntil(this.$unsubscribe),
       tap(res => {
         this.checklistItems = res || [];
+        console.log('this.checklistItems', this.checklistItems);
       })).subscribe();
 
     /* listen to checklist source */
@@ -181,8 +181,13 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
     this.store.pipe(select(getchecklistProductsSelector),
       takeUntil(this.$unsubscribe),
       tap((res: IContractProduct[]) => {
+        console.log('this.checklistProductItems', this.checklistProductItems);
         this.checklistProductItems = res || [];
       })).subscribe();
+  }
+
+  public get getViewIcon(): string {
+    return this.svgPath + (!this.isAddState ? 'view-black.svg' : 'close-icon-red.svg');
   }
 
   public deSelectChange(payload: ISimpleItem): void {
@@ -232,7 +237,6 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
           }
         }))
       }
-
       /* check if the selected item has a source in the checklist */
       const hasSource = this.checklistProductItems && this.checklistProductItems.length > 0;
       const hasChecklistItems = this.checklistItems
@@ -243,7 +247,6 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
         this.checklistProductItems.push(payload);
         this.store.dispatch(addToChecklistProductsAction({ items: this.checklistProductItems }));
       }
-
       /* add to checklist of preselected products */
       const match = this.checklistProductItems && this.checklistProductItems
         .filter(ci => ci._id === payload._id).shift();
@@ -251,7 +254,6 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
         /* add notification if the product has already a checklist, yes = to override, no remove selection */
         this.overrideProduct(isPreselected, payload, hasSource, hasChecklistItems);
       }
-
       /* get the preselect term/s base on product selection */
       const items: IContractChecklistItem[] = this.checklistItems
         .filter(i => i.checklist_product.id === payload._id);
@@ -261,6 +263,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
         this.store.dispatch(addTermToChecklistAction({ items: items.map(i => i.checklist_term.id) }));
 
     } else {
+      this.isAddState = true;
       this.store.dispatch(selectProductAction({ item: payload }));
     }
   }
@@ -336,9 +339,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
     let preSelected = this.checklistItems && this.checklistItems
       .filter(c => c.checklist_product && c.checklist_product.id === id).shift();
 
-    const ret = this.checklistItems &&
-      this.inCheckListing && preSelected;
-
+    const ret = this.checklistItems && this.inCheckListing && preSelected;
     return ret ? true : false;
   }
 
@@ -359,6 +360,23 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
     return this.checklistProductItems
       && this.checklistProductItems.length > 0
       && this.checklistProductItems.filter(c => c.id === id).shift() ? true : false;
+  }
+  /* when selecting product in checklist state */
+  public isSubProductChecklistSelected(id: string): boolean {
+    return this.inCheckListing
+      && this.checklistProductItems
+      && this.checklistProductItems.length > 0
+      && this.checklistProductItems.filter(c => c.id === id).shift() ? true : false;
+  }
+  /* 
+    when selecting product in checklist state
+    we are matching the subproduct by using childid 
+  */
+  public isSubProductChecklistRelated(id: string): boolean {
+    return this.inCheckListing
+      && this.checklistItems
+      && this.checklistItems.length > 0
+      && this.checklistItems.filter(c => c.checklist_product.product.child_id === id).shift() ? true : false;
   }
 
   public fmtToSimpleItem(p: IProduct): ISimpleItem {
@@ -395,7 +413,6 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       const payload = this.fmtPayload(this.form.value);
 
       this.store.dispatch(updateContractProduct({ payload }));
-      this.onResetForm();
 
       /* reload checklist so it will be shown when checklisting */
       this.store.dispatch(loadChecklist());
@@ -423,7 +440,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
         id: sp.id ? sp.id : this.getId(sp.product_name),
         product_name: this.getName(sp.product_name),
         qty: sp.qty,
-        cost: sp.cost
+        cost: sp.cost,
       }, _.identity);
       return ret;
     }) || [];
@@ -446,11 +463,10 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   }
 
   public onEdit(product: IProduct): void {
-    if (!this.inCheckListing) return;
-
+    if (this.inCheckListing) return;
     /* assign selected item to form */
     const { _id, id, product_name, qty, cost, sub_products } = product;
-    this.form.reset();
+
     this.formSubProdsArr = null;
     this.initInputProduct = this.selectedProduct ? true : false;
 
@@ -465,8 +481,8 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
     /* map/format subproducts */
     const subProducts = this.fmtSubProducts(sub_products);
     this.formSubProdsArr = this.form.get('sub_products') as FormArray;
-    if (this.formSubProdsArr) this.formSubProdsArr.clear();
-
+    if (this.formSubProdsArr)
+      this.formSubProdsArr.clear();
     subProducts && subProducts.forEach(subItem => {
       const item = this.createSubItem({
         _id: subItem._id,
@@ -481,11 +497,6 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
     this.hasSubProducts = this.formSubProdsArr && this.formSubProdsArr.length > 0;
     this.isEditProduct = this.selectedProduct ? true : false;
-    if (this.selectedProduct) {
-      this.isAddState = this.isEditProduct;
-    } else {
-      this.isAddState = this.isAddState ? false : true;
-    }
 
     if (!this.selectedProduct) {
       setTimeout(() => this.onResetForm(), 100);
@@ -497,9 +508,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
     if (!this.isAddState) {
       setTimeout(() => this.onResetForm(), 100);
       this.store.dispatch(removeSelectedProductAction());
-    } else {
-
-    }
+    } else { }
   }
 
   public onShowSubProduct(): void {
@@ -510,7 +519,6 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       this.form.controls['cost'].setErrors(null);
     }
     this.hasSubProducts = !this.hasSubProducts;
-
   }
 
   public onAddSubProduct(): void {
@@ -528,27 +536,29 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   public onRemoveProduct(product: IProduct): void {
     const dialogRef = this.dialog.open(ConfirmationComponent, {
       width: '410px',
-      data: {
-        action: 0
-      }
+      data: { action: 0 }
     });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        let toRemove: IContractProduct;
-        this.$contractProducts.subscribe(p => {
-          toRemove = p.filter(p => p.id === product.id)[0];
-          const index = p.indexOf(toRemove);
-          if (index > -1) {
-            p.splice(index, 1);
-          }
-        })
-        /* remote product from the database */
-        if (toRemove)
-          this.store.dispatch(deleteContractProduct({ id: toRemove._id }));
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.$unsubscribe))
+      .subscribe(result => {
+        if (result) {
+          let toRemove: IContractProduct;
+          this.$contractProducts
+            .pipe(takeUntil(this.$unsubscribe))
+            .subscribe(p => {
+              toRemove = p.filter(p => p.id === product.id)[0];
+              const index = p.indexOf(toRemove);
+              if (index > -1) {
+                p.splice(index, 1);
+              }
+            })
+          /* remote product from the database */
+          if (toRemove)
+            this.store.dispatch(deleteContractProduct({ id: toRemove._id }));
 
-        this.onResetForm();
-      }
-    });
+          this.onResetForm();
+        }
+      });
   }
 
   public onRemoveSubProduct(product: IProduct, i?: number): void {
@@ -566,20 +576,22 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
         /* collect the contract product to be removed */
         let toRemove: IContractProduct;
-        this.$contractProducts.subscribe(p => {
-          p.forEach(p => {
-            p.sub_products.forEach(sp => {
-              if (sp.id === product.id) {
-                const index = p.sub_products.indexOf(sp);
-                if (index > -1) {
-                  p.sub_products.splice(index, 1);
-                  toRemove = sp;
+        this.$contractProducts
+          .pipe(takeUntil(this.$unsubscribe))
+          .subscribe(p => {
+            p && p.forEach(p => {
+              p.sub_products.forEach(sp => {
+                if (sp.id === product.id) {
+                  const index = p.sub_products.indexOf(sp);
+                  if (index > -1) {
+                    p.sub_products.splice(index, 1);
+                    toRemove = sp;
+                  }
+                  return;
                 }
-                return;
-              }
+              });
             });
-          });
-        })
+          })
         /* remote sub product from the database */
         if (toRemove) {
           this.store.dispatch(deleteContractProduct({ id: toRemove._id }));

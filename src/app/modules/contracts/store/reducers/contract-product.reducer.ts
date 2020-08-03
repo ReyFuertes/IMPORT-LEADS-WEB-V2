@@ -15,7 +15,7 @@ export const initialState: ContractProductsState = adapter.getInitialState({
 });
 const reducer = createReducer(
   initialState,
-  on(removeSelectedProductAction, (state, action) => {
+  on(removeSelectedProductAction, (state) => {
     return Object.assign({}, state, { selectedProduct: null });
   }),
   on(selectProductAction, (state, action) => {

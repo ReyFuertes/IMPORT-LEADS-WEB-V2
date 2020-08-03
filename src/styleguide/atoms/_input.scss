@@ -5,12 +5,16 @@
       cursor: not-allowed;
     }
   }
+  input.mat-input-element {
+    line-height: 20px;
+    min-height: 20px;
+  }
   .mat-form-field.mat-form-field-invalid .mat-form-field-label {
     color: $color-black-2;
   }
-  .errors .mat-form-field-infix {
-    border: thin $color-red solid !important;
-  }
+  // .errors .mat-form-field-infix {
+  //   border: thin $color-red solid !important;
+  // }
   ::ng-deep {
     .read-only .mat-form-field-appearance-legacy .mat-form-field-underline {
       opacity: 0.6 !important;

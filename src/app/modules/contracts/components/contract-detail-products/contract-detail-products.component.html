@@ -13,7 +13,7 @@
     <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="15px">
       <ng-container *ngFor="let item of ($contractProducts | async); let i = index">
         <!-- parent product -->
-        <il-pill [attr.id2]="item?._id" [state]="state" 
+        <il-pill [state]="state" 
             [reset]="!inCheckListing" (preSelectEmitter)="preSelectChange($event, isChecklistProductSelected(item?.id))"
             (deSelectEmitter)="deSelectChange($event, isChecklistProductSelected(item?.id))" (stateEmitter)="removeSelection()" 
             (click)="onEdit(item)" 
@@ -27,7 +27,7 @@
         </il-pill>
 
         <!-- child product -->
-        <il-pill [attr.id2]="sub?.child_id" *ngFor="let sub of item?.sub_products; let i = index" size="small" 
+        <il-pill *ngFor="let sub of item?.sub_products; let i = index" size="small" 
           (preSelectEmitter)="preSelectChange($event, isChecklistProductSelected(sub?.id))" 
           (deSelectEmitter)="deSelectChange($event, isChecklistProductSelected(sub?.id))"
           (stateEmitter)="removeSelection()" 
@@ -79,9 +79,8 @@
 
       <div class="form-value" *ngIf="isAddState && !inCheckListing" fxFlex="180px" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
         <ng-container>
-          <button [matTooltip]="initInputProduct ? 'Save' : 'Add'" *ngIf="!isEditProduct" mat-flat-button class="il-button primary" (click)="onAdd()">
-            <span>{{ initInputProduct ? "Save" : "Add" }}</span>
-            <span>Product</span>
+          <button matTooltip="Save" *ngIf="!isEditProduct" mat-flat-button class="il-button primary" (click)="onAdd()">
+            <span>Save Product</span>
           </button>
           <button matTooltip="Save" [disabled]="!form.valid" *ngIf="isEditProduct" mat-flat-button class="il-button primary" (click)="onSave()">
             <span>Update Product</span>
@@ -94,8 +93,10 @@
       </div>
 
       <div *ngIf="!inCheckListing" class="view" fxFlex="50px" fxLayout="row" fxLayoutAlign="start center">
-        <img matTooltip="Show/Hide Panel" (click)="onView()" 
-        [src]="getViewIcon" />
+        <img *ngIf="isAddState" matTooltip="Show/Hide Panel" (click)="onView()" [src]="svgPath + 'close-icon-red.svg'" />
+        <button *ngIf="!isAddState" matTooltip="Add" mat-flat-button class="il-button primary" (click)="onView()">
+          <span>Add Product</span>
+        </button>
       </div>
     </div>
   </div>

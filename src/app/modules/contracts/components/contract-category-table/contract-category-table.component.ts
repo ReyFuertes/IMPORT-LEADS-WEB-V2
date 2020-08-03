@@ -173,19 +173,21 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
 
   public createTerm(): void {
     const dialogRef = this.dialog.open(ContractCategoryTermDialogComponent, {
-      height: '170px'
+      height: '180px'
     });
-    dialogRef.afterClosed().subscribe((result: IContractTerm) => {
-      if (result) {
-        const payload = {
-          ...result,
-          contract_category: { id: this.contract_category.id }
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.$unsubscribe))
+      .subscribe((result: IContractTerm) => {
+        if (result) {
+          const payload = {
+            ...result,
+            contract_category: { id: this.contract_category.id }
+          }
+          this.store.dispatch(addContractTerm({ payload }));
+          /* this is a bad solution, but due to time development i just needs this */
+          this.reloadContractCategory();
         }
-        this.store.dispatch(addContractTerm({ payload }));
-        /* this is a bad solution, but due to time development i just needs this */
-        this.reloadContractCategory();
-      }
-    });
+      });
   }
 
   public onSave(e): void {
@@ -248,7 +250,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       }
     }
 
-    if (changes && changes.contract_category)
+    if (changes && changes.contract_category && changes.contract_category.currentValue)
       this.dataSource = new MatTableDataSource<any>(changes.contract_category.currentValue.terms);
   }
 }

@@ -7,7 +7,7 @@ il-textarea {
 }
 .il-dialog {
   width: 385px !important;
-  height: 170px !important;
+  height: 180px !important;
   padding: 20px;
   > div {
     &:first-child {
@@ -17,6 +17,9 @@ il-textarea {
   .content {
     width: 100%;
     height: 160px !important;
+    > div {
+      height: 35px;
+    }
   }
   il-input {
     width: 100%;
@@ -31,8 +34,6 @@ il-textarea {
   .il-input .mat-form-field-appearance-legacy .mat-form-field-label {
     font-size: 14px;
     position: relative;
-    top: 9px;
-    left: 1px;
   }
   .mat-focused .mat-form-field-underline {
     background-color: $color-primary !important;

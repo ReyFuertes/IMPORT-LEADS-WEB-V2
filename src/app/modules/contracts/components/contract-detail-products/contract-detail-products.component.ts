@@ -6,7 +6,7 @@ import { getCategoryTermsSelector } from './../../store/selectors/contract-categ
 import { getProductsSelector } from './../../../products/store/products.selector';
 import { IProduct } from './../../../products/products.model';
 import { getAllContractProductsSelector } from './../../store/selectors/contracts.selector';
-import { addContractProducts, deleteContractProduct, updateContractProduct, selectProductAction, removeSelectedProductAction } from './../../store/actions/contract-product.action';
+import { addContractProducts, deleteContractProduct, updateContractProduct, selectProductAction, removeSelectedProductAction, clearPreSelectProducts } from './../../store/actions/contract-product.action';
 import { AppState } from 'src/app/store/app.reducer';
 import { Store, select } from '@ngrx/store';
 import { PillState, IContract, IContractProduct, IContractChecklist, IContractChecklistItem, IContractTerm, IOverrideChecklistItem } from './../../contract.model';
@@ -181,13 +181,8 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
     this.store.pipe(select(getchecklistProductsSelector),
       takeUntil(this.$unsubscribe),
       tap((res: IContractProduct[]) => {
-        console.log('this.checklistProductItems', this.checklistProductItems);
         this.checklistProductItems = res || [];
       })).subscribe();
-  }
-
-  public get getViewIcon(): string {
-    return this.svgPath + (!this.isAddState ? 'view-black.svg' : 'close-icon-red.svg');
   }
 
   public deSelectChange(payload: ISimpleItem): void {
@@ -376,7 +371,12 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
     return this.inCheckListing
       && this.checklistItems
       && this.checklistItems.length > 0
-      && this.checklistItems.filter(c => c.checklist_product.product.child_id === id).shift() ? true : false;
+      && this.checklistItems.filter(c => {
+        return c.checklist_product
+          && c.checklist_product.product
+          && c.checklist_product.product.child_id
+          && c.checklist_product.product.child_id === id
+      }).shift() ? true : false;
   }
 
   public fmtToSimpleItem(p: IProduct): ISimpleItem {
@@ -399,8 +399,12 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   public onAdd(): void {
     if (this.form.value && this.initInputProduct) {
       let payload: IContractProduct = this.fmtPayload(this.form.value);
+
       if (payload)
         this.store.dispatch(addContractProducts({ payload }));
+
+      /* clear existing checklists */
+      this.store.dispatch(removeSelectedProductAction());
 
       this.onResetForm();
     }
@@ -505,6 +509,8 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
   public onView(): void {
     this.isAddState = !this.isAddState;
+    this.initInputProduct = !this.initInputProduct;
+
     if (!this.isAddState) {
       setTimeout(() => this.onResetForm(), 100);
       this.store.dispatch(removeSelectedProductAction());

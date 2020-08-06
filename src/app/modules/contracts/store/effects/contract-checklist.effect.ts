@@ -20,7 +20,6 @@ export class ChecklistEffect {
         )
     })
   ));
-
   loadChecklist$ = createEffect(() => this.actions$.pipe(
     ofType(loadChecklist),
     mergeMap(() => this.checklistService.getAll().pipe(
@@ -29,7 +28,6 @@ export class ChecklistEffect {
       })
     ))
   ));
-
   deleteChecklistItem$ = createEffect(() => this.actions$.pipe(
     ofType(deleteChecklistItem),
     mergeMap(({ payload }) => {

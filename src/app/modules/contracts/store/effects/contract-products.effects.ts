@@ -19,7 +19,6 @@ export class ContractProductsEffect {
       })
     ))
   ));
-
   updateContractProduct$ = createEffect(() => this.actions$.pipe(
     ofType(updateContractProduct),
     mergeMap(({ payload }) =>
@@ -33,7 +32,6 @@ export class ContractProductsEffect {
           })
         ))
   ));
-
   addContractProduct$ = createEffect(() => this.actions$.pipe(
     ofType(addContractProducts),
     mergeMap(({ payload }) =>
@@ -47,7 +45,6 @@ export class ContractProductsEffect {
           })
         ))
   ));
-
   deleteContractProduct$ = createEffect(() => this.actions$.pipe(
     ofType(deleteContractProduct),
     mergeMap(({ id }) =>

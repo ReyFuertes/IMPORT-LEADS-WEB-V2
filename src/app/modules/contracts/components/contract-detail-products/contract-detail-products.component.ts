@@ -133,7 +133,6 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   ngOnInit() {
     this.$contractProducts = this.store.pipe(select(getAllContractProductsSelector),
       takeUntil(this.$unsubscribe));
-    this.$contractProducts.subscribe(res => console.log('$contractProducts', res))
 
     /* product suggestions */
     this.$products = this.store.pipe(select(getProductsSelector),
@@ -167,7 +166,6 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       takeUntil(this.$unsubscribe),
       tap(res => {
         this.checklistItems = res || [];
-        console.log('this.checklistItems', this.checklistItems);
       })).subscribe();
 
     /* listen to checklist source */
@@ -363,8 +361,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       && this.checklistProductItems.length > 0
       && this.checklistProductItems.filter(c => c.id === id).shift() ? true : false;
   }
-  /* 
-    when selecting product in checklist state
+  /* when selecting product in checklist state
     we are matching the subproduct by using childid 
   */
   public isSubProductChecklistRelated(id: string): boolean {
@@ -374,7 +371,6 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       && this.checklistItems.filter(c => {
         return c.checklist_product
           && c.checklist_product.product
-          && c.checklist_product.product.child_id
           && c.checklist_product.product.child_id === id
       }).shift() ? true : false;
   }

@@ -4,7 +4,7 @@ import { createAction, props } from '@ngrx/store';
 export enum CheckListActionTypes {
   addToChecklist = '[Contract Checklist] Add',
   addToChecklistSuccess = '[Contract Checklist] Add (success)',
-  deleteChecklistItem = '[Contract Checklist] Delete',
+  removeChecklistItem = '[Contract Checklist] Delete',
   removeChecklistItemSuccess = '[Contract Checklist] Delete (success)',
   clearChecklist = '[Contract Checklist] Clear',
   highlightChecklist = '[Contract Checklist] Highlight',
@@ -71,7 +71,7 @@ export const removeSelectedTerms = createAction(
 );
 export const addTermToChecklistAction = createAction(
   CheckListActionTypes.addTermToChecklistAction,
-  props<{ items: string[] }>()
+  props<{ id: string }>()
 );
 export const loadChecklist = createAction(
   CheckListActionTypes.loadChecklist,
@@ -80,8 +80,8 @@ export const loadChecklistSuccess = createAction(
   CheckListActionTypes.loadChecklistSuccess,
   props<{ items: IContractChecklistItem[] }>()
 );
-export const deleteChecklistItem = createAction(
-  CheckListActionTypes.deleteChecklistItem,
+export const removeChecklistItem = createAction(
+  CheckListActionTypes.removeChecklistItem,
   props<{ payload: IContractChecklistItem[] }>()
 );
 export const removeChecklistItemSuccess = createAction(
@@ -101,5 +101,5 @@ export const addToChecklist = createAction(
 );
 export const addToChecklistSuccess = createAction(
   CheckListActionTypes.addToChecklistSuccess,
-  props<{ items: IContractChecklistItem[] }>()
+  props<{ item: IContractChecklistItem }>()
 );

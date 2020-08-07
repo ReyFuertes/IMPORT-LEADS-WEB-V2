@@ -1,8 +1,9 @@
 import { createAction, props } from '@ngrx/store';
 
 export interface INotification {
-  success: boolean;
+  success?: boolean;
   message: string;
+  error?: boolean;
 }
 
 export enum NotificationActionTypes {

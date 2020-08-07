@@ -15,30 +15,18 @@ export class PillComponent extends GenericControl<ISimpleItem> implements OnInit
   public svgPath: string = environment.svgPath;
   public selected: boolean = false;
 
-  @Input()
-  public selectable: boolean = false;
-  @Input()
-  public enableHighlight: boolean = false;
-  @Input()
-  public enabled: boolean = true;
-  @Input()
-  public state: PillState;
-  @Input()
-  public size: string = 'medium';
-  @Input()
-  public reset: boolean = false;
-  @Input()
-  public hasRemoveIcon: boolean = true;
-  @Input()
-  public isSelected: boolean = false;
-  @Output()
-  public removeEmitter = new EventEmitter<number>();
-  @Output()
-  public stateEmitter = new EventEmitter<PillState>();
-  @Output()
-  public deSelectEmitter = new EventEmitter<ISimpleItem>();
-  @Output()
-  public preSelectEmitter = new EventEmitter<ISimpleItem>();
+  @Input() public selectable: boolean = false;
+  @Input() public enableHighlight: boolean = false;
+  @Input() public enabled: boolean = true;
+  @Input() public state: PillState;
+  @Input() public size: string = 'medium';
+  @Input() public reset: boolean = false;
+  @Input() public hasRemoveIcon: boolean = true;
+  @Input() public isSelected: boolean = false;
+  @Output() public removeEmitter = new EventEmitter<number>();
+  @Output() public stateEmitter = new EventEmitter<PillState>();
+  @Output() public deSelectEmitter = new EventEmitter<ISimpleItem>();
+  @Output() public preSelectEmitter = new EventEmitter<ISimpleItem>();
 
   @ViewChild('pill', { static: false }) pill: any;
   constructor(private cdRef: ChangeDetectorRef) {
@@ -78,6 +66,7 @@ export class PillComponent extends GenericControl<ISimpleItem> implements OnInit
     this.resetSelection();
 
     e.currentTarget.classList.add('selected');
+  
     this.preSelectEmitter.emit(item);
   }
 

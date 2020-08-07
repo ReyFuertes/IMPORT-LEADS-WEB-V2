@@ -1,4 +1,5 @@
-<div class="notification" [ngClass]="{'success': ($notify | async)?.success}">
+<div class="notification" [ngClass]="{'success': ($notify | async)?.success,
+'error': ($notify | async)?.error}">
   <p>{{($notify | async)?.message}}</p>
 </div>
 

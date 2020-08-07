@@ -14,10 +14,13 @@
       <ng-container *ngFor="let item of ($contractProducts | async); let i = index">
         <!-- parent product -->
         <il-pill [state]="state" 
-            [reset]="!inCheckListing" (preSelectEmitter)="preSelectChange($event, isChecklistProductSelected(item?.id))"
-            (deSelectEmitter)="deSelectChange($event, isChecklistProductSelected(item?.id))" (stateEmitter)="removeSelection()" 
+            [reset]="!inCheckListing" 
+            (preSelectEmitter)="preSelectChange($event, isChecklistProductSelected(item?.id))"
+            (deSelectEmitter)="deSelectChange($event, isChecklistProductSelected(item?.id))" 
+            (stateEmitter)="removeSelection()" 
             (click)="onEdit(item)" 
-            [ngClass]="{sel: (isChecklistProductSelected(item?.id) || isProductSelected(item?.id)),highlighted: hasChecklist(item?._id)}" 
+            [ngClass]="{sel: (isChecklistProductSelected(item?.id) || isProductSelected(item?.id)), 
+              highlighted: hasChecklist(item?.id)}" 
             [enabled]="!inCheckListing || (inCheckListing && item?.sub_products && !item?.sub_products.length > 0)" 
             [item]="fmtToSimpleItem(item)" 
             [enableHighlight]="true" 
@@ -27,17 +30,17 @@
         </il-pill>
 
         <!-- child product -->
-        <il-pill *ngFor="let sub of item?.sub_products; let i = index" size="small" 
+        <il-pill [attr.id]="sub?.id" *ngFor="let sub of item?.sub_products; let i = index" size="small" 
           (preSelectEmitter)="preSelectChange($event, isChecklistProductSelected(sub?.id))" 
           (deSelectEmitter)="deSelectChange($event, isChecklistProductSelected(sub?.id))"
           (stateEmitter)="removeSelection()" 
           (click)="onEdit(sub)" 
           [reset]="!inCheckListing" 
           [ngClass]="{sel: (isChecklistProductSelected(sub?.id) 
-            || isSubProductChecklistSelected(sub?.child_id)),
-            highlighted: isSubProductChecklistRelated(sub?.child_id)}"
+            || isSubProductChecklistSelected(sub?._id)),
+            highlighted: isSubProductChecklistRelated(sub?.id)}"
           [enabled]="inCheckListing" 
-          [item]="fmtToSimpleItem(sub)" 
+          [item]="fmtSubToSimpleItem(sub)" 
           [enableHighlight]="true" 
           (removeEmitter)="onRemoveSubProduct(sub)" 
           [selectable]="true" 

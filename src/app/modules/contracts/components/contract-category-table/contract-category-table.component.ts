@@ -1,7 +1,7 @@
 import { addContractTerm, deleteContractTerm, updateContractTerm } from './../../store/actions/contract-term.actions';
 import { loadContractCategoryAction, selTermsForChecklistAction } from './../../store/actions/contract-category.action';
 import { MatTableDataSource } from '@angular/material/table';
-import { IContractTerm, IContractCategoryTerm, IContractChecklistItem } from './../../contract.model';
+import { IContractTerm, IContractCategoryTerm, IContractChecklistItem, IContractProduct } from './../../contract.model';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { getTagsSelector } from '../../../tags/store/selectors/tags.selector';
 import { AppState } from '../../../../store/app.reducer';
@@ -15,11 +15,12 @@ import { ISimpleItem } from '../../../../shared/generics/generic.model';
 import { environment } from '../../../../../environments/environment';
 import { trigger, transition, style, state, animate } from '@angular/animations';
 import { Component, OnInit, Input, OnChanges, SimpleChanges, AfterViewInit, ViewEncapsulation, EventEmitter, Output } from '@angular/core';
-import { map, take, tap, takeUntil } from 'rxjs/operators';
+import { map, take, tap, takeUntil, debounceTime } from 'rxjs/operators';
 import { IContractCategory } from '../../contract.model';
 import { deleteContractCategoryAction } from '../../store/actions/contract-category.action';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
-import { getSelectedTermsSelector } from '../../store/selectors/contract-checklist.selector';
+import { getSelectedTermsSelector, getchecklistProductsSelector } from '../../store/selectors/contract-checklist.selector';
+import { appNotification } from 'src/app/store/actions/notification.action';
 
 @Component({
   selector: 'il-contract-category-table',
@@ -52,6 +53,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   public selectedRow: any;
   public categoryTerm: IContractCategoryTerm;
   public selectedTerms: string[] = [];
+  public checkListProducts: IContractProduct[] = [];
 
   @Input()
   public inCheckListing: boolean = false;
@@ -74,13 +76,32 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       tap((terms: string[]) => {
         this.selectedTerms = terms || [];
       })).subscribe();
+
+    /* get checklist products */
+    this.store.pipe(select(getchecklistProductsSelector),
+      debounceTime(500),
+      takeUntil(this.$unsubscribe))
+      .subscribe(items => {
+        this.checkListProducts = items || [];
+      });
   }
 
   public isTermChecked(item: string): boolean {
     return this.selectedTerms && this.selectedTerms.includes(item);
   }
 
+  public get isDisabled(): boolean {
+    return this.checkListProducts && this.checkListProducts.length === 0;
+  }
+
   public onToggleTerms(term: IContractTerm, checked: boolean): void {
+    if (this.checkListProducts && this.checkListProducts.length === 0) {
+      this.store.dispatch(appNotification({
+        notification: { error: true, message: 'You cant need to selecting a product' }
+      }));
+      return;
+    };
+
     /* toggling terms for checklisting */
     if (this.contract_category) {
       const category_term = {
@@ -89,6 +110,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
         checked
       }
       this.categoryTermEmitter.emit(category_term);
+
       /* store selected checklists */
       this.store.dispatch(selTermsForChecklistAction({ term }));
     }

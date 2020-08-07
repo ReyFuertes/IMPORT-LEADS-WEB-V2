@@ -46,7 +46,8 @@ const reducer = createReducer(
     return Object.assign({}, state, { selectedTerms });
   }),
   on(removeChecklistItemSuccess, (state, action) => {
-    return ({ ...adapter.removeMany(action.deleted.map(i => i.id), state) });
+    const ids = action.deleted.map(i => i.id) /* collect checklist item ids to be removed */
+    return ({ ...adapter.removeMany(ids, state) });
   }),
   /* update checklist source */
   on(updateChecklistSourceAction, (state, action) => {
@@ -58,14 +59,14 @@ const reducer = createReducer(
     if (checklistSource && action.item && checklistSource.checklist_product.id === action.item._id) {
       /* remove the product */
       checklistSource = null;
-  
+
       /* if the source is removed then replace it with first first item of product checklist */
       const checklistProductId = checklistProducts
         && checklistProducts.length > 0
         && checklistProducts.shift()._id
         || null;
       const entities = Object.values(state.entities);
-      
+
       if (checklistProductId) {
         const newSource = entities.filter(e => {
           return e.checklist_product.id === checklistProductId;
@@ -118,7 +119,6 @@ const reducer = createReducer(
     /* when the product is deselected we want to remove also the selected terms using the product id */
     let selectedTerms = Object.assign([], state.selectedTerms);
     action.ids && action.ids.length > 0 && action.ids.forEach(id => {
-
       const index: number = selectedTerms.indexOf(id);
       if (index !== -1) {
         selectedTerms.splice(index, 1);
@@ -131,15 +131,15 @@ const reducer = createReducer(
     let selectedTerms = Object.assign([], state.selectedTerms);
 
     if (selectedTerms && selectedTerms.length === 0) {
-      selectedTerms.push(...action.items);
+      selectedTerms.push(action.id);
     } else {
-      action.items && action.items.forEach(termId => {
-        selectedTerms && selectedTerms.forEach(selTermId => {
-          if (selTermId !== termId) {
-            selectedTerms.push(termId);
-          }
-        });
+      //action.item && action.item.forEach(termId => {
+      selectedTerms && selectedTerms.forEach(selTermId => {
+        if (selTermId !== action.id) {
+          selectedTerms.push(action.id);
+        }
       });
+      //});
     }
     return Object.assign({}, state, { selectedTerms });
   }),
@@ -147,13 +147,13 @@ const reducer = createReducer(
     return Object.assign({}, state, { isHighlighting: action.highlight });
   }),
   on(addToChecklistSuccess, (state, action) => {
-    return adapter.addMany(action.items, state)
+    return adapter.addOne(action.item, state)
   }),
   /* if when adding a checklist item and no source is set, then add the newly created item as a source */
   on(addToChecklistSuccess, (state, action) => {
     let checklistSource: IContractChecklistItem = state.checklistSource;
-    if (state && !checklistSource && action.items) {
-      checklistSource = action.items.shift();
+    if (state && !checklistSource && action.item) {
+      checklistSource = action.item;
     }
     return Object.assign({}, state, { checklistSource });
   })

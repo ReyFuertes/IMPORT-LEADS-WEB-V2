@@ -124,7 +124,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
           this.selCategoryTerms = terms;
       })).subscribe();
 
-    this.store//.pipe(select(getChecklist),takeUntil(this.$unsubscribe))
+    this.store.pipe(select(getChecklist),takeUntil(this.$unsubscribe))
       .subscribe(res => console.log(res))
   }
 
@@ -166,6 +166,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       takeUntil(this.$unsubscribe),
       tap(res => {
         this.checklistItems = res || [];
+        console.log(this.checklistItems);
       })).subscribe();
 
     /* listen to checklist source */
@@ -218,7 +219,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
   public preSelectChange(payload: ISimpleItem, isPreselected?: boolean): void {
     this.fmtToChecklist(payload);
-
+    
     /* in checklisting */
     if (!isPreselected && this.inCheckListing) {
       /* if product is the first selection then add it to the source checklist*/
@@ -253,7 +254,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
       /* if the selection doesnt have a source and not preselected the  */
       if (!isPreselected && (items && items.length > 0) && !hasSource)
-        this.store.dispatch(addTermToChecklistAction({ items: items.map(i => i.checklist_term.id) }));
+        this.store.dispatch(addTermToChecklistAction({ id: items.map(i => i.checklist_term.id).shift() }));
 
     } else {
       this.isAddState = true;
@@ -305,7 +306,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
             const sourceTerms = this.checklistItems.filter(
               s => s.checklist_term.id === source.checklist_term.id
                 && s.checklist_product.id === source.checklist_product.id);
-            this.store.dispatch(addTermToChecklistAction({ items: sourceTerms.map(t => t.checklist_term.id) }));
+            this.store.dispatch(addTermToChecklistAction({ id: sourceTerms.map(t => t.checklist_term.id).shift() }));
           }
 
         } else if (result && !hasChecklistItems) {
@@ -330,7 +331,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
   public hasChecklist(id: string): boolean {
     let preSelected = this.checklistItems && this.checklistItems
-      .filter(c => c.checklist_product && c.checklist_product.id === id).shift();
+      .filter(c => c.checklist_product && c.checklist_product.product.id === id).shift();
 
     const ret = this.checklistItems && this.inCheckListing && preSelected;
     return ret ? true : false;
@@ -371,12 +372,16 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       && this.checklistItems.filter(c => {
         return c.checklist_product
           && c.checklist_product.product
-          && c.checklist_product.product.child_id === id
+          && (c.checklist_product.product.id === id)
       }).shift() ? true : false;
   }
 
   public fmtToSimpleItem(p: IProduct): ISimpleItem {
-    return { value: p.id, label: p.product_name, _id: p._id }
+    return Object.assign({}, { value: p.id, label: p.product_name, _id: p._id });
+  }
+
+  public fmtSubToSimpleItem(p: IProduct): ISimpleItem {
+    return Object.assign({}, { value: p.id, label: p.product_name, _id: p._id, });
   }
 
   public ngOnChanges(changes: SimpleChanges): void {

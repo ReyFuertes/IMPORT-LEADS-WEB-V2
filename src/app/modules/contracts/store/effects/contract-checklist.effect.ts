@@ -1,5 +1,5 @@
 import { ChecklistService } from './../../services/contract-checklist.service';
-import { loadChecklist, loadChecklistSuccess, addToChecklist, addToChecklistSuccess, removeChecklistItemSuccess, deleteChecklistItem, addTermToChecklistAction, overrideChecklistItemAction, overrideChecklistItemActionSuccess, removeSelectedTerms } from './../actions/contract-checklist.action';
+import { loadChecklist, loadChecklistSuccess, addToChecklist, addToChecklistSuccess, removeChecklistItemSuccess, removeChecklistItem, addTermToChecklistAction, overrideChecklistItemAction, overrideChecklistItemActionSuccess, removeSelectedTerms } from './../actions/contract-checklist.action';
 import { AppState } from './../../../../store/app.reducer';
 import { IContractChecklistItem, IContractTerm } from './../../contract.model';
 import { Injectable } from '@angular/core';
@@ -28,19 +28,14 @@ export class ChecklistEffect {
       })
     ))
   ));
-  deleteChecklistItem$ = createEffect(() => this.actions$.pipe(
-    ofType(deleteChecklistItem),
+  removeChecklistItem$ = createEffect(() => this.actions$.pipe(
+    ofType(removeChecklistItem),
     mergeMap(({ payload }) => {
       return this.checklistService.post(payload, 'multi-delete')
         .pipe(
-          tap((deleted: IContractChecklistItem[]) =>
-            /* preselect terms base on product selection */
-            this.store.dispatch(removeSelectedTerms({ ids: deleted.map(t => t.checklist_term.id) }))),
           tap((deleted: IContractChecklistItem[]) => {
-            if (deleted) {
-              console.log('%c Checklist created Deleted',
-                'background: red; color: #ffffff');
-            }
+            /* preselect terms base on product selection */
+            this.store.dispatch(removeSelectedTerms({ ids: deleted.map(t => t.checklist_term.id) }));
           }),
           map((deleted: IContractChecklistItem[]) => {
             return removeChecklistItemSuccess({ deleted });
@@ -54,14 +49,11 @@ export class ChecklistEffect {
     mergeMap(({ payload }) => this.checklistService.post(payload)
       .pipe(
         /* when adding checklist item also preselect terms */
-        tap((items: IContractChecklistItem[]) =>
-          this.store.dispatch(addTermToChecklistAction({ items: items.map(i => i.checklist_term.id) }))),
-        map((items: IContractChecklistItem[]) => {
-          if (items) {
-            console.log('%c Checklist created succesfully',
-              'background: green; color: #ffffff');
-          }
-          return addToChecklistSuccess({ items });
+        tap((item: IContractChecklistItem) => {
+          this.store.dispatch(addTermToChecklistAction({ id: item.checklist_term.id }))
+        }),
+        map((item: IContractChecklistItem) => {
+          return addToChecklistSuccess({ item });
         })
       ))
   ));

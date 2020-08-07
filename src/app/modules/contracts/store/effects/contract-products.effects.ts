@@ -1,7 +1,7 @@
 import { AppState } from 'src/app/store/app.reducer';
 import { Store } from '@ngrx/store';
 import { IContractProduct } from './../../contract.model';
-import { mergeMap, map } from 'rxjs/operators';
+import { mergeMap, map, tap } from 'rxjs/operators';
 import { ContractProductService } from './../../services/contract-products.service';
 import { addContractProducts, addContractProductsSuccess, loadContractProducts, loadContractProductSuccess, deleteContractProduct, updateContractProductsSuccess, updateContractProduct } from './../actions/contract-product.action';
 import { Injectable } from '@angular/core';
@@ -24,10 +24,13 @@ export class ContractProductsEffect {
     mergeMap(({ payload }) =>
       this.contractProductService.patch(payload)
         .pipe(
-          map((updated: any) => {
+          tap((updated) => {
             if (updated)
-              this.store.dispatch(appNotification({ notification: { success: true, message: 'Product successfully Updated' } }));
-
+              this.store.dispatch(appNotification({
+                notification: { success: true, message: 'Product successfully Updated' }
+              }));
+          }),
+          map((updated: any) => {
             return updateContractProductsSuccess({ updated });
           })
         ))
@@ -37,10 +40,13 @@ export class ContractProductsEffect {
     mergeMap(({ payload }) =>
       this.contractProductService.post(payload)
         .pipe(
-          map((created: any) => {
+          tap(created => {
             if (created)
-              this.store.dispatch(appNotification({ notification: { success: true, message: 'Product successfully Added' } }));
-
+              this.store.dispatch(appNotification({
+                notification: { success: true, message: 'Product successfully Added' }
+              }));
+          }),
+          map((created: any) => {
             return addContractProductsSuccess({ created });
           })
         ))

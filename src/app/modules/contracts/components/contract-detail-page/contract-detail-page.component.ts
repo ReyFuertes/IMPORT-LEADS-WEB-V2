@@ -1,4 +1,4 @@
-import { addToChecklist, highlightChecklist, deleteChecklistItem, addTermToChecklistAction, removeAllSelectedTerms } from './../../store/actions/contract-checklist.action';
+import { addToChecklist, highlightChecklist, removeChecklistItem, addTermToChecklistAction, removeAllSelectedTerms, removeToChecklistProductsAction } from './../../store/actions/contract-checklist.action';
 import { sortByAsc } from 'src/app/shared/util/sort';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { ReOrderImages, deleteContract } from './../../store/actions/contracts.action';
@@ -24,7 +24,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AddEditState } from 'src/app/shared/generics/generic.model';
 import { Store, select } from '@ngrx/store';
 import * as _ from 'lodash';
-import { getChecklistItemsSelector, getchecklistProductsSelector } from '../../store/selectors/contract-checklist.selector';
+import { getChecklistItemsSelector, getchecklistProductsSelector, getSelectedTermsSelector } from '../../store/selectors/contract-checklist.selector';
 
 @Component({
   selector: 'il-contract-detail-page',
@@ -48,6 +48,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   public checklistItems: IContractChecklistItem[] = [];
   public checkListProducts: IContractProduct[] = [];
   public formChecklist: FormGroup;
+  public selectedTerms: string[];
 
   @Output()
   public openNavChange = new EventEmitter<boolean>();
@@ -150,6 +151,11 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
         if (checklist && checklist.length > 0)
           this.checklistItems = checklist;
       })).subscribe();
+
+    /* collect all selected terms */
+    this.store.pipe(select(getSelectedTermsSelector),
+      takeUntil(this.$unsubscribe),
+      tap(terms => this.selectedTerms = terms)).subscribe();
   }
 
   public onSaveChecklist(): void { }
@@ -178,10 +184,10 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     }
 
     /* look for matches in the state */
-    const match = this.checklistItems
+    const match: IContractChecklistItem[] = this.checklistItems
       .filter(c => c.checklist_category.id === categoryTerm.category_id
         && c.checklist_term.id === categoryTerm.term_id
-        && this.checkListProducts.filter(cp => cp._id === c.checklist_product.id).shift());
+        && this.checkListProducts.filter(cp => cp.id === c.checklist_product.product.id).shift());
 
     /* transform product to array of ids */
     Object.assign(payload, match);
@@ -190,7 +196,21 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     if (categoryTerm.checked) {
       this.store.dispatch(addToChecklist({ payload }));
     } else {
-      this.store.dispatch(deleteChecklistItem({ payload: match }));
+      this.store.dispatch(removeChecklistItem({ payload: match }));
+
+      /* we need to remove the checklist product here since we cannot include it in multi delete response */
+      const checklistProduct = match.map(i => i.checklist_product).shift()
+      setTimeout(() => {
+        if (this.selectedTerms && this.selectedTerms.length === 0) {
+          if (checklistProduct && checklistProduct.product)
+            this.store.dispatch(removeToChecklistProductsAction({
+              item: {
+                _id: checklistProduct.id,
+                id: checklistProduct.product.id
+              }
+            }))
+        }
+      }, 500);
     }
   }
 

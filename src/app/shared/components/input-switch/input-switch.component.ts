@@ -8,16 +8,19 @@ import { Component, OnInit, EventEmitter, Output, Input, OnChanges, SimpleChange
 })
 
 export class InputSwitchComponent implements OnInit, OnChanges {
-  @Input()
-  public checked: boolean = false;
-  @Output()
-  public onToggle = new EventEmitter<IContractTerm>();
+  @Input() public checked: boolean = false;
+  @Input() public disabled: boolean = false;
+  @Output() public onToggle = new EventEmitter<IContractTerm>();
+
   constructor() { }
 
   ngOnInit() { }
 
   public ngOnChanges(changes: SimpleChanges): void {
-    if (changes && changes.checked.currentValue) {
+    if (changes && changes.disabled && changes.disabled.currentValue) {
+      this.disabled = changes.disabled.currentValue;
+    }
+    if (changes && changes.checked && changes.checked.currentValue) {
       this.checked = changes.checked.currentValue;
     }
   }

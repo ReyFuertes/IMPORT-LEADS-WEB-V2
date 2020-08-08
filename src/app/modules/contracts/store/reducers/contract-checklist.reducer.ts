@@ -55,8 +55,11 @@ const reducer = createReducer(
     let terms: string[] = Object.assign([], state.selectedTerms);
     const checklistProducts = Object.assign([], state.checklistProducts);
 
-    /* if the action item is a source */
-    if (checklistSource && action.item && checklistSource.checklist_product.id === action.item._id) {
+    /* if the action item is a source then process */
+    if (checklistSource 
+      && action.item 
+      && checklistSource.checklist_product
+      && checklistSource.checklist_product.id === action.item._id) {
       /* remove the product */
       checklistSource = null;
 

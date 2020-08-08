@@ -55,12 +55,9 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   public selectedTerms: string[] = [];
   public checkListProducts: IContractProduct[] = [];
 
-  @Input()
-  public inCheckListing: boolean = false;
-  @Input()
-  public contract_category: IContractCategory;
-  @Output()
-  public categoryTermEmitter = new EventEmitter<any>();
+  @Input() public inCheckListing: boolean = false;
+  @Input() public contract_category: IContractCategory;
+  @Output() public categoryTermEmitter = new EventEmitter<any>();
 
   constructor(private store: Store<AppState>, private dialog: MatDialog, private fb: FormBuilder) {
     super();

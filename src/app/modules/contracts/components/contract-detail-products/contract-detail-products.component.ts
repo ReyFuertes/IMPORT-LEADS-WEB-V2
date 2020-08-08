@@ -1,5 +1,5 @@
 import { loadChecklist } from './../../../inspections/store/inspection.action';
-import { getChecklistSourceSelector, getChecklistItemsSelector, getChecklist, getChecklistItemByContractProductIds, getChecklistTermsById, getchecklistProductsSelector } from './../../store/selectors/contract-checklist.selector';
+import { getChecklistSourceSelector, getChecklistItemsSelector, getChecklist, getChecklistItemByContractProductIds, getChecklistTermsByProductId, getchecklistProductsSelector } from './../../store/selectors/contract-checklist.selector';
 import { addToChecklistSourceAction, addTermToChecklistAction, removeSelectedTerms, addToChecklistProductsAction, updateChecklistSourceAction, removeToChecklistProductsAction, overrideChecklistItemAction, removeChecklistItemAction, addToChecklist, removeAllChecklistProducts, removeAllSelectedTerms, removeChecklistSourceAction } from './../../store/actions/contract-checklist.action';
 import { getSelectedProductsSelector } from './../../store/selectors/contract-product-selector';
 import { getCategoryTermsSelector } from './../../store/selectors/contract-category.selector';
@@ -124,7 +124,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
           this.selCategoryTerms = terms;
       })).subscribe();
 
-    this.store.pipe(select(getChecklist),takeUntil(this.$unsubscribe))
+    this.store.pipe(select(getChecklist), takeUntil(this.$unsubscribe))
       .subscribe(res => console.log(res))
   }
 
@@ -188,27 +188,27 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
     if (this.inCheckListing) {
       this.fmtToChecklist(payload);
 
+      /* remove selected term of a product/s */
+      this.store.pipe(
+        take(2),
+        select(getChecklistTermsByProductId(payload.id)),
+        tap((items: IContractChecklistItem[]) => {
+          /* if the checklist products is not 0 then do not remove the terms */
+          if (this.checklistProductItems && this.checklistProductItems.length === 0
+            || items && items.length > 0) {
+            /* remove checklist source */
+            this.store.dispatch(removeChecklistSourceAction());
+            this.store.dispatch(removeSelectedTerms({ ids: items.map(i => i.checklist_term.id) }));
+          }
+        })).subscribe();
+
       /* remove to checklist products */
       this.store.dispatch(removeToChecklistProductsAction({ item: payload }))
 
       /* remove source checklist if matched */
       this.store.dispatch(updateChecklistSourceAction({ item: payload }));
 
-      /* remove selected term of a product/s */
-      this.store.pipe(
-        take(1),
-        select(getChecklistTermsById(payload._id)),
-        tap((items: IContractChecklistItem[]) => {
-          /* if the checklist products is not 0 then do not remove the terms */
-          if (this.checklistProductItems && this.checklistProductItems.length === 0) {
-
-            /* remove checklist source */
-            this.store.dispatch(removeChecklistSourceAction());
-            this.store.dispatch(removeSelectedTerms({ ids: items.map(i => i.checklist_term.id) }));
-          }
-        })).subscribe();
     } else {
-
       this.store.dispatch(removeSelectedProductAction());
     }
     /* if product exist then remove it and update the state  */
@@ -219,7 +219,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
   public preSelectChange(payload: ISimpleItem, isPreselected?: boolean): void {
     this.fmtToChecklist(payload);
-    
+
     /* in checklisting */
     if (!isPreselected && this.inCheckListing) {
       /* if product is the first selection then add it to the source checklist*/
@@ -389,8 +389,6 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       this.inCheckListing = changes.inCheckListing.currentValue;
     }
   }
-
-  public subProductsArr = () => this.form.get('sub_products') as FormArray;
 
   ngAfterViewInit() {
     this.productPillsArr = this.contract.contract_products;
@@ -640,5 +638,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
     const i = this.productPillsArr.findIndex(x => x.id === id);
     this.productPillsArr.splice(i);
   }
+
+  public subProductsArr = () => this.form.get('sub_products') as FormArray;
 }
 

@@ -2,7 +2,7 @@ import { addToChecklist, highlightChecklist, removeChecklistItem, addTermToCheck
 import { sortByAsc } from 'src/app/shared/util/sort';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { ReOrderImages, deleteContract } from './../../store/actions/contracts.action';
-import { tap, take, map, takeUntil } from 'rxjs/operators';
+import { tap, take, map, takeUntil, debounceTime } from 'rxjs/operators';
 import { getContractCategorySelector } from './../../store/selectors/contract-category.selector';
 import { addContractCategoryAction, loadContractCategoryAction } from './../../store/actions/contract-category.action';
 import { ContractCategoryDialogComponent } from '../../../dialogs/components/contract-category/contract-category-dialog.component';
@@ -19,7 +19,7 @@ import { Component, OnInit, ViewChild, Output, EventEmitter, OnChanges, SimpleCh
 import { ContractAddDialogComponent } from 'src/app/modules/dialogs/components/contracts-add/contract-add-dialog.component';
 import { ContractTemplateDialogComponent } from 'src/app/modules/dialogs/components/contract-template/contract-template-dialog.component';
 import { GenericPageDetailComponent } from 'src/app/shared/generics/generic-page-detail';
-import { Observable, fromEvent } from 'rxjs';
+import { Observable, fromEvent, of } from 'rxjs';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AddEditState } from 'src/app/shared/generics/generic.model';
 import { Store, select } from '@ngrx/store';
@@ -155,7 +155,8 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     /* collect all selected terms */
     this.store.pipe(select(getSelectedTermsSelector),
       takeUntil(this.$unsubscribe),
-      tap(terms => this.selectedTerms = terms)).subscribe();
+      tap(terms => this.selectedTerms = terms))
+      .subscribe();
   }
 
   public onSaveChecklist(): void { }
@@ -210,7 +211,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
               }
             }))
         }
-      }, 500);
+      }, 300);
     }
   }
 

@@ -8,10 +8,13 @@ export const getChecklist = createSelector(
 export const getchecklistProductsSelector = createSelector(
   selectContractModuleState, state => state.checkList.checklistProducts
 );
-export const getChecklistTermsById = (productId: string) => createSelector(
+export const getChecklistTermsByProductId = (productId: string) => createSelector(
   selectContractModuleState, state => {
     const items = Object.values(state.checkList.entities);
-    const results = items.filter(ci => ci.checklist_product.id === productId);
+    const results = items.filter(ci =>
+      ci.checklist_product
+      && ci.checklist_product.product
+      && ci.checklist_product.product.id === productId);
     return results;
   }
 );

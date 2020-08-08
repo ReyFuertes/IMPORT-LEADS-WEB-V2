@@ -8,8 +8,10 @@ import { AQLDialogComponent } from './../../../dialogs/components/aql/aql-dialog
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, Output, EventEmitter, ViewChild, AfterViewInit, ElementRef, Input } from '@angular/core';
-import { fromEvent } from 'rxjs';
+import { fromEvent, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { ISavedChecklist } from '../../contract.model';
+import { getAllSavedChecklistSelector } from '../../store/selectors/saved-checklist.selector';
 
 @Component({
   selector: 'il-contract-right-content',
@@ -21,28 +23,27 @@ export class ContractRightContentComponent implements OnInit {
   public svgPath: string = environment.svgPath;
   public assignments: ISimpleItem[] = [{
     label: 'Rey Fuertes',
-    value: 'Rey Fuertes'
+    value: '1'
   },
   {
     label: 'Juan dela Cruz',
-    value: 'Juan dela Cruz'
+    value: '2'
   },
   {
     label: 'Ben Booterkooper',
-    value: 'Ben Booterkooper'
+    value: '3'
   }];
-  @Input()
-  public form: FormGroup;
-  @Output()
-  public closeEmitter = new EventEmitter<boolean>();
+  public $savedChecklist: Observable<ISavedChecklist[]>;
+
+  @Input() public form: FormGroup;
+  @Output() public closeEmitter = new EventEmitter<boolean>();
   @ViewChild('scrollPnl', { static: true }) public scrollPnl: any;
 
-  constructor(public dialog: MatDialog, private fb: FormBuilder) {
+  constructor(public dialog: MatDialog, private store: Store<AppState>) {
+    this.$savedChecklist = this.store.pipe(select(getAllSavedChecklistSelector));
   }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() { }
 
   public addBrief(): void {
     const dialogRef = this.dialog.open(BriefDialogComponent, {

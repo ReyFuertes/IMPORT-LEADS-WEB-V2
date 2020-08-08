@@ -7,6 +7,8 @@ import { ActionReducerMap } from '@ngrx/store';
 import * as fromRoot from 'src/app/store/app.reducer';
 import * as fromChecklist from '../reducers/contract-checklist.reducer';
 import * as fromInspection from '../../../inspections/store/inspection.reducer';
+import * as fromSavedChecklistItem from '../../store/reducers/saved-checklist-item.reducer';
+import * as fromSavedChecklist from '../../store/reducers/saved-checklist.reducer';
 
 export interface ContractModuleState {
   contract: fromContract.ContractsState;
@@ -14,7 +16,9 @@ export interface ContractModuleState {
   contractCategory: fromContractCategory.ContractCategoryState,
   category: fromCategory.CategoryState,
   checkList: fromChecklist.ContractChecklistState,
-  inspection: fromInspection.InspectionState
+  inspection: fromInspection.InspectionState,
+  savedChecklistItem: fromSavedChecklistItem.SavedChecklistItemState,
+  SavedChecklist: fromSavedChecklist.SavedChecklistState
 }
 
 export const reducers: ActionReducerMap<ContractModuleState> = {
@@ -23,7 +27,9 @@ export const reducers: ActionReducerMap<ContractModuleState> = {
   contractCategory: fromContractCategory.ContractCategoryReducer,
   category: fromCategory.CategoryReducer,
   checkList: fromChecklist.ContractChecklistReducer,
-  inspection: fromInspection.InspectionReducer
+  inspection: fromInspection.InspectionReducer,
+  savedChecklistItem: fromSavedChecklistItem.SavedChecklistItemReducer,
+  SavedChecklist: fromSavedChecklist.SavedChecklistReducer
 };
 
 export interface AppState extends fromRoot.AppState {

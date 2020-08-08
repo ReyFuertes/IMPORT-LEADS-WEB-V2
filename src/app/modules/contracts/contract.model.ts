@@ -2,6 +2,29 @@ import { ITag } from './../tags/tags.model';
 import { IProduct } from './../products/products.model';
 import { IUser } from './../../models/user.model';
 
+export interface ISavedChecklist extends ISavedChecklistCore {
+  checklist_items?: {
+    id?: string;
+    checklist_contract?: string;
+    saved_checklist_item?: string;
+  }
+}
+export interface ISavedChecklistPayload extends ISavedChecklistCore {
+  checklist_items?: string[]
+}
+export interface ISavedChecklistCore {
+  id?: string;
+  checklist_name?: string;
+  assigned_to?: string;
+  desired_run_date?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+export interface ISavedChecklistItem {
+  id?: string;
+  contract_checklist_id?: string;
+  saved_checklist_id?: string;
+}
 export interface IOverrideChecklistItem {
   source: IContractChecklistItem;
   destination: IContractChecklistItem;

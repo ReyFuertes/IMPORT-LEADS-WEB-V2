@@ -12,7 +12,7 @@ import { User } from './../../../users/users.models';
 import { AppState } from './../../../../store/app.reducer';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IContract, IProductImage, IContractCategory, ICategory, IContractChecklist, IContractCategoryTerm, IContractChecklistItem, IContractProduct } from './../../contract.model';
+import { IContract, IProductImage, IContractCategory, ICategory, IContractChecklist, IContractCategoryTerm, IContractChecklistItem, IContractProduct, ISavedChecklist, ISavedChecklistPayload } from './../../contract.model';
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, ViewChild, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
@@ -25,6 +25,7 @@ import { AddEditState } from 'src/app/shared/generics/generic.model';
 import { Store, select } from '@ngrx/store';
 import * as _ from 'lodash';
 import { getChecklistItemsSelector, getchecklistProductsSelector, getSelectedTermsSelector } from '../../store/selectors/contract-checklist.selector';
+import { saveChecklistAction } from '../../store/actions/saved-checklist.action';
 
 @Component({
   selector: 'il-contract-detail-page',
@@ -66,8 +67,8 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       images: [null]
     });
     this.formChecklist = this.fb.group({
-      assignedTo: [null, Validators.required],
-      desiredRunDate: [null, Validators.required]
+      assignedTo: ['1'],
+      desiredRunDate: [new Date()]
     });
   }
 
@@ -159,7 +160,27 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       .subscribe();
   }
 
-  public onSaveChecklist(): void { }
+  public onSaveChecklist(): void {
+    /* get the selected checklist product/s ids,
+      it will be the basis of our saved checklist item/s
+     */
+    const checklistProductIds = this.checkListProducts && this.checkListProducts.map(cp => cp._id);
+    /* get the checklist item base on product ids */
+    const selectedChecklistItems = this.checklistItems && this.checklistItems.filter(ci => {
+      return checklistProductIds && checklistProductIds.includes(ci.checklist_product.id)
+    }).map(ci => ci.id);
+
+    const payload: ISavedChecklistPayload = {
+      checklist_name: `Checklist-${new Date().getTime()}`,
+      assigned_to: this.formChecklist.get('assignedTo').value,
+      desired_run_date: this.formChecklist.get('desiredRunDate').value,
+      checklist_items: selectedChecklistItems
+    }
+
+    if (payload) {
+      this.store.dispatch(saveChecklistAction({ payload }))
+    }
+  }
 
   public get isChecklistValid(): boolean {
     return this.formChecklist.valid

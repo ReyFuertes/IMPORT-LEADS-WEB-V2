@@ -2,19 +2,19 @@
 .saved-checklist-list {
   width: 100%;
   height: calc(100% - 48px);
-  padding: 10px;
   .temp-row {
-    border-radius: 2px;
-    padding: 5px;
-    height: 60px;
+    border-radius: 0;
+    padding: 10px;
+    height: 75px;
     cursor: pointer;
+    border-bottom: thin $color-gray-2 solid;
     &:hover {
       background-color: $color-gray-3;
     }
     > div {
       height: 20px;
       &:first-child {
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 500;
       }
       &:nth-child(2),
@@ -37,7 +37,7 @@
   > div {
     &:first-child {
       padding: 14px 9px 14px 14px;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 550;
     }
     &:nth-child(2) {

@@ -47,6 +47,10 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { reducers } from './store/reducers';
 import { ContractCategoryTableComponent } from './components/contract-category-table/contract-category-table.component';
 import { ChecklistEffect } from './store/effects/contract-checklist.effect';
+import { SavedChecklistItemService } from './services/saved-checklist-item';
+import { SavedChecklistItemEffect } from './store/effects/saved-checklist-item.effect';
+import { SavedChecklistService } from './services/saved-checklist';
+import { SavedChecklistEffect } from './store/effects/saved-checklist.effect';
 
 const routes: Routes = [
   {
@@ -117,7 +121,9 @@ const materialModules = [
       CategoryEffect,
       ContractTermEffect,
       ChecklistEffect,
-      InspectionEffect
+      InspectionEffect,
+      SavedChecklistItemEffect,
+      SavedChecklistEffect
     ])
   ],
   exports: [],
@@ -142,7 +148,9 @@ const materialModules = [
     ContractProductService,
     ContractCategoryService,
     ContractTermService,
-    ChecklistService
+    ChecklistService,
+    SavedChecklistItemService,
+    SavedChecklistService
   ],
 })
 export class ContractsModule { }

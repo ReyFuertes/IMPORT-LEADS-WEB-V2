@@ -124,7 +124,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
           this.selCategoryTerms = terms;
       })).subscribe();
 
-    this.store.pipe(select(getChecklist), takeUntil(this.$unsubscribe))
+    this.store//.pipe(select(getChecklist), takeUntil(this.$unsubscribe))
       .subscribe(res => console.log(res))
   }
 
@@ -166,7 +166,6 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       takeUntil(this.$unsubscribe),
       tap(res => {
         this.checklistItems = res || [];
-        console.log(this.checklistItems);
       })).subscribe();
 
     /* listen to checklist source */

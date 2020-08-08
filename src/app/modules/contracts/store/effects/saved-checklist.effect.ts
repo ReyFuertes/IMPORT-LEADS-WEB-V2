@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { SavedChecklistService } from '../../services/saved-checklist';
 import { saveChecklistAction, saveChecklistSuccessAction, loadChecklistSuccessAction, loadChecklistAction } from '../actions/saved-checklist.action';
 import { ISavedChecklist } from '../../contract.model';
+import { appNotification } from 'src/app/store/actions/notification.action';
 
 @Injectable()
 export class SavedChecklistEffect {
@@ -27,6 +28,12 @@ export class SavedChecklistEffect {
     mergeMap(({ payload }) => {
       return this.savedChecklistSrv.post(payload)
         .pipe(
+          tap(created => {
+            if (created)
+              this.store.dispatch(appNotification({
+                notification: { success: true, message: 'Checklist successfully Saved' }
+              }));
+          }),
           map((created: ISavedChecklist) => {
             return saveChecklistSuccessAction({ created });
           })
@@ -35,6 +42,7 @@ export class SavedChecklistEffect {
   ))
 
   constructor(
+    private store: Store<AppState>,
     private actions$: Actions,
     private savedChecklistSrv: SavedChecklistService,
   ) { }

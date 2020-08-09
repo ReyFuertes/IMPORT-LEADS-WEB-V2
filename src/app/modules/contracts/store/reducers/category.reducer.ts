@@ -14,10 +14,11 @@ export const initialState: CategoryState = adapter.getInitialState({
 const reducer = createReducer(
   initialState,
   on(updateCategorysSuccess, (state, action) => {
+    debugger
     return adapter.updateOne({ id: action.updated.id, changes: action.updated }, state)
   }),
   on(addCategorySuccess, (state, action) => {
-
+    debugger
     return ({ ...adapter.addOne(action.created, state) })
   })
 );

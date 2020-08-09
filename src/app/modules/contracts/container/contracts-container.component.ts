@@ -2,7 +2,7 @@ import { loadChecklist } from './../../inspections/store/inspection.action';
 import { loadContractCategoryAction } from './../store/actions/contract-category.action';
 import { loadTags } from './../../tags/store/actions/tags.actions';
 import { ContractProductsState } from './../store/reducers/contract-product.reducer';
-import { loadContracts } from './../store/actions/contracts.action';
+import { loadContractsAction } from './../store/actions/contracts.action';
 import { AppState } from './../../../store/app.reducer';
 import { GenericContainer } from './../../../shared/generics/generic-container';
 import { Component, OnInit } from '@angular/core';
@@ -20,7 +20,7 @@ import { loadChecklistAction } from '../store/actions/saved-checklist.action';
 export class ContractsContainerComponent extends GenericContainer implements OnInit {
   constructor(private store: Store<AppState>) {
     super();
-    this.store.dispatch(loadContracts(null));
+    this.store.dispatch(loadContractsAction(null));
     this.store.dispatch(loadProducts());
     this.store.dispatch(loadTags());
     this.store.dispatch(loadChecklist());

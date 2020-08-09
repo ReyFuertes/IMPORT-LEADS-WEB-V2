@@ -1,5 +1,5 @@
 import { loadContractCategoryAction } from './../actions/contract-category.action';
-import { addCategory, addCategorySuccess, updateCategory, updateCategorysSuccess } from './../actions/category.action';
+import { addCategoryAction, addCategorySuccess, updateCategoryAction, updateCategorysSuccess } from './../actions/category.action';
 import { CategoryService } from './../../../../services/category.service';
 import { AppState } from './../../../../store/app.reducer';
 import { ICategory, ISavedChecklist } from './../../contract.model';

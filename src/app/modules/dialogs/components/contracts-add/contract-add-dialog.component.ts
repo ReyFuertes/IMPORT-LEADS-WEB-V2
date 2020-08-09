@@ -13,7 +13,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AddEditState } from 'src/app/shared/generics/generic.model';
 import { Store, select } from '@ngrx/store';
-import { addContract, uploadContractImages, cacheImages, updateContract } from 'src/app/modules/contracts/store/actions/contracts.action';
+import { addContractAction, uploadContractImagesAction, cacheImages, updateContractAction } from 'src/app/modules/contracts/store/actions/contracts.action';
 import { v4 as uuid } from 'uuid';
 import { ActivatedRoute } from '@angular/router';
 import { convertBlobToBase64 } from 'src/app/shared/util/convert-to-blob';
@@ -131,11 +131,11 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
         email: 'johndoe@gmail.com'
       };
       //save/upload contract
-      this.store.dispatch(addContract({ item }));
+      this.store.dispatch(addContractAction({ item }));
     } else {
-      this.store.dispatch(updateContract({ item }));
+      this.store.dispatch(updateContractAction({ item }));
     }
-    this.store.dispatch(uploadContractImages({ files }));
+    this.store.dispatch(uploadContractImagesAction({ files }));
     this.dialogRef.close(true);
   }
 

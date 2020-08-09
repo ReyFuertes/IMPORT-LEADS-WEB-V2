@@ -10,7 +10,7 @@ import { appNotification } from 'src/app/store/actions/notification.action';
 
 @Injectable()
 export class ContractCategoryEffect {
-  delete$ = createEffect(() => this.actions$.pipe(
+  deleteContractCategoryAction$ = createEffect(() => this.actions$.pipe(
     ofType(deleteContractCategoryAction),
     mergeMap(({ id }) => this.contractCategoryService.delete(id).pipe(
       map((deleted: IContractCategory) => {
@@ -18,8 +18,7 @@ export class ContractCategoryEffect {
       })
     ))
   ));
-
-  load$ = createEffect(() => this.actions$.pipe(
+  loadContractCategoryAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadContractCategoryAction),
     mergeMap(({ id }) => this.contractCategoryService.getById(id, 'contract').pipe(
       map((items: IContractCategory[]) => {
@@ -27,8 +26,7 @@ export class ContractCategoryEffect {
       })
     ))
   ));
-
-  add$ = createEffect(() => this.actions$.pipe(
+  addContractCategoryAction$ = createEffect(() => this.actions$.pipe(
     ofType(addContractCategoryAction),
     mergeMap(({ payload }) => this.contractCategoryService.post(payload)
       .pipe(

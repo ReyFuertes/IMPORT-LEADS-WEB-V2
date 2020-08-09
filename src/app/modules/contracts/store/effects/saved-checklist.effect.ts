@@ -16,7 +16,6 @@ export class SavedChecklistEffect {
       return this.savedChecklistSrv.getAll()
         .pipe(
           map((items: ISavedChecklist[]) => {
-            debugger
             return loadChecklistSuccessAction({ items });
           })
         )

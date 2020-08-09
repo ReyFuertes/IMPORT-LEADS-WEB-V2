@@ -10,7 +10,7 @@ import { environment } from '../../../../../environments/environment';
 import { Component, OnInit, Input, OnChanges, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 import { IContractCategory } from '../../contract.model';
-import { updateCategory } from '../../store/actions/category.action';
+import { updateCategoryAction } from '../../store/actions/category.action';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
 
 @Component({
@@ -69,7 +69,7 @@ export class ContractCategoryComponent extends GenericRowComponent implements On
     });
     dialogRef.afterClosed().subscribe(payload => {
       if (payload) {
-        this.store.dispatch(updateCategory({ payload }));
+        this.store.dispatch(updateCategoryAction({ payload }));
         /* just refresh all contract categories, may not be idea but temporary solution */
         this.store.dispatch(loadContractCategoryAction({ id: this.contractCategory.contract.id }))
       }

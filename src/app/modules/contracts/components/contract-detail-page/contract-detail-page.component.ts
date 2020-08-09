@@ -1,7 +1,7 @@
 import { addToChecklist, highlightChecklist, removeChecklistItem, addTermToChecklistAction, removeAllSelectedTerms, removeToChecklistProductsAction } from './../../store/actions/contract-checklist.action';
 import { sortByAsc } from 'src/app/shared/util/sort';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
-import { ReOrderImages, deleteContract } from './../../store/actions/contracts.action';
+import { ReOrderImagesAction, deleteContractAction } from './../../store/actions/contracts.action';
 import { tap, take, map, takeUntil, debounceTime } from 'rxjs/operators';
 import { getContractCategorySelector } from './../../store/selectors/contract-category.selector';
 import { addContractCategoryAction, loadContractCategoryAction } from './../../store/actions/contract-category.action';
@@ -245,7 +245,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result && this.form.get('id').value) {
-        this.store.dispatch(deleteContract({ id: this.form.get('id').value }));
+        this.store.dispatch(deleteContractAction({ id: this.form.get('id').value }));
         setTimeout(() => {
           this.router.navigateByUrl('/dashboard/contracts');
         });
@@ -341,7 +341,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     moveItemInArray(this.contractImages, event.previousIndex, event.currentIndex);
 
     /* update reorder images */
-    setTimeout(() => this.store.dispatch(ReOrderImages({ images: this.contractImages })), 200);
+    setTimeout(() => this.store.dispatch(ReOrderImagesAction({ images: this.contractImages })), 200);
   }
 
   public dropSpecs(event: CdkDragDrop<any[]>) {

@@ -3,24 +3,24 @@ import { IContract, IProductImage } from './../../contract.model';
 import { createAction, props } from '@ngrx/store';
 
 export enum ContractActionTypes {
-  deleteContract = '[Contract] Delete',
+  deleteContractAction = '[Contract] Delete',
   deleteContractSuccess = '[Contract] Delete (success)',
   LoadContracts = '[Contract] Load',
   LoadContractsSuccess = '[Contract] Load (success)',
-  addContract = '[Contract] Add',
+  addContractAction = '[Contract] Add',
   addContractSuccess = '[Contract] Add (success)',
   UploadImages = '[Contract] Upload Images',
   UploadImagesSuccess = '[Contract] Upload Images (success)',
   ReorderImages = '[Contract] Reorder Images',
   ClearCachedImages = '[Contract] Clear Cached Images',
-  updateContract = '[Contract] Update',
+  updateContractAction = '[Contract] Update',
   updateContractSuccess = '[Contract] Update (success)',
   addImageUploadState = '[Contract] Add upload (success)',
   removeImageUploadState = '[Contract] Remove upload (success)',
-  uploadTermImage = '[Contract Term] Upload Image',
+  uploadTermImageAction = '[Contract Term] Upload Image',
 }
-export const uploadTermImage = createAction(
-  ContractActionTypes.uploadTermImage,
+export const uploadTermImageAction = createAction(
+  ContractActionTypes.uploadTermImageAction,
   props<{ file: any }>()
 );
 export const addImageUploadState = createAction(
@@ -30,23 +30,23 @@ export const addImageUploadState = createAction(
 export const removeImageUploadState = createAction(
   ContractActionTypes.removeImageUploadState,
 );
-export const deleteContract = createAction(
-  ContractActionTypes.deleteContract,
+export const deleteContractAction = createAction(
+  ContractActionTypes.deleteContractAction,
   props<{ id: string }>()
 );
 export const deleteContractSuccess = createAction(
   ContractActionTypes.deleteContractSuccess,
   props<{ deleted: IContract }>()
 );
-export const updateContract = createAction(
-  ContractActionTypes.updateContract,
+export const updateContractAction = createAction(
+  ContractActionTypes.updateContractAction,
   props<{ item: IContract }>()
 );
 export const updateContractSuccess = createAction(
   ContractActionTypes.updateContractSuccess,
   props<{ updated: IContract }>()
 );
-export const loadContracts = createAction(
+export const loadContractsAction = createAction(
   ContractActionTypes.LoadContracts,
   props<{ param }>()
 );
@@ -54,15 +54,15 @@ export const loadContractSuccess = createAction(
   ContractActionTypes.LoadContractsSuccess,
   props<{ items: IContract[] }>()
 );
-export const addContract = createAction(
-  ContractActionTypes.addContract,
+export const addContractAction = createAction(
+  ContractActionTypes.addContractAction,
   props<{ item: IContract }>()
 );
 export const addContractSuccess = createAction(
   ContractActionTypes.addContractSuccess,
   props<{ created: IContract }>()
 );
-export const uploadContractImages = createAction(
+export const uploadContractImagesAction = createAction(
   ContractActionTypes.UploadImages,
   props<{ files: any }>()
 );
@@ -74,7 +74,7 @@ export const cacheImages = createAction(
   ContractActionTypes.UploadImagesSuccess,
   props<{ images: IProductImage[] }>()
 );
-export const ReOrderImages = createAction(
+export const ReOrderImagesAction = createAction(
   ContractActionTypes.ReorderImages,
   props<{ images: IProductImage[] }>()
 );

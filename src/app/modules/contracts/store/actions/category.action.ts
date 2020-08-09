@@ -2,22 +2,22 @@ import { ICategory } from './../../contract.model';
 import { createAction, props } from '@ngrx/store';
 
 export enum CategoryActionTypes {
-  addCategory = '[Category] Add',
+  addCategoryAction = '[Category] Add',
   addCategorySuccess = '[Category] Add (success)',
-  updateCategory = '[Category] Update',
+  updateCategoryAction = '[Category] Update',
   updateCategorySuccess = '[Category] Update (success)',
 }
 
-export const updateCategory = createAction(
-  CategoryActionTypes.updateCategory,
+export const updateCategoryAction = createAction(
+  CategoryActionTypes.updateCategoryAction,
   props<{ payload: ICategory }>()
 );
 export const updateCategorysSuccess = createAction(
   CategoryActionTypes.updateCategorySuccess,
   props<{ updated: ICategory }>()
 );
-export const addCategory = createAction(
-  CategoryActionTypes.addCategory,
+export const addCategoryAction = createAction(
+  CategoryActionTypes.addCategoryAction,
   props<{ payload: ICategory }>()
 );
 export const addCategorySuccess = createAction(

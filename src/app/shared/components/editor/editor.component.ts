@@ -1,4 +1,4 @@
-import { uploadTermImage, removeImageUploadState } from './../../../modules/contracts/store/actions/contracts.action';
+import { uploadTermImageAction, removeImageUploadState } from './../../../modules/contracts/store/actions/contracts.action';
 import { getUploadImageStateSelector } from './../../../modules/contracts/store/selectors/contracts.selector';
 import { take, map } from 'rxjs/operators';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
@@ -61,7 +61,7 @@ export class EditorComponent implements OnInit {
     /* save image physical file */
     const dataFile = new FormData();
     dataFile.append('file', this.quillFile, this.filename);
-    this.store.dispatch(uploadTermImage({ file: dataFile }));
+    this.store.dispatch(uploadTermImageAction({ file: dataFile }));
 
     /* store the image details*/
     const imagePayload = {

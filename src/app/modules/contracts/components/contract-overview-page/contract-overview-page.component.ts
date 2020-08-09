@@ -47,7 +47,7 @@ export class ContractOverviewPageComponent extends GenericDestroyPageComponent i
   public dragStarted(event: any) {
     this.dragStart = event;
   }
-  public addContract(): void {
+  public addContractAction(): void {
     this.store.dispatch(clearCachedImages());
 
     const dialogRef = this.dialog.open(ContractAddDialogComponent, {

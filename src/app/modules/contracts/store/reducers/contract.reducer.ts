@@ -1,6 +1,6 @@
 import { addImageUploadState, removeImageUploadState } from './../actions/contracts.action';
 import { ContractModuleState } from './index';
-import { loadContracts, loadContractSuccess, addContractSuccess, cacheImages, clearCachedImages, updateContractSuccess, deleteContractSuccess } from '../actions/contracts.action';
+import { loadContractsAction, loadContractSuccess, addContractSuccess, cacheImages, clearCachedImages, updateContractSuccess, deleteContractSuccess } from '../actions/contracts.action';
 import { IContract, IProductImage, IContractProduct } from './../../contract.model';
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
@@ -32,7 +32,7 @@ const contractsReducer = createReducer(
   on(deleteContractSuccess, (state, action) => {
     return ({ ...adapter.removeOne(action.deleted.id, state) })
   }),
-  on(loadContracts, (state) => {
+  on(loadContractsAction, (state) => {
     return ({ ...adapter.removeAll(state) });
   }),
   on(loadContractSuccess, (state, action) => {

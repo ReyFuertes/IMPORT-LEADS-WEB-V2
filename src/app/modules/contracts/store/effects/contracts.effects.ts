@@ -6,14 +6,14 @@ import { ContractsService } from './../../services/contracts.service';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap, tap, switchMap } from 'rxjs/operators';
-import { loadContracts, loadContractSuccess, addContract, addContractSuccess, uploadContractImages, uploadContractImageSuccess, ReOrderImages, updateContract, updateContractSuccess, deleteContract, deleteContractSuccess, uploadTermImage, addImageUploadState } from '../actions/contracts.action';
+import { loadContractsAction, loadContractSuccess, addContractAction, addContractSuccess, uploadContractImagesAction, uploadContractImageSuccess, ReOrderImagesAction, updateContractAction, updateContractSuccess, deleteContractAction, deleteContractSuccess, uploadTermImageAction, addImageUploadState } from '../actions/contracts.action';
 import { Store } from '@ngrx/store';
 import { appNotification } from 'src/app/store/actions/notification.action';
 
 @Injectable()
 export class ContractsEffect {
-  uploadTermImage$ = createEffect(() => this.actions$.pipe(
-    ofType(uploadTermImage),
+  uploadTermImageAction$ = createEffect(() => this.actions$.pipe(
+    ofType(uploadTermImageAction),
     switchMap(({ file }) => this.uploadService.upload(file, 'single')
       .pipe(
         map(() => {
@@ -22,23 +22,25 @@ export class ContractsEffect {
       ))
   ));
 
-  delete$ = createEffect(() => this.actions$.pipe(
-    ofType(deleteContract),
+  deleteContractAction$ = createEffect(() => this.actions$.pipe(
+    ofType(deleteContractAction),
     mergeMap(({ id }) => this.contractsService.delete(id).pipe(
       map((deleted: IContract) => deleteContractSuccess({ deleted }))
     ))
   ));
 
-  updateContract$ = createEffect(() => this.actions$.pipe(
-    ofType(updateContract),
+  updateContractAction$ = createEffect(() => this.actions$.pipe(
+    ofType(updateContractAction),
     mergeMap(({ item }) => this.contractsService.patch(item)
       .pipe(
-        map((updated: IContract) => updateContractSuccess({ updated }))
+        map((updated: IContract) => {
+          return updateContractSuccess({ updated });
+        })
       ))
   ));
 
-  addContract$ = createEffect(() => this.actions$.pipe(
-    ofType(addContract),
+  addContractAction$ = createEffect(() => this.actions$.pipe(
+    ofType(addContractAction),
     mergeMap(({ item }) => this.contractsService.post(item)
       .pipe(
         tap(() => this.store.dispatch(appNotification({ notification: { success: true, message: 'Contract successfully Added' } }))),
@@ -49,8 +51,8 @@ export class ContractsEffect {
       ))
   ));
 
-  loadContracts$ = createEffect(() => this.actions$.pipe(
-    ofType(loadContracts),
+  loadContractsAction$ = createEffect(() => this.actions$.pipe(
+    ofType(loadContractsAction),
     mergeMap(({ param }) => this.contractsService.getAll(param).pipe(
       map((items: IContract[]) => {
         return loadContractSuccess({ items });
@@ -58,8 +60,8 @@ export class ContractsEffect {
     ))
   ));
 
-  uploadImages$ = createEffect(() => this.actions$.pipe(
-    ofType(uploadContractImages),
+  uploadContractImagesAction$ = createEffect(() => this.actions$.pipe(
+    ofType(uploadContractImagesAction),
     mergeMap(({ files }) => {
       return this.uploadService.upload(files, 'multiple').pipe(
         map((file: any) => {
@@ -68,9 +70,8 @@ export class ContractsEffect {
       )
     })
   ));
-
-  reOrderImages$ = createEffect(() => this.actions$.pipe(
-    ofType(ReOrderImages),
+  ReOrderImagesAction$ = createEffect(() => this.actions$.pipe(
+    ofType(ReOrderImagesAction),
     switchMap(({ images }) => this.imagesService.patch(images, 'reorder'))
   ), { dispatch: false });
 

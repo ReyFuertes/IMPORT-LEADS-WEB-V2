@@ -6,6 +6,7 @@ import { IContractCategory, IContractTerm } from './../../contract.model';
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import * as _ from 'lodash';
+import { updateCategorysSuccess } from '../actions/category.action';
 
 export interface ContractCategoryState extends EntityState<IContractCategory> {
   selTermsForChecklist?: IContractTerm[];
@@ -17,6 +18,15 @@ export const initialState: ContractCategoryState = adapter.getInitialState({
 
 const reducer = createReducer(
   initialState,
+  on(updateCategorysSuccess, (state, action) => {
+    let entities = Object.values(state.entities);
+    entities.forEach(item => {
+      if (item.category.id === action.updated.id) {
+        item.category = action.updated
+      }
+    });
+    return state
+  }),
   on(selTermsForChecklistAction, (state, action) => {
     let terms = Object.assign([], state.selTermsForChecklist);
     /* add/remove terms after toggle */

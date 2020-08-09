@@ -1,4 +1,4 @@
-import { loadChecklist } from './../../inspections/store/inspection.action';
+import { loadInspectionChecklistAction } from './../../inspections/store/inspection.action';
 import { loadContractCategoryAction } from './../store/actions/contract-category.action';
 import { loadTags } from './../../tags/store/actions/tags.actions';
 import { ContractProductsState } from './../store/reducers/contract-product.reducer';
@@ -23,7 +23,7 @@ export class ContractsContainerComponent extends GenericContainer implements OnI
     this.store.dispatch(loadContractsAction(null));
     this.store.dispatch(loadProducts());
     this.store.dispatch(loadTags());
-    this.store.dispatch(loadChecklist());
+    this.store.dispatch(loadChecklistAction());
     this.store.dispatch(loadChecklistAction())
   }
 }

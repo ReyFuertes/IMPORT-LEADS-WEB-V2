@@ -1,12 +1,12 @@
-import { loadChecklistSuccess } from './../../../inspections/store/inspection.action';
+import { loadInspectionChecklistSuccessAction } from './../../../inspections/store/inspection.action';
 import { ContractModuleState } from './index';
 import {
-  addTermToChecklistAction, removeSelectedTerms, addToChecklistProductsAction, addToChecklistSourceAction, updateChecklistSourceAction, removeToChecklistProductsAction, highlightChecklist, overrideChecklistItemActionSuccess,
+  addTermToChecklistAction, removeSelectedTermsAction, addToChecklistProductsAction, addToChecklistSourceAction, updateChecklistSourceAction, removeToChecklistProductsAction, highlightChecklistAction, overrideChecklistItemActionSuccess,
   removeChecklistSourceAction,
-  addToChecklistSuccess,
-  removeChecklistItemSuccess,
+  addToChecklistSuccessAction,
+  removeChecklistItemsSuccessAction,
   removeAllSelectedTerms,
-  removeAllChecklistProducts
+  removeAllChecklistProductsAction
 } from './../actions/contract-checklist.action';
 import { IContractChecklist, IContractChecklistItem, IContractProduct, IContractTerm } from './../../contract.model';
 import { createReducer, on, Action } from "@ngrx/store";
@@ -45,7 +45,7 @@ const reducer = createReducer(
 
     return Object.assign({}, state, { selectedTerms });
   }),
-  on(removeChecklistItemSuccess, (state, action) => {
+  on(removeChecklistItemsSuccessAction, (state, action) => {
     const ids = action.deleted.map(i => i.id) /* collect checklist item ids to be removed */
     return ({ ...adapter.removeMany(ids, state) });
   }),
@@ -109,16 +109,16 @@ const reducer = createReducer(
 
     return Object.assign({}, state, { checklistProducts });
   }),
-  on(loadChecklistSuccess, (state, action) => {
+  on(loadInspectionChecklistSuccessAction, (state, action) => {
     return ({ ...adapter.addAll(action.items, state) })
   }),
   on(removeAllSelectedTerms, (state) => {
     return Object.assign({}, state, { selectedTerms: null });
   }),
-  on(removeAllChecklistProducts, (state) => {
+  on(removeAllChecklistProductsAction, (state) => {
     return Object.assign({}, state, { checklistProducts: null });
   }),
-  on(removeSelectedTerms, (state, action) => {
+  on(removeSelectedTermsAction, (state, action) => {
     /* when the product is deselected we want to remove also the selected terms using the product id */
     let selectedTerms = Object.assign([], state.selectedTerms);
     action.ids && action.ids.length > 0 && action.ids.forEach(id => {
@@ -134,26 +134,26 @@ const reducer = createReducer(
     let selectedTerms = Object.assign([], state.selectedTerms);
 
     if (selectedTerms && selectedTerms.length === 0) {
-      selectedTerms.push(action.id);
+      selectedTerms.push(action.ids);
     } else {
-      //action.item && action.item.forEach(termId => {
+      action.ids && action.ids.forEach(termId => {
       selectedTerms && selectedTerms.forEach(selTermId => {
-        if (selTermId !== action.id) {
-          selectedTerms.push(action.id);
+        if (selTermId !== termId) {
+          selectedTerms.push(termId);
         }
       });
-      //});
+      });
     }
     return Object.assign({}, state, { selectedTerms });
   }),
-  on(highlightChecklist, (state, action) => {
+  on(highlightChecklistAction, (state, action) => {
     return Object.assign({}, state, { isHighlighting: action.highlight });
   }),
-  on(addToChecklistSuccess, (state, action) => {
+  on(addToChecklistSuccessAction, (state, action) => {
     return adapter.addOne(action.item, state)
   }),
   /* if when adding a checklist item and no source is set, then add the newly created item as a source */
-  on(addToChecklistSuccess, (state, action) => {
+  on(addToChecklistSuccessAction, (state, action) => {
     let checklistSource: IContractChecklistItem = state.checklistSource;
     if (state && !checklistSource && action.item) {
       checklistSource = action.item;

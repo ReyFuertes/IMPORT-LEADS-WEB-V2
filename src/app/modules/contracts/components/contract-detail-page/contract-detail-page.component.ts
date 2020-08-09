@@ -1,4 +1,4 @@
-import { addToChecklist, highlightChecklist, removeChecklistItem, addTermToChecklistAction, removeAllSelectedTerms, removeToChecklistProductsAction } from './../../store/actions/contract-checklist.action';
+import { addToChecklistAction, highlightChecklistAction, removeChecklistItemsAction, addTermToChecklistAction, removeAllSelectedTerms, removeToChecklistProductsAction } from './../../store/actions/contract-checklist.action';
 import { sortByAsc } from 'src/app/shared/util/sort';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { ReOrderImagesAction, deleteContractAction } from './../../store/actions/contracts.action';
@@ -216,9 +216,9 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
 
     /* if the selected product doesnt exist, then add else then remove it */
     if (categoryTerm.checked) {
-      this.store.dispatch(addToChecklist({ payload }));
+      this.store.dispatch(addToChecklistAction({ payload }));
     } else {
-      this.store.dispatch(removeChecklistItem({ payload: match }));
+      this.store.dispatch(removeChecklistItemsAction({ payload: match }));
 
       /* we need to remove the checklist product here since we cannot include it in multi delete response */
       const checklistProduct = match.map(i => i.checklist_product).shift()
@@ -256,7 +256,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   public onCloseRighNav(event: any): void {
     setTimeout(() => {
       /* remove checklist highlight */
-      this.store.dispatch(highlightChecklist({ highlight: false }));
+      this.store.dispatch(highlightChecklistAction({ highlight: false }));
       this.showRightNav = !event;
       this.formChecklist.reset();
     }, 100);
@@ -311,7 +311,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     this.store.dispatch(removeAllSelectedTerms());
 
     /* set checklist to highlight when opening right nav */
-    this.store.dispatch(highlightChecklist({ highlight: true }));
+    this.store.dispatch(highlightChecklistAction({ highlight: true }));
   }
 
   public editContract = (): void => {

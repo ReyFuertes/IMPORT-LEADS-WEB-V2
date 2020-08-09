@@ -15,7 +15,7 @@
         <!-- parent product -->
         <il-pill [state]="state" 
             [reset]="!inCheckListing" 
-            (preSelectEmitter)="preSelectChange($event, isChecklistProductSelected(item?.id))"
+            (preSelectEmitter)="preSelectChange($event, isChecklistProductSelected(item?.id), true)"
             (deSelectEmitter)="deSelectChange($event, isChecklistProductSelected(item?.id))" 
             (stateEmitter)="removeSelection()" 
             (click)="onEdit(item)" 
@@ -30,15 +30,15 @@
         </il-pill>
 
         <!-- child product -->
-        <il-pill [attr.id]="sub?.id" *ngFor="let sub of item?.sub_products; let i = index" size="small" 
-          (preSelectEmitter)="preSelectChange($event, isChecklistProductSelected(sub?.id))" 
+        <il-pill *ngFor="let sub of item?.sub_products; let i = index" size="small" 
+          (preSelectEmitter)="preSelectChange($event, isChecklistProductSelected(sub?.id), false)" 
           (deSelectEmitter)="deSelectChange($event, isChecklistProductSelected(sub?.id))"
           (stateEmitter)="removeSelection()" 
           (click)="onEdit(sub)" 
           [reset]="!inCheckListing" 
           [ngClass]="{sel: (isChecklistProductSelected(sub?.id) 
             || isSubProductChecklistSelected(sub?._id)),
-            highlighted: isSubProductChecklistRelated(sub?.id)}"
+            highlighted: isSubProductChecklistRelated(sub)}"
           [enabled]="inCheckListing" 
           [item]="fmtSubToSimpleItem(sub)" 
           [enableHighlight]="true" 

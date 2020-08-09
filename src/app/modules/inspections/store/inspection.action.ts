@@ -3,13 +3,13 @@ import { IContractChecklist } from './../../contracts/contract.model';
 import { createAction, props } from '@ngrx/store';
 
 export enum CategoryActionTypes {
-  loadChecklist = '[Inspection Checklist] load',
-  loadChecklistSuccess = '[Inspection Checklist] load (success)',
+  loadInspectionChecklistAction = '[Inspection Checklist] load',
+  loadInspectionChecklistSuccessAction = '[Inspection Checklist] load (success)',
 }
-export const loadChecklist = createAction(
-  CategoryActionTypes.loadChecklist,
+export const loadInspectionChecklistAction = createAction(
+  CategoryActionTypes.loadInspectionChecklistAction,
 );
-export const loadChecklistSuccess = createAction(
-  CategoryActionTypes.loadChecklistSuccess,
+export const loadInspectionChecklistSuccessAction = createAction(
+  CategoryActionTypes.loadInspectionChecklistSuccessAction,
   props<{ items: IInspectionChecklist[] }>()
 );

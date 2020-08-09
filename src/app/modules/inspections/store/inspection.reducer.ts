@@ -1,6 +1,6 @@
 import { IInspectionChecklist } from './../inspections.models';
 import { IContractChecklist } from './../../contracts/contract.model';
-import { loadChecklist, loadChecklistSuccess } from './inspection.action';
+import { loadInspectionChecklistAction, loadInspectionChecklistSuccessAction } from './inspection.action';
 import { IInspection } from './../inspections.model';
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
@@ -14,7 +14,7 @@ export const initialState: InspectionState = adapter.getInitialState({
 });
 const inspectionReducer = createReducer(
   initialState,
-  on(loadChecklistSuccess, (state, action) => {
+  on(loadInspectionChecklistSuccessAction, (state, action) => {
     return Object.assign({}, state, { inspectionChecklist: action.items });
   })
 );

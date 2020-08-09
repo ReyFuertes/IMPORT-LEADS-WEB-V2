@@ -1,4 +1,4 @@
-import { highlightChecklist } from './../../store/actions/contract-checklist.action';
+import { highlightChecklistAction } from './../../store/actions/contract-checklist.action';
 import { AppState } from './../../../../store/app.reducer';
 import { Store, select } from '@ngrx/store';
 import { ISimpleItem } from './../../../../shared/generics/generic.model';

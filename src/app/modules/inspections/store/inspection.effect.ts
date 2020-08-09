@@ -1,5 +1,5 @@
 import { IInspectionChecklist } from './../inspections.models';
-import { loadChecklist, loadChecklistSuccess } from './inspection.action';
+import { loadInspectionChecklistAction, loadInspectionChecklistSuccessAction } from './inspection.action';
 import { IContractChecklist } from './../../contracts/contract.model';
 import { ChecklistService } from './../../contracts/services/contract-checklist.service';
 import { Injectable } from '@angular/core';
@@ -9,11 +9,11 @@ import { Store } from '@ngrx/store';
 
 @Injectable()
 export class InspectionEffect {
-  loadChecklist$ = createEffect(() => this.actions$.pipe(
-    ofType(loadChecklist),
+  loadChecklistAction$ = createEffect(() => this.actions$.pipe(
+    ofType(loadInspectionChecklistAction),
     mergeMap(() => this.checklistService.getAll().pipe(
       map((items: IInspectionChecklist[]) => {
-        return loadChecklistSuccess({ items });
+        return loadInspectionChecklistSuccessAction({ items });
       })
     ))
   ));

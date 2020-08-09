@@ -1,5 +1,5 @@
 import { ChecklistService } from './../../services/contract-checklist.service';
-import { loadChecklist, loadChecklistSuccess, addToChecklist, addToChecklistSuccess, removeChecklistItemSuccess, removeChecklistItem, addTermToChecklistAction, overrideChecklistItemAction, overrideChecklistItemActionSuccess, removeSelectedTerms } from './../actions/contract-checklist.action';
+import { loadChecklistAction, loadChecklistSuccessAction, addToChecklistAction, addToChecklistSuccessAction, removeChecklistItemsSuccessAction, removeChecklistItemsAction, addTermToChecklistAction, overrideChecklistItemAction, overrideChecklistItemActionSuccess, removeSelectedTermsAction } from './../actions/contract-checklist.action';
 import { AppState } from './../../../../store/app.reducer';
 import { IContractChecklistItem, IContractTerm } from './../../contract.model';
 import { Injectable } from '@angular/core';
@@ -20,44 +20,42 @@ export class ChecklistEffect {
         )
     })
   ));
-  loadChecklist$ = createEffect(() => this.actions$.pipe(
-    ofType(loadChecklist),
+  loadChecklistAction$ = createEffect(() => this.actions$.pipe(
+    ofType(loadChecklistAction),
     mergeMap(() => this.checklistService.getAll().pipe(
       map((items: IContractChecklistItem[]) => {
-        return loadChecklistSuccess({ items });
+        return loadChecklistSuccessAction({ items });
       })
     ))
   ));
-  removeChecklistItem$ = createEffect(() => this.actions$.pipe(
-    ofType(removeChecklistItem),
+  removeChecklistItemsAction$ = createEffect(() => this.actions$.pipe(
+    ofType(removeChecklistItemsAction),
     mergeMap(({ payload }) => {
       return this.checklistService.post(payload, 'multi-delete')
         .pipe(
           tap((deleted: IContractChecklistItem[]) => {
             /* preselect terms base on product selection */
-            this.store.dispatch(removeSelectedTerms({ ids: deleted.map(t => t.checklist_term.id) }));
+            this.store.dispatch(removeSelectedTermsAction({ ids: deleted.map(t => t.checklist_term.id) }));
           }),
           map((deleted: IContractChecklistItem[]) => {
-            return removeChecklistItemSuccess({ deleted });
+            return removeChecklistItemsSuccessAction({ deleted });
           })
         )
     })
   ));
-
-  addChecklist$ = createEffect(() => this.actions$.pipe(
-    ofType(addToChecklist),
+  addToChecklistAction$ = createEffect(() => this.actions$.pipe(
+    ofType(addToChecklistAction),
     mergeMap(({ payload }) => this.checklistService.post(payload)
       .pipe(
         /* when adding checklist item also preselect terms */
         tap((item: IContractChecklistItem) => {
-          this.store.dispatch(addTermToChecklistAction({ id: item.checklist_term.id }))
+          this.store.dispatch(addTermToChecklistAction({ ids: [item.checklist_term.id] }))
         }),
         map((item: IContractChecklistItem) => {
-          return addToChecklistSuccess({ item });
+          return addToChecklistSuccessAction({ item });
         })
       ))
   ));
-
   constructor(
     private store: Store<AppState>,
     private actions$: Actions,

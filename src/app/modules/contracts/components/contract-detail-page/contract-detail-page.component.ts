@@ -1,4 +1,4 @@
-import { addToChecklistAction, highlightChecklistAction, removeChecklistItemsAction, addTermToChecklistAction, removeAllSelectedTerms, removeToChecklistProductsAction } from './../../store/actions/contract-checklist.action';
+import { addToChecklistAction, highlightChecklistAction, removeChecklistItemsAction, addTermToChecklistAction, removeAllSelectedTerms, removeToChecklistProductsAction, removeAllChecklistProductsAction } from './../../store/actions/contract-checklist.action';
 import { sortByAsc } from 'src/app/shared/util/sort';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { ReOrderImagesAction, deleteContractAction } from './../../store/actions/contracts.action';
@@ -255,8 +255,10 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
 
   public onCloseRighNav(event: any): void {
     setTimeout(() => {
-      /* remove checklist highlight */
+      /* clear checklist highlight/s */
       this.store.dispatch(highlightChecklistAction({ highlight: false }));
+      /* clear selected checklist product/s */
+      this.store.dispatch(removeAllChecklistProductsAction());
       this.showRightNav = !event;
       this.formChecklist.reset();
     }, 100);

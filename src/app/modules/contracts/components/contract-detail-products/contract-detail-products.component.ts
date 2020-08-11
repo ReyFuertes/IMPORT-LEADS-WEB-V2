@@ -123,7 +123,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
         if (terms && terms.length > 0)
           this.selCategoryTerms = terms;
 
-          console.log(this.selCategoryTerms);
+        console.log(this.selCategoryTerms);
       })).subscribe();
 
     this.store.pipe(select(getChecklist), takeUntil(this.$unsubscribe))
@@ -199,7 +199,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
           /* if the checklist products is only one then remove the source and selected terms */
           if (this.checklistProductItems && this.checklistProductItems.length === 0
             && items && items.length > 0) {
-              
+
             this.store.dispatch(removeChecklistSourceAction());
             this.store.dispatch(removeSelectedTermsAction({ ids: items.map(i => i.checklist_term.id) }));
           }
@@ -218,7 +218,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
   public preSelectChange(payload: ISimpleItem, isPreselected?: boolean, isParent?: boolean): void {
     this.fmtToChecklist(payload);
-    
+
     /* in checklisting */
     if (!isPreselected && this.inCheckListing) {
       /* if product is the first selection then add it to the source checklist*/
@@ -249,7 +249,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       /* get the preselect term/s base on product selection */
       const items: IContractChecklistItem[] = this.checklistItems
         .filter(i => i.checklist_product.id === payload._id);
-   
+
       /* if the selection doesnt have a source and not preselected the terms  */
       if (!isPreselected && (items && items.length > 0) && !hasSource) {
         const ids = items && items.map(i => i.checklist_term.id);
@@ -271,9 +271,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
         data: { action: hasChecklistItems ? 1 : 2 }
       });
       dialogRef.afterClosed().subscribe(result => {
-        if (result && hasChecklistItems
-          || result && !hasChecklistItems) {
-
+        if (result && hasChecklistItems || result && !hasChecklistItems) {
           /* get the item from the state entities and use it to override the checklist item */
           this.store.pipe(
             take(1),
@@ -286,7 +284,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
                   checklist_product: { id: payload._id }
                 }
               };
-              console.log(item)
+    
               /* we need to remove the destination because we need to replace it */
               this.store.dispatch(removeChecklistItemAction({ item: item.destination }));
 
@@ -315,24 +313,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
                 && s.checklist_product.id === source.checklist_product.id);
             this.store.dispatch(addTermToChecklistAction({ ids: sourceTerms.map(t => t.checklist_term.id) }));
           }
-
         }
-        // else if (result && !hasChecklistItems) {
-        //   /* apply terms changes to a product from source */
-        //   const newChecklistItem: IContractChecklist = {
-        //     ...this.checklistSource,
-        //     /* override the obj to array */
-        //     checklist_product: [{ id: payload._id }],
-        //   }
-        //   debugger
-        //   /* add selected item to checklist items */
-        //   delete newChecklistItem.id;
-        //   this.store.dispatch(addToChecklistAction({ payload: newChecklistItem }));
-
-        //   /* also add the selected item to checklist product */
-        //   this.checklistProductItems.push(payload);
-        //   this.store.dispatch(addToChecklistProductsAction({ items: this.checklistProductItems }));
-        // }
       });
     }
   }

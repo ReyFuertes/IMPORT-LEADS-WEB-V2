@@ -134,7 +134,7 @@ const reducer = createReducer(
     let selectedTerms = Object.assign([], state.selectedTerms);
 
     if (selectedTerms && selectedTerms.length === 0) {
-      selectedTerms.push(action.ids);
+      selectedTerms.push(...action.ids);
     } else {
       action.ids && action.ids.forEach(termId => {
       selectedTerms && selectedTerms.forEach(selTermId => {

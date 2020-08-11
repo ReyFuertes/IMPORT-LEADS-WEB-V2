@@ -122,9 +122,11 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       tap(terms => {
         if (terms && terms.length > 0)
           this.selCategoryTerms = terms;
+
+          console.log(this.selCategoryTerms);
       })).subscribe();
 
-    this.store//.pipe(select(getChecklist), takeUntil(this.$unsubscribe))
+    this.store.pipe(select(getChecklist), takeUntil(this.$unsubscribe))
       .subscribe(res => console.log(res))
   }
 
@@ -216,7 +218,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
   public preSelectChange(payload: ISimpleItem, isPreselected?: boolean, isParent?: boolean): void {
     this.fmtToChecklist(payload);
-
+    
     /* in checklisting */
     if (!isPreselected && this.inCheckListing) {
       /* if product is the first selection then add it to the source checklist*/
@@ -247,7 +249,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       /* get the preselect term/s base on product selection */
       const items: IContractChecklistItem[] = this.checklistItems
         .filter(i => i.checklist_product.id === payload._id);
-
+   
       /* if the selection doesnt have a source and not preselected the terms  */
       if (!isPreselected && (items && items.length > 0) && !hasSource) {
         const ids = items && items.map(i => i.checklist_term.id);

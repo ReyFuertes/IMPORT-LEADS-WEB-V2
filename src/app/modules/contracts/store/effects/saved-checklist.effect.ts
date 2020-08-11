@@ -4,19 +4,19 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { SavedChecklistService } from '../../services/saved-checklist';
-import { saveChecklistAction, saveChecklistSuccessAction, loadChecklistSuccessAction, loadChecklistAction } from '../actions/saved-checklist.action';
+import { saveChecklistAction, saveChecklistSuccessAction, loadSavedChecklistAction, loadSavedChecklistSuccessAction } from '../actions/saved-checklist.action';
 import { ISavedChecklist } from '../../contract.model';
 import { appNotification } from 'src/app/store/actions/notification.action';
 
 @Injectable()
 export class SavedChecklistEffect {
   loadChecklistAction$ = createEffect(() => this.actions$.pipe(
-    ofType(loadChecklistAction),
+    ofType(loadSavedChecklistAction),
     mergeMap(() => {
       return this.savedChecklistSrv.getAll()
         .pipe(
           map((items: ISavedChecklist[]) => {
-            return loadChecklistSuccessAction({ items });
+            return loadSavedChecklistSuccessAction({ items });
           })
         )
     })

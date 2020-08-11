@@ -3,7 +3,7 @@ import { sortByDesc } from 'src/app/shared/util/sort';
 import { ISavedChecklist } from './../../contract.model';
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
-import { saveChecklistSuccessAction, loadChecklistSuccessAction } from '../actions/saved-checklist.action';
+import { saveChecklistSuccessAction, loadSavedChecklistSuccessAction } from '../actions/saved-checklist.action';
 
 export interface SavedChecklistState extends EntityState<ISavedChecklist> {
 }
@@ -12,7 +12,7 @@ export const initialState: SavedChecklistState = adapter.getInitialState({
 });
 const reducer = createReducer(
   initialState,
-  on(loadChecklistSuccessAction, (state, action) => {
+  on(loadSavedChecklistSuccessAction, (state, action) => {
     return ({ ...adapter.addAll(action.items, state) })
   }),
   on(saveChecklistSuccessAction, (state, action) => {

@@ -122,11 +122,9 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       tap(terms => {
         if (terms && terms.length > 0)
           this.selCategoryTerms = terms;
-
-        console.log(this.selCategoryTerms);
       })).subscribe();
 
-    this.store.pipe(select(getChecklist), takeUntil(this.$unsubscribe))
+    this.store//.pipe(select(getChecklist), takeUntil(this.$unsubscribe))
       .subscribe(res => console.log(res))
   }
 

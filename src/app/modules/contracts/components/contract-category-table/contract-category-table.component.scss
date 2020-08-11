@@ -49,6 +49,10 @@ table {
   margin-bottom: 20px;
 }
 :host ::ng-deep {
+  p {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+  }
   td.mat-cell {
     vertical-align: top;
   }
@@ -59,11 +63,13 @@ table {
   td.mat-cell {
     &:first-child {
       width: 300px;
-      .text-edit, .text-display {
+      .text-edit,
+      .text-display {
         padding-top: 15px;
       }
     }
     &:nth-child(2) {
+      padding-top: 13px;
       > div > div {
         &:nth-child(2) {
           position: relative;

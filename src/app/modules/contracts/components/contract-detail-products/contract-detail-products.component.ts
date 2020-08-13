@@ -1,6 +1,6 @@
 import { loadInspectionChecklistAction } from './../../../inspections/store/inspection.action';
-import { getChecklistSourceSelector, getChecklistItemsSelector, getChecklist, getChecklistItemByContractProductIds, getChecklistTermsByProductId, getchecklistProductsSelector } from './../../store/selectors/contract-checklist.selector';
-import { addItemToSourceAction, addItemToChecklistTermsAction, removeTermFormChecklistAction, addItemToChecklistProductsAction, updateChecklistSourceAction, removeItemFromChecklistProductsAction, overrideChecklistItemAction, removeChecklistItemAction, addItemToChecklist, removeAllChecklistProductsAction, clearAllSelectedTerms, clearChecklistSourceAction, setToMultiUpdateStatusAction, resetUpdateStatusAction, processItemsToChecklistAction, addItemToChecklistEntitiesAction, processItemsToChecklistEntitiesAction } from './../../store/actions/contract-checklist.action';
+import { getChecklist, getChecklistItemByContractProductIds } from './../../store/selectors/contract-checklist.selector';
+import { addItemToSourceAction, addItemToChecklistTermsAction, removeTermFormChecklistAction, addItemToChecklistProductsAction, removeItemFromChecklistProductsAction, removeAllChecklistProductsAction, clearAllSelectedTerms, clearChecklistSourceAction, setToMultiUpdateStatusAction, resetUpdateStatusAction, processItemsToChecklistAction, addItemToChecklistEntitiesAction, processItemsToChecklistEntitiesAction } from './../../store/actions/contract-checklist.action';
 import { getSelectedProductsSelector } from './../../store/selectors/contract-product-selector';
 import { getCategoryTermsSelector } from './../../store/selectors/contract-category.selector';
 import { getProductsSelector } from './../../../products/store/products.selector';
@@ -235,10 +235,9 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
           } else if (overrideOrApply === 2) {
             this.store.dispatch(addItemToChecklistProductsAction({ item }));
-            
+
             /* process to checklist entities */
             this.store.dispatch(processItemsToChecklistEntitiesAction());
-            
           }
         });
       } else {
@@ -293,59 +292,6 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
     } else {
       this.isAddState = true;
       this.store.dispatch(selectProductAction({ item }));
-    }
-  }
-
-  private overrideOrApplyChanges(isPreselected: boolean, payload: ISimpleItem, hasSource: boolean, hasChecklistItems: IContractChecklistItem): void {
-    if (hasSource && !isPreselected && this.inCheckListing) {
-      const dialogRef = this.dialog.open(ConfirmationComponent, {
-        width: '410px',
-        data: { action: hasChecklistItems ? 1 : 2 }
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        if (result && hasChecklistItems || result && !hasChecklistItems) {
-          /* get the item from the state entities and use it to override the checklist item */
-          this.store.pipe(
-            take(1),
-            select(getChecklistItemByContractProductIds(payload._id, this.contract.id)),
-            tap((destination: IContractChecklistItem) => {
-              const item: IOverrideChecklistItem = {
-                source: this.checklistSource,
-                destination: destination || {
-                  checklist_contract: { id: this.contract.id },
-                  checklist_product: { id: payload._id }
-                }
-              };
-              /* we need to remove the destination because we need to replace it */
-              this.store.dispatch(removeChecklistItemAction({ item: item.destination }));
-
-              this.store.dispatch(overrideChecklistItemAction({ item }));
-
-              /* highlight checklist product items */
-              this.checklistProducts.push(payload);
-              //this.store.dispatch(addItemToChecklistProductsAction({ items: this.checklistProducts }));
-            })).subscribe();
-
-        } else if (!result) {
-          /* remove and change the source, get the checklist item base on payload */
-          const source = this.checklistItems.filter(s => s.checklist_product.id === payload._id).shift();
-          if (source) {
-            //this.store.dispatch(addItemToSourceAction({ item: source }))
-
-            /* remove and add checklist products */
-            this.store.dispatch(removeAllChecklistProductsAction());
-            this.checklistProducts.push(payload);
-            //this.store.dispatch(addItemToChecklistProductsAction({ items: this.checklistProducts }));
-
-            /* remove selected terms */
-            this.store.dispatch(clearAllSelectedTerms());
-            const sourceTerms = this.checklistItems.filter(
-              s => s.checklist_term.id === source.checklist_term.id
-                && s.checklist_product.id === source.checklist_product.id);
-            //this.store.dispatch(addItemToChecklistTermsAction({ ids: sourceTerms.map(t => t.checklist_term.id) }));
-          }
-        }
-      });
     }
   }
 

@@ -1,4 +1,4 @@
-import { addItemToChecklist, highlightChecklistAction, removeChecklistItemsAction, addItemToChecklistTermsAction, clearAllSelectedTerms, removeItemFromChecklistProductsAction, removeAllChecklistProductsAction, addItemToChecklistItemsAction, processItemsToChecklistAction, removeTermFormChecklistAction } from './../../store/actions/contract-checklist.action';
+import { addItemToChecklistTermsAction, clearAllSelectedTerms, removeItemFromChecklistProductsAction, removeAllChecklistProductsAction, addItemToChecklistItemsAction, processItemsToChecklistAction, removeTermFormChecklistAction } from './../../store/actions/contract-checklist.action';
 import { sortByAsc } from 'src/app/shared/util/sort';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { ReOrderImagesAction, deleteContractAction } from './../../store/actions/contracts.action';
@@ -175,56 +175,6 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     }
 
     this.store.dispatch(processItemsToChecklistAction());
-
-
-    /* 
-      we will build the checklist payload here
-      so we can update it easily when toggling the terms
-    */
-    // const payload: IContractChecklist = {
-    //   checklist_contract: { id: this.id },
-    //   checklist_category: { id: term.category_id },
-    //   checklist_term: { id: term.term_id },
-    //   checklist_product: [...this.checkListProducts.map(i => {
-    //     return { id: i._id };
-    //   })],
-    //   session_id: this.sessionId
-    // }
-
-    // const termProductItem = {
-    //   term_id: term.term_id,
-
-    // }
-
-    // /* look for matches in the state */
-    // const match: IContractChecklistItem[] = this.checklistItems
-    //   .filter(c => c.checklist_category.id === categoryTerm.category_id
-    //     && c.checklist_term.id === categoryTerm.term_id
-    //     && this.checkListProducts.filter(cp => cp.id === c.checklist_product.product.id).shift());
-
-    // /* transform product to array of ids */
-    // Object.assign(payload, match);
-
-    // /* if the selected product doesnt exist, then add else then remove it */
-    // if (categoryTerm.checked) {
-    //   this.store.dispatch(addItemToChecklist({ payload }));
-    // } else {
-    //   this.store.dispatch(removeChecklistItemsAction({ payload: match }));
-
-    //   /* we need to remove the checklist product here since we cannot include it in multi delete response */
-    //   const checklistProduct = match.map(i => i.checklist_product).shift()
-    //   setTimeout(() => {
-    //     if (this.checklistTerms && this.checklistTerms.length === 0) {
-    //       if (checklistProduct && checklistProduct.product)
-    //         this.store.dispatch(removeItemFromChecklistProductsAction({
-    //           item: {
-    //             _id: checklistProduct.id,
-    //             id: checklistProduct.product.id
-    //           }
-    //         }))
-    //     }
-    //   }, 300);
-    // }
   }
 
   public onSaveChecklist(): void {
@@ -269,8 +219,6 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
 
   public onCloseRighNav(event: any): void {
     setTimeout(() => {
-      /* clear checklist highlight/s */
-      this.store.dispatch(highlightChecklistAction({ highlight: false }));
       /* clear selected checklist product/s */
       this.store.dispatch(removeAllChecklistProductsAction());
       this.showRightNav = !event;
@@ -331,9 +279,6 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
 
     /* clear all checklist terms  */
     this.store.dispatch(clearAllSelectedTerms());
-
-    /* set checklist to highlight when opening right nav */
-    this.store.dispatch(highlightChecklistAction({ highlight: true }));
   }
 
   public editContract = (): void => {

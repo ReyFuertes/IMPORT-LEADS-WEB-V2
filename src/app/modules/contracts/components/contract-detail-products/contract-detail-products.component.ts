@@ -1,6 +1,6 @@
 import { loadInspectionChecklistAction } from './../../../inspections/store/inspection.action';
 import { getChecklistSourceSelector, getChecklistItemsSelector, getChecklist, getChecklistItemByContractProductIds, getChecklistTermsByProductId, getchecklistProductsSelector } from './../../store/selectors/contract-checklist.selector';
-import { addToChecklistSourceAction, addTermToChecklistAction, removeSelectedTermsAction, addToChecklistProductsAction, updateChecklistSourceAction, removeToChecklistProductsAction, overrideChecklistItemAction, removeChecklistItemAction, addToChecklistAction, removeAllChecklistProductsAction, removeAllSelectedTerms, removeChecklistSourceAction } from './../../store/actions/contract-checklist.action';
+import { addItemToSourceAction, addItemToChecklistTermsAction, removeTermFormChecklistAction, addItemToChecklistProductsAction, updateChecklistSourceAction, removeItemFromChecklistProductsAction, overrideChecklistItemAction, removeChecklistItemAction, addItemToChecklist, removeAllChecklistProductsAction, removeAllSelectedTerms, removeChecklistSourceAction, setToMultiUpdateStatusAction, resetUpdateStatusAction, processItemsToChecklistAction } from './../../store/actions/contract-checklist.action';
 import { getSelectedProductsSelector } from './../../store/selectors/contract-product-selector';
 import { getCategoryTermsSelector } from './../../store/selectors/contract-category.selector';
 import { getProductsSelector } from './../../../products/store/products.selector';
@@ -9,7 +9,7 @@ import { getAllContractProductsSelector } from './../../store/selectors/contract
 import { addContractProducts, deleteContractProduct, updateContractProduct, selectProductAction, removeSelectedProductAction, clearPreSelectProducts } from './../../store/actions/contract-product.action';
 import { AppState } from 'src/app/store/app.reducer';
 import { Store, select } from '@ngrx/store';
-import { PillState, IContract, IContractProduct, IContractChecklist, IContractChecklistItem, IContractTerm, IOverrideChecklistItem } from './../../contract.model';
+import { PillState, IContract, IContractProduct, IContractChecklist, IContractChecklistItem, IContractTerm, IOverrideChecklistItem, ICommonIdPayload } from './../../contract.model';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ISimpleItem } from './../../../../shared/generics/generic.model';
@@ -44,7 +44,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   public $products: Observable<IProduct[]>;
   public selectedProduct: IContractProduct;
   public checklistItems: IContractChecklistItem[] = [];
-  public selCategoryTerms: IContractTerm[] = [];
+  public checklistTerms: IContractTerm[] = [];
   public checklistSource: IContractChecklistItem;
   public checklistProductItems: IContractProduct[] = [];
   public isAddState: boolean = false;
@@ -116,15 +116,15 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
         }
       })
 
-    /* get selected terms */
+    /* get checklist terms */
     this.store.pipe(select(getCategoryTermsSelector),
       takeUntil(this.$unsubscribe),
       tap(terms => {
         if (terms && terms.length > 0)
-          this.selCategoryTerms = terms;
+          this.checklistTerms = terms;
       })).subscribe();
 
-    this.store//.pipe(select(getChecklist), takeUntil(this.$unsubscribe))
+    this.store.pipe(select(getChecklist), takeUntil(this.$unsubscribe))
       .subscribe(res => console.log(res))
   }
 
@@ -183,82 +183,94 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       })).subscribe();
   }
 
-  public deSelectChange(payload: ISimpleItem): void {
+  public deSelectChange(item: ICommonIdPayload): void {
     if (this.inCheckListing) {
-      this.fmtToChecklist(payload);
-
       /* remove to checklist products */
-      this.store.dispatch(removeToChecklistProductsAction({ item: payload }))
+      this.store.dispatch(removeItemFromChecklistProductsAction({ item }));
 
-      this.store.pipe(
-        take(1),
-        select(getChecklistTermsByProductId(payload.id)),
-        tap((items: IContractChecklistItem[]) => {
-          /* if the checklist products is only one then remove the source and selected terms */
-          if (this.checklistProductItems && this.checklistProductItems.length === 0
-            && items && items.length > 0) {
+      /* if the checklist product falls to 1 then reset the status to single update */
+      if (this.checklistProductItems.length === 1) {
+        this.store.dispatch(resetUpdateStatusAction());
+      }
 
-            this.store.dispatch(removeChecklistSourceAction());
-            this.store.dispatch(removeSelectedTermsAction({ ids: items.map(i => i.checklist_term.id) }));
-          }
-        })).subscribe();
+      // /* remove source checklist if matched */
+      // this.store.dispatch(updateChecklistSourceAction({ item: payload }));
 
-      /* remove source checklist if matched */
-      this.store.dispatch(updateChecklistSourceAction({ item: payload }));
+      // this.store.pipe(
+      //   take(1),
+      //   select(getChecklistTermsByProductId(payload.id)),
+      //   tap((items: IContractChecklistItem[]) => {
+      //     console.log('getChecklistTermsByProductId', items);
+      //     /* if the checklist products is only one then remove the source and selected terms */
+      //     if (this.checklistProductItems && this.checklistProductItems.length === 0
+      //       && items && items.length > 0) {
+
+      //       this.store.dispatch(removeChecklistSourceAction());
+      //       this.store.dispatch(removeTermFormChecklistAction({ ids: items.map(i => i.checklist_term.id) }));
+      //     }
+      //   })).subscribe();
 
     } else {
-      this.store.dispatch(removeSelectedProductAction());
+      // this.store.dispatch(removeSelectedProductAction());
     }
 
     if (!this.inCheckListing)
       this.onResetForm();
   };
 
-  public preSelectChange(payload: ISimpleItem, isPreselected?: boolean, isParent?: boolean): void {
-    this.fmtToChecklist(payload);
-
+  public isMultiPreselecting: boolean = false;
+  public preSelectChange(item: ICommonIdPayload, isPreselected?: boolean): void {
     /* in checklisting */
     if (!isPreselected && this.inCheckListing) {
       /* if product is the first selection then add it to the source checklist*/
       if (!this.checklistSource) {
-        this.store.dispatch(addToChecklistSourceAction({
-          item: {
-            checklist_product: { id: payload._id },
-            checklist_contract: { id: this.contract.id }
-          }
-        }))
-      }
-      /* check if the selected item has a source in the checklist */
-      const hasSource = this.checklistProductItems && this.checklistProductItems.length > 0;
-      const hasChecklistItems = this.checklistItems
-        .filter(c => c.checklist_product.id === payload._id).shift();
-
-      /* if product is a source then preselect immediately */
-      if (!hasSource) {
-        this.checklistProductItems.push(payload);
-        this.store.dispatch(addToChecklistProductsAction({ items: this.checklistProductItems }));
-      } else {
-        /* check if the selected product match with the source
-          if not then override or apply changes
-        */
-        this.overrideOrApplyChanges(isPreselected, payload, hasSource, hasChecklistItems);
+        this.store.dispatch(addItemToSourceAction({ item }))
       }
 
-      /* get the preselect term/s base on product selection */
-      const items: IContractChecklistItem[] = this.checklistItems
-        .filter(i => i.checklist_product.id === payload._id);
+      /* add item to checklist products */
+      this.store.dispatch(addItemToChecklistProductsAction({ item }));
 
-      /* if the selection doesnt have a source and not preselected the terms  */
-      if (!isPreselected && (items && items.length > 0) && !hasSource) {
-        const ids = items && items.map(i => i.checklist_term.id);
+      /* check if the user is multi updating */
+      if (this.checklistTerms && this.checklistTerms.length === 0
+        && this.checklistProductItems.length > 1) {
+        console.log('selecting products without a term');
 
-        ids && ids.forEach(id => {
-          this.store.dispatch(addTermToChecklistAction({ ids }));
-        });
+        this.store.dispatch(setToMultiUpdateStatusAction());
       }
+
+      this.store.dispatch(processItemsToChecklistAction());
+
+      // /* check if the selected item has a source in the checklist */
+      // const hasSource = !!this.checklistSource;
+
+      // const hasChecklistItems = this.checklistItems
+      //   .filter(c => c.checklist_product.id === payload._id).shift();
+
+      // /* if product is a source then preselect immediately */
+      // if (!hasSource) {
+      //   this.checklistProductItems.push(payload);
+      //   this.store.dispatch(addItemToChecklistProductsAction({ items: this.checklistProductItems }));
+      // } else {
+      //   /* check if the selected product match with the source
+      //     if not then override or apply changes
+      //   */
+      //   if (this.checklistTerms && this.checklistTerms.length > 0)
+      //     this.overrideOrApplyChanges(isPreselected, payload, hasSource, hasChecklistItems);
+      // }
+
+      // /* get the preselect term/s base on product selection */
+      // const items: IContractChecklistItem[] = this.checklistItems
+      //   .filter(i => i.checklist_product.id === payload._id);
+
+      // /* if the selection doesnt have a source and not preselected the terms  */
+      // if (!isPreselected && (items && items.length > 0) && !hasSource) {
+      //   const ids = items && items.map(i => i.checklist_term.id);
+
+      //   this.store.dispatch(addItemToChecklistTermsAction({ ids }));
+      // }
     } else {
       this.isAddState = true;
-      this.store.dispatch(selectProductAction({ item: payload }));
+      this.store.dispatch(selectProductAction({ item }));
     }
   }
 
@@ -282,7 +294,6 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
                   checklist_product: { id: payload._id }
                 }
               };
-    
               /* we need to remove the destination because we need to replace it */
               this.store.dispatch(removeChecklistItemAction({ item: item.destination }));
 
@@ -290,26 +301,26 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
               /* highlight checklist product items */
               this.checklistProductItems.push(payload);
-              this.store.dispatch(addToChecklistProductsAction({ items: this.checklistProductItems }));
+              //this.store.dispatch(addItemToChecklistProductsAction({ items: this.checklistProductItems }));
             })).subscribe();
 
         } else if (!result) {
           /* remove and change the source, get the checklist item base on payload */
           const source = this.checklistItems.filter(s => s.checklist_product.id === payload._id).shift();
           if (source) {
-            this.store.dispatch(addToChecklistSourceAction({ item: source }))
+            //this.store.dispatch(addItemToSourceAction({ item: source }))
 
             /* remove and add checklist products */
             this.store.dispatch(removeAllChecklistProductsAction());
             this.checklistProductItems.push(payload);
-            this.store.dispatch(addToChecklistProductsAction({ items: this.checklistProductItems }));
+            //this.store.dispatch(addItemToChecklistProductsAction({ items: this.checklistProductItems }));
 
             /* remove selected terms */
             this.store.dispatch(removeAllSelectedTerms());
             const sourceTerms = this.checklistItems.filter(
               s => s.checklist_term.id === source.checklist_term.id
                 && s.checklist_product.id === source.checklist_product.id);
-            this.store.dispatch(addTermToChecklistAction({ ids: sourceTerms.map(t => t.checklist_term.id) }));
+            //this.store.dispatch(addItemToChecklistTermsAction({ ids: sourceTerms.map(t => t.checklist_term.id) }));
           }
         }
       });
@@ -600,10 +611,10 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   }
 
   public removeSelection(): void {
-    const pillArrContainer = document.querySelectorAll('.pill-container');
-    pillArrContainer && pillArrContainer.forEach((item) => {
-      item.classList.remove("selected");
-    })
+    // const pillArrContainer = document.querySelectorAll('.pill-container');
+    // pillArrContainer && pillArrContainer.forEach((item) => {
+    //   item.classList.remove("selected");
+    // })
   }
 
   public get isNavOpenAndEdit(): boolean {

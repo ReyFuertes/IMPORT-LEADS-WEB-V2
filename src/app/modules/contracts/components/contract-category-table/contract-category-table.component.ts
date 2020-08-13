@@ -1,7 +1,7 @@
 import { addContractTerm, deleteContractTerm, updateContractTerm } from './../../store/actions/contract-term.actions';
 import { loadContractCategoryAction, selTermsForChecklistAction } from './../../store/actions/contract-category.action';
 import { MatTableDataSource } from '@angular/material/table';
-import { IContractTerm, IContractCategoryTerm, IContractChecklistItem, IContractProduct } from './../../contract.model';
+import { IContractTerm, IContractCategoryTerm, IContractChecklistItem, IContractProduct, IContractTermProduct } from './../../contract.model';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { getTagsSelector } from '../../../tags/store/selectors/tags.selector';
 import { AppState } from '../../../../store/app.reducer';
@@ -21,6 +21,7 @@ import { deleteContractCategoryAction } from '../../store/actions/contract-categ
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
 import { getSelectedTermsSelector, getchecklistProductsSelector } from '../../store/selectors/contract-checklist.selector';
 import { appNotification } from 'src/app/store/actions/notification.action';
+import { addItemToChecklistTermsAction } from '../../store/actions/contract-checklist.action';
 
 @Component({
   selector: 'il-contract-category-table',
@@ -52,7 +53,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   public onPreview: boolean = false;
   public selectedRow: any;
   public categoryTerm: IContractCategoryTerm;
-  public selectedTerms: string[] = [];
+  public checklistTerm: IContractTermProduct[] = [];
   public checkListProducts: IContractProduct[] = [];
 
   @Input() public inCheckListing: boolean = false;
@@ -70,8 +71,8 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
 
     this.store.pipe(select(getSelectedTermsSelector),
       takeUntil(this.$unsubscribe),
-      tap((terms: string[]) => {
-        this.selectedTerms = terms || [];
+      tap((terms: IContractTermProduct[]) => {
+        this.checklistTerm = terms || [];
       })).subscribe();
 
     /* get checklist products */
@@ -83,8 +84,8 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       });
   }
 
-  public isTermChecked(item: string): boolean {
-    return this.selectedTerms && this.selectedTerms.includes(item);
+  public isTermChecked(item: IContractTermProduct): boolean {
+    return this.checklistTerm && this.checklistTerm.includes(item);
   }
 
   public get isDisabled(): boolean {
@@ -98,19 +99,22 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       }));
       return;
     };
-
+    this.categoryTermEmitter.emit({
+      term_id: term.id,
+      checked
+    });
     /* toggling terms for checklisting */
-    if (this.contract_category) {
-      const category_term = {
-        category_id: this.contract_category.id,
-        term_id: term.id,
-        checked
-      }
-      this.categoryTermEmitter.emit(category_term);
+    // if (this.contract_category) {
+    //   const category_term = {
+    //     category_id: this.contract_category.id,
+    //     term_id: term.id,
+    //     checked
+    //   }
+    //  
 
-      /* store selected checklists */
-      this.store.dispatch(selTermsForChecklistAction({ term }));
-    }
+    //   /* store selected checklists */
+    //   this.store.dispatch(selTermsForChecklistAction({ term }));
+    // }
   }
 
   public mouseOver = (event: any, col: string) => this.selectedRow = `${event.id}${col}`;

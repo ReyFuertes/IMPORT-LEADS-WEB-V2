@@ -1,24 +1,30 @@
 import { ITag } from './../tags/tags.model';
 import { IProduct } from './../products/products.model';
 import { IUser } from './../../models/user.model';
-
-export interface ISavedChecklist extends ISavedChecklistCore {
+export interface IContractTermProduct {
+  term_id?: string;
+  product_id?: string;
+  category_id?: string;
+  contract_id?: string;
+}
+export interface ISavedChecklistItem extends ISavedChecklist {
   checklist_items?: {
     id?: string;
     checklist_contract?: string;
     saved_checklist_item?: string;
   }
 }
-export interface ISavedChecklistPayload extends ISavedChecklistCore {
+export interface ISavedChecklistPayload extends ISavedChecklist {
   checklist_items?: string[]
 }
-export interface ISavedChecklistCore {
-  id?: string;
+export interface ICommonIdPayload {
+  id: string,
+  _id: string
+}
+export interface ISavedChecklist extends ICoreModel {
   checklist_name?: string;
   assigned_to?: string;
   desired_run_date?: string;
-  created_at?: string;
-  updated_at?: string;
 }
 export interface ISavedChecklistItem {
   id?: string;
@@ -34,50 +40,39 @@ export interface IContractCategoryTerm {
   term_id?: string;
   checked: boolean;
 }
-export interface IContractChecklistItem {
-  id?: string;
-  checklist_contract?: { id: string };
+export interface IContractChecklistItem extends IChecklist {
   checklist_product?: { id?: string, product?: IProduct };
-  checklist_term?: { id: string };
-  checklist_category?: { id: string };
-  desired_run_date?: string;
-  assigned_to?: string;
 }
-export interface IContractChecklist {
-  id?: string;
-  checklist_contract?: { id: string };
+export interface IContractChecklist extends IChecklist {
   checklist_product?: { id: string }[];
+}
+export interface IChecklist extends ICoreModel {
+  checklist_contract?: { id: string };
   checklist_term?: { id: string };
   checklist_category?: { id: string };
-  desired_run_date?: string;
-  assigned_to?: string;
+  session_id?: string;
 }
-export interface IContractTerm {
-  id?: string;
+export interface IContractTerm extends ICoreModel {
   term_name?: string;
   term_description?: string;
   contract_category?: IContractCategory;
   contract_tag?: ITag
 }
-export interface IContractCategory {
-  id?: string;
+export interface IContractCategory extends ICoreModel {
   category?: ICategory;
   contract?: IContract;
   terms?: IContractTerm[];
 }
-export interface ICategory {
-  id?: string;
+export interface ICategory extends ICoreModel {
   category_name: string;
 }
-export interface IContractProduct {
+export interface IContractProduct extends ICoreModel {
   _id?: string;
-  id?: string;
   parent?: IProduct
   sub_products?: IProduct[],
   contract?: IContract;
 }
-export interface IProductImage {
-  id?: string;
+export interface IProductImage extends ICoreModel {
   image?: any;
   filename?: string;
   position?: number;
@@ -86,13 +81,11 @@ export interface IProductImage {
   mimetype?: string;
   contractId?: string;
 }
-
 export enum PillState {
   default = 0,
   reset = 1
 }
-export interface IContract {
-  id?: string;
+export interface IContract extends ICoreModel {
   contract_name: string;
   venue?: any;
   start_date?: Date | string;
@@ -100,8 +93,11 @@ export interface IContract {
   details?: string;
   attachments?: any[];
   images?: IProductImage[];
-  created_at?: Date;
-  updated_at?: Date;
   user?: IUser;
   contract_products?: IProduct[]
+}
+export interface ICoreModel {
+  id?: string;
+  created_at?: Date;
+  updated_at?: Date;
 }

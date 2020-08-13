@@ -15,8 +15,8 @@
         <!-- parent product -->
         <il-pill [state]="state" 
             [reset]="!inCheckListing" 
-            (preSelectEmitter)="preSelectChange($event, isChecklistProductSelected(item?.id), true)"
-            (deSelectEmitter)="deSelectChange($event, isChecklistProductSelected(item?.id))" 
+            (preSelectEmitter)="preSelectChange({id: $event?.value, _id: $event?._id}, isChecklistProductSelected(item?.id), true)"
+            (deSelectEmitter)="deSelectChange({id: $event?.value, _id: $event?._id}, isChecklistProductSelected(item?.id))" 
             (stateEmitter)="removeSelection()" 
             (click)="onEdit(item)" 
             [ngClass]="{sel: (isChecklistProductSelected(item?.id) || isProductSelected(item?.id)), 
@@ -31,7 +31,7 @@
 
         <!-- child product -->
         <il-pill *ngFor="let sub of item?.sub_products; let i = index" size="small" 
-          (preSelectEmitter)="preSelectChange($event, isChecklistProductSelected(sub?.id), false)" 
+          (preSelectEmitter)="preSelectChange({id: $event?.id, _id: $event?._id}, isChecklistProductSelected(sub?.id), false)" 
           (deSelectEmitter)="deSelectChange($event, isChecklistProductSelected(sub?.id))"
           (stateEmitter)="removeSelection()" 
           (click)="onEdit(sub)" 

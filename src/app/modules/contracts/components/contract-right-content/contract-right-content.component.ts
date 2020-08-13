@@ -10,7 +10,7 @@ import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, Output, EventEmitter, ViewChild, AfterViewInit, ElementRef, Input } from '@angular/core';
 import { fromEvent, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ISavedChecklist } from '../../contract.model';
+import { ISavedChecklistItem } from '../../contract.model';
 import { getAllSavedChecklistSelector } from '../../store/selectors/saved-checklist.selector';
 
 @Component({
@@ -33,7 +33,7 @@ export class ContractRightContentComponent implements OnInit {
     label: 'Ben Booterkooper',
     value: '3'
   }];
-  public $savedChecklist: Observable<ISavedChecklist[]>;
+  public $savedChecklist: Observable<ISavedChecklistItem[]>;
 
   @Input() public form: FormGroup;
   @Output() public closeEmitter = new EventEmitter<boolean>();

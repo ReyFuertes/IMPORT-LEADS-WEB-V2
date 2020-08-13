@@ -37,8 +37,8 @@
           <!-- delete term -->
           <img matTooltip="Delete Term" (click)="onDeleteTerm(element?.id)" [ngClass]="{'hidden': inCheckListing}" [src]="svgPath + 'delete-icon-red.svg'">
 
-          <il-input-switch [disabled]="isDisabled" [checked]="isTermChecked(element?.id)" (onToggle)="onToggleTerms(element, $event?.checked)" [ngClass]="{'hidden': !inCheckListing}"></il-input-switch>
-
+          <il-input-switch [disabled]="isDisabled" [checked]="isTermChecked(element?.id)" 
+          (onToggle)="onToggleTerms(element, $event?.checked)" [ngClass]="{'hidden': !inCheckListing}"></il-input-switch>
         </div>
       </td>
     </ng-container>

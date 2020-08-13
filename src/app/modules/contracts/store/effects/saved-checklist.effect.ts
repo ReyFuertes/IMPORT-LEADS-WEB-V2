@@ -5,7 +5,7 @@ import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { SavedChecklistService } from '../../services/saved-checklist';
 import { saveChecklistAction, saveChecklistSuccessAction, loadSavedChecklistAction, loadSavedChecklistSuccessAction } from '../actions/saved-checklist.action';
-import { ISavedChecklist } from '../../contract.model';
+import { ISavedChecklistItem } from '../../contract.model';
 import { appNotification } from 'src/app/store/actions/notification.action';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class SavedChecklistEffect {
     mergeMap(() => {
       return this.savedChecklistSrv.getAll()
         .pipe(
-          map((items: ISavedChecklist[]) => {
+          map((items: ISavedChecklistItem[]) => {
             return loadSavedChecklistSuccessAction({ items });
           })
         )
@@ -33,7 +33,7 @@ export class SavedChecklistEffect {
                 notification: { success: true, message: 'Checklist successfully Saved' }
               }));
           }),
-          map((created: ISavedChecklist) => {
+          map((created: ISavedChecklistItem) => {
             return saveChecklistSuccessAction({ created });
           })
         )

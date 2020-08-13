@@ -2,7 +2,7 @@ import { loadContractCategoryAction } from './../actions/contract-category.actio
 import { addCategoryAction, addCategorySuccess, updateCategoryAction, updateCategorysSuccess } from './../actions/category.action';
 import { CategoryService } from './../../../../services/category.service';
 import { AppState } from './../../../../store/app.reducer';
-import { ICategory, ISavedChecklist } from './../../contract.model';
+import { ICategory, ISavedChecklistItem } from './../../contract.model';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
@@ -17,7 +17,7 @@ export class SavedChecklistItemEffect {
     mergeMap(({ payload }) => {
       return this.savedChecklistItemSrv.post(payload)
         .pipe(
-          map((created: ISavedChecklist) => {
+          map((created: ISavedChecklistItem) => {
             return saveChecklistItemSuccessAction({ created });
           })
         )

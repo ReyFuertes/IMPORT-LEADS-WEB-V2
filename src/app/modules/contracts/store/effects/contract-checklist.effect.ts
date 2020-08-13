@@ -20,14 +20,14 @@ export class ChecklistEffect {
   //       )
   //   })
   // ));
-  // loadChecklistAction$ = createEffect(() => this.actions$.pipe(
-  //   ofType(loadChecklistAction),
-  //   mergeMap(() => this.checklistService.getAll().pipe(
-  //     map((items: IContractChecklistItem[]) => {
-  //       return loadChecklistSuccessAction({ items });
-  //     })
-  //   ))
-  // ));
+  loadChecklistAction$ = createEffect(() => this.actions$.pipe(
+    ofType(loadChecklistAction),
+    mergeMap(() => this.checklistService.getAll().pipe(
+      map((items: IContractChecklistItem[]) => {
+        return loadChecklistSuccessAction({ items });
+      })
+    ))
+  ));
   // removeChecklistItemsAction$ = createEffect(() => this.actions$.pipe(
   //   ofType(removeChecklistItemsAction),
   //   mergeMap(({ payload }) => {

@@ -6,8 +6,6 @@ export enum CheckListActionTypes {
   addToChecklistSuccessAction = '[Contract Checklist] Add (success)',
   clearChecklistAction = '[Contract Checklist] Clear',
   highlightChecklistAction = '[Contract Checklist] Highlight',
-  loadChecklistAction = '[Inspection Checklist] load',
-  loadChecklistSuccessAction = '[Inspection Checklist] load (success)',
   updateChecklistSourceAction = '[Contract Checklist] remove to checklist source',
   overrideChecklistItemAction = '[Contract Checklist] override checklist item',
   overrideChecklistItemActionSuccess = '[Contract Checklist] override checklist item (success)',
@@ -17,8 +15,6 @@ export enum CheckListActionTypes {
   removeTermFormChecklistAction = '[Contract Checklist] remove selected Terms',
   removeChecklistItemAction = '[Contract Checklist] remove checklist item',
   removeAllChecklistProductsAction = '[Contract Checklist] remove all checklist products',
-  removeChecklistSourceAction = '[Contract Checklist] remove all checklist source',
-
 
   addItemToChecklistProductsAction = '[Contract Checklist] add product to checklist',
   removeItemFromChecklistProductsAction = '[Contract Checklist] remove product to checklist',
@@ -29,7 +25,17 @@ export enum CheckListActionTypes {
   addItemToChecklistItemsAction = '[Contract Checklist] add checklist items',
   processItemsToChecklistAction = '[Contract Checklist] process checklist items',
   clearAllSelectedTerms = '[Contract Checklist] clear all terms',
+  loadChecklistAction = '[Inspection Checklist] load checklist items',
+  loadChecklistSuccessAction = '[Inspection Checklist] load checklist items (success)',
+  clearChecklistSourceAction = '[Contract Checklist] clear checklist source',
 }
+export const loadChecklistAction = createAction(
+  CheckListActionTypes.loadChecklistAction,
+);
+export const loadChecklistSuccessAction = createAction(
+  CheckListActionTypes.loadChecklistSuccessAction,
+  props<{ items: IContractChecklistItem[] }>()
+);
 /* CLEAR ALL CHECKLIST TERMS */
 export const clearAllSelectedTerms = createAction(
   CheckListActionTypes.clearAllSelectedTerms
@@ -79,8 +85,8 @@ export const removeTermFormChecklistAction = createAction(
 
 
 
-export const removeChecklistSourceAction = createAction(
-  CheckListActionTypes.removeChecklistSourceAction
+export const clearChecklistSourceAction = createAction(
+  CheckListActionTypes.clearChecklistSourceAction
 );
 export const removeAllChecklistProductsAction = createAction(
   CheckListActionTypes.removeAllChecklistProductsAction
@@ -104,13 +110,6 @@ export const overrideChecklistItemActionSuccess = createAction(
 export const updateChecklistSourceAction = createAction(
   CheckListActionTypes.updateChecklistSourceAction,
   props<{ item: IContractProduct }>()
-);
-export const loadChecklistAction = createAction(
-  CheckListActionTypes.loadChecklistAction,
-);
-export const loadChecklistSuccessAction = createAction(
-  CheckListActionTypes.loadChecklistSuccessAction,
-  props<{ items: IContractChecklistItem[] }>()
 );
 export const removeChecklistItemsAction = createAction(
   CheckListActionTypes.removeChecklistItemsAction,

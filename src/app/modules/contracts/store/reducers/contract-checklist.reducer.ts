@@ -2,7 +2,7 @@ import { loadInspectionChecklistSuccessAction } from './../../../inspections/sto
 import { ContractModuleState } from './index';
 import {
   addItemToChecklistTermsAction, removeTermFormChecklistAction, addItemToChecklistProductsAction, addItemToSourceAction, updateChecklistSourceAction, removeItemFromChecklistProductsAction, highlightChecklistAction, overrideChecklistItemActionSuccess,
-  removeChecklistSourceAction,
+  clearChecklistSourceAction,
   addToChecklistSuccessAction,
   removeChecklistItemsSuccessAction,
   clearAllSelectedTerms,
@@ -10,7 +10,8 @@ import {
   setToMultiUpdateStatusAction,
   resetUpdateStatusAction,
   addItemToChecklistItemsAction,
-  processItemsToChecklistAction
+  processItemsToChecklistAction,
+  loadChecklistSuccessAction
 } from './../actions/contract-checklist.action';
 import { IContractChecklist, IContractChecklistItem, IContractProduct, IContractTerm, ICommonIdPayload, IContractTermProduct, ISavedChecklistItem } from './../../contract.model';
 import { createReducer, on, Action } from "@ngrx/store";
@@ -37,6 +38,12 @@ export const initialState: ContractChecklistState = adapter.getInitialState({
 
 const reducer = createReducer(
   initialState,
+  on(clearChecklistSourceAction, (state) => {
+    return Object.assign({}, state, { checklistSource: undefined });
+  }),
+  on(loadChecklistSuccessAction, (state, action) => {
+    return ({ ...adapter.addAll(action.items, state) })
+  }),
   on(clearAllSelectedTerms, (state) => {
     return Object.assign({}, state, { checklistTerms: undefined });
   }),
@@ -214,9 +221,7 @@ const reducer = createReducer(
   //   return Object.assign({}, state, { checklistSource, selectedTerms: _.uniq(terms) });
   // }),
   // /* remove all source */
-  // on(removeChecklistSourceAction, (state) => {
-  //   return Object.assign({}, state, { checklistSource: null });
-  // }),
+
   // /* add & remove checklist products */
   // on(removeItemFromChecklistProductsAction, (state, action) => {
   //   let checklistProducts = Object.assign([], state.checklistProducts);

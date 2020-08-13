@@ -1,6 +1,6 @@
 import { loadInspectionChecklistAction } from './../../../inspections/store/inspection.action';
 import { getChecklistSourceSelector, getChecklistItemsSelector, getChecklist, getChecklistItemByContractProductIds, getChecklistTermsByProductId, getchecklistProductsSelector } from './../../store/selectors/contract-checklist.selector';
-import { addItemToSourceAction, addItemToChecklistTermsAction, removeTermFormChecklistAction, addItemToChecklistProductsAction, updateChecklistSourceAction, removeItemFromChecklistProductsAction, overrideChecklistItemAction, removeChecklistItemAction, addItemToChecklist, removeAllChecklistProductsAction, clearAllSelectedTerms, removeChecklistSourceAction, setToMultiUpdateStatusAction, resetUpdateStatusAction, processItemsToChecklistAction } from './../../store/actions/contract-checklist.action';
+import { addItemToSourceAction, addItemToChecklistTermsAction, removeTermFormChecklistAction, addItemToChecklistProductsAction, updateChecklistSourceAction, removeItemFromChecklistProductsAction, overrideChecklistItemAction, removeChecklistItemAction, addItemToChecklist, removeAllChecklistProductsAction, clearAllSelectedTerms, clearChecklistSourceAction, setToMultiUpdateStatusAction, resetUpdateStatusAction, processItemsToChecklistAction } from './../../store/actions/contract-checklist.action';
 import { getSelectedProductsSelector } from './../../store/selectors/contract-product-selector';
 import { getCategoryTermsSelector } from './../../store/selectors/contract-category.selector';
 import { getProductsSelector } from './../../../products/store/products.selector';
@@ -9,7 +9,7 @@ import { getAllContractProductsSelector } from './../../store/selectors/contract
 import { addContractProducts, deleteContractProduct, updateContractProduct, selectProductAction, removeSelectedProductAction, clearPreSelectProducts } from './../../store/actions/contract-product.action';
 import { AppState } from 'src/app/store/app.reducer';
 import { Store, select } from '@ngrx/store';
-import { PillState, IContract, IContractProduct, IContractChecklist, IContractChecklistItem, IContractTerm, IOverrideChecklistItem, ICommonIdPayload } from './../../contract.model';
+import { PillState, IContract, IContractProduct, IContractChecklist, IContractChecklistItem, IContractTerm, IOverrideChecklistItem, ICommonIdPayload, IContractTermProduct } from './../../contract.model';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ISimpleItem } from './../../../../shared/generics/generic.model';
@@ -44,9 +44,9 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   public $products: Observable<IProduct[]>;
   public selectedProduct: IContractProduct;
   public checklistItems: IContractChecklistItem[] = [];
-  public checklistTerms: IContractTerm[] = [];
+  public checklistTerms: IContractTermProduct[] = [];
   public checklistSource: IContractChecklistItem;
-  public checklistProductItems: IContractProduct[] = [];
+  public checklistProducts: IContractProduct[] = [];
   public isAddState: boolean = false;
 
   @Input()
@@ -116,12 +116,15 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
         }
       })
 
-    /* get checklist terms */
-    this.store.pipe(select(getCategoryTermsSelector),
-      takeUntil(this.$unsubscribe),
-      tap(terms => {
-        if (terms && terms.length > 0)
-          this.checklistTerms = terms;
+
+    this.store.pipe(select(getChecklist))
+      .pipe(tap(res => {
+        this.checklistTerms = res.checklistTerms || [];
+        this.checklistSource = res.checklistSource || undefined;
+        this.checklistProducts = res.checklistProducts || [];
+        this.checklistItems = Object.values(res.entities) || [];
+
+        console.log(res)
       })).subscribe();
   }
 
@@ -132,9 +135,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       takeUntil(this.$unsubscribe));
 
     /* product suggestions */
-    this.$products = this.store.pipe(select(getProductsSelector),
-      takeUntil(this.$unsubscribe));
-
+    this.$products = this.store.pipe(select(getProductsSelector), takeUntil(this.$unsubscribe));
     this.$products.subscribe(p => {
       if (p) {
         const parent = p.filter(o => o.parent).filter(Boolean);
@@ -157,27 +158,6 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       takeUntil(this.$unsubscribe),
       tap(sp => this.selectedProduct = sp)
     ).subscribe();
-
-    /* listen to all checklist so we can highlight to green */
-    this.store.pipe(select(getChecklistItemsSelector),
-      takeUntil(this.$unsubscribe),
-      tap(res => {
-        this.checklistItems = res || [];
-      })).subscribe();
-
-    /* listen to checklist source */
-    this.store.pipe(select(getChecklistSourceSelector),
-      takeUntil(this.$unsubscribe),
-      tap(source => {
-        this.checklistSource = source;
-      })).subscribe()
-
-    /* get selected checklist products */
-    this.store.pipe(select(getchecklistProductsSelector),
-      takeUntil(this.$unsubscribe),
-      tap((res: IContractProduct[]) => {
-        this.checklistProductItems = res || [];
-      })).subscribe();
   }
 
   public deSelectChange(item: ICommonIdPayload): void {
@@ -186,13 +166,16 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       this.store.dispatch(removeItemFromChecklistProductsAction({ item }));
 
       /* if the checklist product falls to 1 then reset the status to single update */
-      if (this.checklistProductItems.length === 1)
+      if (this.checklistProducts.length === 1)
         this.store.dispatch(resetUpdateStatusAction());
 
-      /* if all checklist products is deselected, then remove all the terms */
-      if (this.checklistProductItems.length === 0)
+      /* if all checklist products is deselected, then remove all the terms and source */
+      if (this.checklistProducts.length === 0) {
+        this.store.dispatch(clearChecklistSourceAction());
         this.store.dispatch(clearAllSelectedTerms());
+      }
 
+      this.store.dispatch(processItemsToChecklistAction());
 
       // /* remove source checklist if matched */
       // this.store.dispatch(updateChecklistSourceAction({ item: payload }));
@@ -203,10 +186,10 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       //   tap((items: IContractChecklistItem[]) => {
       //     console.log('getChecklistTermsByProductId', items);
       //     /* if the checklist products is only one then remove the source and selected terms */
-      //     if (this.checklistProductItems && this.checklistProductItems.length === 0
+      //     if (this.checklistProducts && this.checklistProducts.length === 0
       //       && items && items.length > 0) {
 
-      //       this.store.dispatch(removeChecklistSourceAction());
+      //       this.store.dispatch(clearChecklistSourceAction());
       //       this.store.dispatch(removeTermFormChecklistAction({ ids: items.map(i => i.checklist_term.id) }));
       //     }
       //   })).subscribe();
@@ -219,27 +202,57 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       this.onResetForm();
   };
 
-  public isMultiPreselecting: boolean = false;
   public preSelectChange(item: ICommonIdPayload, isPreselected?: boolean): void {
     /* in checklisting */
     if (!isPreselected && this.inCheckListing) {
+
+      /* check if the user is multi updating */
+      if (this.checklistTerms && this.checklistTerms.length === 0
+        && this.checklistProducts.length > 1) {
+        this.store.dispatch(setToMultiUpdateStatusAction());
+      }
+
       /* if product is the first selection then add it to the source checklist*/
       if (!this.checklistSource) {
         this.store.dispatch(addItemToSourceAction({ item }))
       }
 
-      /* add item to checklist products */
-      this.store.dispatch(addItemToChecklistProductsAction({ item }));
+      /* perform override here */
+      if (this.checklistSource && this.checklistProducts.length >= 1) {
+        const dialogRef = this.dialog.open(ConfirmationComponent, {
+          width: '410px',
+          data: { action: 1 }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            /* if override, then add the product  */
+            this.store.dispatch(addItemToChecklistProductsAction({ item }));
 
-      /* check if the user is multi updating */
-      if (this.checklistTerms && this.checklistTerms.length === 0
-        && this.checklistProductItems.length > 1) {
-        console.log('selecting products without a term');
+            /* reprocess */
+            this.store.dispatch(processItemsToChecklistAction());
+          }
+        });
+      } else {
+        this.store.dispatch(addItemToChecklistProductsAction({ item }));
 
-        this.store.dispatch(setToMultiUpdateStatusAction());
+        /* get all the terms of selected source */
+        if (this.checklistSource && this.checklistProducts.length === 1) {
+          const items = this.checklistItems.filter(ci => ci.checklist_product.id === item._id);
+          items && items.forEach(item => {
+            this.store.dispatch(addItemToChecklistTermsAction({
+              term: {
+                term_id: item.checklist_term.id,
+                product_id: item.checklist_product.id,
+                contract_id: item.checklist_contract.id,
+                category_id: item.checklist_category.id
+              }
+            }));
+          });
+        }
+        this.store.dispatch(processItemsToChecklistAction());
       }
 
-      this.store.dispatch(processItemsToChecklistAction());
+
 
       // /* check if the selected item has a source in the checklist */
       // const hasSource = !!this.checklistSource;
@@ -249,8 +262,8 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
       // /* if product is a source then preselect immediately */
       // if (!hasSource) {
-      //   this.checklistProductItems.push(payload);
-      //   this.store.dispatch(addItemToChecklistProductsAction({ items: this.checklistProductItems }));
+      //   this.checklistProducts.push(payload);
+      //   this.store.dispatch(addItemToChecklistProductsAction({ items: this.checklistProducts }));
       // } else {
       //   /* check if the selected product match with the source
       //     if not then override or apply changes
@@ -301,8 +314,8 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
               this.store.dispatch(overrideChecklistItemAction({ item }));
 
               /* highlight checklist product items */
-              this.checklistProductItems.push(payload);
-              //this.store.dispatch(addItemToChecklistProductsAction({ items: this.checklistProductItems }));
+              this.checklistProducts.push(payload);
+              //this.store.dispatch(addItemToChecklistProductsAction({ items: this.checklistProducts }));
             })).subscribe();
 
         } else if (!result) {
@@ -313,8 +326,8 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
             /* remove and add checklist products */
             this.store.dispatch(removeAllChecklistProductsAction());
-            this.checklistProductItems.push(payload);
-            //this.store.dispatch(addItemToChecklistProductsAction({ items: this.checklistProductItems }));
+            this.checklistProducts.push(payload);
+            //this.store.dispatch(addItemToChecklistProductsAction({ items: this.checklistProducts }));
 
             /* remove selected terms */
             this.store.dispatch(clearAllSelectedTerms());
@@ -338,9 +351,9 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
   public isChecklistProductSelected(id: string): boolean {
     return this.inCheckListing
-      && this.checklistProductItems
-      && this.checklistProductItems.length > 0
-      && this.checklistProductItems.filter(c => c.id === id).shift() ? true : false;
+      && this.checklistProducts
+      && this.checklistProducts.length > 0
+      && this.checklistProducts.filter(c => c.id === id).shift() ? true : false;
   }
 
   public isProductSelected(id: string): boolean {
@@ -350,16 +363,16 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   }
 
   public isSubProductSelected(id: string): boolean {
-    return this.checklistProductItems
-      && this.checklistProductItems.length > 0
-      && this.checklistProductItems.filter(c => c.id === id).shift() ? true : false;
+    return this.checklistProducts
+      && this.checklistProducts.length > 0
+      && this.checklistProducts.filter(c => c.id === id).shift() ? true : false;
   }
   /* when selecting product in checklist state */
   public isSubProductChecklistSelected(id: string): boolean {
     return this.inCheckListing
-      && this.checklistProductItems
-      && this.checklistProductItems.length > 0
-      && this.checklistProductItems.filter(c => c.id === id).shift() ? true : false;
+      && this.checklistProducts
+      && this.checklistProducts.length > 0
+      && this.checklistProducts.filter(c => c.id === id).shift() ? true : false;
   }
   /* when selecting product in checklist state
     we are matching the subproduct by using childid 

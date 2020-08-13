@@ -142,7 +142,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     this.store.pipe(select(getChecklist))
       .pipe(tap(res => {
         this.checklistItems = res.checklistItems || [];
-        this.checkListProducts = res.checklistProducts;
+        this.checkListProducts = res.checklistProducts || [];
         this.checklistTerms = res.checklistTerms || [];
 
         console.log(res)

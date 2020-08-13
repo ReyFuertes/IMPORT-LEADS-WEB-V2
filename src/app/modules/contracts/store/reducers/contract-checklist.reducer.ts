@@ -5,7 +5,7 @@ import {
   removeChecklistSourceAction,
   addToChecklistSuccessAction,
   removeChecklistItemsSuccessAction,
-  removeAllSelectedTerms,
+  clearAllSelectedTerms,
   removeAllChecklistProductsAction,
   setToMultiUpdateStatusAction,
   resetUpdateStatusAction,
@@ -37,6 +37,9 @@ export const initialState: ContractChecklistState = adapter.getInitialState({
 
 const reducer = createReducer(
   initialState,
+  on(clearAllSelectedTerms, (state) => {
+    return Object.assign({}, state, { checklistTerms: undefined });
+  }),
   /* REMOVE ITEM TO CHECKLIST TERMS */
   on(removeTermFormChecklistAction, (state, action) => {
     const match = state.checklistTerms
@@ -224,7 +227,7 @@ const reducer = createReducer(
   // on(loadInspectionChecklistSuccessAction, (state, action) => {
   //   return ({ ...adapter.addAll(action.items, state) })
   // }),
-  // on(removeAllSelectedTerms, (state) => {
+  // on(clearAllSelectedTerms, (state) => {
   //   return Object.assign({}, state, { selectedTerms: null });
   // }),
   // on(removeAllChecklistProductsAction, (state) => {

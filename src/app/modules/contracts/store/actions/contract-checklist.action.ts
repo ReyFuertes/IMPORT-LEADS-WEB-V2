@@ -16,7 +16,6 @@ export enum CheckListActionTypes {
   removeChecklistItemsSuccessAction = '[Contract Checklist] Delete (success)',
   removeTermFormChecklistAction = '[Contract Checklist] remove selected Terms',
   removeChecklistItemAction = '[Contract Checklist] remove checklist item',
-  removeAllSelectedTerms = '[Contract Checklist] remove all terms',
   removeAllChecklistProductsAction = '[Contract Checklist] remove all checklist products',
   removeChecklistSourceAction = '[Contract Checklist] remove all checklist source',
 
@@ -24,12 +23,17 @@ export enum CheckListActionTypes {
   addItemToChecklistProductsAction = '[Contract Checklist] add product to checklist',
   removeItemFromChecklistProductsAction = '[Contract Checklist] remove product to checklist',
   addItemToSourceAction = '[Contract Checklist] add to checklist source',
-  addItemToChecklistTermsAction = '[Contract Checklist] add Term', //<------------changes this
+  addItemToChecklistTermsAction = '[Contract Checklist] add Term',
   setToMultiUpdateStatusAction = '[Contract Checklist] set multi update status',
   resetUpdateStatusAction = '[Contract Checklist] reset status',
   addItemToChecklistItemsAction = '[Contract Checklist] add checklist items',
-  processItemsToChecklistAction = '[Contract Checklist] process checklist items'
+  processItemsToChecklistAction = '[Contract Checklist] process checklist items',
+  clearAllSelectedTerms = '[Contract Checklist] clear all terms',
 }
+/* CLEAR ALL CHECKLIST TERMS */
+export const clearAllSelectedTerms = createAction(
+  CheckListActionTypes.clearAllSelectedTerms
+);
 /* ADD ITEM TO CHECKLIST TERMS */
 export const processItemsToChecklistAction = createAction(
   CheckListActionTypes.processItemsToChecklistAction
@@ -84,9 +88,6 @@ export const removeAllChecklistProductsAction = createAction(
 export const preSelectChecklistProductsAction = createAction(
   CheckListActionTypes.preSelectChecklistProductsAction,
   props<{ item: IContractProduct[] }>()
-);
-export const removeAllSelectedTerms = createAction(
-  CheckListActionTypes.removeAllSelectedTerms
 );
 export const removeChecklistItemAction = createAction(
   CheckListActionTypes.removeChecklistItemAction,

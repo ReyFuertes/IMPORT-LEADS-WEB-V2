@@ -1,4 +1,4 @@
-import { addItemToChecklist, highlightChecklistAction, removeChecklistItemsAction, addItemToChecklistTermsAction, removeAllSelectedTerms, removeItemFromChecklistProductsAction, removeAllChecklistProductsAction, addItemToChecklistItemsAction, processItemsToChecklistAction, removeTermFormChecklistAction } from './../../store/actions/contract-checklist.action';
+import { addItemToChecklist, highlightChecklistAction, removeChecklistItemsAction, addItemToChecklistTermsAction, clearAllSelectedTerms, removeItemFromChecklistProductsAction, removeAllChecklistProductsAction, addItemToChecklistItemsAction, processItemsToChecklistAction, removeTermFormChecklistAction } from './../../store/actions/contract-checklist.action';
 import { sortByAsc } from 'src/app/shared/util/sort';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { ReOrderImagesAction, deleteContractAction } from './../../store/actions/contracts.action';
@@ -24,7 +24,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AddEditState } from 'src/app/shared/generics/generic.model';
 import { Store, select } from '@ngrx/store';
 import * as _ from 'lodash';
-import { getChecklistItemsSelector, getchecklistProductsSelector, getSelectedTermsSelector, getChecklistStatusSelector } from '../../store/selectors/contract-checklist.selector';
+import { getChecklistItemsSelector, getchecklistProductsSelector, getSelectedTermsSelector, getChecklistStatusSelector, getChecklist } from '../../store/selectors/contract-checklist.selector';
 import { saveChecklistAction } from '../../store/actions/saved-checklist.action';
 import { v4 as uuid } from 'uuid';
 
@@ -139,26 +139,14 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       takeUntil(this.$unsubscribe),
       tap(cc => this.contractCategories = cc)).subscribe();
 
-    /* get checklist products */
-    this.store.pipe(select(getchecklistProductsSelector),
-      takeUntil(this.$unsubscribe),
-      tap(items => {
-        this.checkListProducts = items || [];
-      })).subscribe();
+    this.store.pipe(select(getChecklist))
+      .pipe(tap(res => {
+        this.checklistItems = res.checklistItems || [];
+        this.checkListProducts = res.checklistProducts;
+        this.checklistTerms = res.checklistTerms || [];
 
-    /* collect all items that is added to checklists */
-    this.store.pipe(select(getChecklistItemsSelector),
-      takeUntil(this.$unsubscribe),
-      tap(checklist => {
-        if (checklist && checklist.length > 0)
-          this.checklistItems = checklist;
+        console.log(res)
       })).subscribe();
-
-    /* collect all selected terms */
-    this.store.pipe(select(getSelectedTermsSelector),
-      takeUntil(this.$unsubscribe),
-      tap(terms => this.checklistTerms = terms))
-      .subscribe();
   }
 
   private createChecklistSession(): void {
@@ -185,7 +173,6 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
         term: { term_id: term.term_id }
       }))
     }
-
 
     this.store.dispatch(processItemsToChecklistAction());
 
@@ -343,7 +330,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     this.store.dispatch(clearPreSelectProducts());
 
     /* clear all checklist terms  */
-    this.store.dispatch(removeAllSelectedTerms());
+    this.store.dispatch(clearAllSelectedTerms());
 
     /* set checklist to highlight when opening right nav */
     this.store.dispatch(highlightChecklistAction({ highlight: true }));

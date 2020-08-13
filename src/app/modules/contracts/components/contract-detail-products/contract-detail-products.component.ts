@@ -1,6 +1,6 @@
 import { loadInspectionChecklistAction } from './../../../inspections/store/inspection.action';
 import { getChecklistSourceSelector, getChecklistItemsSelector, getChecklist, getChecklistItemByContractProductIds, getChecklistTermsByProductId, getchecklistProductsSelector } from './../../store/selectors/contract-checklist.selector';
-import { addItemToSourceAction, addItemToChecklistTermsAction, removeTermFormChecklistAction, addItemToChecklistProductsAction, updateChecklistSourceAction, removeItemFromChecklistProductsAction, overrideChecklistItemAction, removeChecklistItemAction, addItemToChecklist, removeAllChecklistProductsAction, removeAllSelectedTerms, removeChecklistSourceAction, setToMultiUpdateStatusAction, resetUpdateStatusAction, processItemsToChecklistAction } from './../../store/actions/contract-checklist.action';
+import { addItemToSourceAction, addItemToChecklistTermsAction, removeTermFormChecklistAction, addItemToChecklistProductsAction, updateChecklistSourceAction, removeItemFromChecklistProductsAction, overrideChecklistItemAction, removeChecklistItemAction, addItemToChecklist, removeAllChecklistProductsAction, clearAllSelectedTerms, removeChecklistSourceAction, setToMultiUpdateStatusAction, resetUpdateStatusAction, processItemsToChecklistAction } from './../../store/actions/contract-checklist.action';
 import { getSelectedProductsSelector } from './../../store/selectors/contract-product-selector';
 import { getCategoryTermsSelector } from './../../store/selectors/contract-category.selector';
 import { getProductsSelector } from './../../../products/store/products.selector';
@@ -123,9 +123,6 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
         if (terms && terms.length > 0)
           this.checklistTerms = terms;
       })).subscribe();
-
-    this.store.pipe(select(getChecklist), takeUntil(this.$unsubscribe))
-      .subscribe(res => console.log(res))
   }
 
   ngOnDestroy() { }
@@ -189,9 +186,13 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       this.store.dispatch(removeItemFromChecklistProductsAction({ item }));
 
       /* if the checklist product falls to 1 then reset the status to single update */
-      if (this.checklistProductItems.length === 1) {
+      if (this.checklistProductItems.length === 1)
         this.store.dispatch(resetUpdateStatusAction());
-      }
+
+      /* if all checklist products is deselected, then remove all the terms */
+      if (this.checklistProductItems.length === 0)
+        this.store.dispatch(clearAllSelectedTerms());
+
 
       // /* remove source checklist if matched */
       // this.store.dispatch(updateChecklistSourceAction({ item: payload }));
@@ -316,7 +317,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
             //this.store.dispatch(addItemToChecklistProductsAction({ items: this.checklistProductItems }));
 
             /* remove selected terms */
-            this.store.dispatch(removeAllSelectedTerms());
+            this.store.dispatch(clearAllSelectedTerms());
             const sourceTerms = this.checklistItems.filter(
               s => s.checklist_term.id === source.checklist_term.id
                 && s.checklist_product.id === source.checklist_product.id);

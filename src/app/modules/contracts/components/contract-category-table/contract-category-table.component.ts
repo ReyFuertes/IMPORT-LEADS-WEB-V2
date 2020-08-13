@@ -19,7 +19,7 @@ import { map, take, tap, takeUntil, debounceTime } from 'rxjs/operators';
 import { IContractCategory } from '../../contract.model';
 import { deleteContractCategoryAction } from '../../store/actions/contract-category.action';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
-import { getSelectedTermsSelector, getchecklistProductsSelector } from '../../store/selectors/contract-checklist.selector';
+import { getSelectedTermsSelector, getchecklistProductsSelector, getChecklist } from '../../store/selectors/contract-checklist.selector';
 import { appNotification } from 'src/app/store/actions/notification.action';
 import { addItemToChecklistTermsAction } from '../../store/actions/contract-checklist.action';
 
@@ -53,8 +53,8 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   public onPreview: boolean = false;
   public selectedRow: any;
   public categoryTerm: IContractCategoryTerm;
-  public checklistTerm: IContractTermProduct[] = [];
-  public checkListProducts: IContractProduct[] = [];
+  public checklistTerms: IContractTermProduct[];
+  public checkListProducts: IContractProduct[];
 
   @Input() public inCheckListing: boolean = false;
   @Input() public contract_category: IContractCategory;
@@ -69,23 +69,20 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       contact_category: [null],
     });
 
-    this.store.pipe(select(getSelectedTermsSelector),
+    this.store.pipe(select(getChecklist)).pipe(
       takeUntil(this.$unsubscribe),
-      tap((terms: IContractTermProduct[]) => {
-        this.checklistTerm = terms || [];
+      tap(res => {
+        this.checkListProducts = res.checklistProducts || [];
+        this.checklistTerms = res.checklistTerms || [];
       })).subscribe();
-
-    /* get checklist products */
-    this.store.pipe(select(getchecklistProductsSelector),
-      debounceTime(500),
-      takeUntil(this.$unsubscribe))
-      .subscribe(items => {
-        this.checkListProducts = items || [];
-      });
   }
 
-  public isTermChecked(item: IContractTermProduct): boolean {
-    return this.checklistTerm && this.checklistTerm.includes(item);
+  public isTermChecked(item: string): boolean {
+    return this.checklistTerms
+      && this.checklistTerms.filter(ct => {
+        return ct.term_id === item;
+      }).shift()
+      ? true : false;
   }
 
   public get isDisabled(): boolean {

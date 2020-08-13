@@ -11,12 +11,15 @@ import {
   resetUpdateStatusAction,
   addItemToChecklistItemsAction,
   processItemsToChecklistAction,
-  loadChecklistSuccessAction
+  loadChecklistSuccessAction,
+  addItemToChecklistEntitiesAction,
+  processItemsToChecklistEntitiesAction
 } from './../actions/contract-checklist.action';
 import { IContractChecklist, IContractChecklistItem, IContractProduct, IContractTerm, ICommonIdPayload, IContractTermProduct, ISavedChecklistItem } from './../../contract.model';
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import * as _ from 'lodash';
+import { v4 as uuid } from 'uuid';
 
 export interface ContractChecklistState extends EntityState<IContractChecklistItem> {
   isHighlighting?: boolean,
@@ -38,6 +41,9 @@ export const initialState: ContractChecklistState = adapter.getInitialState({
 
 const reducer = createReducer(
   initialState,
+  // on(addItemToChecklistEntitiesAction, (state, action) => {
+  //   return adapter.addOne(action.item, state)
+  // }),
   on(clearChecklistSourceAction, (state) => {
     return Object.assign({}, state, { checklistSource: undefined });
   }),
@@ -58,32 +64,15 @@ const reducer = createReducer(
 
     return Object.assign({}, state, { checklistTerms });
   }),
+  on(processItemsToChecklistEntitiesAction, (state) => {
+    let item = processToItem(state).shift();
+    //item.id = uuid(); /* add temporary id */
+
+    return adapter.addOne(item, state)
+  }),
+  /* PROCESS PRODUCTS AND TERMS TO CHECKLIST ITEMS */
   on(processItemsToChecklistAction, (state) => {
-    const products = state.checklistProducts || [];
-    const terms = state.checklistTerms || [];
-    let checklistItems: IContractChecklistItem[] = [];
-
-    products.forEach(product => {
-      terms.forEach(term => {
-        const match = checklistItems.filter(i => i.checklist_term.id === term.term_id
-          && product.id === i.checklist_product.id).shift();
-
-        if (!match) {
-          checklistItems.push({
-            checklist_contract: { id: term.contract_id },
-            checklist_category: { id: term.category_id },
-            checklist_term: { id: term.term_id },
-            checklist_product: { id: product.id }
-          });
-        } else {
-          _.remove(checklistItems, {
-            checklist_term: { id: term.term_id },
-            checklist_product: { id: product.id }
-          });
-        }
-      });
-    });
-
+    const checklistItems = processToItem(state);
     return Object.assign({}, state, { checklistItems });
   }),
   /* ADD ITEM TO CHECKLIST TERMS */
@@ -268,4 +257,32 @@ const reducer = createReducer(
 );
 export function ContractChecklistReducer(state: ContractChecklistState, action: Action) {
   return reducer(state, action);
+}
+
+function processToItem(state: ContractChecklistState): IContractChecklistItem[] {
+  const products = state.checklistProducts || [];
+  const terms = state.checklistTerms || [];
+  let checklistItems: IContractChecklistItem[] = [];
+
+  products.forEach(product => {
+    terms.forEach(term => {
+      const match = checklistItems.filter(i => i.checklist_term.id === term.term_id
+        && product.id === i.checklist_product.id).shift();
+
+      if (!match) {
+        checklistItems.push({
+          checklist_contract: { id: term.contract_id },
+          checklist_category: { id: term.category_id },
+          checklist_term: { id: term.term_id },
+          checklist_product: { id: product._id, product: { id: product.id } }
+        });
+      } else {
+        _.remove(checklistItems, {
+          checklist_term: { id: term.term_id },
+          checklist_product: { id: product.id }
+        });
+      }
+    });
+  });
+  return checklistItems;
 }

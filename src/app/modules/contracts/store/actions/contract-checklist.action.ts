@@ -28,7 +28,17 @@ export enum CheckListActionTypes {
   loadChecklistAction = '[Inspection Checklist] load checklist items',
   loadChecklistSuccessAction = '[Inspection Checklist] load checklist items (success)',
   clearChecklistSourceAction = '[Contract Checklist] clear checklist source',
+  addItemToChecklistEntitiesAction = '[Contract Checklist] add item to entities',
+  processItemsToChecklistEntitiesAction = '[Contract Checklist] process checklist entities',
 }
+/* ADD ITEM TO CHECKLIST TERMS */
+export const processItemsToChecklistEntitiesAction = createAction(
+  CheckListActionTypes.processItemsToChecklistEntitiesAction
+);
+export const addItemToChecklistEntitiesAction = createAction(
+  CheckListActionTypes.addItemToChecklistEntitiesAction,
+  props<{ item: IContractChecklistItem }>()
+);
 export const loadChecklistAction = createAction(
   CheckListActionTypes.loadChecklistAction,
 );

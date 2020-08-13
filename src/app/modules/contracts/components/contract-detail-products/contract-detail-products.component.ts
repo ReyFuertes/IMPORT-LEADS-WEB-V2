@@ -1,6 +1,6 @@
 import { loadInspectionChecklistAction } from './../../../inspections/store/inspection.action';
 import { getChecklistSourceSelector, getChecklistItemsSelector, getChecklist, getChecklistItemByContractProductIds, getChecklistTermsByProductId, getchecklistProductsSelector } from './../../store/selectors/contract-checklist.selector';
-import { addItemToSourceAction, addItemToChecklistTermsAction, removeTermFormChecklistAction, addItemToChecklistProductsAction, updateChecklistSourceAction, removeItemFromChecklistProductsAction, overrideChecklistItemAction, removeChecklistItemAction, addItemToChecklist, removeAllChecklistProductsAction, clearAllSelectedTerms, clearChecklistSourceAction, setToMultiUpdateStatusAction, resetUpdateStatusAction, processItemsToChecklistAction } from './../../store/actions/contract-checklist.action';
+import { addItemToSourceAction, addItemToChecklistTermsAction, removeTermFormChecklistAction, addItemToChecklistProductsAction, updateChecklistSourceAction, removeItemFromChecklistProductsAction, overrideChecklistItemAction, removeChecklistItemAction, addItemToChecklist, removeAllChecklistProductsAction, clearAllSelectedTerms, clearChecklistSourceAction, setToMultiUpdateStatusAction, resetUpdateStatusAction, processItemsToChecklistAction, addItemToChecklistEntitiesAction, processItemsToChecklistEntitiesAction } from './../../store/actions/contract-checklist.action';
 import { getSelectedProductsSelector } from './../../store/selectors/contract-product-selector';
 import { getCategoryTermsSelector } from './../../store/selectors/contract-category.selector';
 import { getProductsSelector } from './../../../products/store/products.selector';
@@ -116,7 +116,6 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
         }
       })
 
-
     this.store.pipe(select(getChecklist))
       .pipe(tap(res => {
         this.checklistTerms = res.checklistTerms || [];
@@ -131,8 +130,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   ngOnDestroy() { }
 
   ngOnInit() {
-    this.$contractProducts = this.store.pipe(select(getAllContractProductsSelector),
-      takeUntil(this.$unsubscribe));
+    this.$contractProducts = this.store.pipe(select(getAllContractProductsSelector), takeUntil(this.$unsubscribe));
 
     /* product suggestions */
     this.$products = this.store.pipe(select(getProductsSelector), takeUntil(this.$unsubscribe));
@@ -217,19 +215,30 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
         this.store.dispatch(addItemToSourceAction({ item }))
       }
 
+      const items = this.checklistItems.filter(ci => ci.checklist_product.id === item._id);
+
       /* perform override here */
       if (this.checklistSource && this.checklistProducts.length >= 1) {
+        const overrideOrApply = items.length > 0 ? 1 : 2;
+
         const dialogRef = this.dialog.open(ConfirmationComponent, {
           width: '410px',
-          data: { action: 1 }
+          data: { action: overrideOrApply }
         });
         dialogRef.afterClosed().subscribe(result => {
-          if (result) {
+          if (overrideOrApply === 1) {
             /* if override, then add the product  */
             this.store.dispatch(addItemToChecklistProductsAction({ item }));
 
-            /* reprocess */
+            /* process to checklist items */
             this.store.dispatch(processItemsToChecklistAction());
+
+          } else if (overrideOrApply === 2) {
+            this.store.dispatch(addItemToChecklistProductsAction({ item }));
+            
+            /* process to checklist entities */
+            this.store.dispatch(processItemsToChecklistEntitiesAction());
+            
           }
         });
       } else {
@@ -237,7 +246,6 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
         /* get all the terms of selected source */
         if (this.checklistSource && this.checklistProducts.length === 1) {
-          const items = this.checklistItems.filter(ci => ci.checklist_product.id === item._id);
           items && items.forEach(item => {
             this.store.dispatch(addItemToChecklistTermsAction({
               term: {

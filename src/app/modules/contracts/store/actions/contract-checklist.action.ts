@@ -14,7 +14,6 @@ export enum CheckListActionTypes {
   removeChecklistItemsSuccessAction = '[Contract Checklist] Delete (success)',
   removeTermFormChecklistAction = '[Contract Checklist] remove selected Terms',
   removeChecklistItemAction = '[Contract Checklist] remove checklist item',
-  removeAllChecklistProductsAction = '[Contract Checklist] remove all checklist products',
 
   addItemToChecklistProductsAction = '[Contract Checklist] add product to checklist',
   removeItemFromChecklistProductsAction = '[Contract Checklist] remove product to checklist',
@@ -30,7 +29,21 @@ export enum CheckListActionTypes {
   clearChecklistSourceAction = '[Contract Checklist] clear checklist source',
   addItemToChecklistEntitiesAction = '[Contract Checklist] add item to entities',
   processItemsToChecklistEntitiesAction = '[Contract Checklist] process checklist entities',
+  removeItemFromEntitiesAction = '[Contract Checklist] remove item from checklist entities',
+  clearChecklistProductsAction = '[Contract Checklist] remove all checklist products',
+  removeItemFromEntitiesByProductId = '[Contract Checklist] remove item from entities by product id'
 }
+export const removeItemFromEntitiesByProductId = createAction(
+  CheckListActionTypes.removeItemFromEntitiesByProductId,
+  props<{ id: string }>()
+);
+export const clearChecklistProductsAction = createAction(
+  CheckListActionTypes.clearChecklistProductsAction
+);
+export const removeItemFromEntitiesAction = createAction(
+  CheckListActionTypes.removeItemFromEntitiesAction,
+  props<{ item: IContractChecklistItem }>()
+);
 /* ADD ITEM TO CHECKLIST TERMS */
 export const processItemsToChecklistEntitiesAction = createAction(
   CheckListActionTypes.processItemsToChecklistEntitiesAction
@@ -98,6 +111,4 @@ export const removeTermFormChecklistAction = createAction(
 export const clearChecklistSourceAction = createAction(
   CheckListActionTypes.clearChecklistSourceAction
 );
-export const removeAllChecklistProductsAction = createAction(
-  CheckListActionTypes.removeAllChecklistProductsAction
-);
+

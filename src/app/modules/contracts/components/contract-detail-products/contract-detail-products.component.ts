@@ -1,6 +1,6 @@
 import { loadInspectionChecklistAction } from './../../../inspections/store/inspection.action';
 import { getChecklist, getChecklistItemByContractProductIds } from './../../store/selectors/contract-checklist.selector';
-import { addItemToSourceAction, addItemToChecklistTermsAction, removeTermFormChecklistAction, addItemToChecklistProductsAction, removeItemFromChecklistProductsAction, removeAllChecklistProductsAction, clearAllSelectedTerms, clearChecklistSourceAction, setToMultiUpdateStatusAction, resetUpdateStatusAction, processItemsToChecklistAction, addItemToChecklistEntitiesAction, processItemsToChecklistEntitiesAction } from './../../store/actions/contract-checklist.action';
+import { addItemToSourceAction, addItemToChecklistTermsAction, removeTermFormChecklistAction, addItemToChecklistProductsAction, removeItemFromChecklistProductsAction, clearChecklistProductsAction, clearAllSelectedTerms, clearChecklistSourceAction, setToMultiUpdateStatusAction, resetUpdateStatusAction, processItemsToChecklistAction, addItemToChecklistEntitiesAction, processItemsToChecklistEntitiesAction, removeItemFromEntitiesByProductId } from './../../store/actions/contract-checklist.action';
 import { getSelectedProductsSelector } from './../../store/selectors/contract-product-selector';
 import { getCategoryTermsSelector } from './../../store/selectors/contract-category.selector';
 import { getProductsSelector } from './../../../products/store/products.selector';
@@ -9,7 +9,7 @@ import { getAllContractProductsSelector } from './../../store/selectors/contract
 import { addContractProducts, deleteContractProduct, updateContractProduct, selectProductAction, removeSelectedProductAction, clearPreSelectProducts } from './../../store/actions/contract-product.action';
 import { AppState } from 'src/app/store/app.reducer';
 import { Store, select } from '@ngrx/store';
-import { PillState, IContract, IContractProduct, IContractChecklist, IContractChecklistItem, IContractTerm, IOverrideChecklistItem, ICommonIdPayload, IContractTermProduct } from './../../contract.model';
+import { PillState, IContract, IContractProduct, IContractChecklist, IContractChecklistItem, IContractTerm, IOverrideChecklistItem, ICommonIdPayload, IContractTermProduct, ProductActionStatus } from './../../contract.model';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ISimpleItem } from './../../../../shared/generics/generic.model';
@@ -43,9 +43,10 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   public $contractProducts: Observable<IContractProduct[]>;
   public $products: Observable<IProduct[]>;
   public selectedProduct: IContractProduct;
+  public checklistEntities: IContractChecklistItem[] = [];
   public checklistItems: IContractChecklistItem[] = [];
   public checklistTerms: IContractTermProduct[] = [];
-  public checklistSource: IContractChecklistItem;
+  public checklistSource: ICommonIdPayload;
   public checklistProducts: IContractProduct[] = [];
   public isAddState: boolean = false;
 
@@ -116,12 +117,14 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
         }
       })
 
-    this.store.pipe(select(getChecklist))
+    this.store.pipe(select(getChecklist),
+      takeUntil(this.$unsubscribe))
       .pipe(tap(res => {
         this.checklistTerms = res.checklistTerms || [];
-        this.checklistSource = res.checklistSource || undefined;
+        this.checklistSource = res.checklistSource || null;
         this.checklistProducts = res.checklistProducts || [];
-        this.checklistItems = Object.values(res.entities) || [];
+        this.checklistEntities = Object.values(res.entities) || [];
+        this.checklistItems = res.checklistItems || [];
 
         console.log(res)
       })).subscribe();
@@ -174,26 +177,8 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       }
 
       this.store.dispatch(processItemsToChecklistAction());
-
-      // /* remove source checklist if matched */
-      // this.store.dispatch(updateChecklistSourceAction({ item: payload }));
-
-      // this.store.pipe(
-      //   take(1),
-      //   select(getChecklistTermsByProductId(payload.id)),
-      //   tap((items: IContractChecklistItem[]) => {
-      //     console.log('getChecklistTermsByProductId', items);
-      //     /* if the checklist products is only one then remove the source and selected terms */
-      //     if (this.checklistProducts && this.checklistProducts.length === 0
-      //       && items && items.length > 0) {
-
-      //       this.store.dispatch(clearChecklistSourceAction());
-      //       this.store.dispatch(removeTermFormChecklistAction({ ids: items.map(i => i.checklist_term.id) }));
-      //     }
-      //   })).subscribe();
-
     } else {
-      // this.store.dispatch(removeSelectedProductAction());
+      this.store.dispatch(removeSelectedProductAction());
     }
 
     if (!this.inCheckListing)
@@ -203,6 +188,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   public preSelectChange(item: ICommonIdPayload, isPreselected?: boolean): void {
     /* in checklisting */
     if (!isPreselected && this.inCheckListing) {
+      const id = (this.checklistSource && this.checklistSource.id) || null;
 
       /* check if the user is multi updating */
       if (this.checklistTerms && this.checklistTerms.length === 0
@@ -215,29 +201,40 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
         this.store.dispatch(addItemToSourceAction({ item }))
       }
 
-      const items = this.checklistItems.filter(ci => ci.checklist_product.id === item._id);
+      /* find by product id */
+      const entities = this.checklistEntities.filter(ci => ci.checklist_product.product.id === item.id);
 
-      /* perform override here */
-      if (this.checklistSource && this.checklistProducts.length >= 1) {
-        const overrideOrApply = items.length > 0 ? 1 : 2;
+      /* perform apply and override here */
+      if (this.isProductHasChecklist(id)
+        && this.checklistSource && this.checklistProducts.length >= 1) {
+        const action = this.isProductHasChecklist(item.id)
+          ? ProductActionStatus.Override : ProductActionStatus.Apply;
 
         const dialogRef = this.dialog.open(ConfirmationComponent, {
           width: '410px',
-          data: { action: overrideOrApply }
+          data: { action }
         });
         dialogRef.afterClosed().subscribe(result => {
-          if (overrideOrApply === 1) {
-            /* if override, then add the product  */
-            this.store.dispatch(addItemToChecklistProductsAction({ item }));
+          if (result) {
+            if (action === ProductActionStatus.Override) {
+              /* remove entities on selected product */
+              this.store.dispatch(removeItemFromEntitiesByProductId({ id: item.id }));
 
-            /* process to checklist items */
-            this.store.dispatch(processItemsToChecklistAction());
+              /* if override, then add the product  */
+              this.store.dispatch(addItemToChecklistProductsAction({ item }));
 
-          } else if (overrideOrApply === 2) {
-            this.store.dispatch(addItemToChecklistProductsAction({ item }));
+              /* process to checklist items */
+              setTimeout(() => {
+                this.store.dispatch(processItemsToChecklistAction());
+              }, 100);
 
+            } else if (action === ProductActionStatus.Apply) {
+              this.store.dispatch(addItemToChecklistProductsAction({ item }));
+            }
             /* process to checklist entities */
-            this.store.dispatch(processItemsToChecklistEntitiesAction());
+            setTimeout(() => {
+              this.store.dispatch(processItemsToChecklistEntitiesAction());
+            }, 150);
           }
         });
       } else {
@@ -245,11 +242,11 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
         /* get all the terms of selected source */
         if (this.checklistSource && this.checklistProducts.length === 1) {
-          items && items.forEach(item => {
+          entities && entities.forEach(item => {
             this.store.dispatch(addItemToChecklistTermsAction({
               term: {
                 term_id: item.checklist_term.id,
-                product_id: item.checklist_product.id,
+                product_id: item.checklist_product.product.id,
                 contract_id: item.checklist_contract.id,
                 category_id: item.checklist_category.id
               }
@@ -258,48 +255,24 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
         }
         this.store.dispatch(processItemsToChecklistAction());
       }
-
-
-
-      // /* check if the selected item has a source in the checklist */
-      // const hasSource = !!this.checklistSource;
-
-      // const hasChecklistItems = this.checklistItems
-      //   .filter(c => c.checklist_product.id === payload._id).shift();
-
-      // /* if product is a source then preselect immediately */
-      // if (!hasSource) {
-      //   this.checklistProducts.push(payload);
-      //   this.store.dispatch(addItemToChecklistProductsAction({ items: this.checklistProducts }));
-      // } else {
-      //   /* check if the selected product match with the source
-      //     if not then override or apply changes
-      //   */
-      //   if (this.checklistTerms && this.checklistTerms.length > 0)
-      //     this.overrideOrApplyChanges(isPreselected, payload, hasSource, hasChecklistItems);
-      // }
-
-      // /* get the preselect term/s base on product selection */
-      // const items: IContractChecklistItem[] = this.checklistItems
-      //   .filter(i => i.checklist_product.id === payload._id);
-
-      // /* if the selection doesnt have a source and not preselected the terms  */
-      // if (!isPreselected && (items && items.length > 0) && !hasSource) {
-      //   const ids = items && items.map(i => i.checklist_term.id);
-
-      //   this.store.dispatch(addItemToChecklistTermsAction({ ids }));
-      // }
     } else {
       this.isAddState = true;
       this.store.dispatch(selectProductAction({ item }));
     }
   }
 
+  private isProductHasChecklist(id: string): boolean {
+    return id && this.checklistEntities
+      && this.checklistEntities.filter(e => (e.checklist_product
+        && e.checklist_product.product.id === id)).shift()
+      ? true : false;
+  }
+
   public hasChecklist(id: string): boolean {
-    let preSelected = this.checklistItems && this.checklistItems
+    let preSelected = this.checklistEntities && this.checklistEntities
       .filter(c => c.checklist_product && c.checklist_product.product.id === id).shift();
 
-    const ret = this.checklistItems && this.inCheckListing && preSelected;
+    const ret = this.checklistEntities && this.inCheckListing && preSelected;
     return ret ? true : false;
   }
 
@@ -333,9 +306,9 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   */
   public isSubProductChecklistRelated(sub: any): boolean {
     return this.inCheckListing
-      && this.checklistItems
-      && this.checklistItems.length > 0
-      && this.checklistItems.filter(c => {
+      && this.checklistEntities
+      && this.checklistEntities.length > 0
+      && this.checklistEntities.filter(c => {
         return c.checklist_product
           && c.checklist_product.product
           && (c.checklist_product.product.id === sub.id /* if the product is the same */

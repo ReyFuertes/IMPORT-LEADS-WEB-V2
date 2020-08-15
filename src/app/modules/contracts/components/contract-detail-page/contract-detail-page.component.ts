@@ -1,4 +1,4 @@
-import { addItemToChecklistTermsAction, clearAllSelectedTerms, removeItemFromChecklistProductsAction, removeAllChecklistProductsAction, addItemToChecklistItemsAction, processItemsToChecklistAction, removeTermFormChecklistAction } from './../../store/actions/contract-checklist.action';
+import { addItemToChecklistTermsAction, clearAllSelectedTerms, removeItemFromChecklistProductsAction, clearChecklistProductsAction, addItemToChecklistItemsAction, processItemsToChecklistAction, removeTermFormChecklistAction, processItemsToChecklistEntitiesAction, removeItemFromEntitiesAction } from './../../store/actions/contract-checklist.action';
 import { sortByAsc } from 'src/app/shared/util/sort';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { ReOrderImagesAction, deleteContractAction } from './../../store/actions/contracts.action';
@@ -139,13 +139,13 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       takeUntil(this.$unsubscribe),
       tap(cc => this.contractCategories = cc)).subscribe();
 
-    this.store.pipe(select(getChecklist))
+    this.store.pipe(select(getChecklist),
+      takeUntil(this.$unsubscribe))
       .pipe(tap(res => {
         this.checklistItems = res.checklistItems || [];
         this.checkListProducts = res.checklistProducts || [];
         this.checklistTerms = res.checklistTerms || [];
 
-        console.log(res)
       })).subscribe();
   }
 
@@ -168,13 +168,31 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
           }
         }));
       });
+
+      /* process items to checklist items */
+      this.store.dispatch(processItemsToChecklistAction());
+
+      /* after we toggle the we also wanted to be process it in the entities */
+      this.store.dispatch(processItemsToChecklistEntitiesAction());
     } else {
       this.store.dispatch(removeTermFormChecklistAction({
         term: { term_id: term.term_id }
-      }))
-    }
+      }));
 
-    this.store.dispatch(processItemsToChecklistAction());
+      this.checkListProducts.forEach((product: ICommonIdPayload) => {
+        this.store.dispatch(removeItemFromEntitiesAction({
+          item: {
+            checklist_product: { product: { id: product.id } },
+            checklist_term: { id: term.term_id }
+          }
+        }));
+
+        /* remove highlighted product/s when checklist is cleared up */
+        if (this.checklistTerms && this.checklistTerms.length === 0) {
+          this.store.dispatch(clearChecklistProductsAction());
+        }
+      });
+    }
   }
 
   public onSaveChecklist(): void {
@@ -199,7 +217,6 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     }
   }
 
-
   private onDeleteContract = (): void => {
     const dialogRef = this.dialog.open(ConfirmationComponent, {
       width: '410px',
@@ -220,7 +237,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   public onCloseRighNav(event: any): void {
     setTimeout(() => {
       /* clear selected checklist product/s */
-      this.store.dispatch(removeAllChecklistProductsAction());
+      this.store.dispatch(clearChecklistProductsAction());
       this.showRightNav = !event;
       this.formChecklist.reset();
     }, 100);

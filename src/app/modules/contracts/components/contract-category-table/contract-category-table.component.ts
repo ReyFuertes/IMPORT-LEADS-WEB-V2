@@ -100,18 +100,6 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       term_id: term.id,
       checked
     });
-    /* toggling terms for checklisting */
-    // if (this.contract_category) {
-    //   const category_term = {
-    //     category_id: this.contract_category.id,
-    //     term_id: term.id,
-    //     checked
-    //   }
-    //  
-
-    //   /* store selected checklists */
-    //   this.store.dispatch(selTermsForChecklistAction({ term }));
-    // }
   }
 
   public mouseOver = (event: any, col: string) => this.selectedRow = `${event.id}${col}`;

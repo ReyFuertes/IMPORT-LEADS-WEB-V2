@@ -7,7 +7,10 @@ import {
   addItemToChecklistItemsAction,
   processItemsToChecklistAction,
   loadChecklistSuccessAction,
-  processItemsToChecklistEntitiesAction
+  processItemsToChecklistEntitiesAction,
+  removeItemFromEntitiesAction,
+  clearChecklistProductsAction,
+  removeItemFromEntitiesByProductId
 } from './../actions/contract-checklist.action';
 import { IContractChecklistItem, ICommonIdPayload, IContractTermProduct, ISavedChecklistItem } from './../../contract.model';
 import { createReducer, on, Action } from "@ngrx/store";
@@ -25,45 +28,73 @@ export interface ContractChecklistState extends EntityState<IContractChecklistIt
 }
 export const adapter: EntityAdapter<IContractChecklistItem> = createEntityAdapter<IContractChecklistItem>({});
 export const initialState: ContractChecklistState = adapter.getInitialState({
-  isHighlighting: undefined,
-  checklistTerms: undefined,
-  checklistProducts: undefined,
-  checklistSource: undefined,
-  multiUpdate: undefined,
-  checklistItems: undefined
+  isHighlighting: null,
+  checklistTerms: null,
+  checklistProducts: null,
+  checklistSource: null,
+  multiUpdate: null,
+  checklistItems: null
 });
 
 const reducer = createReducer(
   initialState,
+  on(removeItemFromEntitiesByProductId, (state, action) => {
+    const entities = Object.values(state.entities);
+    const matches = entities && entities.filter(e => e.checklist_product.product.id === action.id);
+ 
+    return adapter.removeMany(matches.map(m => m.id), state);
+  }),
+  on(clearChecklistProductsAction, (state) => {
+    return Object.assign({}, state, { checklistProducts: null });
+  }),
   on(clearChecklistSourceAction, (state) => {
-    return Object.assign({}, state, { checklistSource: undefined });
+    return Object.assign({}, state, { checklistSource: null });
   }),
   on(loadChecklistSuccessAction, (state, action) => {
     return ({ ...adapter.addAll(action.items, state) })
   }),
   on(clearAllSelectedTerms, (state) => {
-    return Object.assign({}, state, { checklistTerms: undefined });
+    return Object.assign({}, state, { checklistTerms: null });
+  }),
+  on(removeItemFromEntitiesAction, (state, action) => {
+    const match = state && Object.values(state.entities)
+      .filter(t => t.checklist_product.product.id === action.item.checklist_product.product.id
+        && t.checklist_term.id === action.item.checklist_term.id);
+
+    if (match && match.length > 0)
+      return adapter.removeMany(match.map(m => m.id), state);
+    else return state
   }),
   /* REMOVE ITEM TO CHECKLIST TERMS */
   on(removeTermFormChecklistAction, (state, action) => {
-    const match = state.checklistTerms
-      && state.checklistTerms.filter(t => t.term_id === action.term.term_id).shift();
+    const items = state.checklistTerms
+      && state.checklistTerms.filter(t => t.term_id === action.term.term_id);
 
     let checklistTerms: IContractTermProduct[] = Object.assign([], state.checklistTerms);
-    if (match)
-      _.remove(checklistTerms, { term_id: action.term.term_id });
+    if (items && items.length > 0) {
+      items.forEach(item => {
+        _.remove(checklistTerms, { term_id: item.term_id });
+      });
+    }
 
     return Object.assign({}, state, { checklistTerms });
   }),
   on(processItemsToChecklistEntitiesAction, (state) => {
-    let item = processToItem(state).shift();
-    //item.id = uuid(); /* add temporary id */
+    let items = processToItem(state, false);
 
-    return adapter.addOne(item, state)
+    if (items && items.length > 0) {
+      let itemsArr: any[] = [];
+      items.forEach(item => {
+        if (!item.id) item.id = uuid(); /* add temporary id */
+        itemsArr.push(item);
+      });
+
+      return adapter.addMany(itemsArr, state)
+    } else return state;
   }),
   /* PROCESS PRODUCTS AND TERMS TO CHECKLIST ITEMS */
   on(processItemsToChecklistAction, (state) => {
-    const checklistItems = processToItem(state);
+    const checklistItems = processToItem(state, true);
     return Object.assign({}, state, { checklistItems });
   }),
   /* ADD ITEM TO CHECKLIST TERMS */
@@ -96,7 +127,7 @@ const reducer = createReducer(
     return Object.assign({}, state, { checklistItems });
   }),
   on(resetUpdateStatusAction, (state) => {
-    return Object.assign({}, state, { multiUpdate: undefined });
+    return Object.assign({}, state, { multiUpdate: null });
   }),
   on(setToMultiUpdateStatusAction, (state) => {
     return Object.assign({}, state, { multiUpdate: true });
@@ -118,9 +149,13 @@ const reducer = createReducer(
   /* REMOVE ITEM TO CHECKLIST OF PRODUCTS */
   on(removeItemFromChecklistProductsAction, (state, action) => {
     let checklistProducts: ICommonIdPayload[] = state.checklistProducts || [];
-    let match = checklistProducts.filter(cp => action.item.id === cp.id).shift();
-    if (match)
-      _.remove(checklistProducts, { id: action.item.id });
+    let matches = checklistProducts.filter(cp => action.item.id === cp.id);
+
+    if (matches && matches.length) {
+      matches.forEach(match => {
+        _.remove(checklistProducts, { id: match.id });
+      });
+    }
 
     return Object.assign({}, state, { checklistProducts });
   }),
@@ -132,7 +167,7 @@ const reducer = createReducer(
     if (!match)
       checklistSource = action.item
     else
-      checklistSource = undefined;
+      checklistSource = null;
 
     return Object.assign({}, state, { checklistSource });
   })
@@ -141,15 +176,18 @@ export function ContractChecklistReducer(state: ContractChecklistState, action: 
   return reducer(state, action);
 }
 
-function processToItem(state: ContractChecklistState): IContractChecklistItem[] {
+function processToItem(state: ContractChecklistState, bucket: boolean): IContractChecklistItem[] {
   const products = state.checklistProducts || [];
   const terms = state.checklistTerms || [];
   let checklistItems: IContractChecklistItem[] = [];
 
   products.forEach(product => {
     terms.forEach(term => {
-      const match = checklistItems.filter(i => i.checklist_term.id === term.term_id
-        && product.id === i.checklist_product.id).shift();
+      const searchBucket = (bucket ? state.checklistItems : Object.values(state.entities)) || [];
+      const match = searchBucket
+        && searchBucket.length > 0
+        && searchBucket.filter(i => i.checklist_term.id === term.term_id
+          && product.id === i.checklist_product.product.id).shift();
 
       if (!match) {
         checklistItems.push({

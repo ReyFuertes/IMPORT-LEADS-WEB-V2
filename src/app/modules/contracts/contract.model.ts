@@ -1,6 +1,11 @@
 import { ITag } from './../tags/tags.model';
 import { IProduct } from './../products/products.model';
 import { IUser } from './../../models/user.model';
+
+export enum ProductActionStatus {
+  Override = 1,
+  Apply = 2
+}
 export interface IContractTermProduct {
   term_id?: string;
   product_id?: string;

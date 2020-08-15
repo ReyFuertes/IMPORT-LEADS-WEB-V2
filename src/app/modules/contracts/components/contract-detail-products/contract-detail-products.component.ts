@@ -205,60 +205,72 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       const entities = this.checklistEntities.filter(ci => ci.checklist_product.product.id === item.id);
 
       /* perform apply and override here */
-      if (this.isProductHasChecklist(id)
-        && this.checklistSource && this.checklistProducts.length >= 1) {
+      if (this.checklistSource && this.checklistProducts.length >= 1) {
         const action = this.isProductHasChecklist(item.id)
           ? ProductActionStatus.Override : ProductActionStatus.Apply;
 
-        const dialogRef = this.dialog.open(ConfirmationComponent, {
-          width: '410px',
-          data: { action }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          if (result) {
-            if (action === ProductActionStatus.Override) {
-              /* remove entities on selected product */
-              this.store.dispatch(removeItemFromEntitiesByProductId({ id: item.id }));
-
-              /* if override, then add the product  */
-              this.store.dispatch(addItemToChecklistProductsAction({ item }));
-
-              /* process to checklist items */
-              setTimeout(() => {
-                this.store.dispatch(processItemsToChecklistAction());
-              }, 100);
-
-            } else if (action === ProductActionStatus.Apply) {
-              this.store.dispatch(addItemToChecklistProductsAction({ item }));
-            }
-            /* process to checklist entities */
-            setTimeout(() => {
-              this.store.dispatch(processItemsToChecklistEntitiesAction());
-            }, 150);
-          }
-        });
+        if (this.isProductHasChecklist(item.id) /* if the selected product has a checklist */
+          /* if the selected product doesnt have a checklist and the source has a checklist */
+          || !this.isProductHasChecklist(item.id) && this.isProductHasChecklist(id))
+          this.overrideOrApply(item, action);
+        else
+          this.addToChecklist(item, entities);
       } else {
-        this.store.dispatch(addItemToChecklistProductsAction({ item }));
-
-        /* get all the terms of selected source */
-        if (this.checklistSource && this.checklistProducts.length === 1) {
-          entities && entities.forEach(item => {
-            this.store.dispatch(addItemToChecklistTermsAction({
-              term: {
-                term_id: item.checklist_term.id,
-                product_id: item.checklist_product.product.id,
-                contract_id: item.checklist_contract.id,
-                category_id: item.checklist_category.id
-              }
-            }));
-          });
-        }
-        this.store.dispatch(processItemsToChecklistAction());
+        this.addToChecklist(item, entities);
       }
     } else {
       this.isAddState = true;
       this.store.dispatch(selectProductAction({ item }));
     }
+  }
+
+  private addToChecklist(item: ICommonIdPayload, entities: IContractChecklistItem[]): void {
+    this.store.dispatch(addItemToChecklistProductsAction({ item }));
+
+    /* get all the terms of selected source */
+    if (this.checklistSource && this.checklistProducts.length === 1) {
+      entities && entities.forEach(item => {
+        this.store.dispatch(addItemToChecklistTermsAction({
+          term: {
+            term_id: item.checklist_term.id,
+            product_id: item.checklist_product.product.id,
+            contract_id: item.checklist_contract.id,
+            category_id: item.checklist_category.id
+          }
+        }));
+      });
+    }
+    this.store.dispatch(processItemsToChecklistAction());
+  }
+
+  private overrideOrApply(item: ICommonIdPayload, action: ProductActionStatus): void {
+    const dialogRef = this.dialog.open(ConfirmationComponent, {
+      width: '410px',
+      data: { action }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        if (action === ProductActionStatus.Override) {
+          /* remove entities on selected product */
+          this.store.dispatch(removeItemFromEntitiesByProductId({ id: item.id }));
+
+          /* if override, then add the product  */
+          this.store.dispatch(addItemToChecklistProductsAction({ item }));
+
+          /* process to checklist items */
+          setTimeout(() => {
+            this.store.dispatch(processItemsToChecklistAction());
+          }, 100);
+
+        } else if (action === ProductActionStatus.Apply) {
+          this.store.dispatch(addItemToChecklistProductsAction({ item }));
+        }
+        /* process to checklist entities */
+        setTimeout(() => {
+          this.store.dispatch(processItemsToChecklistEntitiesAction());
+        }, 150);
+      }
+    });
   }
 
   private isProductHasChecklist(id: string): boolean {

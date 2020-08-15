@@ -1,6 +1,6 @@
-<div fxLayout="column" fxLayoutGap="20px">
+<div *ngIf="($contract | async) as contract" fxLayout="column" fxLayoutGap="20px">
   <div fxLayout="row">
-    <h1>{{ ($contract | async)?.contract_name }}</h1>
+    <h1>{{ contract?.contract_name }}</h1>
   </div>
   <div fxLayout="row" fxLayoutGap="20px">
     <div class="action-item" *ngFor="let option of options" (click)="option?.action()" fxLayoutAlign="start center" fxLayoutGap="5px">
@@ -23,15 +23,15 @@
             <div fxFlex="40" class="detail-container" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="40px">
               <div>
                 <div>Company</div>
-                <div>{{ ($contract | async)?.venue?.name }}</div>
+                <div>{{ contract?.venue?.name }}</div>
               </div>
               <div>
                 <div>Responsible Person</div>
-                <div>{{ getFullName(($contract | async)?.user) }}</div>
+                <div>{{ contract?.responsible_person || 'None' }}</div>
               </div>
               <div>
                 <div>Upload Date</div>
-                <div>{{ ($contract | async)?.created_at | date: 'dd/MM/yyyy'}}</div>
+                <div>{{ contract?.created_at | date: 'dd/MM/yyyy'}}</div>
               </div>
             </div>
             <!-- contract images -->

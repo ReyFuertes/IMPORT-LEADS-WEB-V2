@@ -2,6 +2,7 @@
 .logo {
   height: 50px;
   width: auto;
+  margin-bottom: 10px;
 }
 label {
   font-size: 14px;
@@ -65,10 +66,18 @@ label {
 }
 .il-button {
   @include il-button;
+  margin-top: 20px;
 }
 .content {
   width: 100%;
   > div {
     width: 100%;
+  }
+}
+:host ::ng-deep {
+  .il-input input.mat-input-element {
+    line-height: 25px;
+    height: 35px !important;
+    padding-bottom: 5px;
   }
 }

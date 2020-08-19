@@ -11,23 +11,7 @@ import { Component, OnInit, EventEmitter } from '@angular/core';
 export class DropdownPopoverSelectComponent implements OnInit {
   public svgPath: string = environment.svgPath;
   public selectedItem: ISimpleItem = { label: 'Select Tag' };
-  public items: any[] = [
-    { value: 'steak-0', label: 'Steak' },
-    { value: 'pizza-1', label: 'Pizza' },
-    { value: 'tacos-2', label: 'Tacos' },
-    { value: 'steak-0', label: 'Steak' },
-    { value: 'pizza-1', label: 'Pizza' },
-    { value: 'tacos-2', label: 'Tacos' },
-    { value: 'steak-0', label: 'Steak' },
-    { value: 'pizza-1', label: 'Pizza' },
-    { value: 'tacos-2', label: 'Tacos' },
-    { value: 'steak-0', label: 'Steak' },
-    { value: 'pizza-1', label: 'Pizza' },
-    { value: 'tacos-2', label: 'Tacos' },
-    { value: 'steak-0', label: 'Steak' },
-    { value: 'pizza-1', label: 'Pizza' },
-    { value: 'tacos-2', label: 'Tacos' }
-  ];
+  public items: any[] = [];
   public valueEmitter = new EventEmitter<ISimpleItem>();
 
   constructor() { }

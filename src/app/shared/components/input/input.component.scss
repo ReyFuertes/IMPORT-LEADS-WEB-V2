@@ -10,18 +10,6 @@
     }
   }
   @include il-input;
-  ::ng-deep {
-    input.mat-input-element {
-      font-size: 14px;
-    }
-    .mat-form-field-appearance-legacy .mat-form-field-label {
-      font-size: 14px;
-      height: 23px;
-      display: flex;
-      align-items: center;
-      align-content: center;
-    }
-  }
 }
 :host ::ng-deep {
   input.mat-input-element {

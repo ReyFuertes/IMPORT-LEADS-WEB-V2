@@ -16,4 +16,15 @@
       opacity: 0.6 !important;
     }
   }
+  ::ng-deep {
+    input.mat-input-element {
+      font-size: 14px;
+      position: relative;
+      top: 2px;
+    }
+    .mat-form-field-appearance-legacy .mat-form-field-label {
+      font-size: 14px;
+      padding-top: 5px;
+    }
+  }
 }

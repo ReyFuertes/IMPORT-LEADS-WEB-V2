@@ -1,6 +1,10 @@
 @import "src/styleguide/shared";
 @import "src/styleguide/overrides";
 ::ng-deep {
+  .mat-form-field-appearance-legacy .mat-form-field-label span {
+    position: relative;
+    top: -1px;
+  }
   .cdk-overlay-pane {
     @include adjust-dropdown-overlay($adjust: true);
   }

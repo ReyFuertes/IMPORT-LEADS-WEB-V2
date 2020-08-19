@@ -24,7 +24,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AddEditState } from 'src/app/shared/generics/generic.model';
 import { Store, select } from '@ngrx/store';
 import * as _ from 'lodash';
-import { getChecklistItemsSelector, getchecklistProductsSelector, getSelectedTermsSelector, getChecklistStatusSelector, getChecklist } from '../../store/selectors/contract-checklist.selector';
+import { getChecklistItemsSelector, getchecklistProductsSelector, getSelectedTermsSelector, getChecklistStatusSelector, getChecklistSelector } from '../../store/selectors/contract-checklist.selector';
 import { saveChecklistAction } from '../../store/actions/saved-checklist.action';
 import { v4 as uuid } from 'uuid';
 
@@ -139,7 +139,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       takeUntil(this.$unsubscribe),
       tap(cc => this.contractCategories = cc)).subscribe();
 
-    this.store.pipe(select(getChecklist),
+    this.store.pipe(select(getChecklistSelector),
       takeUntil(this.$unsubscribe))
       .pipe(tap(res => {
         this.checklistItems = res.checklistItems || [];
@@ -199,17 +199,19 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     /* get the selected checklist product/s ids,
       it will be the basis of our saved checklist item/s
      */
+    debugger
     const checklistProductIds = this.checkListProducts && this.checkListProducts.map(cp => cp._id);
     /* get the checklist item base on product ids */
     const selectedChecklistItems = this.checklistItems && this.checklistItems.filter(ci => {
       return checklistProductIds && checklistProductIds.includes(ci.checklist_product.id)
-    }).map(ci => ci.id);
+    });
 
     const payload: ISavedChecklistPayload = {
       checklist_name: `Checklist-${new Date().getTime()}`,
       assigned_to: this.formChecklist.get('assignedTo').value,
       desired_run_date: this.formChecklist.get('desiredRunDate').value,
-      checklist_items: selectedChecklistItems
+      checklist_items: selectedChecklistItems,
+      checklist_contract: { id: this.id }
     }
 
     if (payload) {

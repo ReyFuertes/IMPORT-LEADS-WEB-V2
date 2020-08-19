@@ -65,7 +65,6 @@ const reducer = createReducer(
       return adapter.removeMany(match.map(m => m.id), state);
     else return state
   }),
-  /* REMOVE ITEM TO CHECKLIST TERMS */
   on(removeTermFormChecklistAction, (state, action) => {
     const items = state.checklistTerms
       && state.checklistTerms.filter(t => t.term_id === action.term.term_id);
@@ -92,12 +91,10 @@ const reducer = createReducer(
       return adapter.addMany(itemsArr, state)
     } else return state;
   }),
-  /* PROCESS PRODUCTS AND TERMS TO CHECKLIST ITEMS */
   on(processItemsToChecklistAction, (state) => {
     const checklistItems = processToItem(state, true);
     return Object.assign({}, state, { checklistItems });
   }),
-  /* ADD ITEM TO CHECKLIST TERMS */
   on(addItemToChecklistTermsAction, (state, action) => {
     const match = state.checklistTerms
       && state.checklistTerms.filter(t => t.term_id === action.term.term_id).shift();
@@ -108,7 +105,6 @@ const reducer = createReducer(
 
     return Object.assign({}, state, { checklistTerms });
   }),
-  /* ADD ITEM TO CHECKLIST ITEMS */
   on(addItemToChecklistItemsAction, (state, action) => {
     const match = state.checklistItems
       && state.checklistItems.filter(
@@ -132,7 +128,6 @@ const reducer = createReducer(
   on(setToMultiUpdateStatusAction, (state) => {
     return Object.assign({}, state, { multiUpdate: true });
   }),
-  /* ADD ITEM TO CHECKLIST OF PRODUCTS */
   on(addItemToChecklistProductsAction, (state, action) => {
     let checklistProducts: ICommonIdPayload[] = [];
     let match = state.checklistProducts && state.checklistProducts.filter(cp => action.item.id === cp.id).shift();
@@ -146,7 +141,6 @@ const reducer = createReducer(
 
     return Object.assign({}, state, { checklistProducts });
   }),
-  /* REMOVE ITEM TO CHECKLIST OF PRODUCTS */
   on(removeItemFromChecklistProductsAction, (state, action) => {
     let checklistProducts: ICommonIdPayload[] = state.checklistProducts || [];
     let matches = checklistProducts.filter(cp => action.item.id === cp.id);
@@ -159,7 +153,6 @@ const reducer = createReducer(
 
     return Object.assign({}, state, { checklistProducts });
   }),
-  /* ADD ITEM TO CHECKLIST OF SOURCE */
   on(addItemToSourceAction, (state, action) => {
     const match = state.checklistSource
       && state.checklistSource.id === action.item.id;

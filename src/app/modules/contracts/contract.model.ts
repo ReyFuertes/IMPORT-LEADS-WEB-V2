@@ -13,14 +13,12 @@ export interface IContractTermProduct {
   contract_id?: string;
 }
 export interface ISavedChecklistItem extends ISavedChecklist {
-  checklist_items?: {
-    id?: string;
-    checklist_contract?: string;
-    saved_checklist_item?: string;
-  }
+  id?: string;
+  saved_checklist?: string;
 }
 export interface ISavedChecklistPayload extends ISavedChecklist {
-  checklist_items?: string[]
+  checklist_items?: ISavedChecklistItem[];
+  checklist_contract?: { id: string };
 }
 export interface ICommonIdPayload {
   id: string,

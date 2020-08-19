@@ -5,7 +5,7 @@ export const selectContractModuleState = createFeatureSelector<ContractModuleSta
 export const getChecklistStatusSelector = createSelector(
   selectContractModuleState, state => state.checkList.multiUpdate
 );
-export const getChecklist = createSelector(
+export const getChecklistSelector = createSelector(
   selectContractModuleState, state => state.checkList
 );
 export const getchecklistProductsSelector = createSelector(

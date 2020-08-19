@@ -19,7 +19,7 @@ import { map, take, tap, takeUntil, debounceTime } from 'rxjs/operators';
 import { IContractCategory } from '../../contract.model';
 import { deleteContractCategoryAction } from '../../store/actions/contract-category.action';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
-import { getSelectedTermsSelector, getchecklistProductsSelector, getChecklist } from '../../store/selectors/contract-checklist.selector';
+import { getSelectedTermsSelector, getchecklistProductsSelector, getChecklistSelector } from '../../store/selectors/contract-checklist.selector';
 import { appNotification } from 'src/app/store/actions/notification.action';
 import { addItemToChecklistTermsAction } from '../../store/actions/contract-checklist.action';
 
@@ -69,7 +69,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       contact_category: [null],
     });
 
-    this.store.pipe(select(getChecklist)).pipe(
+    this.store.pipe(select(getChecklistSelector)).pipe(
       takeUntil(this.$unsubscribe),
       tap(res => {
         this.checkListProducts = res.checklistProducts || [];

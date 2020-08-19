@@ -33,7 +33,7 @@ il-textarea {
 :host ::ng-deep {
   .il-input .mat-form-field-appearance-legacy .mat-form-field-label {
     font-size: 14px;
-    position: relative;
+    // position: relative;
   }
   .mat-focused .mat-form-field-underline {
     background-color: $color-primary !important;

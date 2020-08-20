@@ -134,18 +134,17 @@
     background-color: $color-primary !important;
   }
   .mat-tab-label {
-    min-width: 100px !important;
-    width: 100px !important;
+    min-width: 99px !important;
+    max-width: 99px !important;
+    width: 99px !important;
     border-radius: 0 !important;
     .mat-tab-label-content {
       width: 75px !important;
       white-space: normal !important;
       font-size: 12px !important;
       font-weight: normal;
+      line-height: 18px;
     }
-  }
-  .mat-tab-label-active .mat-tab-label-content {
-    font-weight: 500 !important;
   }
   .mat-tab-body-content {
     height: 100%;

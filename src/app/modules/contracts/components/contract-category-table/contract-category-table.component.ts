@@ -96,8 +96,10 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       }));
       return;
     };
+
     this.categoryTermEmitter.emit({
       term_id: term.id,
+      category_id: this.contract_category.id,
       checked
     });
   }
@@ -177,7 +179,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   private reloadContractCategory = () =>
     setTimeout(() => {
       this.store.dispatch(loadContractCategoryAction({ id: this.contract_category.contract.id }))
-    }, 1000);
+    }, 100);
 
   public createTerm(): void {
     const dialogRef = this.dialog.open(ContractCategoryTermDialogComponent, {
@@ -198,7 +200,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       });
   }
 
-  public onSave(e): void {
+  public onSave(e: any): void {
     e.stopImmediatePropagation();
 
     if (this.form.value) {

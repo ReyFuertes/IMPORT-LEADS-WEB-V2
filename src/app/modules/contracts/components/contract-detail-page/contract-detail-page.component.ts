@@ -1,4 +1,4 @@
-import { addItemToChecklistTermsAction, clearAllSelectedTerms, removeItemFromChecklistProductsAction, clearChecklistProductsAction, addItemToChecklistItemsAction, processItemsToChecklistAction, removeTermFormChecklistAction, processItemsToChecklistEntitiesAction, removeItemFromEntitiesAction } from './../../store/actions/contract-checklist.action';
+import { addItemToChecklistTermsAction, clearAllSelectedTerms, removeItemFromChecklistProductsAction, clearChecklistProductsAction, addItemToChecklistItemsAction, processItemsToChecklistAction, removeTermFormChecklistAction, processItemsToChecklistEntitiesAction, removeItemFromEntitiesAction, clearChecklistSourceAction, clearEntitiesAction } from './../../store/actions/contract-checklist.action';
 import { sortByAsc } from 'src/app/shared/util/sort';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { ReOrderImagesAction, deleteContractAction } from './../../store/actions/contracts.action';
@@ -12,7 +12,7 @@ import { User } from './../../../users/users.models';
 import { AppState } from './../../../../store/app.reducer';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IContract, IProductImage, IContractCategory, ICategory, IContractChecklist, IContractCategoryTerm, IContractChecklistItem, IContractProduct, ISavedChecklistItem, ISavedChecklistPayload, ICommonIdPayload, IContractTermProduct } from './../../contract.model';
+import { IContract, IProductImage, IContractCategory, ICategory, IContractCategoryTerm, IContractChecklistItem, IContractProduct, ISavedChecklistPayload, ICommonIdPayload, IContractTermProduct } from './../../contract.model';
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, ViewChild, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
@@ -24,9 +24,10 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AddEditState } from 'src/app/shared/generics/generic.model';
 import { Store, select } from '@ngrx/store';
 import * as _ from 'lodash';
-import { getChecklistItemsSelector, getchecklistProductsSelector, getSelectedTermsSelector, getChecklistStatusSelector, getChecklistSelector } from '../../store/selectors/contract-checklist.selector';
+import { getChecklistSelector } from '../../store/selectors/contract-checklist.selector';
 import { saveChecklistAction } from '../../store/actions/saved-checklist.action';
 import { v4 as uuid } from 'uuid';
+import * as moment from 'moment';
 
 @Component({
   selector: 'il-contract-detail-page',
@@ -199,7 +200,6 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     /* get the selected checklist product/s ids,
       it will be the basis of our saved checklist item/s
      */
-    debugger
     const checklistProductIds = this.checkListProducts && this.checkListProducts.map(cp => cp._id);
     /* get the checklist item base on product ids */
     const selectedChecklistItems = this.checklistItems && this.checklistItems.filter(ci => {
@@ -207,15 +207,23 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     });
 
     const payload: ISavedChecklistPayload = {
-      checklist_name: `Checklist-${new Date().getTime()}`,
+      checklist_name: `cl-${new Date().getTime()}`,
       assigned_to: this.formChecklist.get('assignedTo').value,
-      desired_run_date: this.formChecklist.get('desiredRunDate').value,
+      desired_run_date: moment(this.formChecklist.get('desiredRunDate').value, 'MM-DD-YYYY HH:mm').format('MM-DD-YYYY HH:mm'),
       checklist_items: selectedChecklistItems,
       checklist_contract: { id: this.id }
     }
 
     if (payload) {
-      this.store.dispatch(saveChecklistAction({ payload }))
+      this.store.dispatch(saveChecklistAction({ payload }));
+
+      /* clear checklist after saved */
+      setTimeout(() => {
+        this.store.dispatch(clearChecklistProductsAction());
+        this.store.dispatch(clearChecklistSourceAction());
+        this.store.dispatch(clearAllSelectedTerms());
+        this.store.dispatch(clearEntitiesAction());
+      }, 3000);
     }
   }
 

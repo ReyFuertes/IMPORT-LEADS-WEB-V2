@@ -27,15 +27,11 @@ export class ContractCategoryComponent extends GenericRowComponent implements On
   public hoveredIndex: number | null = null;
   public selectedIndex: number | null = null;
   public showToggle: boolean = false;
-  @Input()
-  public contractCategory: IContractCategory;
-  @Input()
-  public inCheckListing: boolean = false;
-  @Output()
-  public removeProductSpecEmitter = new EventEmitter<number>();
 
-  @Output()
-  public categoryTermEmitter = new EventEmitter<IContractCategoryTerm>();
+  @Input() public contractCategory: IContractCategory;
+  @Input() public inCheckListing: boolean = false;
+  @Output() public removeProductSpecEmitter = new EventEmitter<number>();
+  @Output() public categoryTermEmitter = new EventEmitter<IContractCategoryTerm>();
 
   constructor(private store: Store<AppState>, public dialog: MatDialog) {
     super();

@@ -31,7 +31,7 @@
             <div *ngFor="let item of ($savedChecklist | async)" class="temp-row" fxLayout="column">
               <div>{{ item?.checklist_name }}</div>
               <div>Inspector: {{ item?.assigned_to }}</div>
-              <div>Date: {{ item?.desired_run_date | date:"MM/dd/yy" }}</div>
+              <div>Date: {{ item?.desired_run_date | date:"short" }}</div>
             </div>
           </div>
         </div>

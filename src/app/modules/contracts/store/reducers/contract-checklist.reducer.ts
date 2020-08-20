@@ -10,7 +10,8 @@ import {
   processItemsToChecklistEntitiesAction,
   removeItemFromEntitiesAction,
   clearChecklistProductsAction,
-  removeItemFromEntitiesByProductId
+  removeItemFromEntitiesByProductId,
+  clearEntitiesAction
 } from './../actions/contract-checklist.action';
 import { IContractChecklistItem, ICommonIdPayload, IContractTermProduct, ISavedChecklistItem } from './../../contract.model';
 import { createReducer, on, Action } from "@ngrx/store";
@@ -38,10 +39,13 @@ export const initialState: ContractChecklistState = adapter.getInitialState({
 
 const reducer = createReducer(
   initialState,
+  on(clearEntitiesAction, (state) => {
+    return adapter.removeAll({ ...state });
+  }),
   on(removeItemFromEntitiesByProductId, (state, action) => {
     const entities = Object.values(state.entities);
     const matches = entities && entities.filter(e => e.checklist_product.product.id === action.id);
- 
+
     return adapter.removeMany(matches.map(m => m.id), state);
   }),
   on(clearChecklistProductsAction, (state) => {

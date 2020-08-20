@@ -45,6 +45,8 @@ export interface IContractCategoryTerm {
 }
 export interface IContractChecklistItem extends IChecklist {
   checklist_product?: { id?: string, product?: IProduct };
+  created_at?: string;
+  updated_at?: string;
 }
 export interface IContractChecklist extends IChecklist {
   checklist_product?: { id: string }[];
@@ -101,6 +103,4 @@ export interface IContract extends ICoreModel {
 }
 export interface ICoreModel {
   id?: string;
-  created_at?: Date;
-  updated_at?: Date;
 }

@@ -31,8 +31,12 @@ export enum CheckListActionTypes {
   processItemsToChecklistEntitiesAction = '[Contract Checklist] process checklist entities',
   removeItemFromEntitiesAction = '[Contract Checklist] remove item from checklist entities',
   clearChecklistProductsAction = '[Contract Checklist] remove all checklist products',
-  removeItemFromEntitiesByProductId = '[Contract Checklist] remove item from entities by product id'
+  removeItemFromEntitiesByProductId = '[Contract Checklist] remove item from entities by product id',
+  clearEntitiesAction = '[Contract Checklist] clear all entities',
 }
+export const clearEntitiesAction = createAction(
+  CheckListActionTypes.clearEntitiesAction
+);
 export const removeItemFromEntitiesByProductId = createAction(
   CheckListActionTypes.removeItemFromEntitiesByProductId,
   props<{ id: string }>()

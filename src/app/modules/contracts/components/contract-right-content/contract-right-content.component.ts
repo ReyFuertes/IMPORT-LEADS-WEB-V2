@@ -8,9 +8,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, Output, EventEmitter, ViewChild, AfterViewInit, ElementRef, Input } from '@angular/core';
 import { fromEvent, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, debounceTime, takeUntil } from 'rxjs/operators';
 import { ISavedChecklistItem } from '../../contract.model';
 import { getAllSavedChecklistSelector } from '../../store/selectors/saved-checklist.selector';
+import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 
 @Component({
   selector: 'il-contract-right-content',
@@ -18,7 +19,7 @@ import { getAllSavedChecklistSelector } from '../../store/selectors/saved-checkl
   styleUrls: ['./contract-right-content.component.scss']
 })
 
-export class ContractRightContentComponent implements OnInit {
+export class ContractRightContentComponent extends GenericDestroyPageComponent implements OnInit {
   public svgPath: string = environment.svgPath;
   public assignments: ISimpleItem[] = [{
     label: 'Rey Fuertes',
@@ -39,7 +40,10 @@ export class ContractRightContentComponent implements OnInit {
   @ViewChild('scrollPnl', { static: true }) public scrollPnl: any;
 
   constructor(public dialog: MatDialog, private store: Store<AppState>) {
-    this.$savedChecklist = this.store.pipe(select(getAllSavedChecklistSelector));
+    super();
+    this.$savedChecklist = this.store.pipe(select(getAllSavedChecklistSelector),
+      debounceTime(3000),
+      takeUntil(this.$unsubscribe));
   }
 
   ngOnInit() { }

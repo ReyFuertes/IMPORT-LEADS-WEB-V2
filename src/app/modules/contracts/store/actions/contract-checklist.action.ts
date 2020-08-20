@@ -2,19 +2,7 @@ import { ICategory, IContractChecklist, IContractChecklistItem, IContractProduct
 import { createAction, props } from '@ngrx/store';
 
 export enum CheckListActionTypes {
-  addItemToChecklist = '[Contract Checklist] Add',
-  addToChecklistSuccessAction = '[Contract Checklist] Add (success)',
-  clearChecklistAction = '[Contract Checklist] Clear',
-  highlightChecklistAction = '[Contract Checklist] Highlight',
-  updateChecklistSourceAction = '[Contract Checklist] remove to checklist source',
-  overrideChecklistItemAction = '[Contract Checklist] override checklist item',
-  overrideChecklistItemActionSuccess = '[Contract Checklist] override checklist item (success)',
-  preSelectChecklistProductsAction = '[Contract Checklist] preselect checklist products',
-  removeChecklistItemsAction = '[Contract Checklist] Delete',
-  removeChecklistItemsSuccessAction = '[Contract Checklist] Delete (success)',
   removeTermFormChecklistAction = '[Contract Checklist] remove selected Terms',
-  removeChecklistItemAction = '[Contract Checklist] remove checklist item',
-
   addItemToChecklistProductsAction = '[Contract Checklist] add product to checklist',
   removeItemFromChecklistProductsAction = '[Contract Checklist] remove product to checklist',
   addItemToSourceAction = '[Contract Checklist] add to checklist source',

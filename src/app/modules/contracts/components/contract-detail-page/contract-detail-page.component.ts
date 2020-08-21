@@ -15,7 +15,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IContract, IProductImage, IContractCategory, ICategory, IContractCategoryTerm, IContractChecklistItem, IContractProduct, ISavedChecklistPayload, ICommonIdPayload, IContractTermProduct } from './../../contract.model';
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from './../../../../../environments/environment';
-import { Component, OnInit, ViewChild, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter} from '@angular/core';
 import { ContractAddDialogComponent } from 'src/app/modules/dialogs/components/contracts-add/contract-add-dialog.component';
 import { ContractTemplateDialogComponent } from 'src/app/modules/dialogs/components/contract-template/contract-template-dialog.component';
 import { GenericPageDetailComponent } from 'src/app/shared/generics/generic-page-detail';
@@ -183,8 +183,8 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       this.checkListProducts.forEach((product: ICommonIdPayload) => {
         this.store.dispatch(removeItemFromEntitiesAction({
           item: {
-            checklist_product: { product: { id: product.id } },
-            checklist_term: { id: term.term_id }
+            contract_product: { product: { id: product.id } },
+            contract_term: { id: term.term_id }
           }
         }));
 
@@ -203,7 +203,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     const checklistProductIds = this.checkListProducts && this.checkListProducts.map(cp => cp._id);
     /* get the checklist item base on product ids */
     const selectedChecklistItems = this.checklistItems && this.checklistItems.filter(ci => {
-      return checklistProductIds && checklistProductIds.includes(ci.checklist_product.id)
+      return checklistProductIds && checklistProductIds.includes(ci.contract_product.id)
     });
 
     const payload: ISavedChecklistPayload = {
@@ -211,7 +211,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       assigned_to: this.formChecklist.get('assignedTo').value,
       desired_run_date: moment(this.formChecklist.get('desiredRunDate').value, 'MM-DD-YYYY HH:mm').format('MM-DD-YYYY HH:mm'),
       checklist_items: selectedChecklistItems,
-      checklist_contract: { id: this.id }
+      contract_contract: { id: this.id }
     }
 
     if (payload) {

@@ -15,17 +15,17 @@ export const getChecklistTermsByProductId = (productId: string) => createSelecto
   selectContractModuleState, state => {
     const items = Object.values(state.checkList.entities);
     const results = items.filter(ci =>
-      ci.checklist_product
-      && ci.checklist_product.product
-      && ci.checklist_product.product.id === productId);
+      ci.contract_product
+      && ci.contract_product.product
+      && ci.contract_product.product.id === productId);
     return results;
   }
 );
 export const getChecklistItemByContractProductIds = (productId: string, contractId: string) => createSelector(
   selectContractModuleState, state => {
     const items = Object.values(state.checkList.entities);
-    const ret = items.filter(ci => ci.checklist_product.id === productId
-      && ci.checklist_contract.id === contractId).shift();
+    const ret = items.filter(ci => ci.contract_product.id === productId
+      && ci.contract_contract.id === contractId).shift();
 
     return ret;
   }

@@ -44,7 +44,7 @@ const reducer = createReducer(
   }),
   on(removeItemFromEntitiesByProductId, (state, action) => {
     const entities = Object.values(state.entities);
-    const matches = entities && entities.filter(e => e.checklist_product.product.id === action.id);
+    const matches = entities && entities.filter(e => e.contract_product.product.id === action.id);
 
     return adapter.removeMany(matches.map(m => m.id), state);
   }),
@@ -62,8 +62,8 @@ const reducer = createReducer(
   }),
   on(removeItemFromEntitiesAction, (state, action) => {
     const match = state && Object.values(state.entities)
-      .filter(t => t.checklist_product.product.id === action.item.checklist_product.product.id
-        && t.checklist_term.id === action.item.checklist_term.id);
+      .filter(t => t.contract_product.product.id === action.item.contract_product.product.id
+        && t.contract_term.id === action.item.contract_term.id);
 
     if (match && match.length > 0)
       return adapter.removeMany(match.map(m => m.id), state);
@@ -112,16 +112,16 @@ const reducer = createReducer(
   on(addItemToChecklistItemsAction, (state, action) => {
     const match = state.checklistItems
       && state.checklistItems.filter(
-        t => t.checklist_term.id === action.item.checklist_term.id
-          && t.checklist_product.id === action.item.checklist_product.id).shift();
+        t => t.contract_term.id === action.item.contract_term.id
+          && t.contract_product.id === action.item.contract_product.id).shift();
 
     let checklistItems: IContractChecklistItem[] = Object.assign([], state.checklistItems);
     if (!match)
       checklistItems.push(action.item);
     else
       _.remove(checklistItems, {
-        checklist_term: { id: action.item.checklist_term.id },
-        checklist_product: { id: action.item.checklist_product.id }
+        checklist_term: { id: action.item.contract_term.id },
+        checklist_product: { id: action.item.contract_product.id }
       });
 
     return Object.assign({}, state, { checklistItems });
@@ -183,15 +183,15 @@ function processToItem(state: ContractChecklistState, bucket: boolean): IContrac
       const searchBucket = (bucket ? state.checklistItems : Object.values(state.entities)) || [];
       const match = searchBucket
         && searchBucket.length > 0
-        && searchBucket.filter(i => i.checklist_term.id === term.term_id
-          && product.id === i.checklist_product.product.id).shift();
+        && searchBucket.filter(i => i.contract_term.id === term.term_id
+          && product.id === i.contract_product.product.id).shift();
 
       if (!match) {
         checklistItems.push({
-          checklist_contract: { id: term.contract_id },
-          checklist_category: { id: term.category_id },
-          checklist_term: { id: term.term_id },
-          checklist_product: { id: product._id, product: { id: product.id } }
+          contract_contract: { id: term.contract_id },
+          contract_category: { id: term.category_id },
+          contract_term: { id: term.term_id },
+          contract_product: { id: product._id, product: { id: product.id } }
         });
       } else {
         _.remove(checklistItems, {

@@ -12,6 +12,7 @@ import { map, debounceTime, takeUntil } from 'rxjs/operators';
 import { ISavedChecklistItem } from '../../contract.model';
 import { getAllSavedChecklistSelector } from '../../store/selectors/saved-checklist.selector';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
+import { getSavedChecklistByIdAction } from '../../store/actions/contract-checklist.action';
 
 @Component({
   selector: 'il-contract-right-content',
@@ -47,6 +48,10 @@ export class ContractRightContentComponent extends GenericDestroyPageComponent i
   }
 
   ngOnInit() { }
+
+  public getChecklist(id: string): void {
+    this.store.dispatch(getSavedChecklistByIdAction({ id }));
+  }
 
   public addBrief(): void {
     const dialogRef = this.dialog.open(BriefDialogComponent, {

@@ -202,7 +202,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       }
 
       /* find by product id */
-      const entities = this.checklistEntities.filter(ci => ci.checklist_product.product.id === item.id);
+      const entities = this.checklistEntities.filter(ci => ci.contract_product.product.id === item.id);
 
       /* perform apply and override here */
       if (this.checklistSource && this.checklistProducts.length >= 1) {
@@ -232,10 +232,10 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       entities && entities.forEach(item => {
         this.store.dispatch(addItemToChecklistTermsAction({
           term: {
-            term_id: item.checklist_term.id,
-            product_id: item.checklist_product.product.id,
-            contract_id: item.checklist_contract.id,
-            category_id: item.checklist_category.id
+            term_id: item.contract_term.id,
+            product_id: item.contract_product.product.id,
+            contract_id: item.contract_contract.id,
+            category_id: item.contract_category.id
           }
         }));
       });
@@ -275,14 +275,14 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
   private isProductHasChecklist(id: string): boolean {
     return id && this.checklistEntities
-      && this.checklistEntities.filter(e => (e.checklist_product
-        && e.checklist_product.product.id === id)).shift()
+      && this.checklistEntities.filter(e => (e.contract_product
+        && e.contract_product.product.id === id)).shift()
       ? true : false;
   }
 
   public hasChecklist(id: string): boolean {
     let preSelected = this.checklistEntities && this.checklistEntities
-      .filter(c => c.checklist_product && c.checklist_product.product.id === id).shift();
+      .filter(c => c.contract_product && c.contract_product.product.id === id).shift();
 
     const ret = this.checklistEntities && this.inCheckListing && preSelected;
     return ret ? true : false;
@@ -321,10 +321,10 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       && this.checklistEntities
       && this.checklistEntities.length > 0
       && this.checklistEntities.filter(c => {
-        return c.checklist_product
-          && c.checklist_product.product
-          && (c.checklist_product.product.id === sub.id /* if the product is the same */
-            || c.checklist_product.product._id === sub._id) /* if product has the same checklists */
+        return c.contract_product
+          && c.contract_product.product
+          && (c.contract_product.product.id === sub.id /* if the product is the same */
+            || c.contract_product.product._id === sub._id) /* if product has the same checklists */
       }).shift() ? true : false;
   }
 

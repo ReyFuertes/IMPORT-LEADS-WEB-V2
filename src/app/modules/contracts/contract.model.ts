@@ -2,6 +2,7 @@ import { ITag } from './../tags/tags.model';
 import { IProduct } from './../products/products.model';
 import { IUser } from './../../models/user.model';
 
+
 export enum ProductActionStatus {
   Override = 1,
   Apply = 2
@@ -18,7 +19,7 @@ export interface ISavedChecklistItem extends ISavedChecklist {
 }
 export interface ISavedChecklistPayload extends ISavedChecklist {
   checklist_items?: ISavedChecklistItem[];
-  checklist_contract?: { id: string };
+  contract_contract?: { id: string };
 }
 export interface ICommonIdPayload {
   id: string,
@@ -44,7 +45,7 @@ export interface IContractCategoryTerm {
   checked: boolean;
 }
 export interface IContractChecklistItem extends IChecklist {
-  checklist_product?: { id?: string, product?: IProduct };
+  contract_product?: { id?: string, product?: IProduct };
   created_at?: string;
   updated_at?: string;
 }
@@ -52,10 +53,9 @@ export interface IContractChecklist extends IChecklist {
   checklist_product?: { id: string }[];
 }
 export interface IChecklist extends ICoreModel {
-  checklist_contract?: { id: string };
-  checklist_term?: { id: string };
-  checklist_category?: { id: string };
-  session_id?: string;
+  contract_contract?: { id: string };
+  contract_term?: { id: string };
+  contract_category?: { id: string };
 }
 export interface IContractTerm extends ICoreModel {
   term_name?: string;

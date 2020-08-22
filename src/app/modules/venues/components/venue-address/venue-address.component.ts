@@ -9,6 +9,7 @@ import { IVenue } from './../../venues.models';
 import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, Input } from '@angular/core';
 import { deleteVenue } from '../../store/venues.action';
+import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'il-venue-address',
   templateUrl: './venue-address.component.html',
@@ -25,10 +26,8 @@ export class VenueAddressComponent extends GenericRowComponent implements OnInit
   public rates = new Array(5);
   public dragStart: boolean = false;
 
-  @Input()
-  public items: IVenue[];
-  @Input()
-  public colsHeaders: Array<{ label: string, width?: string | number }>;
+  @Input() public items: IVenue[];
+  @Input() public colsHeaders: Array<{ label: string, width?: string | number }>;
 
   public drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.items, event.previousIndex, event.currentIndex);
@@ -83,13 +82,14 @@ export class VenueAddressComponent extends GenericRowComponent implements OnInit
           action: 0
         }
       });
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          setTimeout(() => {
-            this.store.dispatch(deleteVenue({ id: this.selectedId }));
-          }, 100);
-        }
-      });
+      dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+        .subscribe(result => {
+          if (result) {
+            setTimeout(() => {
+              this.store.dispatch(deleteVenue({ id: this.selectedId }));
+            }, 100);
+          }
+        });
       pnl.close();
     }
 

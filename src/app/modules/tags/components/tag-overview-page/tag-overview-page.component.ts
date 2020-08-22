@@ -6,6 +6,8 @@ import { ISimpleItem } from './../../../../shared/generics/generic.model';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ITag } from '../../tags.model';
+import { takeUntil } from 'rxjs/operators';
+import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 
 @Component({
   selector: 'il-tag-overview-page',
@@ -13,13 +15,13 @@ import { ITag } from '../../tags.model';
   styleUrls: ['./tag-overview-page.component.scss']
 })
 
-export class TagOverviewPageComponent implements OnInit {
+export class TagOverviewPageComponent extends GenericDestroyPageComponent implements OnInit {
   public $items: Observable<ITag[]>;
   constructor(private store: Store<AppState>, public dialog: MatDialog) {
-
+    super();
   }
 
   ngOnInit() {
-    this.$items = this.store.pipe(select(getTagsSelector));
+    this.$items = this.store.pipe(select(getTagsSelector), takeUntil(this.$unsubscribe));
   }
 }

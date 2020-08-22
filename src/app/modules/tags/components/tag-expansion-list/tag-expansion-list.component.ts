@@ -10,6 +10,8 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TagsQuestionDialogComponent } from 'src/app/modules/dialogs/components/tags-question/tags-question-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ITag } from '../../tags.model';
+import { takeUntil } from 'rxjs/operators';
+import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 
 @Component({
   selector: 'il-tag-expansion-list',
@@ -17,12 +19,10 @@ import { ITag } from '../../tags.model';
   styleUrls: ['./tag-expansion-list.component.scss']
 })
 
-export class TagExpansionListComponent implements OnInit {
+export class TagExpansionListComponent extends GenericDestroyPageComponent implements OnInit {
   public svgPath: string = environment.svgPath;
-  @Input()
-  public items: string[];
-  @Input()
-  public tag: ITag;
+  @Input() public items: string[];
+  @Input() public tag: ITag;
 
   public hoveredIndex: number | null = null;
   public selectedIndex: number | null = null;
@@ -32,7 +32,9 @@ export class TagExpansionListComponent implements OnInit {
   @Output()
   public valueEmitter = new EventEmitter<ITagQuestion>();
 
-  constructor(private store: Store<AppState>, public dialog: MatDialog) { }
+  constructor(private store: Store<AppState>, public dialog: MatDialog) {
+    super();
+  }
 
   ngOnInit() { }
 
@@ -61,13 +63,14 @@ export class TagExpansionListComponent implements OnInit {
         action: 0
       }
     });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        setTimeout(() => {
-          this.store.dispatch(deleteTagQuestion({ id }));
-        }, 200);
-      }
-    });
+    dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+      .subscribe(result => {
+        if (result) {
+          setTimeout(() => {
+            this.store.dispatch(deleteTagQuestion({ id }));
+          }, 200);
+        }
+      });
   }
 
   public dragStarted(event: any): void {
@@ -97,14 +100,15 @@ export class TagExpansionListComponent implements OnInit {
   public onAddQuestion(event: any): void {
     event.stopPropagation();
     const dialogRef = this.dialog.open(TagsQuestionDialogComponent, { data: {} });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        const item = {
-          question_name: result,
-          tag: { id: this.tag.id }
+    dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+      .subscribe(result => {
+        if (result) {
+          const item = {
+            question_name: result,
+            tag: { id: this.tag.id }
+          }
+          this.store.dispatch(addTagQuestion({ item }));
         }
-        this.store.dispatch(addTagQuestion({ item }));
-      }
-    });
+      });
   }
 }

@@ -10,6 +10,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
 import { MatDialog } from '@angular/material/dialog';
 import { addTag } from '../../store/actions/tags.actions';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'il-tag-expansion-panel',
@@ -19,8 +20,8 @@ import { addTag } from '../../store/actions/tags.actions';
 
 export class TagExpansionPanelComponent extends GenericRowComponent implements OnInit {
   public svgPath: string = environment.svgPath;
-  @Input()
-  public items: ITag[];
+  @Input() public items: ITag[];
+
   public hoveredIndex: number | null = null;
   public selectedIndex: number | null = null;
   public selectedId: string;
@@ -44,12 +45,13 @@ export class TagExpansionPanelComponent extends GenericRowComponent implements O
 
   public onAddTag(): void {
     const dialogRef = this.dialog.open(TagsDialogComponent, { data: {} });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        const item: ITag = { tag_name: result };
-        this.store.dispatch(addTag({ item }));
-      }
-    });
+    dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+      .subscribe(result => {
+        if (result) {
+          const item: ITag = { tag_name: result };
+          this.store.dispatch(addTag({ item }));
+        }
+      });
   }
 
   public onKeypress = (pnl: any): void => {
@@ -87,13 +89,14 @@ export class TagExpansionPanelComponent extends GenericRowComponent implements O
           action: 0
         }
       });
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          setTimeout(() => {
-            this.store.dispatch(deleteTag({ id: this.selectedId }));
-          }, 100);
-        }
-      });
+      dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+        .subscribe(result => {
+          if (result) {
+            setTimeout(() => {
+              this.store.dispatch(deleteTag({ id: this.selectedId }));
+            }, 100);
+          }
+        });
       pnl.close();
     }
 

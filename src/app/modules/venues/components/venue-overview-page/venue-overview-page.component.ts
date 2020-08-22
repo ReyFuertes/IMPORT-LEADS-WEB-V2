@@ -8,6 +8,8 @@ import { Component, OnInit } from '@angular/core';
 import { IVenue } from '../../venues.models';
 import { VenuesAddDialogComponent } from 'src/app/modules/dialogs/components/venues-add/venues-add-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { takeUntil } from 'rxjs/operators';
+import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 
 @Component({
   selector: 'il-venue-overview-page',
@@ -15,10 +17,9 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./venue-overview-page.component.scss']
 })
 
-export class VenueOverviewPageComponent implements OnInit {
+export class VenueOverviewPageComponent extends GenericDestroyPageComponent implements OnInit {
   public isProduct: boolean = true;
   public venues: IVenue[];
-
   public colProducts: Array<{ label: string, width?: string | number }> = [
     {
       label: 'Venue name',
@@ -52,7 +53,6 @@ export class VenueOverviewPageComponent implements OnInit {
       label: '',
     }
   ];
-
   public colAddress: Array<{ label: string, width?: string | number }> = [
     {
       label: 'Venue name',
@@ -79,23 +79,25 @@ export class VenueOverviewPageComponent implements OnInit {
   public $venues: Observable<IVenue[]>;
 
   constructor(private store: Store<AppState>, public dialog: MatDialog) {
-    this.store.pipe(select(getVenuesSelector)).subscribe(venues => {
-      this.venues = venues.map(vp => {
-        return {
-          id: vp.id,
-          name: vp.name,
-          rating: vp.rating,
-          location: vp.location,
-          avg_pass_fail: vp.avg_pass_fail,
-          inspections: vp.inspections,
-          related_products: vp.related_products,
-          contact: vp.contact,
-          phone: vp.phone,
-          contract_count: vp.contract_count,
-          image: vp.image
-        }
+    super();
+    this.store.pipe(select(getVenuesSelector), takeUntil(this.$unsubscribe))
+      .subscribe(venues => {
+        this.venues = venues.map(vp => {
+          return {
+            id: vp.id,
+            name: vp.name,
+            rating: vp.rating,
+            location: vp.location,
+            avg_pass_fail: vp.avg_pass_fail,
+            inspections: vp.inspections,
+            related_products: vp.related_products,
+            contact: vp.contact,
+            phone: vp.phone,
+            contract_count: vp.contract_count,
+            image: vp.image
+          }
+        });
       });
-    });
   }
 
   ngOnInit() { }
@@ -115,13 +117,14 @@ export class VenueOverviewPageComponent implements OnInit {
         height: '450px',
         data: this.isProduct
       });
-    dialogRef.afterClosed().subscribe((item: IVenue) => {
-      if (item) {
-        this.store.dispatch(uploadVenueImage({ file: item.file }));
-        delete item.file;
+    dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+      .subscribe((item: IVenue) => {
+        if (item) {
+          this.store.dispatch(uploadVenueImage({ file: item.file }));
+          delete item.file;
 
-        this.store.dispatch(addVenue({ item }));
-      }
-    });
+          this.store.dispatch(addVenue({ item }));
+        }
+      });
   }
 }

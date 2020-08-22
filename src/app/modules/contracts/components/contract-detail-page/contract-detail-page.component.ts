@@ -15,7 +15,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IContract, IProductImage, IContractCategory, ICategory, IContractCategoryTerm, IContractChecklistItem, IContractProduct, ISavedChecklistPayload, ICommonIdPayload, IContractTermProduct } from './../../contract.model';
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from './../../../../../environments/environment';
-import { Component, OnInit, ViewChild, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { ContractAddDialogComponent } from 'src/app/modules/dialogs/components/contracts-add/contract-add-dialog.component';
 import { ContractTemplateDialogComponent } from 'src/app/modules/dialogs/components/contract-template/contract-template-dialog.component';
 import { GenericPageDetailComponent } from 'src/app/shared/generics/generic-page-detail';
@@ -234,14 +234,15 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
         action: 0
       }
     });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && this.form.get('id').value) {
-        this.store.dispatch(deleteContractAction({ id: this.form.get('id').value }));
-        setTimeout(() => {
-          this.router.navigateByUrl('/dashboard/contracts');
-        });
-      } else { }
-    });
+    dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+      .subscribe(result => {
+        if (result && this.form.get('id').value) {
+          this.store.dispatch(deleteContractAction({ id: this.form.get('id').value }));
+          setTimeout(() => {
+            this.router.navigateByUrl('/dashboard/contracts');
+          });
+        } else { }
+      });
   }
 
   public onCloseRighNav(event: any): void {
@@ -257,18 +258,19 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     const dialogRef = this.dialog.open(ContractCategoryDialogComponent, {
       height: '200px'
     });
-    dialogRef.afterClosed().subscribe((category: ICategory) => {
-      if (category) {
-        const payload: IContractCategory = {
-          category: _.pickBy(category, _.identity),
-          contract: {
-            id: this.form.get('id').value,
-            contract_name: this.form.get('contract_name').value
+    dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+      .subscribe((category: ICategory) => {
+        if (category) {
+          const payload: IContractCategory = {
+            category: _.pickBy(category, _.identity),
+            contract: {
+              id: this.form.get('id').value,
+              contract_name: this.form.get('contract_name').value
+            }
           }
+          this.store.dispatch(addContractCategoryAction({ payload }));
         }
-        this.store.dispatch(addContractCategoryAction({ payload }));
-      }
-    });
+      });
   }
 
   public get isChecklistValid(): boolean {
@@ -316,7 +318,8 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
         state: AddEditState.Edit
       }
     });
-    dialogRef.afterClosed().subscribe();
+    dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+      .subscribe();
   }
 
   public saveContractAsTemplate = (): void => {
@@ -326,7 +329,8 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
         state: AddEditState.Edit
       }
     });
-    dialogRef.afterClosed().subscribe();
+    dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+      .subscribe();
   }
 
   public trackByField = (i: number, field: IProductImage) => field.position = i;

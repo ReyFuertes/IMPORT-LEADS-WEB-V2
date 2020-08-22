@@ -12,6 +12,7 @@ import { ConfirmationService } from 'primeng/api';
 import { IContractCategory } from '../../contract.model';
 import { updateCategoryAction } from '../../store/actions/category.action';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'il-contract-category',
@@ -52,7 +53,8 @@ export class ContractCategoryComponent extends GenericRowComponent implements On
 
   public addTitle(): void {
     const dialogRef = this.dialog.open(ContractCategoryTitleDialogComponent);
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed()
+    .pipe(takeUntil(this.$unsubscribe)).subscribe(result => {
       if (result) {
         //this.specification['title'] = result;
       }
@@ -63,12 +65,13 @@ export class ContractCategoryComponent extends GenericRowComponent implements On
     const dialogRef = this.dialog.open(ContractCategoryDialogComponent, {
       data: { category }
     });
-    dialogRef.afterClosed().subscribe(payload => {
-      if (payload) {
-        this.store.dispatch(updateCategoryAction({ payload }));
-        /* just refresh all contract categories, may not be idea but temporary solution */
-        this.store.dispatch(loadContractCategoryAction({ id: this.contractCategory.contract.id }))
-      }
-    });
+    dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+      .subscribe(payload => {
+        if (payload) {
+          this.store.dispatch(updateCategoryAction({ payload }));
+          /* just refresh all contract categories, may not be idea but temporary solution */
+          this.store.dispatch(loadContractCategoryAction({ id: this.contractCategory.contract.id }))
+        }
+      });
   }
 }

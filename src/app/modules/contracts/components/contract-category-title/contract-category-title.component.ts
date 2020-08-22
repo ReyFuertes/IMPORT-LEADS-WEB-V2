@@ -8,14 +8,13 @@ import { environment } from '../../../../../environments/environment';
 })
 export class ContractCategoryTitleComponent implements OnInit {
   public svgPath: string = environment.svgPath;
-  @Input()
-  public specification: { id: number, title: string };
-  @Output()
-  public removeSpecTitleEmitter = new EventEmitter<number>();
+  
+  @Input() public specification: { id: number, title: string };
+  @Output() public removeSpecTitleEmitter = new EventEmitter<number>();
+
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   public onRemoveTitle(id: number): void {
     this.removeSpecTitleEmitter.emit(id);

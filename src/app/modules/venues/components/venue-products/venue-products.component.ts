@@ -110,13 +110,14 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
         action: 0
       }
     });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        setTimeout(() => {
-          this.store.dispatch(removeVenueProduct({ item }))
-        }, 100);
-      }
-    });
+    dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+      .subscribe(result => {
+        if (result) {
+          setTimeout(() => {
+            this.store.dispatch(removeVenueProduct({ item }))
+          }, 100);
+        }
+      });
   }
 
   public getToolTip(product: IRelatedProduct[]): string {
@@ -146,7 +147,7 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
           action: 0
         }
       });
-      dialogRef.afterClosed().subscribe(result => {
+      dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe)).subscribe(result => {
         if (result) {
           setTimeout(() => {
             this.store.dispatch(deleteVenue({ id: this.selectedId }));

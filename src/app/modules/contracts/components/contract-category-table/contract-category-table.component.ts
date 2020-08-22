@@ -132,6 +132,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
 
   ngOnInit() {
     this.$tags = this.store.pipe(select(getTagsSelector),
+      takeUntil(this.$unsubscribe),
       map((tags: ITag[]) => tags.map(ret => {
         return {
           label: ret.tag_name,
@@ -153,13 +154,14 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       width: '410px',
       data: { action: 0 }
     });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.store.dispatch(deleteContractTerm({ id }));
-        /* this is a bad solution, but due to time development i just needs this */
-        this.reloadContractCategory();
-      }
-    });
+    dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+      .subscribe(result => {
+        if (result) {
+          this.store.dispatch(deleteContractTerm({ id }));
+          /* this is a bad solution, but due to time development i just needs this */
+          this.reloadContractCategory();
+        }
+      });
   }
 
   public onDelete = (id: string): void => {
@@ -169,11 +171,12 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
         action: 0
       }
     });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.store.dispatch(deleteContractCategoryAction({ id }));
-      }
-    });
+    dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+      .subscribe(result => {
+        if (result) {
+          this.store.dispatch(deleteContractCategoryAction({ id }));
+        }
+      });
   }
 
   private reloadContractCategory = () =>

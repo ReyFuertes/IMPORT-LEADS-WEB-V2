@@ -32,7 +32,7 @@ export class VenueExpansionListComponent implements OnInit {
       label: 'Qnt. of items',
       width: '100px'
     }
-  ];;
+  ];
   constructor() { }
 
   ngOnInit() { }

@@ -54,11 +54,11 @@ export class ContractCategoryComponent extends GenericRowComponent implements On
   public addTitle(): void {
     const dialogRef = this.dialog.open(ContractCategoryTitleDialogComponent);
     dialogRef.afterClosed()
-    .pipe(takeUntil(this.$unsubscribe)).subscribe(result => {
-      if (result) {
-        //this.specification['title'] = result;
-      }
-    });
+      .pipe(takeUntil(this.$unsubscribe)).subscribe(result => {
+        if (result) {
+          //this.specification['title'] = result;
+        }
+      });
   }
 
   public UpdateCategoryName(category: ICategory): void {

@@ -211,7 +211,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       assigned_to: this.formChecklist.get('assignedTo').value,
       desired_run_date: moment(this.formChecklist.get('desiredRunDate').value, 'MM-DD-YYYY HH:mm').format('MM-DD-YYYY HH:mm'),
       checklist_items: selectedChecklistItems,
-      contract_contract: { id: this.id }
+      checklist_contract: { id: this.id }
     }
 
     if (payload) {

@@ -13,11 +13,12 @@ import {
   removeItemFromEntitiesByProductId,
   clearEntitiesAction
 } from './../actions/contract-checklist.action';
-import { IContractChecklistItem, ICommonIdPayload, IContractTermProduct, ISavedChecklistItem } from './../../contract.model';
+import { IContractChecklistItem, ICommonIdPayload, IContractTermProduct, ISavedChecklistItem, ISavedChecklistResponse } from './../../contract.model';
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import * as _ from 'lodash';
 import { v4 as uuid } from 'uuid';
+import { getSavedChecklistByIdSuccessAction } from '../actions/saved-checklist.action';
 
 export interface ContractChecklistState extends EntityState<IContractChecklistItem> {
   isHighlighting?: boolean,
@@ -39,6 +40,26 @@ export const initialState: ContractChecklistState = adapter.getInitialState({
 
 const reducer = createReducer(
   initialState,
+  on(getSavedChecklistByIdSuccessAction, (state) => {
+    return adapter.removeAll({ ...state });
+  }),
+  on(getSavedChecklistByIdSuccessAction, (state, action) => {
+    const entities: ISavedChecklistResponse[] = action.response;
+    let fmtEntities: ISavedChecklistItem[] = [];
+    entities && entities.forEach(entity => {
+      fmtEntities.push(
+        ...entity.checklist_items.map(i => {
+          return {
+            ...i,
+            checklist_contract: entity.checklist_contract
+          }
+        }),
+      );
+    });
+
+    return ({ ...adapter.addAll(fmtEntities, state) })
+  }),
+
   on(clearEntitiesAction, (state) => {
     return adapter.removeAll({ ...state });
   }),

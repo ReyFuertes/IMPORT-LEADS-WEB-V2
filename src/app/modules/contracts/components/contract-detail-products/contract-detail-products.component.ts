@@ -50,10 +50,8 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   public checklistProducts: IContractProduct[] = [];
   public isAddState: boolean = false;
 
-  @Input()
-  public inCheckListing: boolean = false;
-  @Input()
-  public contract: IContract;
+  @Input() public inCheckListing: boolean = false;
+  @Input() public contract: IContract;
 
   constructor(private store: Store<AppState>, private dialog: MatDialog, private fb: FormBuilder, private cdRef: ChangeDetectorRef) {
     super();
@@ -248,29 +246,30 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       width: '410px',
       data: { action }
     });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        if (action === ProductActionStatus.Override) {
-          /* remove entities on selected product */
-          this.store.dispatch(removeItemFromEntitiesByProductId({ id: item.id }));
+    dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+      .subscribe(result => {
+        if (result) {
+          if (action === ProductActionStatus.Override) {
+            /* remove entities on selected product */
+            this.store.dispatch(removeItemFromEntitiesByProductId({ id: item.id }));
 
-          /* if override, then add the product  */
-          this.store.dispatch(addItemToChecklistProductsAction({ item }));
+            /* if override, then add the product  */
+            this.store.dispatch(addItemToChecklistProductsAction({ item }));
 
-          /* process to checklist items */
+            /* process to checklist items */
+            setTimeout(() => {
+              this.store.dispatch(processItemsToChecklistAction());
+            }, 100);
+
+          } else if (action === ProductActionStatus.Apply) {
+            this.store.dispatch(addItemToChecklistProductsAction({ item }));
+          }
+          /* process to checklist entities */
           setTimeout(() => {
-            this.store.dispatch(processItemsToChecklistAction());
-          }, 100);
-
-        } else if (action === ProductActionStatus.Apply) {
-          this.store.dispatch(addItemToChecklistProductsAction({ item }));
+            this.store.dispatch(processItemsToChecklistEntitiesAction());
+          }, 150);
         }
-        /* process to checklist entities */
-        setTimeout(() => {
-          this.store.dispatch(processItemsToChecklistEntitiesAction());
-        }, 150);
-      }
-    });
+      });
   }
 
   private isProductHasChecklist(id: string): boolean {
@@ -525,42 +524,38 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
         action: 0
       }
     });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        //remove item from form array
-        const item = this.form.get('sub_products') as FormArray;
-        item.removeAt(i);
+    dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+      .subscribe(result => {
+        if (result) {
+          //remove item from form array
+          const item = this.form.get('sub_products') as FormArray;
+          item.removeAt(i);
 
-        /* collect the contract product to be removed */
-        let toRemove: IContractProduct;
-        this.$contractProducts
-          .pipe(takeUntil(this.$unsubscribe))
-          .subscribe(p => {
-            p && p.forEach(p => {
-              p.sub_products.forEach(sp => {
-                if (sp.id === product.id) {
-                  const index = p.sub_products.indexOf(sp);
-                  if (index > -1) {
-                    p.sub_products.splice(index, 1);
-                    toRemove = sp;
+          /* collect the contract product to be removed */
+          let toRemove: IContractProduct;
+          this.$contractProducts
+            .pipe(takeUntil(this.$unsubscribe))
+            .subscribe(p => {
+              p && p.forEach(p => {
+                p.sub_products.forEach(sp => {
+                  if (sp.id === product.id) {
+                    const index = p.sub_products.indexOf(sp);
+                    if (index > -1) {
+                      p.sub_products.splice(index, 1);
+                      toRemove = sp;
+                    }
+                    return;
                   }
-                  return;
-                }
+                });
               });
-            });
-          })
-        /* remote sub product from the database */
-        if (toRemove) {
-          this.store.dispatch(deleteContractProduct({ id: toRemove._id }));
-          this.onResetForm();
+            })
+          /* remote sub product from the database */
+          if (toRemove) {
+            this.store.dispatch(deleteContractProduct({ id: toRemove._id }));
+            this.onResetForm();
+          }
         }
-      }
-    });
-  }
-
-  private fmtToChecklist(payload: ISimpleItem): void {
-    delete Object.assign(payload, { ['id']: payload['value'] })['value'];
-    delete payload.label;
+      });
   }
 
   public removeSelection(): void {

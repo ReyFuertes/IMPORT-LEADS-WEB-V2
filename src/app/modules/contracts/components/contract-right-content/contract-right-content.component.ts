@@ -12,7 +12,7 @@ import { map, debounceTime, takeUntil } from 'rxjs/operators';
 import { ISavedChecklistItem } from '../../contract.model';
 import { getAllSavedChecklistSelector } from '../../store/selectors/saved-checklist.selector';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
-import { getSavedChecklistByIdAction } from '../../store/actions/contract-checklist.action';
+import { getSavedChecklistByIdAction } from '../../store/actions/saved-checklist.action';
 
 @Component({
   selector: 'il-contract-right-content',

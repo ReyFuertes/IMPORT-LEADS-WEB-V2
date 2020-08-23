@@ -20,18 +20,8 @@ export enum CheckListActionTypes {
   removeItemFromEntitiesAction = '[Contract Checklist] remove item from checklist entities',
   clearChecklistProductsAction = '[Contract Checklist] remove all checklist products',
   removeItemFromEntitiesByProductId = '[Contract Checklist] remove item from entities by product id',
-  clearEntitiesAction = '[Contract Checklist] clear all entities',
-  getSavedChecklistByIdAction = '[Contract Checklist] get saved checklist by id',
-  getSavedChecklistByIdSuccessAction = '[Contract Checklist] get saved checklist by id (success)',
+  clearEntitiesAction = '[Contract Checklist] clear all entities'
 }
-export const getSavedChecklistByIdAction = createAction(
-  CheckListActionTypes.getSavedChecklistByIdAction,
-  props<{ id: string }>()
-);
-export const getSavedChecklistByIdSuccessAction = createAction(
-  CheckListActionTypes.getSavedChecklistByIdSuccessAction,
-  props<{ response: IContractChecklistItem[] }>()
-);
 export const clearEntitiesAction = createAction(
   CheckListActionTypes.clearEntitiesAction
 );

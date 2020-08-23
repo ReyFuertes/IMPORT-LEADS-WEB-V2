@@ -2,7 +2,6 @@ import { ITag } from './../tags/tags.model';
 import { IProduct } from './../products/products.model';
 import { IUser } from './../../models/user.model';
 
-
 export enum ProductActionStatus {
   Override = 1,
   Apply = 2
@@ -17,9 +16,13 @@ export interface ISavedChecklistItem extends ISavedChecklist {
   id?: string;
   saved_checklist?: string;
 }
+export interface ISavedChecklistResponse extends ISavedChecklist {
+  checklist_items?: IContractChecklistItem[];
+  checklist_contract?: { id: string };
+}
 export interface ISavedChecklistPayload extends ISavedChecklist {
-  checklist_items?: ISavedChecklistItem[];
-  contract_contract?: { id: string };
+  checklist_items?: IContractChecklistItem[];
+  checklist_contract?: { id: string };
 }
 export interface ICommonIdPayload {
   id: string,

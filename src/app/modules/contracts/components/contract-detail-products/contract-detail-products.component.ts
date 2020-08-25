@@ -224,15 +224,16 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
   private addToChecklist(item: ICommonIdPayload, entities: IContractChecklistItem[]): void {
     this.store.dispatch(addItemToChecklistProductsAction({ item }));
-
+    
     /* get all the terms of selected source */
     if (this.checklistSource && this.checklistProducts.length === 1) {
+      
       entities && entities.forEach(item => {
         this.store.dispatch(addItemToChecklistTermsAction({
           term: {
             term_id: item.contract_term.id,
             product_id: item.contract_product.product.id,
-            contract_id: item.contract_contract.id,
+            contract_id: item.contract_product.id,
             category_id: item.contract_category.id
           }
         }));

@@ -52,7 +52,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   public checkListProducts: IContractProduct[] = [];
   public formChecklist: FormGroup;
   public checklistTerms: IContractTermProduct[];
-  public sessionId: string;
+  public savedChecklistSourceId: string;
 
   @Output()
   public openNavChange = new EventEmitter<boolean>();
@@ -146,12 +146,9 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
         this.checklistItems = res.checklistItems || [];
         this.checkListProducts = res.checklistProducts || [];
         this.checklistTerms = res.checklistTerms || [];
+        this.savedChecklistSourceId = res.saveChecklistSource ? res.saveChecklistSource.id : null;
 
       })).subscribe();
-  }
-
-  private createChecklistSession(): void {
-    this.sessionId = `${uuid()}.${Date.now}`;
   }
 
   public onToggleTerm(term: IContractCategoryTerm): void {
@@ -200,20 +197,34 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     /* get the selected checklist product/s ids,
       it will be the basis of our saved checklist item/s
      */
+
     const checklistProductIds = this.checkListProducts && this.checkListProducts.map(cp => cp._id);
     /* get the checklist item base on product ids */
     const selectedChecklistItems = this.checklistItems && this.checklistItems.filter(ci => {
       return checklistProductIds && checklistProductIds.includes(ci.contract_product.id)
     });
-
+    
+    /* build the payload for saving */
+    checklistProductIds.forEach(productId => {
+      this.checklistTerms.forEach(term => {
+        selectedChecklistItems.push({
+          contract_product: { id: productId, product: { id: term.product_id } },
+          contract_category: { id: term.category_id },
+          contract_contract: { id: this.id },
+          contract_term: { id: term.term_id }
+        })
+      });
+    });
+    
     const payload: ISavedChecklistPayload = {
+      id: this.savedChecklistSourceId,
       checklist_name: `cl-${new Date().getTime()}`,
       assigned_to: this.formChecklist.get('assignedTo').value,
       desired_run_date: moment(this.formChecklist.get('desiredRunDate').value, 'MM-DD-YYYY HH:mm').format('MM-DD-YYYY HH:mm'),
       checklist_items: selectedChecklistItems,
       checklist_contract: { id: this.id }
     }
-
+    debugger
     if (payload) {
       this.store.dispatch(saveChecklistAction({ payload }));
 
@@ -249,6 +260,8 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     setTimeout(() => {
       /* clear selected checklist product/s */
       this.store.dispatch(clearChecklistProductsAction());
+      this.store.dispatch(clearEntitiesAction());
+
       this.showRightNav = !event;
       this.formChecklist.reset();
     }, 100);

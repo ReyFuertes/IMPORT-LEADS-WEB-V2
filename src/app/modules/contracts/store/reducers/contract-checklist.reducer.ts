@@ -18,7 +18,7 @@ import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import * as _ from 'lodash';
 import { v4 as uuid } from 'uuid';
-import { getSavedChecklistByIdSuccessAction } from '../actions/saved-checklist.action';
+import { getSavedChecklistByIdSuccessAction, getSavedChecklistByIdAction } from '../actions/saved-checklist.action';
 
 export interface ContractChecklistState extends EntityState<IContractChecklistItem> {
   isHighlighting?: boolean,
@@ -26,7 +26,8 @@ export interface ContractChecklistState extends EntityState<IContractChecklistIt
   checklistProducts?: ICommonIdPayload[];
   checklistSource?: ICommonIdPayload;
   multiUpdate?: boolean;
-  checklistItems?: IContractChecklistItem[]
+  checklistItems?: IContractChecklistItem[],
+  saveChecklistSource?: ISavedChecklistItem
 }
 export const adapter: EntityAdapter<IContractChecklistItem> = createEntityAdapter<IContractChecklistItem>({});
 export const initialState: ContractChecklistState = adapter.getInitialState({
@@ -35,7 +36,8 @@ export const initialState: ContractChecklistState = adapter.getInitialState({
   checklistProducts: null,
   checklistSource: null,
   multiUpdate: null,
-  checklistItems: null
+  checklistItems: null,
+  saveChecklistSource: null
 });
 
 const reducer = createReducer(
@@ -56,10 +58,11 @@ const reducer = createReducer(
         }),
       );
     });
-
     return ({ ...adapter.addAll(fmtEntities, state) })
   }),
-
+  on(getSavedChecklistByIdAction, (state, action) => {
+    return Object.assign({}, state, { saveChecklistSource: { id: action.id } });
+  }),
   on(clearEntitiesAction, (state) => {
     return adapter.removeAll({ ...state });
   }),

@@ -12,6 +12,9 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { VenuesEffects } from './modules/venues/store/venues.effects';
 import { AuthModule } from './modules/auth/auth.module';
 import { TokenInterceptor } from './services/http-token-interceptor';
+import { AuthGuard } from './services/auth.guard';
+import { AuthEffect } from './modules/auth/store/auth.effect';
+import { InitAppEffect } from './store/effects/app.effect';
 
 const materialModules = [
 ];
@@ -28,11 +31,12 @@ const materialModules = [
     HttpClientModule,
     AuthModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([VenuesEffects]),
+    EffectsModule.forRoot([VenuesEffects, InitAppEffect]),
     AppRoutingModule,
     BrowserAnimationsModule,
   ],
   providers: [
+    AuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]

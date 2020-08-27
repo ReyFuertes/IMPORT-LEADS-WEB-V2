@@ -14,8 +14,8 @@ export abstract class BaseService<T> {
   }
 
   private getToken(): string {
-    return JSON.parse(localStorage.getItem('token') || null) ?
-      JSON.parse(localStorage.getItem('token')).token : null;
+    return JSON.parse(localStorage.getItem('at') || null) ?
+      JSON.parse(localStorage.getItem('at')).accessToken : null;
   }
 
   protected commonHeaders(): HttpHeaders {

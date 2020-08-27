@@ -7,16 +7,16 @@
         <div class="content" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="5px">
           <div fxLayout="column">
             <label>Email</label>
-            <il-input fxFlex="50" [form]="form" hasBorder="true" isFloatLabel="true" [controlName]="'email'" placeholder="Enter Username or Email"></il-input>
+            <il-input fxFlex="50" [form]="form" hasBorder="true" isFloatLabel="true" controlName="username" placeholder="Enter Username or Email"></il-input>
           </div>
           <div fxLayout="column">
             <label>Password</label>
-            <il-input inputType="password" fxFlex="50" [form]="form" hasBorder="true" isFloatLabel="true" [controlName]="'password'" placeholder="Password"></il-input>
+            <il-input inputType="password" fxFlex="50" [form]="form" hasBorder="true" isFloatLabel="true" controlName="password" placeholder="Password"></il-input>
           </div>
           <div fxLayoutAlign="start center">
             <p-checkbox label="Remember Me"></p-checkbox>
           </div>
-          <button [disabled]="!form.valid" mat-flat-button class="il-button primary large">Login</button>
+          <button [disabled]="!form.valid" (click)="onSubmit()" mat-flat-button class="il-button primary large">Login</button>
         </div>
       </div>
     </mat-card>

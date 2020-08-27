@@ -224,7 +224,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       checklist_items: selectedChecklistItems,
       checklist_contract: { id: this.id }
     }
-    debugger
+    
     if (payload) {
       this.store.dispatch(saveChecklistAction({ payload }));
 

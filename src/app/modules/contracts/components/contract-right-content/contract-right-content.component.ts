@@ -46,7 +46,7 @@ export class ContractRightContentComponent extends GenericDestroyPageComponent i
       debounceTime(3000),
       takeUntil(this.$unsubscribe));
   }
-
+  
   ngOnInit() { }
 
   public getChecklist(id: string): void {

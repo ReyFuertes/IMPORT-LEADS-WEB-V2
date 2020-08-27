@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { loadVenues } from './modules/venues/store/venues.action';
 import { delay, take, debounceTime } from 'rxjs/operators';
+import { initAppAction } from './store/actions/app.action';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +20,7 @@ export class AppComponent {
   public $hasLoggedIn: Observable<boolean>;
 
   constructor(private store: Store<AppState>) {
+    this.store.dispatch(initAppAction());
     this.store.dispatch(loadVenues());
     this.$notify = this.store.pipe(select(getSuccessSelector), delay(500));
 
@@ -28,6 +30,8 @@ export class AppComponent {
         this.store.dispatch(removeNotification())
       }
     });
+
+    this.store.subscribe(res => console.log(res))
 
     /* check if user islogin */
     setTimeout(() => {

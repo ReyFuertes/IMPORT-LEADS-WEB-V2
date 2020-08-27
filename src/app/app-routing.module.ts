@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+import { AuthGuard } from './services/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   {
     path: 'dashboard',
+    canActivate: [AuthGuard],
     children: [
       { path: 'contracts', loadChildren: './modules/contracts/contracts.module#ContractsModule' },
       { path: 'inspection-insights', loadChildren: './modules/inspection-insights/inspection-insights.module#InspectionInsightsModule' },

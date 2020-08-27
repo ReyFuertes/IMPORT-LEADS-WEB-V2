@@ -12,6 +12,11 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { MatCardModule, MatButtonModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { AuthReducer } from './store/auth.reducer';
+import { AuthEffect } from './store/auth.effect';
+import { AuthGuard } from 'src/app/services/auth.guard';
 
 const primengModules = [
   InputTextModule,
@@ -34,7 +39,7 @@ const routes: Routes = [
     AuthContainerComponent,
     LoginComponent
   ],
-  imports: [ 
+  imports: [
     BrowserAnimationsModule,
     CommonModule,
     ReactiveFormsModule,
@@ -44,6 +49,8 @@ const routes: Routes = [
     ...primengModules,
     ...materialModules,
     RouterModule.forChild(routes),
+    StoreModule.forFeature('auth', AuthReducer),
+    EffectsModule.forFeature([AuthEffect])
   ],
   exports: [
     AuthContainerComponent,
@@ -51,4 +58,4 @@ const routes: Routes = [
   ],
   providers: [],
 })
-export class AuthModule {}
+export class AuthModule { }

@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { emailRegex } from 'src/app/shared/util/email';
+import { loginAction } from '../../store/auth.action';
 
 @Component({
   selector: 'il-login',
@@ -22,22 +22,19 @@ export class LoginComponent implements OnInit {
   public hasError: boolean = false;
   public failedMsg: string;
 
-  constructor(private router: Router, private store: Store<AppState>, private fb: FormBuilder) {
+  constructor(private store: Store<AppState>, private fb: FormBuilder) {
     this.form = this.fb.group({
-      email: [null,
-        Validators.compose([Validators.required, Validators.pattern(emailRegex.email)])],
-      password: [null, Validators.required]
+      username: ['rey1234', Validators.compose([Validators.required])],
+      password: ['p@55w0rd', Validators.required]
     });
   }
 
-  ngOnInit() {
-
-
-  }
+  ngOnInit() {}
 
   public onSubmit(): void {
     if (this.form.valid) {
       const { username, password } = this.form.value;
+      this.store.dispatch(loginAction({ cred: { username, password } }))
     }
   }
 }

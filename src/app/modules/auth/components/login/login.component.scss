@@ -17,7 +17,7 @@ label {
 }
 .mat-card {
   width: 450px;
-  padding: 30px 40px 40px;
+  padding: 30px 55px 50px;
   border-radius: 2px;
 }
 .il-button {
@@ -34,6 +34,12 @@ label {
   }
 }
 :host ::ng-deep {
+  .pi {
+    font-size: 2em !important;
+  }
+  .mat-form-field-appearance-legacy .mat-form-field-wrapper {
+    padding-bottom: 10px !important;
+  }
   .il-input input.mat-input-element {
     line-height: 25px;
     height: 35px !important;

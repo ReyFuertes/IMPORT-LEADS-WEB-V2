@@ -1,4 +1,4 @@
-import { addVenue } from './../../store/venues.action';
+import { addVenueAction } from './../../store/venues.action';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { Store } from '@ngrx/store';
 import { AppState } from './../../../../store/app.reducer';
@@ -8,7 +8,7 @@ import { moveItemInArray, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { IVenue } from './../../venues.models';
 import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, Input } from '@angular/core';
-import { deleteVenue } from '../../store/venues.action';
+import { deleteVenueAction } from '../../store/venues.action';
 import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'il-venue-address',
@@ -53,7 +53,7 @@ export class VenueAddressComponent extends GenericRowComponent implements OnInit
 
   public onSave(): void {
     if (this.selectedItem) {
-      this.store.dispatch(addVenue({ item: this.selectedItem }));
+      this.store.dispatch(addVenueAction({ item: this.selectedItem }));
       this.selectedItem = null;
       this.reset();
     }
@@ -86,7 +86,7 @@ export class VenueAddressComponent extends GenericRowComponent implements OnInit
         .subscribe(result => {
           if (result) {
             setTimeout(() => {
-              this.store.dispatch(deleteVenue({ id: this.selectedId }));
+              this.store.dispatch(deleteVenueAction({ id: this.selectedId }));
             }, 100);
           }
         });

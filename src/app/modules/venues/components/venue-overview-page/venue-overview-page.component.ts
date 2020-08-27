@@ -1,4 +1,4 @@
-import { updateVenue, addVenue, uploadVenueImage } from './../../store/venues.action';
+import { updateVenueAction, addVenueAction, uploadVenueImageAction } from './../../store/venues.action';
 import { getVenuesSelector } from './../../store/venues.selector';
 import { getVenues } from './../../store/venues.reducer';
 import { Observable } from 'rxjs';
@@ -120,10 +120,10 @@ export class VenueOverviewPageComponent extends GenericDestroyPageComponent impl
     dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
       .subscribe((item: IVenue) => {
         if (item) {
-          this.store.dispatch(uploadVenueImage({ file: item.file }));
+          this.store.dispatch(uploadVenueImageAction({ file: item.file }));
           delete item.file;
 
-          this.store.dispatch(addVenue({ item }));
+          this.store.dispatch(addVenueAction({ item }));
         }
       });
   }

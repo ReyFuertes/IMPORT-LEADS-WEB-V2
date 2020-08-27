@@ -1,6 +1,6 @@
 import { removeVenueProductSuccess } from './venue-product.action';
 import { IVenue } from './../venues.models';
-import { loadVenues, loadVenuesSuccess, addVenueSuccess, deleteVenueSuccess, updateVenueSuccess } from './venues.action';
+import { loadVenuesAction, loadVenuesSuccessAction, addVenueSuccessAction, deleteVenueSuccessAction, updateVenueSuccessAction } from './venues.action';
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 
@@ -13,19 +13,19 @@ export const initialState: VenuesState = adapter.getInitialState({
 });
 const venuesReducer = createReducer(
   initialState,
-  on(updateVenueSuccess, (state, action) => {
+  on(updateVenueSuccessAction, (state, action) => {
     return adapter.updateOne({ id: action.updated.id, changes: action.updated }, state)
   }),
-  on(deleteVenueSuccess, (state, action) => {
+  on(deleteVenueSuccessAction, (state, action) => {
     return adapter.removeOne(action.deleted.id, state)
   }),
-  on(addVenueSuccess, (state, action) => {
+  on(addVenueSuccessAction, (state, action) => {
     return adapter.addOne(action.created, state)
   }),
-  on(loadVenues, (state) => {
+  on(loadVenuesAction, (state) => {
     return ({ ...adapter.removeAll(state) })
   }),
-  on(loadVenuesSuccess, (state, action) => {
+  on(loadVenuesSuccessAction, (state, action) => {
     return ({ ...adapter.addAll(action.items, state) })
   })
 );

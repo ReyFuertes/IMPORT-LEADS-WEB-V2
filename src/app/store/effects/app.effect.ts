@@ -6,6 +6,8 @@ import { tap, map, switchMap } from 'rxjs/operators';
 import { initAppAction, initAppSuccessAction } from '../actions/app.action';
 import { logoutAction, logoutSuccessAction } from 'src/app/modules/auth/store/auth.action';
 import { Router } from '@angular/router';
+import { AppState } from 'src/app/modules/contracts/store/reducers';
+import { loadVenuesAction } from 'src/app/modules/venues/store/venues.action';
 
 @Injectable()
 export class InitAppEffect {
@@ -17,11 +19,13 @@ export class InitAppEffect {
     }),
     map(() => logoutSuccessAction())
   ));
-
   initAppAction$ = createEffect(() => this.actions$.pipe(
     ofType(initAppAction),
     switchMap(() => of(localStorage.getItem('at'))
       .pipe(
+        tap((res) => {
+          if (res) this.store.dispatch(loadVenuesAction());
+        }),
         map((accessToken: any) => {
           let token: any;
           if (accessToken)
@@ -32,5 +36,5 @@ export class InitAppEffect {
       ))
   ));
 
-  constructor(private actions$: Actions, private router: Router) { }
+  constructor(private store: Store<AppState>, private actions$: Actions, private router: Router) { }
 }

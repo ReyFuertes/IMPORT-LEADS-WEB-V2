@@ -1,7 +1,7 @@
 <div fxLayout="row" class="top-nav fade-in" fxLayoutAlign="start center" fxLayoutGap="20px">
   <div fxFlex fxLayoutAlign="start center">
     <div class="menu-box logo" fxFlex="10">
-      <img [src]="imgPath + 'logo.png'" />
+      <img routerLink="/dashboard" [src]="imgPath + 'logo.png'" />
     </div>
     <ng-container *ngFor="let menu of toolbarMenu; let i = index">
       <div class="menu-box" [routerLink]="menu?.route" fxFlex="25" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:
@@ -18,7 +18,7 @@
     </div>
     <div class="settings" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
       <img [src]="imgPath + 'profile.png'" />
-      <span [matMenuTriggerFor]="menu">{{ user?.username }}</span>
+      <span class="username" [matTooltip]="user?.username" [matMenuTriggerFor]="menu">{{ user?.username }}</span>
       <img class="arrow" [matMenuTriggerFor]="menu" [src]="svgPath + 'arrow-down-icon-black.svg'" />
       <mat-menu #menu="matMenu">
         <button mat-menu-item routerLink="dashboard/users/profile">Profile</button>

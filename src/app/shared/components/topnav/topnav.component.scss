@@ -12,6 +12,12 @@
 }
 .settings {
   cursor: pointer;
+  span.username {
+    width: 80px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 ::ng-deep {
   .mat-menu-item {

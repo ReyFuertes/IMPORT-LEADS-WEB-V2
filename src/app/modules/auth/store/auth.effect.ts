@@ -2,10 +2,12 @@ import { AppState } from './../../../store/app.reducer';
 import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, mergeMap, tap } from 'rxjs/operators';
-import { loginAction, loginSuccessAction, logoutAction } from './auth.action';
+import { map, mergeMap, tap, catchError } from 'rxjs/operators';
+import { loginAction, loginSuccessAction, logoutAction, loginFailedAction } from './auth.action';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { of } from 'rxjs';
+import { appNotification } from 'src/app/store/actions/notification.action';
 
 @Injectable()
 export class AuthEffect {
@@ -26,6 +28,12 @@ export class AuthEffect {
         }),
         map((accessToken: any) => {
           return loginSuccessAction({ accessToken });
+        }),
+        catchError((error: any) => {
+          this.store.dispatch(appNotification({
+            notification: { error: true, message: 'Login Failed!' }
+          }));
+          return of(loginFailedAction({ error: error.message }));
         })
       ))
   ));

@@ -1,13 +1,11 @@
-import { loadVenues } from './venues.action';
 import { AppState } from './../../../store/app.reducer';
 import { Store } from '@ngrx/store';
 import { VenueProductsService } from './../venue-product.service';
-import { removeVenueProduct, removeVenueProductSuccess } from './venue-product.action';
-import { IVenue, IvenueProduct } from './../venues.models';
-import { VenuesService } from './../venues.service';
+import { removeVenueProduct } from './venue-product.action';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap, tap, switchMap } from 'rxjs/operators';
+import { loadVenuesAction } from './venues.action';
 
 @Injectable()
 export class VenueProductsEffect {
@@ -15,7 +13,7 @@ export class VenueProductsEffect {
     ofType(removeVenueProduct),
     mergeMap(({ item }) =>
       this.venueProductsService.patch(item, 'remove')
-        .pipe(tap(() => this.store.dispatch(loadVenues())))
+        .pipe(tap(() => this.store.dispatch(loadVenuesAction())))
     )), { dispatch: false });
 
   constructor(

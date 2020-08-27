@@ -1,9 +1,18 @@
 @import "src/styleguide/shared";
 @import "src/styleguide/overrides";
-/* in progress */
 ::ng-deep {
   .cdk-overlay-pane {
     @include adjust-dropdown-overlay($adjust: false);
+  }
+}
+.header {
+  > div {
+    &:first-child {
+      height: 25px;
+    }
+    &:nth-child(2) {
+      height: 40px;
+    }
   }
 }
 .image-list {

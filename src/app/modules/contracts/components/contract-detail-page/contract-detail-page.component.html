@@ -1,8 +1,8 @@
-<div *ngIf="($contract | async) as contract" fxLayout="column" fxLayoutGap="20px">
+<div *ngIf="($contract | async) as contract" fxLayout="column" fxLayoutGap="15px">
   <div fxLayout="row">
     <h1>{{ contract?.contract_name }}</h1>
   </div>
-  <div fxLayout="row" fxLayoutGap="20px">
+  <div fxLayout="row" fxLayoutGap="15px">
     <div class="action-item" *ngFor="let option of options" (click)="option?.action()" fxLayoutAlign="start center" fxLayoutGap="5px">
       <img [src]="svgPath + option?.icon" />
       <span [matTooltip]="option?.label">{{ option?.label }}</span>

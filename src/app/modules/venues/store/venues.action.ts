@@ -2,48 +2,48 @@ import { IVenue } from './../venues.models';
 import { createAction, props } from '@ngrx/store';
 
 export enum VenueActionTypes {
-  deleteVenue = '[Venue] Delete',
-  deleteVenueSuccess = '[Venue] Delete (success)',
-  addVenue = '[Venue] Add',
-  addVenueSuccess = '[Venue] Add (success)',
-  updateVenue = '[Venue] Update',
-  updateVenueSuccess = '[Venue] Update (success)',
-  loadVenues = '[Venue] Load',
-  loadVenuesSuccess = '[Venue] Load (success)',
-  uploadVenueImage = '[Venue] Upload',
+  deleteVenueAction = '[Venue] Delete',
+  deleteVenueSuccessAction = '[Venue] Delete (success)',
+  addVenueAction = '[Venue] Add',
+  addVenueSuccessAction = '[Venue] Add (success)',
+  updateVenueAction = '[Venue] Update',
+  updateVenueSuccessAction = '[Venue] Update (success)',
+  loadVenuesAction = '[Venue] Load',
+  loadVenuesSuccessAction = '[Venue] Load (success)',
+  uploadVenueImageAction = '[Venue] Upload',
 }
-export const uploadVenueImage = createAction(
-  VenueActionTypes.uploadVenueImage,
+export const uploadVenueImageAction = createAction(
+  VenueActionTypes.uploadVenueImageAction,
   props<{ file: any }>()
 );
-export const deleteVenue = createAction(
-  VenueActionTypes.deleteVenue,
+export const deleteVenueAction = createAction(
+  VenueActionTypes.deleteVenueAction,
   props<{ id: string }>()
 );
-export const deleteVenueSuccess = createAction(
-  VenueActionTypes.deleteVenueSuccess,
+export const deleteVenueSuccessAction = createAction(
+  VenueActionTypes.deleteVenueSuccessAction,
   props<{ deleted: IVenue }>()
 );
-export const updateVenue = createAction(
-  VenueActionTypes.updateVenue,
+export const updateVenueAction = createAction(
+  VenueActionTypes.updateVenueAction,
   props<{ item: IVenue }>()
 );
-export const updateVenueSuccess = createAction(
-  VenueActionTypes.updateVenueSuccess,
+export const updateVenueSuccessAction = createAction(
+  VenueActionTypes.updateVenueSuccessAction,
   props<{ updated: IVenue }>()
 );
-export const addVenue = createAction(
-  VenueActionTypes.addVenue,
+export const addVenueAction = createAction(
+  VenueActionTypes.addVenueAction,
   props<{ item: IVenue }>()
 );
-export const addVenueSuccess = createAction(
-  VenueActionTypes.addVenueSuccess,
+export const addVenueSuccessAction = createAction(
+  VenueActionTypes.addVenueSuccessAction,
   props<{ created: IVenue }>()
 );
-export const loadVenues = createAction(
-  VenueActionTypes.loadVenues
+export const loadVenuesAction = createAction(
+  VenueActionTypes.loadVenuesAction
 );
-export const loadVenuesSuccess = createAction(
-  VenueActionTypes.loadVenuesSuccess,
+export const loadVenuesSuccessAction = createAction(
+  VenueActionTypes.loadVenuesSuccessAction,
   props<{ items: IVenue[] }>()
 );

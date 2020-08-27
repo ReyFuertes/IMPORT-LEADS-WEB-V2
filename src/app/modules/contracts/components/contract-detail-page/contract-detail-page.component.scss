@@ -32,7 +32,11 @@
   font-size: 12px;
   font-weight: 500;
   color: $color-primary;
+  min-width: 70px;
   cursor: pointer;
+  img {
+    min-width: 15px;
+  }
   &:last-child {
     color: $color-red;
   }

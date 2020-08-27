@@ -3,7 +3,7 @@ import { IvenueProduct, IVenue, IRelatedProduct } from './../../venues.models';
 import { removeVenueProduct } from './../../store/venue-product.action';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { MatDialog } from '@angular/material/dialog';
-import { addVenue, deleteVenue, uploadVenueImage, updateVenue } from './../../store/venues.action';
+import { addVenueAction, deleteVenueAction, uploadVenueImageAction, updateVenueAction } from './../../store/venues.action';
 import { AppState } from './../../../../store/app.reducer';
 import { Store } from '@ngrx/store';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -68,7 +68,7 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
           /* upload new image */
           const dataFile = new FormData();
           dataFile.append('file', file, filename);
-          this.store.dispatch(uploadVenueImage({ file: dataFile }));
+          this.store.dispatch(uploadVenueImageAction({ file: dataFile }));
 
           /* update venue image */
           item.image = _.pickBy({
@@ -77,7 +77,7 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
             size: b64.size,
             id: item.image ? item.image.id : null
           }, _.identity);
-          this.store.dispatch(updateVenue({ item }));
+          this.store.dispatch(updateVenueAction({ item }));
         }
       })
   }
@@ -91,7 +91,7 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
 
   public onSave(): void {
     if (this.selectedItem) {
-      this.store.dispatch(addVenue({ item: this.selectedItem }));
+      this.store.dispatch(addVenueAction({ item: this.selectedItem }));
       this.selectedItem = null;
       this.reset();
     }
@@ -150,7 +150,7 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
       dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe)).subscribe(result => {
         if (result) {
           setTimeout(() => {
-            this.store.dispatch(deleteVenue({ id: this.selectedId }));
+            this.store.dispatch(deleteVenueAction({ id: this.selectedId }));
           }, 100);
         }
       });

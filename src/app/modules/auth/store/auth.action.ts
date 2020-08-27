@@ -6,7 +6,16 @@ export enum LoginActionTypes {
   loginSuccessAction = '[Auth] login (success)',
   logoutAction = '[Auth] logout',
   logoutSuccessAction = '[Auth] logout (success)',
+  loginFailedAction = '[Auth] login (failed)',
+  isLoggingInAction = '[Auth] login (in progress)',
 }
+export const isLoggingInAction = createAction(
+  LoginActionTypes.isLoggingInAction
+);
+export const loginFailedAction = createAction(
+  LoginActionTypes.loginFailedAction,
+  props<{ error: any }>()
+);
 export const logoutAction = createAction(
   LoginActionTypes.logoutAction,
 );

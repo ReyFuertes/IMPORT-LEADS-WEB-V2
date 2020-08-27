@@ -5,68 +5,27 @@
   margin-bottom: 10px;
 }
 label {
-  font-size: 14px;
+  font-size: 12px;
   margin-bottom: 5px;
-  color: $color-black-2;
+  color: $color-black-3;
 }
 .login__container {
   h2 {
     margin-bottom: 20px;
   }
-  background: rgba(176, 176, 176, 1);
-  background: -moz-linear-gradient(
-    -45deg,
-    rgba(176, 176, 176, 1) 0%,
-    rgba(199, 199, 199, 1) 32%,
-    rgba(199, 199, 199, 1) 64%,
-    rgba(166, 166, 166, 1) 100%
-  );
-  background: -webkit-gradient(
-    left top,
-    right bottom,
-    color-stop(0%, rgba(176, 176, 176, 1)),
-    color-stop(32%, rgba(199, 199, 199, 1)),
-    color-stop(64%, rgba(199, 199, 199, 1)),
-    color-stop(100%, rgba(166, 166, 166, 1))
-  );
-  background: -webkit-linear-gradient(
-    -45deg,
-    rgba(176, 176, 176, 1) 0%,
-    rgba(199, 199, 199, 1) 32%,
-    rgba(199, 199, 199, 1) 64%,
-    rgba(166, 166, 166, 1) 100%
-  );
-  background: -o-linear-gradient(
-    -45deg,
-    rgba(176, 176, 176, 1) 0%,
-    rgba(199, 199, 199, 1) 32%,
-    rgba(199, 199, 199, 1) 64%,
-    rgba(166, 166, 166, 1) 100%
-  );
-  background: -ms-linear-gradient(
-    -45deg,
-    rgba(176, 176, 176, 1) 0%,
-    rgba(199, 199, 199, 1) 32%,
-    rgba(199, 199, 199, 1) 64%,
-    rgba(166, 166, 166, 1) 100%
-  );
-  background: linear-gradient(
-    135deg,
-    rgba(176, 176, 176, 1) 0%,
-    rgba(199, 199, 199, 1) 32%,
-    rgba(199, 199, 199, 1) 64%,
-    rgba(166, 166, 166, 1) 100%
-  );
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b0b0b0', endColorstr='#a6a6a6', GradientType=1 );
+  background-color: $color-black-1;
 }
 .mat-card {
   width: 450px;
-  padding: 40px;
+  padding: 30px 40px 40px;
   border-radius: 2px;
 }
 .il-button {
   @include il-button;
   margin-top: 20px;
+}
+.il-button.large {
+  width: 100% !important;
 }
 .content {
   width: 100%;

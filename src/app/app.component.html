@@ -3,9 +3,13 @@
   <p>{{($notify | async)?.message}}</p>
 </div>
 
+<p-blockUI [blocked]="(loaderSrv?.isLoading | async)">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</p-blockUI>
+
 <div fxFlexFill>
   <div class="contents" fxFlex>
-    <il-topnav></il-topnav>
+    <il-topnav *ngIf="$isLoggedIn | async"></il-topnav>
     <div class="router-outlet">
       <router-outlet></router-outlet>
     </div>

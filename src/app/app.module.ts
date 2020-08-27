@@ -15,8 +15,17 @@ import { TokenInterceptor } from './services/http-token-interceptor';
 import { AuthGuard } from './services/auth.guard';
 import { AuthEffect } from './modules/auth/store/auth.effect';
 import { InitAppEffect } from './store/effects/app.effect';
+import { LoaderInterceptor, LoaderService } from './services/loader.interceptor';
+import { BlockUIModule } from 'primeng/blockui';
+import { MatProgressSpinnerModule, MatProgressBarModule } from '@angular/material';
 
 const materialModules = [
+  MatProgressSpinnerModule,
+  MatProgressBarModule
+];
+
+const primengModules = [
+  BlockUIModule
 ];
 
 @NgModule({
@@ -27,6 +36,7 @@ const materialModules = [
     BrowserModule,
     FlexLayoutModule,
     ...materialModules,
+    ...primengModules,
     SharedModule,
     HttpClientModule,
     AuthModule,
@@ -38,6 +48,12 @@ const materialModules = [
   providers: [
     AuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    LoaderService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoaderInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

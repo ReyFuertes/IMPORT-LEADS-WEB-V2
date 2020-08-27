@@ -1,6 +1,10 @@
 import { Router } from '@angular/router';
 import { environment } from './../../../../environments/environment';
 import { Component, OnInit } from '@angular/core';
+import { IUser } from 'src/app/models/user.model';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/modules/contracts/store/reducers';
+import { logoutAction } from 'src/app/modules/auth/store/auth.action';
 
 @Component({
   selector: 'il-topnav',
@@ -16,7 +20,8 @@ export class TopNavComponent implements OnInit {
       label: string, route?: string
     }>
   }>;
-  constructor(private router: Router) { }
+  public user: IUser;
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit() {
     this.toolbarMenu = [
@@ -51,5 +56,13 @@ export class TopNavComponent implements OnInit {
         route: '/dashboard/products',
       }
     ];
+    const localUser = JSON.parse(localStorage.getItem('at')) || null;
+    if (localUser) {
+      this.user = localUser.user;
+    }
+  }
+
+  public onLogout(): void {
+    this.store.dispatch(logoutAction());
   }
 }

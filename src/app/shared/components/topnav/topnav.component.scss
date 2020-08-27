@@ -1,7 +1,6 @@
 @import "src/styleguide/shared";
 .top-nav {
   @include il-topnav;
-  // @include fade-in;
   overflow: hidden;
 }
 .chat {
@@ -10,4 +9,14 @@
 .active-link {
   background-color: $color-gray-3;
   border-bottom: 2px solid $color-primary;
+}
+.settings {
+  cursor: pointer;
+}
+::ng-deep {
+  .mat-menu-item {
+    height: 40px !important;
+    max-height: 40px !important;
+    line-height: 40px !important;
+  }
 }

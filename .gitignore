@@ -5,9 +5,9 @@
 /tmp
 /out-tsc
 environment.prod.ts
-
-# dependencies
 /node_modules
+# dependencies
+
 
 # IDEs and editors
 /.idea
@@ -38,3 +38,4 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+node_modules

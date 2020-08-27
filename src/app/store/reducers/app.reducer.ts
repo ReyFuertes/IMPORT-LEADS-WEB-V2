@@ -1,6 +1,6 @@
 import { createReducer, on, Action } from "@ngrx/store";
 import { initAppSuccessAction } from '../actions/app.action';
-import { loginSuccessAction } from 'src/app/modules/auth/store/auth.action';
+import { loginSuccessAction, logoutAction, logoutSuccessAction } from 'src/app/modules/auth/store/auth.action';
 
 export interface InitAppState {
   token?: string,
@@ -12,6 +12,9 @@ export const initialState: InitAppState = {
 };
 const initAppReducer = createReducer(
   initialState,
+  on(logoutSuccessAction, (state) => {
+    return Object.assign({}, state, { token: null, isLoggedIn: null })
+  }),
   on(loginSuccessAction, (state, action) => {
     return Object.assign({}, state, { token: action.accessToken, isLoggedIn: true })
   }),

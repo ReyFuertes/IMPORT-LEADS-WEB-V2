@@ -54,6 +54,9 @@ img.close {
 .mat-form-field {
   width: 100%;
 }
+.ui-widget-overlay {
+  z-index: 99999 !important;
+}
 .ui-widget-overlay.ui-sidebar-mask {
   opacity: 0 !important;
   display: none;

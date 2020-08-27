@@ -5,9 +5,13 @@ export enum LoginActionTypes {
   loginAction = '[Auth] login',
   loginSuccessAction = '[Auth] login (success)',
   logoutAction = '[Auth] logout',
+  logoutSuccessAction = '[Auth] logout (success)',
 }
 export const logoutAction = createAction(
   LoginActionTypes.logoutAction,
+);
+export const logoutSuccessAction = createAction(
+  LoginActionTypes.logoutSuccessAction,
 );
 export const loginAction = createAction(
   LoginActionTypes.loginAction,

@@ -123,13 +123,11 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
     item.images = this.cnsFileObj(files);
 
     if (this.state === AddEditState.Add) {
-      //NOTE: temporarily inject -- remove this if user auth is implemented
-      item.user = {
-        id: '06d4804a-c068-4d4c-84a0-59858b3da73b',
-        firstname: 'John',
-        lastname: 'Doe',
-        email: 'johndoe@gmail.com'
-      };
+      const locaUser = JSON.parse(localStorage.getItem('at')) || null;
+      if (locaUser) {
+        item.user = locaUser.user
+      }
+
       //save/upload contract
       this.store.dispatch(addContractAction({ item }));
     } else {

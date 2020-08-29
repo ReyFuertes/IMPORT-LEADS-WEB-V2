@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { environment } from '../../../../../environments/environment';
 import { IUserProfile } from '../../users.models';
 import { convertBlobToBase64 } from 'src/app/shared/util/convert-to-blob';
@@ -9,6 +9,7 @@ import { v4 as uuid } from 'uuid';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { Store } from '@ngrx/store';
 import { uploadProfileImageAction, updateProfileAction } from '../../store/actions/user-profile.actions';
+import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 
 @Component({
   selector: 'il-user-profile-details',
@@ -19,40 +20,42 @@ export class UserProfileDetailsComponent extends GenericDestroyPageComponent imp
   public svgPath: string = environment.svgPath;
   public imgPath: string = environment.imgPath;
   public form: FormGroup;
-  public roles: Array<{ id: number, label: string }> = [
+  public roles: ISimpleItem[] = [
     {
-      id: 1,
-      label: 'Admin'
+      label: 'Admin',
+      value: 'admin'
     },
     {
-      id: 2,
-      label: 'Inspector'
+      label: 'Inspector',
+      value: 'inspector'
     },
     {
-      id: 3,
-      label: 'Manager'
+      label: 'Manager',
+      value: 'manage'
     },
   ];
   public rawImage: any;
   public apiImageUrl: string = environment.apiImagePath;
-  
+  public files: File[] = [];
+  public isContactEditMode: boolean = false;
+  public isComDetailEditMode: boolean = false;
+
   @Input() public detail: IUserProfile;
 
   constructor(private store: Store<AppState>, public fb: FormBuilder) {
     super();
     this.form = this.fb.group({
       id: [null],
-      position: [null],
-      role: [null],
+      position: [null, Validators.required],
+      role: [null, Validators.required],
       company_address: [null],
       company_linkedin: [null],
-      company_name: [null],
+      company_name: [null, Validators.required],
       email: [null],
       facebook: [null],
       firstname: [null],
       image: [null],
       lastname: [null],
-      linkedin: [null],
       phone: [null],
       qqid: [null],
       self_intro: [null],
@@ -65,10 +68,19 @@ export class UserProfileDetailsComponent extends GenericDestroyPageComponent imp
     if (this.detail)
       this.form.patchValue(this.detail);
   }
-  public files: File[] = [];
-  /* when you drop an image this gets executed */
-  public onImageChange(event: File): void {
 
+  public updateProfile(): void {
+    const payload = this.form.value;
+    if (payload) {
+      delete payload.image;
+
+      /* update profile data */
+      this.store.dispatch(updateProfileAction({ payload }));
+      setTimeout(() => {
+        this.isContactEditMode = false;
+        this.isComDetailEditMode = false;
+      }, 1500);
+    }
   }
 
   public upload(event: any): void {
@@ -103,9 +115,8 @@ export class UserProfileDetailsComponent extends GenericDestroyPageComponent imp
               id: this.detail.id,
               image: result.filename
             }
-          }))
+          }));
         }
-        console.log(result);
       })
   }
 

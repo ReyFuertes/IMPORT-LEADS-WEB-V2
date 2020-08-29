@@ -16,7 +16,7 @@ export class TokenInterceptor implements HttpInterceptor {
       catchError(error => {
 
         // handle only 401 error
-        if (error instanceof HttpErrorResponse && error.status === 404) {
+        if (error instanceof HttpErrorResponse && error.status === 401) {
           this.store.dispatch(appNotification({
             notification: {
               success: true,

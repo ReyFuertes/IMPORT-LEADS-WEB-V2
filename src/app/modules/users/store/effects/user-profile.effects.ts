@@ -7,12 +7,18 @@ import { UsersService, UserProfileService } from '../../users.service';
 import { IUserProfile } from '../../users.models';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { UploadService } from 'src/app/services/upload.service';
+import { appNotification } from 'src/app/store/actions/notification.action';
 
 @Injectable()
 export class UserProfileEffects {
   updateProfileAction$ = createEffect(() => this.actions$.pipe(
     ofType(updateProfileAction),
     mergeMap(({ payload }) => this.userProfileSrv.patch(payload).pipe(
+      tap(() => {
+        this.store.dispatch(appNotification({
+          notification: { success: true, message: 'Successfully updated' }
+        }));
+      }),
       map((response: IUserProfile) => {
         return updateProfileSuccessAction({ response });
       })

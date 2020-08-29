@@ -11,6 +11,10 @@
 }
 .il-button.small {
   font-size: 12px;
+  min-width: 120px;
+}
+h3 {
+  color: $color-gray-1;
 }
 .img-container {
   width: 120px;
@@ -57,13 +61,23 @@
     margin-bottom: 24px;
   }
 }
-
 .action-profile {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
   color: $color-primary;
   cursor: pointer;
   img {
-    margin-right: 3px;
+    margin-right: 5px;
+  }
+}
+.is-edit {
+  color: $color-gray-1 !important;
+}
+:host ::ng-deep {
+  .il-textarea .mat-form-field-infix {
+    width: 500px;
+  }
+  .mat-form-field {
+    display: flex;
   }
 }

@@ -6,7 +6,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   {
     path: 'dashboard',
-    canActivate: [AuthGuard],
+    //canActivate: [AuthGuard],
     children: [
       { path: 'contracts', loadChildren: './modules/contracts/contracts.module#ContractsModule' },
       { path: 'inspection-insights', loadChildren: './modules/inspection-insights/inspection-insights.module#InspectionInsightsModule' },
@@ -17,7 +17,8 @@ const routes: Routes = [
       { path: 'users', loadChildren: './modules/users/users.module#UsersModule' },
       { path: 'venues', loadChildren: './modules/venues/venues.module#VenuesModule' },
       { path: 'chat', loadChildren: './modules/chat/chat.module#ChatModule' },
-      { path: 'products', loadChildren: './modules/products/products.module#ProductsModule' }
+      { path: 'products', loadChildren: './modules/products/products.module#ProductsModule' },
+      { path: 'user-management', loadChildren: './modules/user-management/user-management.module#UserManagementModule' },
     ]
   }
 ];

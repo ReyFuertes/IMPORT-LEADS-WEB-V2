@@ -20,14 +20,15 @@
       <div fxFlex>
         <span class="self-intro">Self introduction</span>
         <div class="self-desc">{{ detail?.self_intro }}</div>
-        <div>
+        <!-- NOTE: THIS WILL BE DISPLAYED IN ADMIN LEVEL -->
+        <!-- <div>
           <div *ngIf="form" fxFlex fxLayout="row" fxLayoutGap="20px">
             <il-input fxFlex="30" [form]="form" isFloatLabel="true" controlName="position" placeholder="Position"></il-input>
             <il-dropdown-multi-select fxFlex [form]="form" controlName="role" placeHolder="Role" [dataList]="roles">
             </il-dropdown-multi-select>
             <il-input fxFlex="30" [form]="form" isFloatLabel="true" controlName="company_name" placeholder="Company"></il-input>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

@@ -1,10 +1,8 @@
-<div class="up-container" fxLayout="column" fxLayoutGap="32px">
-  <div>
-    <div fxFlex>
-      <h1>{{ username }}</h1>
-    </div>
-  </div>
-  <il-user-profile-details></il-user-profile-details>
-  <il-user-profile-summary></il-user-profile-summary>
-  <il-user-profile-inspection></il-user-profile-inspection>
+<div class="up-container" fxLayout="column" fxLayoutGap="15px">
+  <h2>{{ username }}</h2>
+  <ng-container *ngIf="($detail | async) as detail">
+    <il-user-profile-details [detail]="detail"></il-user-profile-details>
+    <il-user-profile-summary></il-user-profile-summary>
+    <il-user-profile-inspection></il-user-profile-inspection>
+  </ng-container>
 </div>

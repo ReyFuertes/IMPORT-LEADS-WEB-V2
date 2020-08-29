@@ -5,26 +5,27 @@
         <h2>Personal Details</h2>
       </div>
       <div fxFlex="200px" fxLayoutAlign="end center">
-        <button mat-flat-button class="il-button default small">Cancel</button>
+        <button routerLink="/dashboard/contracts" mat-flat-button class="il-button default small">Cancel</button>
         <button mat-flat-button class="il-button primary small">Update</button>
       </div>
     </div>
     <div>
-      <div fxFlex="112px">
-        <img [src]="imgPath + 'sample-img.png'" />
+      <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px" fxFlex="150px">
+        <div class="img-container">
+          <img *ngIf="rawImage ? rawImage:  detail?.image" [src]="rawImage ? rawImage : apiImageUrl + detail?.image" />
+        </div>
+        <input hidden type="file" #uploader (change)="upload($event)" />
+        <span class="link" (click)="uploader?.click()">Browse</span>
       </div>
       <div fxFlex>
         <span class="self-intro">Self introduction</span>
-        <div class="self-desc">
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-          when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-        </div>
+        <div class="self-desc">{{ detail?.self_intro }}</div>
         <div>
-          <div fxFlex fxLayout="row" fxLayoutGap="20px">
-            <il-input fxFlex="30" [form]="form" isFloatLabel="true" [controlName]="'position'" placeholder="Position"></il-input>
-            <il-dropdown-multi-select fxFlex [form]="form" [controlName]="'role'" placeHolder="Role" [dataList]="roles">
+          <div *ngIf="form" fxFlex fxLayout="row" fxLayoutGap="20px">
+            <il-input fxFlex="30" [form]="form" isFloatLabel="true" controlName="position" placeholder="Position"></il-input>
+            <il-dropdown-multi-select fxFlex [form]="form" controlName="role" placeHolder="Role" [dataList]="roles">
             </il-dropdown-multi-select>
-            <il-input fxFlex="30" [form]="form" isFloatLabel="true" [controlName]="'company'" placeholder="Company"></il-input>
+            <il-input fxFlex="30" [form]="form" isFloatLabel="true" controlName="company_name" placeholder="Company"></il-input>
           </div>
         </div>
       </div>
@@ -35,7 +36,7 @@
       <div fxFlex fxLayout="column" fxLayoutGap="20px">
         <div>
           <div fxFlex>
-            <h1>Contacts</h1>
+            <h2>Contacts</h2>
           </div>
           <div class="action-profile" fxFlex="120px" fxLayoutAlign="end center">
             <img [src]="svgPath + 'edit-icon-blue.svg'" />
@@ -45,31 +46,31 @@
         <div fxFlex class="item-container" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="40px">
           <div fxFlex="20">
             <div>Phone Number</div>
-            <div>+86 10 0000 0000</div>
+            <div>{{ detail?.phone }}</div>
           </div>
           <div fxFlex="20">
             <div>Email</div>
-            <div>tammy-li@gmail.com</div>
+            <div>{{ detail?.email }}</div>
           </div>
           <div fxFlex="20">
             <div>Linked Profile</div>
-            <div>linked.com/tammy-li</div>
+            <div>{{ detail?.company_linkedin }}</div>
           </div>
           <div fxFlex="20">
             <div>Facebook Profile</div>
-            <div>facebook.com/tammy-li</div>
+            <div>{{ detail?.facebook }}</div>
           </div>
           <div fxFlex="20">
             <div>Twitter Profile</div>
-            <div>twitter.com/tammy-li</div>
+            <div>{{ detail?.twitter }}</div>
           </div>
           <div fxFlex="20">
             <div>Wechat ID</div>
-            <div>tammy-li</div>
+            <div>{{ detail?.wechatid }}</div>
           </div>
           <div fxFlex="20">
             <div>QQ ID</div>
-            <div>tammy-li</div>
+            <div>{{ detail?.qqid }}</div>
           </div>
         </div>
       </div>
@@ -80,7 +81,7 @@
       <div fxFlex fxLayout="column" fxLayoutGap="20px">
         <div>
           <div fxFlex>
-            <h1>Company Details</h1>
+            <h2>Company Details</h2>
           </div>
           <div class="action-profile" fxFlex="120px" fxLayoutAlign="end center">
             <img [src]="svgPath + 'edit-icon-blue.svg'" />

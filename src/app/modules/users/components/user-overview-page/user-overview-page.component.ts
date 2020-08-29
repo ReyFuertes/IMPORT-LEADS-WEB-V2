@@ -186,8 +186,7 @@ export class UserOverviewPageComponent implements OnInit {
   ];
   constructor(public dialog: MatDialog) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() {  }
 
   public onAddUser(): void {
     const dialogRef = this.dialog.open(UserAddDialogComponent, { height: '595px' });

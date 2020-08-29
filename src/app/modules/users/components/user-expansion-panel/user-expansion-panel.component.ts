@@ -14,12 +14,8 @@ import { DropdownSelect } from './../../../../shared/generics/generic.model';
 })
 export class UserExpansionPanelComponent extends GenericRowComponent implements OnInit {
   public svgPath: string = environment.svgPath;
-  @Input()
-  public users: User[];
   public hoveredIndex: number | null = null;
   public selectedIndex: number | null = null;
-  @Input()
-  public colsHeaders: Array<{ label: string, width?: string | number }>;
   public selectedRole: ISimpleItem;
   public roles: ISimpleItem[] = [
     {
@@ -63,6 +59,9 @@ export class UserExpansionPanelComponent extends GenericRowComponent implements 
   ];
   public dragStart: boolean = false;
 
+  @Input() public users: User[];
+  @Input() public colsHeaders: Array<{ label: string, width?: string | number }>;
+  
   constructor() {
     super();
   }

@@ -82,3 +82,14 @@ img.close {
     cursor: default !important;
   }
 }
+.mat-form-field-appearance-legacy .mat-form-field-underline {
+  background-color: rgba(0,0,0,.1);
+}
+.link {
+  font-size: 14px;
+  color: $color-primary !important;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline !important;
+  }
+}

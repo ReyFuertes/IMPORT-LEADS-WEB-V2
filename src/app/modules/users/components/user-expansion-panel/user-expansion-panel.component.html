@@ -1,5 +1,5 @@
 <div class="col-header" fxLayoutAlign="center center" fxLayoutGap="10px">
-  <div *ngFor="let col of colsHeaders; let first = first" [fxFlex.gt-lg]="col?.width" [fxFlex]="first ? '20' : col?.width">{{ col?.label }}</div>
+  <div *ngFor="let col of colsHeaders; let first = first" [fxFlex.gt-lg]="col?.width" [fxFlex]="first ? '16.6' : col?.width">{{ col?.label }}</div>
 </div>
 <div class="il-draggable-expansion">
   <mat-accordion cdkDropList (cdkDropListDropped)="drop($event)">
@@ -8,34 +8,21 @@
       (keydown.Enter)="$event.stopImmediatePropagation()" class="no-expand" (click)="onClickPnl(pnl, $event, i)" (mouseover)="mouseover(i)" (mouseleave)="mouseout()">
         <div class="pnl-header" fxLayout="row" fxLayoutGap="10px">
           <img cdkDragHandle [src]="svgPath + 'drag-icon.svg'" />
-          <div fxFlex="20" fxLayoutAlign="start center">
+          <div fxFlex="16.6" fxLayoutAlign="start center">
             <img class="user-image" [src]="user?.image">
             <span *ngIf="selectedIndex !== i">{{user?.name}}</span>
-            <!-- <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
-              <input matInput [value]="user?.name">
-            </mat-form-field> -->
           </div>
           <div fxFlex="10" fxLayoutAlign="start center">
             <span *ngIf="selectedIndex !== i">{{user?.position}}</span>
-            <!-- <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
-              <input matInput [value]="user?.position">
-            </mat-form-field> -->
           </div>
           <div fxFlex="10" fxLayoutAlign="start center">
-            <!-- <span class="user-role">{{ user?.role.title}}</span> -->
             <il-popover-select [options]="roles" [selectedItem]="user?.role" (selectedEmitter)="selectedRoleChange($event)" class="no-expand"></il-popover-select>
           </div>
           <div fxFlex="10" fxLayoutAlign="start center">
             <span *ngIf="selectedIndex !== i">{{user?.company}}</span>
-            <!-- <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
-              <input matInput [value]="user?.company">
-            </mat-form-field> -->
           </div>
-          <div fxFlex="17" fxLayoutAlign="start center">
+          <div fxFlex="16.5" fxLayoutAlign="start center">
             <span *ngIf="selectedIndex !== i">{{user?.phone}}</span>
-            <!-- <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
-              <input matInput [value]="user?.phone">
-            </mat-form-field> -->
           </div>
           <div fxFlex="30" fxLayoutAlign="start center" fxLayoutGap="5px">
             <span class="user-access">{{getAccessString(user?.access)}}</span>

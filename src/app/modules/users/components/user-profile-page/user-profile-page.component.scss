@@ -1,6 +1,8 @@
 @import "src/styleguide/shared";
 .up-container {
-  padding-top: 20px;
+  > div {
+    margin-bottom: 10px
+  }
 }
 .action-btn {
   position: fixed;

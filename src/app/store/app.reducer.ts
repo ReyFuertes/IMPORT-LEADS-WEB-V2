@@ -14,7 +14,6 @@ export interface AppState {
   products?: ContractProductsState,
   tags?: TagsState,
   inspection?: InspectionState,
-  // login?: LoginState
   auth: AuthState
 }
 export const reducers: ActionReducerMap<AppState> = {
@@ -24,6 +23,5 @@ export const reducers: ActionReducerMap<AppState> = {
   products: ProductsReducer,
   tags: TagsReducer,
   inspection: InspectionReducer,
-  // login: LoginReducer
   auth: AuthReducer
 };

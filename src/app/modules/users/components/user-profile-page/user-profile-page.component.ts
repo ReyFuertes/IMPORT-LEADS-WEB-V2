@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { IUserProfile } from '../../users.models';
+import { Store, select } from '@ngrx/store';
+import { AppState } from 'src/app/modules/contracts/store/reducers';
+import { getUserProfileSelector } from '../../store/selectors/user-profile.selector';
 
 @Component({
   selector: 'il-user-profile-page',
@@ -6,11 +11,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user-profile-page.component.scss']
 })
 export class UserProfilePageComponent implements OnInit {
-
   public username: string = 'Tammy Li';
-  constructor() { }
+  public $detail: Observable<IUserProfile>;
 
-  ngOnInit() {
+  constructor(private store: Store<AppState>) {
+    this.$detail = this.store.pipe(select(getUserProfileSelector));
   }
+
+  ngOnInit() { }
 
 }

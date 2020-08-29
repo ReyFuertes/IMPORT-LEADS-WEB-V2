@@ -17,6 +17,11 @@ import { UserProfileSummaryComponent } from './components/user-profile-summary/u
 import { UserProfileInspectionComponent } from './components/user-profile-inspection/user-profile-inspection.component';
 import { UserSettingPageComponent } from './components/user-setting-page/user-setting-page.component';
 import { UserSettingDetailsComponent } from './components/user-setting-details/user-setting-details.component';
+import { UsersService, UserProfileService } from './users.service';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { reducers } from './store/reducers';
+import { UserProfileEffects } from './store/effects/user-profile.effects';
 
 const routes: Routes = [
   {
@@ -76,7 +81,11 @@ const materialModules = [
     ...primeNgModules,
     ...materialModules,
     DialogModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    StoreModule.forFeature('usersModule', reducers),
+    EffectsModule.forFeature([
+      UserProfileEffects
+    ])
   ],
   exports: [],
   declarations: [
@@ -90,6 +99,6 @@ const materialModules = [
     UserSettingPageComponent,
     UserSettingDetailsComponent
   ],
-  providers: [],
+  providers: [UsersService, UserProfileService],
 })
 export class UsersModule { }

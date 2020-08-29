@@ -66,8 +66,8 @@ export abstract class BaseService<T> {
     return this.http.get<T[]>(`${this.baseUrl}${this.entity}${this.fmtParam(param)}`, { headers: this.commonHeaders() });
   }
 
-  public getById(id: string, addtnlParam?: string): Observable<T[]> {
-    return this.http.get<T[]>(`${this.baseUrl}${this.entity}/${id}${this.fmtParam(addtnlParam)}`, { headers: this.commonHeaders() });
+  public getById(id: string, addtnlParam?: string): Observable<T | T[]> {
+    return this.http.get<T | T[]>(`${this.baseUrl}${this.entity}/${id}${this.fmtParam(addtnlParam)}`, { headers: this.commonHeaders() });
   }
 
   public upload(object?: any, addtnlParam?: string): Observable<T> {

@@ -1,13 +1,21 @@
 <table mat-table [dataSource]="dataSource" multiTemplateDataRows>
   <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay; let i = index">
-    <th mat-header-cell *matHeaderCellDef> {{column}} </th>
+    <th mat-header-cell *matHeaderCellDef> {{ column !== 'action' ? column: ''}} </th>
     <td [id]="i" mat-cell *matCellDef="let item">
       <div fxLayout="row" fxLayoutAlign="start center" *ngIf="!isNoExpand(i)">
         <img *ngIf="i === 0" class="user-pic" [src]="imgPath + 'sample-profile.png'" />
         <span>{{item[column]}}</span>
       </div>
-      <il-popover-multi-select *ngIf="isNoExpand(i)" [idx]="i" [label]="column" [options]="accessOptions" class="action-col"></il-popover-multi-select>
+      <il-popover-multi-select *ngIf="isNoExpand(i) && !isLast(columnsToDisplay, i)" [idx]="i" [label]="column" [options]="isAccessOrRoles(i)" class="action-col"></il-popover-multi-select>
+
+      <div *ngIf="column === 'action'" [id]="i" fxFlex fxLayoutAlign="end center">
+        <img [id]="i" class="ellipse" [matMenuTriggerFor]="menu" [src]="svgPath + 'dots-icon-blue.svg'" />
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="toDetail(item?.id)">Edit</button>
+        </mat-menu>
+      </div>
     </td>
+
   </ng-container>
 
   <!--detail expanded section -->
@@ -37,3 +45,4 @@
   </tr>
   <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
 </table>
+<mat-paginator [pageSize]="defaultPageSize" [pageSizeOptions]="pageSizeOptions" showFirstLastButtons></mat-paginator>

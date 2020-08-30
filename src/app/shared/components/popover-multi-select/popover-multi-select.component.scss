@@ -1,4 +1,18 @@
-@import 'src/styleguide/shared';
+@import "src/styleguide/shared";
 .menu-cap {
   cursor: pointer;
+}
+::ng-deep {
+  mat-checkbox,
+  .mat-checkbox-layout {
+    width: 220px !important;
+  }
+  .mat-checkbox-inner-container {
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    position: relative !important;
+    top: 3px !important;
+    margin-right: 5px !important;
+  }
 }

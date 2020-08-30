@@ -6,7 +6,7 @@ import { DialogModule } from '../dialogs/dialog.module';
 import { RouterModule, Routes } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { MatTableModule, MatIconModule, MatTooltipModule, MatButtonToggleModule, MatListModule, MatFormFieldModule, MatInputModule, MatBadgeModule, MatMenuModule, MatSelectModule, MatButtonModule, MatAutocompleteModule, MatExpansionModule, MatCardModule, MatStepperModule, MatTabsModule, MatDialogModule, MatSlideToggleModule } from '@angular/material';
+import { MatTableModule, MatIconModule, MatTooltipModule, MatButtonToggleModule, MatListModule, MatFormFieldModule, MatInputModule, MatBadgeModule, MatMenuModule, MatSelectModule, MatButtonModule, MatAutocompleteModule, MatExpansionModule, MatCardModule, MatStepperModule, MatTabsModule, MatDialogModule, MatSlideToggleModule, MatPaginatorModule } from '@angular/material';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { UserManagementContainerComponent } from './container/user-management-container.component';
 import { UserManagementService } from './user-management.service';
@@ -15,6 +15,7 @@ import { UserTableComponent } from './components/user-table/user-table.component
 import { SharedModule } from 'src/app/shared/shared.module';
 import { UserMgmtReducer } from './store/user-mgmt.reducer';
 import { UserMgmtEffects } from './store/user-mgmt.effects';
+import { UserDetailComponent } from './components/user-detail/user-detail.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,9 @@ const routes: Routes = [
     children: [{
       path: '',
       component: UserManagementPageComponent
+    }, {
+      path: ':id/detail',
+      component: UserDetailComponent
     }]
   }
 ];
@@ -49,14 +53,16 @@ const materialModules = [
   MatTabsModule,
   MatButtonModule,
   MatDialogModule,
-  MatTableModule
+  MatTableModule,
+  MatPaginatorModule
 ];
 
 @NgModule({
   declarations: [
     UserManagementContainerComponent,
     UserManagementPageComponent,
-    UserTableComponent
+    UserTableComponent,
+    UserDetailComponent
   ],
   imports: [
     CommonModule,

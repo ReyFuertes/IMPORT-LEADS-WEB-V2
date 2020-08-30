@@ -46,7 +46,6 @@ th.mat-header-cell {
 }
 tr {
   td {
-    padding-right: 15px;
     &:nth-child(3) {
       width: 150px;
       line-height: 50px;
@@ -56,6 +55,9 @@ tr {
     }
     &:nth-child(5) {
       width: 200px;
+    }
+    &:nth-child(6) {
+      min-width: 100px;
     }
   }
   &.detail-row {
@@ -83,12 +85,19 @@ tr {
   opacity: 0.5;
 }
 :host ::ng-deep {
+  td.mat-cell:last-of-type,
+  td.mat-footer-cell:last-of-type,
+  th.mat-header-cell:last-of-type {
+    padding-right: 0 !important;
+  }
   td.mat-cell:first-of-type,
   td.mat-footer-cell:first-of-type,
   th.mat-header-cell:first-of-type {
     padding-left: 0 !important;
   }
-  .mat-cell {
+  .mat-cell:not(.mat-column-expandedDetail) {
     cursor: pointer;
+    line-height: 50px;
+    height: 50px;
   }
 }

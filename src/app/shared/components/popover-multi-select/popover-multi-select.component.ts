@@ -11,7 +11,7 @@ export class PopoverMultiSelectComponent implements OnInit {
   public svgPath: string = environment.svgPath;
   public selOption: ISimpleItem[];
 
-  @Input() public options: IDropdownSelect[];
+  @Input() public options: ISimpleItem[];
   @Input() idx: any;
   @Input() label: any;
   
@@ -19,7 +19,7 @@ export class PopoverMultiSelectComponent implements OnInit {
 
   ngOnInit() { }
 
-  public onSelectOption(option: IDropdownSelect) {
+  public onSelectOption(option: ISimpleItem) {
     console.log(option);
   }
 

@@ -57,6 +57,9 @@ img.close {
 .mat-form-field {
   width: 100%;
 }
+.mat-menu-panel {
+  min-height: 50px !important;
+}
 .ui-widget-overlay {
   z-index: 99999 !important;
 }

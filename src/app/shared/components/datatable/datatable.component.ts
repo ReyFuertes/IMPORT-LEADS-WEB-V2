@@ -16,26 +16,16 @@ import { Component, OnInit, ViewChild, Input, Output, EventEmitter, AfterViewIni
 })
 
 export class DatatableComponent extends GenericRowComponent implements OnInit, AfterViewInit, OnChanges {
-  @Input()
-  public cols: string[] = [];
-  @Input()
-  public data: any[];
-  @Input()
-  public colControlIndex: number = 1;
-  @Input()
-  public colFunc: () => void;
-  @Input()
-  public items: ISimpleItem[];
-  @Input()
-  public pageSizeOptions: number[] = [10, 15, 25, 100];
-  @Input()
-  public ddPlaceholder: string = 'Select item';
-  @Input()
-  public defaultPageSize: number = 25;
-  @Output()
-  public deleteEmitter = new EventEmitter<any>();
-  @Output()
-  public ddUpdateEmitter = new EventEmitter<{ parent: any, child: any }>();
+  @Input() public cols: string[] = [];
+  @Input() public data: any[];
+  @Input() public colControlIndex: number = 1;
+  @Input() public colFunc: () => void;
+  @Input() public items: ISimpleItem[];
+  @Input() public pageSizeOptions: number[] = [10, 15, 25, 100];
+  @Input() public ddPlaceholder: string = 'Select item';
+  @Input() public defaultPageSize: number = 25;
+  @Output() public deleteEmitter = new EventEmitter<any>();
+  @Output() public ddUpdateEmitter = new EventEmitter<{ parent: any, child: any }>();
 
   public svgPath: string = environment.svgPath;
   public dataSource: MatTableDataSource<any[]>;

@@ -17,7 +17,7 @@ import { UserProfileSummaryComponent } from './components/user-profile-summary/u
 import { UserProfileInspectionComponent } from './components/user-profile-inspection/user-profile-inspection.component';
 import { UserSettingPageComponent } from './components/user-setting-page/user-setting-page.component';
 import { UserSettingDetailsComponent } from './components/user-setting-details/user-setting-details.component';
-import { UsersService, UserProfileService } from './users.service';
+import { UserProfileService } from './users.service';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { reducers } from './store/reducers';
@@ -99,6 +99,6 @@ const materialModules = [
     UserSettingPageComponent,
     UserSettingDetailsComponent
   ],
-  providers: [UsersService, UserProfileService],
+  providers: [UserProfileService],
 })
 export class UsersModule { }

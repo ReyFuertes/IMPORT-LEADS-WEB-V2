@@ -1,6 +1,6 @@
 import { environment } from './../../../../environments/environment';
 import { Component, OnInit, Input } from '@angular/core';
-import { DropdownSelect } from './../../generics/generic.model';
+import { IDropdownSelect, ISimpleItem } from './../../generics/generic.model';
 
 @Component({
   selector: 'il-popover-multi-select',
@@ -9,13 +9,18 @@ import { DropdownSelect } from './../../generics/generic.model';
 })
 export class PopoverMultiSelectComponent implements OnInit {
   public svgPath: string = environment.svgPath;
-  @Input()
-  public options: DropdownSelect[];
+  public selOption: ISimpleItem[];
+
+  @Input() public options: IDropdownSelect[];
+  @Input() idx: any;
+  @Input() label: any;
+  
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
-  public onSelectOption(option: DropdownSelect) {}
+  public onSelectOption(option: IDropdownSelect) {
+    console.log(option);
+  }
 
 }

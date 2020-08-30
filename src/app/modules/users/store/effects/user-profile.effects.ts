@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap, tap, switchMap, take } from 'rxjs/operators';
 import { loadUserProfileAction, loadUserProfileSuccessAction, uploadProfileImageAction, updateProfileAction, updateProfileSuccessAction } from '../actions/user-profile.actions';
-import { UsersService, UserProfileService } from '../../users.service';
+import { UserProfileService } from '../../users.service';
 import { IUserProfile } from '../../users.models';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { UploadService } from 'src/app/services/upload.service';

@@ -1,6 +1,11 @@
-<img [matMenuTriggerFor]="menu" class="arrow" [src]="svgPath + 'arrow-down-icon-black.svg'">
-<mat-menu #menu="matMenu" yPosition="below" xPosition="before">
-  <button *ngFor="let option of options" mat-menu-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-    <mat-checkbox (change)="onSelectOption(option);" (click)="$event.stopPropagation();">{{ option?.label | uppercase }}</mat-checkbox>
-  </button>
-</mat-menu>
+<div [id]="idx">
+  <div [id]="idx" class="menu-cap" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+    <div fxFlex [id]="idx" [matMenuTriggerFor]="menu">Select {{label | titlecase }}</div>
+    <img fxFlex="10px" [id]="idx" [matMenuTriggerFor]="menu" class="arrow" [src]="svgPath + 'arrow-down-icon-black.svg'">
+  </div>
+  <mat-menu #menu="matMenu" yPosition="below" xPosition="before">
+    <button *ngFor="let option of options" mat-menu-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+      <mat-checkbox (change)="onSelectOption(option);" (click)="$event.stopPropagation();">{{ option?.label | uppercase }}</mat-checkbox>
+    </button>
+  </mat-menu>
+</div>

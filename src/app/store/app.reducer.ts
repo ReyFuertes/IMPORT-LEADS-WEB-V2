@@ -7,6 +7,7 @@ import { VenuesState, VenuesReducer } from './../modules/venues/store/venues.red
 import { NotificationReducer, NotificationState } from './reducers/notification.reducer';
 import { AuthState, AuthReducer } from '../modules/auth/store/auth.reducer';
 import { InitAppState, InitAppReducer } from './reducers/app.reducer';
+import { UserMgmtState, UserMgmtReducer } from '../modules/user-management/store/user-mgmt.reducer';
 export interface AppState {
   initApp: InitAppState,
   notification?: NotificationState,
@@ -14,7 +15,8 @@ export interface AppState {
   products?: ContractProductsState,
   tags?: TagsState,
   inspection?: InspectionState,
-  auth: AuthState
+  auth: AuthState,
+  userMgmt?: UserMgmtState
 }
 export const reducers: ActionReducerMap<AppState> = {
   initApp: InitAppReducer,
@@ -23,5 +25,6 @@ export const reducers: ActionReducerMap<AppState> = {
   products: ProductsReducer,
   tags: TagsReducer,
   inspection: InspectionReducer,
-  auth: AuthReducer
+  auth: AuthReducer,
+  userMgmt: UserMgmtReducer
 };

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SharedModule } from 'primeng/components/common/shared';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { DialogModule } from '../dialogs/dialog.module';
@@ -12,6 +11,10 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { UserManagementContainerComponent } from './container/user-management-container.component';
 import { UserManagementService } from './user-management.service';
 import { UserManagementPageComponent } from './components/user-management-page/user-management-page.component';
+import { UserTableComponent } from './components/user-table/user-table.component';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { UserMgmtReducer } from './store/user-mgmt.reducer';
+import { UserMgmtEffects } from './store/user-mgmt.effects';
 
 const routes: Routes = [
   {
@@ -46,12 +49,14 @@ const materialModules = [
   MatTabsModule,
   MatButtonModule,
   MatDialogModule,
+  MatTableModule
 ];
 
 @NgModule({
   declarations: [
     UserManagementContainerComponent,
-    UserManagementPageComponent
+    UserManagementPageComponent,
+    UserTableComponent
   ],
   imports: [
     CommonModule,
@@ -63,8 +68,8 @@ const materialModules = [
     ...materialModules,
     DialogModule,
     RouterModule.forChild(routes),
-    StoreModule.forFeature('userManagement', {}),
-    EffectsModule.forFeature([])
+    StoreModule.forFeature('userMgmt', UserMgmtReducer),
+    EffectsModule.forFeature([UserMgmtEffects])
   ],
   exports: [],
   providers: [UserManagementService],

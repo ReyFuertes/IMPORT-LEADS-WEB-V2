@@ -1,0 +1,39 @@
+<table mat-table [dataSource]="dataSource" multiTemplateDataRows>
+  <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay; let i = index">
+    <th mat-header-cell *matHeaderCellDef> {{column}} </th>
+    <td [id]="i" mat-cell *matCellDef="let item">
+      <div fxLayout="row" fxLayoutAlign="start center" *ngIf="!isNoExpand(i)">
+        <img *ngIf="i === 0" class="user-pic" [src]="imgPath + 'sample-profile.png'" />
+        <span>{{item[column]}}</span>
+      </div>
+      <il-popover-multi-select *ngIf="isNoExpand(i)" [idx]="i" [label]="column" [options]="accessOptions" class="action-col"></il-popover-multi-select>
+    </td>
+  </ng-container>
+
+  <!--detail expanded section -->
+  <ng-container matColumnDef="expandedDetail">
+    <td [ngClass]="{'has-border': item == expandedElement}" mat-cell *matCellDef="let item" [attr.colspan]="columnsToDisplay.length">
+      <div class="tbl-el-detail" [@detailExpand]="item == expandedElement ? 'expanded' : 'collapsed'">
+        <div fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="10px" class="tbl-el-diagram">
+          <div *ngFor="let col of cols" fxFlex="30">
+            <span>{{ fmtToTitlecase(col) | uppercase  }}</span>
+            <span>{{item[col]}}</span>
+          </div>
+          <div fxFlex="30">
+            <span>Access</span>
+            <span>{{item?.access}}</span>
+          </div>
+          <div fxFlex="30">
+            <span>Self Intro</span>
+            <span>{{item?.self_intro}}</span>
+          </div>
+        </div>
+      </div>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+  <tr mat-row *matRowDef="let item; columns: columnsToDisplay;" class="tbl-el-row" [ngClass]="{'expanded-row': isNoExpand(i)}" (click)="onExpand(item, $event)">
+  </tr>
+  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
+</table>

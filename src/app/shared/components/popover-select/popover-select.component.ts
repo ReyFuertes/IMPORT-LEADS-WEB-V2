@@ -1,7 +1,7 @@
 import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 import { environment } from './../../../../environments/environment';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { DropdownSelect } from './../../generics/generic.model';
+import { IDropdownSelect } from './../../generics/generic.model';
 
 @Component({
   selector: 'il-popover-select',

@@ -1,0 +1,94 @@
+@import "src/styleguide/shared";
+table {
+  width: 100%;
+}
+.tbl-el-detail {
+  overflow: hidden;
+  display: flex;
+}
+.user-pic {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+.has-border {
+  border-top: thin $color-gray-3 solid !important;
+}
+.mat-column-expandedDetail {
+  background-color: $color-gray-5;
+}
+.tbl-el-diagram {
+  padding: 20px 0;
+  width: 100%;
+  font-size: 14px;
+  > div {
+    min-height: 30px;
+    display: flex;
+    flex-direction: column;
+    align-content: start;
+    align-items: start;
+    margin-bottom: 10px;
+    span:first-child {
+      font-weight: 500;
+      font-size: 12px;
+      color: $color-gray-1;
+    }
+    span:nth-child(2) {
+      font-size: 13px;
+    }
+  }
+}
+th.mat-header-cell {
+  text-transform: capitalize;
+  font-weight: 500;
+  color: $color-gray-1;
+}
+tr {
+  td {
+    padding-right: 15px;
+    &:nth-child(3) {
+      width: 150px;
+      line-height: 50px;
+    }
+    &:nth-child(4) {
+      width: 200px;
+    }
+    &:nth-child(5) {
+      width: 200px;
+    }
+  }
+  &.detail-row {
+    height: 0;
+  }
+  &.tbl-el-row:not(.expanded-row):hover {
+    background: whitesmoke;
+  }
+  &.tbl-el-row:not(.expanded-row):active {
+    background: #efefef;
+  }
+}
+.tbl-el-row td {
+  border-bottom-width: 0;
+}
+.tbl-el-symbol {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+}
+.tbl-el-description {
+  padding: 16px;
+}
+.tbl-el-description-attribution {
+  opacity: 0.5;
+}
+:host ::ng-deep {
+  td.mat-cell:first-of-type,
+  td.mat-footer-cell:first-of-type,
+  th.mat-header-cell:first-of-type {
+    padding-left: 0 !important;
+  }
+  .mat-cell {
+    cursor: pointer;
+  }
+}

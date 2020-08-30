@@ -20,7 +20,7 @@ export interface Menu {
   action?: () => void;
 }
 
-export interface DropdownSelect {
+export interface IDropdownSelect {
   id: number;
   label: string;
   action?: () => void;

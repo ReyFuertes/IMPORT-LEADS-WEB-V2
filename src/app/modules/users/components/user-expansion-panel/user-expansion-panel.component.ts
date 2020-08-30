@@ -5,7 +5,7 @@ import { environment } from '../../../../../environments/environment';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
 import { UserAccess } from '../../users.models';
-import { DropdownSelect } from './../../../../shared/generics/generic.model';
+import { IDropdownSelect } from './../../../../shared/generics/generic.model';
 
 @Component({
   selector: 'il-user-expansion-panel',
@@ -31,29 +31,29 @@ export class UserExpansionPanelComponent extends GenericRowComponent implements 
       label: 'Manager'
     },
   ];
-  public access: DropdownSelect[] = [
+  public access: ISimpleItem[] = [
     {
-      id: 1,
+      value: '1',
       label: 'Contracts'
     },
     {
-      id: 2,
+      value: '2',
       label: 'Inspections'
     },
     {
-      id: 3,
+      value: '3',
       label: 'Executing Inspections'
     },
     {
-      id: 4,
+      value: '4',
       label: 'Data Pages'
     },
     {
-      id: 5,
+      value: '5',
       label: 'Platform Settings'
     },
     {
-      id: 6,
+      value: '6',
       label: 'Chat'
     },
   ];
@@ -61,7 +61,7 @@ export class UserExpansionPanelComponent extends GenericRowComponent implements 
 
   @Input() public users: User[];
   @Input() public colsHeaders: Array<{ label: string, width?: string | number }>;
-  
+
   constructor() {
     super();
   }

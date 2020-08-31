@@ -1,4 +1,4 @@
-import { QueryParam } from './../models/generic..model';
+import { QueryParam } from './../models/generic.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';

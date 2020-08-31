@@ -9,18 +9,25 @@ import { IDropdownSelect, ISimpleItem } from './../../generics/generic.model';
 })
 export class PopoverMultiSelectComponent implements OnInit {
   public svgPath: string = environment.svgPath;
-  public selOption: ISimpleItem[];
+  public selOption: ISimpleItem[] = [];
 
   @Input() public options: ISimpleItem[];
   @Input() idx: any;
   @Input() label: any;
-  
+
   constructor() { }
 
   ngOnInit() { }
 
   public onSelectOption(option: ISimpleItem) {
-    console.log(option);
+    if (option) this.selOption.push(option);
   }
 
+  public get getOptions(): string {
+    return this.selOption && this.selOption.map(i => i.label).join(', ').toString();
+  }
+
+  public get hasOption(): boolean {
+    return this.selOption && this.selOption.length > 0;
+  }
 }

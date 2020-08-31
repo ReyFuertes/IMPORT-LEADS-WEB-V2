@@ -18,6 +18,7 @@ import { InitAppEffect } from './store/effects/app.effect';
 import { LoaderInterceptor, LoaderService } from './services/loader.interceptor';
 import { BlockUIModule } from 'primeng/blockui';
 import { MatProgressSpinnerModule, MatProgressBarModule } from '@angular/material';
+import { AccessService } from './services/api.service';
 
 const materialModules = [
   MatProgressSpinnerModule,
@@ -53,7 +54,8 @@ const primengModules = [
       provide: HTTP_INTERCEPTORS,
       useClass: LoaderInterceptor,
       multi: true
-    }
+    },
+    AccessService
   ],
   bootstrap: [AppComponent]
 })

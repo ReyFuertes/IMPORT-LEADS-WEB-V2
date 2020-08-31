@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 import * as _ from 'lodash';
 import { MatPaginator } from '@angular/material';
 import { Router } from '@angular/router';
+import { getAccessSelector } from 'src/app/store/selectors/app.selector';
 
 @Component({
   selector: 'il-user-table',
@@ -31,32 +32,7 @@ export class UserTableComponent extends GenericDestroyPageComponent implements O
   public dataSource: any;
   public columnsToDisplay = ['name', 'position', 'role', 'company', 'phone', 'access', 'action'];
   public expandedElement: IUserMgmt | null;
-  public accessOptions: ISimpleItem[] = [
-    {
-      value: '1',
-      label: 'Contracts'
-    },
-    {
-      value: '2',
-      label: 'Inspections'
-    },
-    {
-      value: '3',
-      label: 'Executing Inspections'
-    },
-    {
-      value: '4',
-      label: 'Data Pages'
-    },
-    {
-      value: '5',
-      label: 'Platform Settings'
-    },
-    {
-      value: '6',
-      label: 'Chat'
-    },
-  ];
+  public accessOptions: ISimpleItem[];
   public noExpandCols: number[] = [2, 5, 6];
   public $users: Observable<IUserMgmt[]>;
   public users: IUserTableData[];
@@ -93,6 +69,12 @@ export class UserTableComponent extends GenericDestroyPageComponent implements O
             .filter(r => !this.excludedCols.includes(r));
         }
       })).subscribe();
+
+    this.store.pipe(select(getAccessSelector))
+      .pipe(tap(res => {
+        if (res) this.accessOptions = res;
+      }))
+      .subscribe();
   }
 
   ngOnInit(): void { }

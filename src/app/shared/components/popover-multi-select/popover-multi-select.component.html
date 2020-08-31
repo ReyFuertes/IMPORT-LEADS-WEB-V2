@@ -1,6 +1,9 @@
 <div [id]="idx">
   <div [id]="idx" class="menu-cap" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
-    <div fxFlex [id]="idx" [matMenuTriggerFor]="menu">Select {{label | titlecase }}</div>
+    <div fxFlex [id]="idx" [matMenuTriggerFor]="menu">
+      <span [id]="idx" *ngIf="!hasOption">Select {{label | titlecase }}</span>
+      <span [id]="idx" *ngIf="hasOption">{{ getOptions | titlecase }}</span>
+    </div>
     <img fxFlex="10px" [id]="idx" [matMenuTriggerFor]="menu" class="arrow" [src]="svgPath + 'arrow-down-icon-black.svg'">
   </div>
   <mat-menu #menu="matMenu" yPosition="below" xPosition="before">

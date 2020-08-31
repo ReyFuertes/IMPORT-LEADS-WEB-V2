@@ -1,20 +1,26 @@
 import { createReducer, on, Action } from "@ngrx/store";
-import { initAppSuccessAction } from '../actions/app.action';
+import { initAppSuccessAction, loadAccessSuccessAction } from '../actions/app.action';
 import { loginSuccessAction, logoutAction, logoutSuccessAction, isLoggingInAction, loginFailedAction } from 'src/app/modules/auth/store/auth.action';
+import { IAccess } from 'src/app/models/user.model';
 export interface InitAppState {
   token?: string,
   isLoggedIn?: boolean,
   isLoggingIn?: boolean,
-  isLoginFailed?: boolean
+  isLoginFailed?: boolean,
+  access?: IAccess[]
 }
 export const initialState: InitAppState = {
   token: null,
   isLoggedIn: null,
   isLoggingIn: null,
-  isLoginFailed: null
+  isLoginFailed: null,
+  access: null
 };
 const initAppReducer = createReducer(
   initialState,
+  on(loadAccessSuccessAction, (state, action) => {
+    return Object.assign({}, state, { access: action.response })
+  }),
   on(loginFailedAction, (state) => {
     return Object.assign({}, state, { isLoginFailed: true })
   }),

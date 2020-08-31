@@ -8,7 +8,7 @@
   </div>
   <mat-menu #menu="matMenu" yPosition="below" xPosition="before">
     <button *ngFor="let option of options" mat-menu-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" (click)="$event.stopPropagation()">
-      <mat-checkbox (change)="onSelectOption(option);" (click)="$event.stopPropagation()">{{ option?.label | uppercase }}</mat-checkbox>
+      <mat-checkbox [checked]="isChecked(option?.value)" (change)="onSelectOption(option, $event);" (click)="$event.stopPropagation()">{{ option?.label | uppercase }}</mat-checkbox>
     </button>
   </mat-menu>
 </div>

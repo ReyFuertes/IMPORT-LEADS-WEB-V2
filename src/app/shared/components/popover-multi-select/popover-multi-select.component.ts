@@ -1,6 +1,7 @@
 import { environment } from './../../../../environments/environment';
-import { Component, OnInit, Input } from '@angular/core';
-import { IDropdownSelect, ISimpleItem } from './../../generics/generic.model';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { ISimpleItem } from './../../generics/generic.model';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'il-popover-multi-select',
@@ -11,16 +12,30 @@ export class PopoverMultiSelectComponent implements OnInit {
   public svgPath: string = environment.svgPath;
   public selOption: ISimpleItem[] = [];
 
-  @Input() public options: ISimpleItem[];
-  @Input() idx: any;
-  @Input() label: any;
+  @Input() public options: ISimpleItem[] = [];
+  @Input() public idx: any;
+  @Input() public label: any;
+  @Input() public values: string[] = [];
+
+  @Output() public optionValuesEmitter = new EventEmitter<ISimpleItem>();
 
   constructor() { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    console.log('options', this.options)
+  }
 
-  public onSelectOption(option: ISimpleItem) {
-    if (option) this.selOption.push(option);
+  public isChecked(value: string): boolean {
+    return this.values && this.values.filter(v => v === value).shift() ? true : false;
+  }
+
+  public onSelectOption(option: ISimpleItem, event: any) {
+    if (event.checked) {
+      this.selOption.push(option);
+    } else {
+      _.remove(this.selOption, { value: option.value });
+    }
+    this.optionValuesEmitter.emit(option);
   }
 
   public get getOptions(): string {

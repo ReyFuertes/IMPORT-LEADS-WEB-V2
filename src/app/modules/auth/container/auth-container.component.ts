@@ -15,7 +15,6 @@ export class AuthContainerComponent implements OnInit {
       .pipe(
         tap(isLoggedIn => {
           if (isLoggedIn) {
-            debugger
             //this.router.navigateByUrl('/dashboard');
           }
         })

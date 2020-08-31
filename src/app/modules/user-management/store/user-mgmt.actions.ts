@@ -1,10 +1,20 @@
 import { createAction, props } from '@ngrx/store';
-import { IUserMgmt } from '../user-mgmt.model';
+import { IUserMgmt, IUserAccess } from '../user-mgmt.model';
 
 export enum UserMgmtActionTypes {
   loadAllUsersAction = '[User Mgmt] load',
-  loadAllUsersSuccessAction = '[User Mgmt] load (success)'
+  loadAllUsersSuccessAction = '[User Mgmt] load (success)',
+  saveUserAccessAction = '[User Mgmt] save user access',
+  saveUserAccessSuccessAction = '[User Mgmt] save user access (success)'
 }
+export const saveUserAccessAction = createAction(
+  UserMgmtActionTypes.saveUserAccessAction,
+  props<{ payload: IUserAccess }>()
+);
+export const saveUserAccessSuccessAction = createAction(
+  UserMgmtActionTypes.saveUserAccessSuccessAction,
+  props<{ response: IUserAccess }>()
+);
 export const loadAllUsersAction = createAction(
   UserMgmtActionTypes.loadAllUsersAction
 );

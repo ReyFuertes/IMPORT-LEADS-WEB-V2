@@ -1,6 +1,13 @@
 @import "src/styleguide/shared";
 .menu-cap {
   cursor: pointer;
+  > div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: normal;
+    flex-wrap: nowrap;
+  }
 }
 ::ng-deep {
   mat-checkbox,

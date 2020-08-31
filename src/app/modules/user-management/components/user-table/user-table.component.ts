@@ -5,14 +5,15 @@ import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { getAllUsersSelector } from '../../store/user-mgmt.selectors';
 import { Observable } from 'rxjs';
-import { IUserMgmt, IUserTableData } from '../../user-mgmt.model';
-import { takeUntil, tap } from 'rxjs/operators';
+import { IUserMgmt, IUserTableData, IUserAccess } from '../../user-mgmt.model';
+import { takeUntil, tap, take } from 'rxjs/operators';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { environment } from 'src/environments/environment';
 import * as _ from 'lodash';
 import { MatPaginator } from '@angular/material';
 import { Router } from '@angular/router';
 import { getAccessSelector } from 'src/app/store/selectors/app.selector';
+import { saveUserAccessAction, loadAllUsersAction } from '../../store/user-mgmt.actions';
 
 @Component({
   selector: 'il-user-table',
@@ -61,6 +62,7 @@ export class UserTableComponent extends GenericDestroyPageComponent implements O
     super();
     this.$users = this.store.pipe(select(getAllUsersSelector));
     this.$users.pipe(takeUntil(this.$unsubscribe),
+      take(2),
       tap((res) => {
         if (res && res.length > 0) {
           this.dataSource = res;
@@ -83,15 +85,46 @@ export class UserTableComponent extends GenericDestroyPageComponent implements O
     this.router.navigateByUrl(`/dashboard/user-management/${id}/detail`);
   }
 
+  public fmtToIds(values: any): string[] {
+    const ret = values
+      && values.length > 0
+      && values.map(i => i.access.id);
+    return ret
+  }
+
+  public handleOptionValuesChange(event: ISimpleItem, item: IUserTableData, col: string): void {
+    switch (col) {
+      case 'access':
+        const userAccess = item
+          && item.access
+          && item.access.filter(i => i.id === event.value).shift() || null;
+
+        const payload = _.pickBy({
+          id: userAccess ? userAccess.id : null,
+          user: { id: item._id },
+          access: { id: event.value }
+        }, _.identity);
+
+        if (payload) {
+          this.store.dispatch(saveUserAccessAction({ payload }));
+        }
+
+        break;
+
+      default:
+        break;
+    }
+  }
+
   public onExpand(el: IUserMgmt, i: any): any {
     const id = i.target.getAttribute('id');
-    debugger
+
     if (!this.isNoExpand(Number(id)) && this.expandedElement !== el) {
       this.expandedElement = el;
     } else {
       this.expandedElement = null;
     }
-    console.log(this.expandedElement, i.target)
+
     return this.expandedElement;
   }
 

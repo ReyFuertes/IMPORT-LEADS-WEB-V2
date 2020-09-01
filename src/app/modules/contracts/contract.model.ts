@@ -1,6 +1,6 @@
 import { ITag } from './../tags/tags.model';
 import { IProduct } from './../products/products.model';
-import { IUser } from './../../models/user.model';
+import { IUser } from '../user-management/user-mgmt.model';
 
 export enum ProductActionStatus {
   Override = 1,

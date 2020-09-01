@@ -1,6 +1,34 @@
 import { IUserProfile } from '../users/users.models';
 import { IContract } from '../contracts/contract.model';
-import { IAccess, IUser } from 'src/app/models/user.model';
+import { IAccess } from 'src/app/models/user.model';
+// id?: string;
+// username?: string;
+// password?: string;
+// salt?: string;
+// user_profile?: IUserProfileDto;
+// user_access?: IUserAccessDto[];
+// user_role?: IUserRoleDto[]
+export interface IUser {
+  id?: string;
+  firstname?: string;
+  lastname?: string;
+  email?: string;
+  username?: string;
+  password?: string;
+  user_role?: IRole[];
+  company?: string;
+  phone?: string;
+  access?: IAccess[]
+}
+export interface IUserRole {
+  id?: string;
+  user_role?: IRole;
+  user?: IUser;
+}
+export interface IRole {
+  id?: string;
+  role_name?: string;
+}
 export interface IUserAccess {
   id?: string;
   user?: IUserMgmt;
@@ -14,6 +42,7 @@ export interface IUserMgmt {
   salt?: string;
   contract?: IContract;
   user_access?: IUserAccess[] | string[];
+  user_role?: IRole[];
 }
 export interface IUserTableData {
   _id: string;

@@ -8,30 +8,18 @@ import { FormGroup, FormControlName } from '@angular/forms';
 })
 
 export class InputComponent implements OnInit, OnChanges {
-  @Input()
-  public placeholder: string;
-  @Input()
-  public controlName: any;
-  @Input()
-  public form: FormGroup;
-  @Input()
-  public isFloatLabel: boolean = false;
-  @Input()
-  public isNumberOnly: boolean = false;
-  @Input()
-  public isRequired: boolean = false;
-  @Input()
-  public inputType: string = 'text';
-  @Input()
-  public inputMaxLen: number = 225;
-  @Input()
-  public isReadOnly: boolean = false;
-  @Input()
-  public showErrors: boolean = false;
-  @Input()
-  public isCenter: boolean = false;
-  @Input()
-  public hasBorder: boolean = false;
+  @Input() public placeholder: string;
+  @Input() public controlName: any;
+  @Input() public form: FormGroup;
+  @Input() public isFloatLabel: boolean = false;
+  @Input() public isNumberOnly: boolean = false;
+  @Input() public isRequired: boolean = false;
+  @Input() public inputType: string = 'text';
+  @Input() public inputMaxLen: number = 225;
+  @Input() public isReadOnly: boolean = false;
+  @Input() public showErrors: boolean = false;
+  @Input() public isCenter: boolean = false;
+  @Input() public hasBorder: boolean = false;
 
   constructor() { }
 

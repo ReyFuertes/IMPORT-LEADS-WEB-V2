@@ -10,18 +10,13 @@ import * as _ from 'lodash';
   styleUrls: ['./dropdown-multi-select.component.scss']
 })
 export class DropdownMultiSelectComponent implements OnInit, OnDestroy {
-  @Input()
-  public form: FormGroup;
-  @Input()
-  public placeHolder: string = '';
-  @Input()
-  public searchItem: boolean = false;
-  @Input()
-  public dataList: any[] = [];
-  @Input()
-  public controlName: any;
-  @Output()
-  public valueEmitter = new EventEmitter<any>();
+  @Input() public form: FormGroup;
+  @Input() public placeHolder: string = '';
+  @Input() public searchItem: boolean = false;
+  @Input() public dataList: any[] = [];
+  @Input() public controlName: any;
+  @Output() public valueEmitter = new EventEmitter<any>();
+
   public dataFilterForm = new FormControl();
   public filteredData$ = new ReplaySubject<any>();
 

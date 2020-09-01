@@ -124,7 +124,6 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
         this.checklistEntities = Object.values(res.entities) || [];
         this.checklistItems = res.checklistItems || [];
 
-        console.log(res)
       })).subscribe();
   }
 

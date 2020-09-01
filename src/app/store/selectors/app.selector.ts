@@ -1,7 +1,21 @@
 import { createSelector } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducer';
+import { IRole } from 'src/app/modules/user-management/user-mgmt.model';
 
 export const selectedState = (state: AppState) => state.initApp;
+export const getAllRolesSelector = createSelector(
+  selectedState,
+  state => {
+    const fmtRoles = state.roles;
+    const roles = fmtRoles.map((u: IRole) => {
+      return {
+        label: u.role_name,
+        value: String(u.id)
+      };
+    });
+    return roles;
+  }
+);
 export const getAccessSelector = createSelector(
   selectedState,
   state => state

@@ -12,8 +12,8 @@ import { environment } from 'src/environments/environment';
 import * as _ from 'lodash';
 import { MatPaginator } from '@angular/material';
 import { Router } from '@angular/router';
-import { getAccessSelector } from 'src/app/store/selectors/app.selector';
-import { saveUserAccessAction, loadAllUsersAction } from '../../store/user-mgmt.actions';
+import { getAccessSelector, getAllRolesSelector } from 'src/app/store/selectors/app.selector';
+import { saveUserAccessAction, loadAllUsersAction, saveUserRoleAction } from '../../store/user-mgmt.actions';
 
 @Component({
   selector: 'il-user-table',
@@ -39,23 +39,14 @@ export class UserTableComponent extends GenericDestroyPageComponent implements O
   public users: IUserTableData[];
   public cols: any;
   public excludedCols: string[] = ['id', '_id', 'name', 'self_intro'];
-  public rolesOptions: ISimpleItem[] = [{
-    label: 'Inspector',
-    value: 'inspector'
-  }, {
-    label: 'Manager',
-    value: 'manager'
-  }, {
-    label: 'User',
-    value: 'user'
-  }];
+  public rolesOptions: ISimpleItem[] = [];
   public defaultPageSize: number = 25;
   public pageSizeOptions: number[] = [10, 15, 25, 100];
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
-  public isAccessOrRoles(i: number): ISimpleItem[] {
-    return i === 2 ? this.rolesOptions : this.accessOptions;
+  public isAccessOrRoles(col: string): ISimpleItem[] {
+    return col === 'access' ? this.accessOptions : this.rolesOptions;
   }
 
   constructor(private router: Router, private store: Store<AppState>) {
@@ -75,8 +66,11 @@ export class UserTableComponent extends GenericDestroyPageComponent implements O
     this.store.pipe(select(getAccessSelector))
       .pipe(tap(res => {
         if (res) this.accessOptions = res;
-      }))
-      .subscribe();
+      })).subscribe();
+
+    this.store.pipe(select(getAllRolesSelector)).pipe(tap(res => {
+      if (res) this.rolesOptions = res;
+    })).subscribe();
   }
 
   ngOnInit(): void { }
@@ -85,11 +79,21 @@ export class UserTableComponent extends GenericDestroyPageComponent implements O
     this.router.navigateByUrl(`/dashboard/user-management/${id}/detail`);
   }
 
-  public fmtToIds(values: any): string[] {
-    const ret = values
-      && values.length > 0
-      && values.map(i => i.access.id);
-    return ret
+  public fmtToIds(values: any, col: string): string[] {
+    let ret: any[];
+    switch (col) {
+      case 'access':
+        ret = values
+          && values.user_access.length > 0
+          && values.user_access.map(i => i.access && i.access.id) || [];
+        return ret;
+      case 'role':
+        ret = values
+          && values.user_role.length > 0
+          && values.user_role.map(i => i.role && i.role.id) || [];
+    }
+
+    return ret;
   }
 
   public handleOptionValuesChange(event: ISimpleItem, item: IUserTableData, col: string): void {
@@ -108,9 +112,18 @@ export class UserTableComponent extends GenericDestroyPageComponent implements O
         if (payload) {
           this.store.dispatch(saveUserAccessAction({ payload }));
         }
-
         break;
-
+      case 'role':
+        this.store.dispatch(saveUserRoleAction({
+          payload: {
+            user_role: {
+              id: event.value,
+              role_name: event.label
+            },
+            user: { id: item._id }
+          }
+        }));
+        break;
       default:
         break;
     }

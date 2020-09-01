@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { logoutAction } from 'src/app/modules/auth/store/auth.action';
-import { IUser } from 'src/app/models/user.model';
+import { IUser } from 'src/app/modules/user-management/user-mgmt.model';
 
 @Component({
   selector: 'il-topnav',

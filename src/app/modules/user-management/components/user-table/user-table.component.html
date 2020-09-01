@@ -6,7 +6,8 @@
         <img *ngIf="i === 0" class="user-pic" [src]="imgPath + 'sample-profile.png'" />
         <span>{{item[column]}}</span>
       </div>
-      <il-popover-multi-select *ngIf="isNoExpand(i) && !isLast(columnsToDisplay, i)" [idx]="i" [label]="column" [options]="isAccessOrRoles(i)" [values]="fmtToIds(item?.user_access)" (optionValuesEmitter)="handleOptionValuesChange($event, item, column)" class="action-col"></il-popover-multi-select>
+      <il-popover-multi-select *ngIf="isNoExpand(i) && !isLast(columnsToDisplay, i)" [idx]="i" [label]="column" 
+      [options]="isAccessOrRoles(column)" [values]="fmtToIds(item, column)" (optionValuesEmitter)="handleOptionValuesChange($event, item, column)" class="action-col"></il-popover-multi-select>
 
       <div *ngIf="column === 'action'" [id]="i" fxFlex fxLayoutAlign="end center">
         <img [id]="i" class="ellipse" [matMenuTriggerFor]="menu" [src]="svgPath + 'dots-icon-blue.svg'" />
@@ -15,7 +16,6 @@
         </mat-menu>
       </div>
     </td>
-
   </ng-container>
 
   <!--detail expanded section -->

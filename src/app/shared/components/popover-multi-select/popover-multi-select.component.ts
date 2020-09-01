@@ -22,7 +22,15 @@ export class PopoverMultiSelectComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log('options', this.options)
+    this.selOption = this.options
+      && this.options.filter(o => o.value === this.values.filter(v => o.value == v)[0]);
+    console.log('selOption', this.selOption)
+
+  }
+
+  public get fmtSelValue(): string {
+    return this.options && this.options
+      .filter(o => this.selOption.filter(v => o.value == v.value)[0]).map(v => v.label).join(', ');
   }
 
   public isChecked(value: string): boolean {

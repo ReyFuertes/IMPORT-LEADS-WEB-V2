@@ -10,10 +10,11 @@ import { takeUntil, tap, take } from 'rxjs/operators';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { environment } from 'src/environments/environment';
 import * as _ from 'lodash';
-import { MatPaginator } from '@angular/material';
+import { MatPaginator, MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { getAccessSelector, getAllRolesSelector } from 'src/app/store/selectors/app.selector';
-import { saveUserAccessAction, loadAllUsersAction, saveUserRoleAction } from '../../store/user-mgmt.actions';
+import { saveUserAccessAction, loadAllUsersAction, saveUserRoleAction, deleteUserAction } from '../../store/user-mgmt.actions';
+import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
 
 @Component({
   selector: 'il-user-table',
@@ -49,11 +50,11 @@ export class UserTableComponent extends GenericDestroyPageComponent implements O
     return col === 'access' ? this.accessOptions : this.rolesOptions;
   }
 
-  constructor(private router: Router, private store: Store<AppState>) {
+  constructor(private dialog: MatDialog, private router: Router, private store: Store<AppState>) {
     super();
     this.$users = this.store.pipe(select(getAllUsersSelector));
     this.$users.pipe(takeUntil(this.$unsubscribe),
-      take(2),
+      //take(2),
       tap((res) => {
         if (res && res.length > 0) {
           this.dataSource = res;
@@ -77,6 +78,21 @@ export class UserTableComponent extends GenericDestroyPageComponent implements O
 
   public toDetail(id: string): void {
     this.router.navigateByUrl(`/dashboard/user-management/${id}/detail`);
+  }
+
+  public onDelete(id: string): void {
+    const dialogRef = this.dialog.open(ConfirmationComponent, {
+      width: '410px',
+      data: { action: 0 }
+    });
+    dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+      .subscribe(result => {
+        if (result) {
+          setTimeout(() => {
+            this.store.dispatch(deleteUserAction({ id }));
+          }, 200);
+        }
+      });
   }
 
   public fmtToIds(values: any, col: string): string[] {

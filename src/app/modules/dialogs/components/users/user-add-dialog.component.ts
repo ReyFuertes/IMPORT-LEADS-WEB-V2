@@ -75,6 +75,7 @@ export class UserAddDialogComponent extends GenericDestroyPageComponent implemen
             user_role: this.form.get('role').value,
           }
         }));
+        this.dialogRef.close();
       }, 1000);
     }
   }

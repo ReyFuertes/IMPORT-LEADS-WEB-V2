@@ -11,8 +11,18 @@ export enum UserMgmtActionTypes {
   addUserAction = '[User Mgmt] add user',
   addUserSuccessAction = '[User Mgmt] add user (success)',
   signUpUserAction = '[User Mgmt] sign up user',
-  signUpUserSuccessAction = '[User Mgmt] sign up user (success)'
+  signUpUserSuccessAction = '[User Mgmt] sign up user (success)',
+  deleteUserAction = '[User Mgmt] delete user',
+  deleteUserSuccessAction = '[User Mgmt] delete user (success)',
 }
+export const deleteUserAction = createAction(
+  UserMgmtActionTypes.deleteUserAction,
+  props<{ id: string }>()
+);
+export const deleteUserSuccessAction = createAction(
+  UserMgmtActionTypes.deleteUserSuccessAction,
+  props<{ deleted: IUser }>()
+);
 export const signUpUserAction = createAction(
   UserMgmtActionTypes.signUpUserAction,
   props<{ payload: IUser }>()

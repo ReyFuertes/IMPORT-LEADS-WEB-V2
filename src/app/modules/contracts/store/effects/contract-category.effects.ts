@@ -5,7 +5,7 @@ import { ContractCategoryService } from './../../services/contract-category.serv
 import { IContractCategory } from './../../contract.model';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, mergeMap } from 'rxjs/operators';
+import { map, mergeMap, tap } from 'rxjs/operators';
 import { appNotification } from 'src/app/store/actions/notification.action';
 
 @Injectable()
@@ -30,10 +30,13 @@ export class ContractCategoryEffect {
     ofType(addContractCategoryAction),
     mergeMap(({ payload }) => this.contractCategoryService.post(payload)
       .pipe(
-        map((created: IContractCategory) => {
+        tap((created) => {
           if (created)
-            this.store.dispatch(appNotification({ notification: { success: true, message: 'Category successfully Saved' } }));
-
+            this.store.dispatch(appNotification({
+              notification: { success: true, message: 'Category successfully Saved' }
+            }))
+        }),
+        map((created: IContractCategory) => {
           return addContractCategoryActionSuccess({ created });
         })
       ))

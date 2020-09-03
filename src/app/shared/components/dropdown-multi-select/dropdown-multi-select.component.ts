@@ -3,13 +3,15 @@ import { FormBuilder, FormControl, FormGroup, Validators, FormControlName } from
 import { ReplaySubject, Subject, Observable } from 'rxjs';
 import { takeUntil, take } from 'rxjs/operators';
 import * as _ from 'lodash';
+import { GenericControl } from '../../generics/generic-control';
+import { ISimpleItem } from '../../generics/generic.model';
 
 @Component({
   selector: 'il-dropdown-multi-select',
   templateUrl: './dropdown-multi-select.component.html',
   styleUrls: ['./dropdown-multi-select.component.scss']
 })
-export class DropdownMultiSelectComponent implements OnInit, OnDestroy {
+export class DropdownMultiSelectComponent extends GenericControl<ISimpleItem> implements OnInit, OnDestroy {
   @Input() public form: FormGroup;
   @Input() public placeHolder: string = '';
   @Input() public searchItem: boolean = false;
@@ -23,7 +25,9 @@ export class DropdownMultiSelectComponent implements OnInit, OnDestroy {
   private newDataList: any;
   private _unsubscribe$ = new Subject<void>();
 
-  constructor() { }
+  constructor() {
+    super();
+  }
 
   ngOnInit() {
     //when edit mode pass id to display selected item

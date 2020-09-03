@@ -9,10 +9,11 @@
       <il-popover-multi-select *ngIf="isNoExpand(i) && !isLast(columnsToDisplay, i)" [idx]="i" [label]="column" 
       [options]="isAccessOrRoles(column)" [values]="fmtToIds(item, column)" (optionValuesEmitter)="handleOptionValuesChange($event, item, column)" class="action-col"></il-popover-multi-select>
 
-      <div *ngIf="column === 'action'" [id]="i" fxFlex fxLayoutAlign="end center">
+      <div *ngIf="column === 'action'" [id]="i" fxFlex fxLayoutAlign="center center">
         <img [id]="i" class="ellipse" [matMenuTriggerFor]="menu" [src]="svgPath + 'dots-icon-blue.svg'" />
         <mat-menu #menu="matMenu">
           <button mat-menu-item (click)="toDetail(item?.id)">Edit</button>
+          <button mat-menu-item (click)="onDelete(item?.id)">Delete</button>
         </mat-menu>
       </div>
     </td>

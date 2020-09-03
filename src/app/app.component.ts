@@ -22,9 +22,9 @@ export class AppComponent implements OnInit, AfterViewInit {
   constructor(public loaderSrv: LoaderService, private store: Store<AppState>, private cdRef: ChangeDetectorRef) {
     this.store.dispatch(initAppAction());
     
-    this.$notify = this.store.pipe(select(getSuccessSelector), delay(500));
+    this.$notify = this.store.pipe(select(getSuccessSelector), delay(100));
 
-    /* remove notification 2seconds */
+    /* remove notification 2 seconds */
     this.$notify.pipe(debounceTime(2000)).subscribe((res) => {
       if (res)
         this.store.dispatch(removeNotification())

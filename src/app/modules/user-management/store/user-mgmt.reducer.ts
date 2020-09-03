@@ -1,7 +1,7 @@
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityAdapter, createEntityAdapter, EntityState } from '@ngrx/entity';
 import { IUserMgmt, IUserAccess, IRole } from '../user-mgmt.model';
-import { loadAllUsersSuccessAction, signUpUserAction, signUpUserSuccessAction } from './user-mgmt.actions';
+import { loadAllUsersSuccessAction, signUpUserAction, signUpUserSuccessAction, deleteUserSuccessAction } from './user-mgmt.actions';
 import * as _ from 'lodash';
 export interface UserMgmtState extends EntityState<IUserMgmt> {
   access?: IUserAccess[],
@@ -14,6 +14,9 @@ export const initialState: UserMgmtState = adapter.getInitialState({
 });
 const userMgmtReducer = createReducer(
   initialState,
+  on(deleteUserSuccessAction, (state, action) => {
+    return ({ ...adapter.removeOne(action.deleted.id, state) })
+  }),
   on(signUpUserSuccessAction, (state) => {
     return Object.assign({}, state, { creatingUser: null });
   }),

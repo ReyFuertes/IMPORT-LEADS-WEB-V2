@@ -3,6 +3,10 @@
   @include il-textarea;
 }
 :host ::ng-deep {
+  .mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label,
+  .mat-form-field-empty.mat-form-field-label {
+    font-size: 14px !important;
+  }
   .has-border {
     .mat-form-field-infix {
       border: thin $color-gray-2 solid;

@@ -3,7 +3,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { IDropdownSelect, ISimpleItem } from 'src/app/shared/generics/generic.model';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
-import { getAllUsersSelector } from '../../store/user-mgmt.selectors';
+import { getTableUsersSelector } from '../../store/user-mgmt.selectors';
 import { Observable } from 'rxjs';
 import { IUserMgmt, IUserTableData, IUserAccess } from '../../user-mgmt.model';
 import { takeUntil, tap, take } from 'rxjs/operators';
@@ -53,7 +53,7 @@ export class UserTableComponent extends GenericDestroyPageComponent implements O
 
   constructor(private dialog: MatDialog, private router: Router, private store: Store<AppState>) {
     super();
-    this.$users = this.store.pipe(select(getAllUsersSelector));
+    this.$users = this.store.pipe(select(getTableUsersSelector));
     this.$users.pipe(takeUntil(this.$unsubscribe),
       take(2),
       tap((res) => {
@@ -135,7 +135,7 @@ export class UserTableComponent extends GenericDestroyPageComponent implements O
       case 'role':
         this.store.dispatch(saveUserRoleAction({
           payload: {
-            user_role: {
+            role: {
               id: event.value,
               role_name: event.label
             },

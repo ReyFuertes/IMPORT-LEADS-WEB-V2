@@ -4,6 +4,8 @@ import { AppState } from './../../../contracts/store/reducers/index';
 import { Store, select } from '@ngrx/store';
 import { InspectionPanelModel, IInspectionChecklist } from './../../inspections.models';
 import { Component, OnInit } from '@angular/core';
+import { getAllSavedChecklistSelector } from 'src/app/modules/contracts/store/selectors/saved-checklist.selector';
+import { ISavedChecklistItem } from 'src/app/modules/contracts/contract.model';
 
 @Component({
   selector: 'il-inspection-page',
@@ -12,7 +14,7 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class InspectionPageComponent implements OnInit {
-  public $inspectionChecklist: Observable<IInspectionChecklist[]>;
+  public $savedChecklists: Observable<ISavedChecklistItem[]>;
 
   public ctCols: Array<{ label: string, width?: string | number }> = [
     {
@@ -63,7 +65,8 @@ export class InspectionPageComponent implements OnInit {
     }
   ];
   constructor(private store: Store<AppState>) {
-    this.$inspectionChecklist = this.store.pipe(select(getInspectionChecklistSelector))
+    this.$savedChecklists = this.store.pipe(select(getAllSavedChecklistSelector));
+    this.$savedChecklists.subscribe(res => console.log(res));
   }
 
   ngOnInit() { }

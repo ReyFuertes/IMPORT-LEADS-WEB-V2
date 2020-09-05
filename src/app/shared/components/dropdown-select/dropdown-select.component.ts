@@ -10,7 +10,7 @@ import { FormGroup, FormControlName } from '@angular/forms';
 })
 
 export class DropdownSelectComponent extends GenericControl<ISimpleItem> implements OnInit {
-  @Input()  public items: ISimpleItem[];
+  @Input()  public options: ISimpleItem[];
   @Input()  public placeholder: string = '';
   @Input()  public controlName: FormControlName;
   @Input()  public form: FormGroup;

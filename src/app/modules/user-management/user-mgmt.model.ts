@@ -1,13 +1,7 @@
 import { IUserProfile } from '../users/users.models';
 import { IContract } from '../contracts/contract.model';
 import { IAccess } from 'src/app/models/user.model';
-// id?: string;
-// username?: string;
-// password?: string;
-// salt?: string;
-// user_profile?: IUserProfileDto;
-// user_access?: IUserAccessDto[];
-// user_role?: IUserRoleDto[]
+
 export interface IUser {
   id?: string;
   firstname?: string;
@@ -22,7 +16,7 @@ export interface IUser {
 }
 export interface IUserRole {
   id?: string;
-  user_role?: IRole;
+  role?: IRole;
   user?: IUser;
 }
 export interface IRole {

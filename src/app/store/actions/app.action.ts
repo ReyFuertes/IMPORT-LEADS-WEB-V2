@@ -10,8 +10,18 @@ export enum AppActionTypes {
   loadAllRolesAction = '[User Mgmt] load roles',
   loadAllRolesSuccessAction = '[User Mgmt] load roles (success)',
   getUserAccessAction = '[User] user access',
-  getUserAccessSuccessAction = '[User] user access (success)'
+  getUserAccessSuccessAction = '[User] user access (success)',
+  getUserRoleAction = '[User] user role',
+  getUserRoleSuccessAction = '[User] user role (success)'
 }
+export const getUserRoleAction = createAction(
+  AppActionTypes.getUserRoleAction,
+  props<{ id: string }>()
+);
+export const getUserRoleSuccessAction = createAction(
+  AppActionTypes.getUserRoleSuccessAction,
+  props<{ response: string[] }>()
+);
 export const getUserAccessAction = createAction(
   AppActionTypes.getUserAccessAction,
   props<{ id: string }>()

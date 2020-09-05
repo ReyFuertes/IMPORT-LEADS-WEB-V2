@@ -18,9 +18,7 @@ export class MenuComponent implements OnInit {
   };
   constructor() { }
 
-  ngOnInit() {
-    console.log('menu', this.menu)
-  }
+  ngOnInit() {}
 
   public hasChildren(menu: ISimpleItem): boolean {
     return this.menu && this.menu.children.length > 0;

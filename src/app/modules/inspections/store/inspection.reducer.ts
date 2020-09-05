@@ -1,14 +1,12 @@
 import { IInspectionChecklist } from './../inspections.models';
-import { IContractChecklist } from './../../contracts/contract.model';
-import { loadInspectionChecklistAction, loadInspectionChecklistSuccessAction } from './inspection.action';
-import { IInspection } from './../inspections.model';
+import { loadInspectionChecklistSuccessAction } from './inspection.action';
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 
-export interface InspectionState extends EntityState<IInspection> {
+export interface InspectionState extends EntityState<any> {
   inspectionChecklist?: IInspectionChecklist[]
 }
-export const adapter: EntityAdapter<IInspection> = createEntityAdapter<IInspection>({});
+export const adapter: EntityAdapter<any> = createEntityAdapter<any>({});
 export const initialState: InspectionState = adapter.getInitialState({
   inspectionChecklist: null
 });

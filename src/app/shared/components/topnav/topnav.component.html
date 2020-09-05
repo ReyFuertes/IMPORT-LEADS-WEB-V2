@@ -25,7 +25,7 @@
         <button mat-menu-item routerLink="dashboard/users/setting">Settings</button>
         <!-- NOTE: THIS WILL BE DISPLAYED IN ADMIN LEVEL -->
         <mat-divider></mat-divider>
-        <button mat-menu-item routerLink="dashboard/user-management">User Management</button>
+        <button *appHasRole="'admin'" mat-menu-item routerLink="dashboard/user-management">User Management</button>
         <mat-divider></mat-divider>
         <button mat-menu-item (click)="onLogout()">Logout</button>
       </mat-menu>

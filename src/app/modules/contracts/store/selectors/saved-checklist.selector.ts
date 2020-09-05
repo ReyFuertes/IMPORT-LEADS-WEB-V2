@@ -5,5 +5,9 @@ import { sortByDesc } from 'src/app/shared/util/sort';
 export const selectContractModuleState = createFeatureSelector<ContractModuleState>('contractsModule');
 export const getAllSavedChecklistSelector = createSelector(
   selectContractModuleState,
-  state => Object.values(state.SavedChecklist.entities).sort((a, b) => sortByDesc(a, b, 'created_at')) || []
+  state => state
+    && state.SavedChecklist
+    && Object.values(state.SavedChecklist.entities).length > 0
+    && Object.values(state.SavedChecklist.entities)
+      .sort((a, b) => sortByDesc(a, b, 'created_at')) || []
 );

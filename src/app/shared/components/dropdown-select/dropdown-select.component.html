@@ -2,8 +2,8 @@
   <mat-form-field appendTo="ui-sidebar" [floatLabel]="isFloatLabel == true ? '' : 'never'">
     <mat-label>{{ placeholder }}</mat-label>
     <mat-select [formControlName]="controlName">
-      <mat-option *ngFor="let item of items" [value]="item?.value">
-        {{item?.label}}
+      <mat-option *ngFor="let option of options" [value]="option?.value">
+        {{option?.label}}
       </mat-option>
     </mat-select>
   </mat-form-field>

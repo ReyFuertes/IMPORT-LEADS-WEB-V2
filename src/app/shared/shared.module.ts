@@ -48,6 +48,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { CurrencyFormatterDirective } from './directives/currency-formatter.directive';
 import { customCurrencyPipe } from './pipes/custom-currency.pipe';
 import { QuillModule } from 'ngx-quill'
+import { HasRoleDirective } from './directives/user.role.directive';
 
 const materialModules = [
   MatListModule,
@@ -109,7 +110,8 @@ const sharedComponents = [
   DropdownPopoverSelectComponent,
   DropdownSelectSearchComponent,
   EditorComponent,
-  InputSwitchComponent
+  InputSwitchComponent,
+  HasRoleDirective
 ];
 
 const directives = [

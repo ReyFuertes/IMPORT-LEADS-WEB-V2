@@ -37,7 +37,7 @@ export class TopNavComponent implements OnInit {
       if (res) {
         /* process user access menus */
         this.accessMenus.push(...res);
-
+ 
         this.$menus = this.store.pipe(select(getAccessSelector), map(m => {
           /* filter the parent menus */
           let parentMenuMatches = m && m.filter(
@@ -46,13 +46,14 @@ export class TopNavComponent implements OnInit {
               && this.accessMenus.includes(m.label)
           );
           /* filter the children menus */
-          parentMenuMatches.forEach(parent => {
+          parentMenuMatches && parentMenuMatches.forEach(parent => {
             const children = parent.children.filter(c => this.accessMenus.includes(c.access_name));
             parent.children = children;
           });
 
           return parentMenuMatches;
         }));
+        this.$menus.subscribe(res => console.log('menus', res))
       }
     })
 

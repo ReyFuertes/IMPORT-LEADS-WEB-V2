@@ -8,6 +8,9 @@ import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { appNotification } from 'src/app/store/actions/notification.action';
+import { loadVenuesAction } from '../../venues/store/venues.action';
+import { loadAccessAction, loadAllRolesAction, getUserAccessAction, getUserRoleAction } from 'src/app/store/actions/app.action';
+import { loadAllUsersAction } from '../../user-management/store/user-mgmt.actions';
 
 @Injectable()
 export class AuthEffect {
@@ -24,6 +27,17 @@ export class AuthEffect {
           if (accessToken) {
             localStorage.setItem('at', JSON.stringify(accessToken));
             this.router.navigateByUrl('dashboard/contracts');
+
+            this.store.dispatch(loadVenuesAction());
+            this.store.dispatch(loadAccessAction());
+            this.store.dispatch(loadAllRolesAction());
+            this.store.dispatch(loadAllUsersAction());
+
+            const at = JSON.parse(localStorage.getItem('at')) || null;
+            if (at && at.user) {
+              this.store.dispatch(getUserAccessAction({ id: at.user.id }));
+              this.store.dispatch(getUserRoleAction({ id: at.user.id }));
+            }
           }
 
           return loginSuccessAction({ accessToken });

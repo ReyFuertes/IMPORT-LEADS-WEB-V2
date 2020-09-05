@@ -22,7 +22,7 @@ export class RolesService extends BaseService<IRole> {
   }
 }
 @Injectable({ providedIn: 'root' })
-export class UserRolesService extends BaseService<IRole> {
+export class UserRolesService extends BaseService<IRole | string> {
   constructor(http: HttpClient) {
     super(http, 'user-role');
   }

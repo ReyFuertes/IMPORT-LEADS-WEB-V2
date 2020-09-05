@@ -73,7 +73,8 @@ export class UserDetailComponent extends GenericDestroyPageComponent implements 
               return String(u.access.id)
             });
             let userRoles = user && user.user_role.map(u => {
-              return String(u.user_role.id)
+              
+              return String(u.role.id)
             });
             let formUser = Object.assign({}, user, { user_access: userAccess }, { user_role: userRoles });
 

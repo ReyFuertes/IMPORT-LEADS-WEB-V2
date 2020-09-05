@@ -3,6 +3,12 @@ import { AppState } from 'src/app/store/app.reducer';
 import { IRole } from 'src/app/modules/user-management/user-mgmt.model';
 
 export const selectedState = (state: AppState) => state.initApp;
+export const getUserRolesSelector = createSelector(
+  selectedState,
+  state => {
+    return state && state.userRoles
+  }
+)
 export const getUserAccessSelector = createSelector(
   selectedState,
   state => {

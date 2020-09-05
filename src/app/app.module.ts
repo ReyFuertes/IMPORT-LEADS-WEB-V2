@@ -19,6 +19,7 @@ import { LoaderInterceptor, LoaderService } from './services/loader.interceptor'
 import { BlockUIModule } from 'primeng/blockui';
 import { MatProgressSpinnerModule, MatProgressBarModule } from '@angular/material';
 import { AccessService } from './services/api.service';
+import { UserMgmtEffects } from './modules/user-management/store/user-mgmt.effects';
 
 const materialModules = [
   MatProgressSpinnerModule,
@@ -42,7 +43,7 @@ const primengModules = [
     HttpClientModule,
     AuthModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([VenuesEffects, InitAppEffect]),
+    EffectsModule.forRoot([VenuesEffects, InitAppEffect, UserMgmtEffects]),
     AppRoutingModule,
     BrowserAnimationsModule,
   ],

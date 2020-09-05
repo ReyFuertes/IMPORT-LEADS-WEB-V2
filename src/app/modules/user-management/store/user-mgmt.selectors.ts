@@ -4,6 +4,15 @@ import { IUserMgmt, IUserTableData, IRole, IUserAccess } from '../user-mgmt.mode
 import * as _ from 'lodash';
 
 export const selectedState = (state: AppState) => state.userMgmt;
+export const getAllSimpleUsersSelector = createSelector(
+  selectedState,
+  state => state && Object.values(state.entities).map(u => {
+    return {
+      label: `${u.user_profile.firstname} ${u.user_profile.lastname}`,
+      value: u.id
+    }
+  })
+);
 export const getUserByIdSelector = (id: string) => createSelector(
   selectedState,
   state => state.entities[id]
@@ -12,7 +21,7 @@ export const getCreatingUserSelector = createSelector(
   selectedState,
   state => state.creatingUser
 );
-export const getAllUsersSelector = createSelector(
+export const getTableUsersSelector = createSelector(
   selectedState,
   state => {
     const fmtUsers = Object.values(state.entities) || [];

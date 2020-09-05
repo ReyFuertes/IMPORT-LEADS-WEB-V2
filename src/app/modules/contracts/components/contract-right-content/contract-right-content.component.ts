@@ -13,6 +13,8 @@ import { ISavedChecklistItem } from '../../contract.model';
 import { getAllSavedChecklistSelector } from '../../store/selectors/saved-checklist.selector';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { getSavedChecklistByIdAction } from '../../store/actions/saved-checklist.action';
+import { IUser, IUserMgmt } from 'src/app/modules/user-management/user-mgmt.model';
+import { getAllSimpleUsersSelector } from 'src/app/modules/user-management/store/user-mgmt.selectors';
 
 @Component({
   selector: 'il-contract-right-content',
@@ -35,6 +37,7 @@ export class ContractRightContentComponent extends GenericDestroyPageComponent i
     value: '3'
   }];
   public $savedChecklist: Observable<ISavedChecklistItem[]>;
+  public $users: Observable<ISimpleItem[]>;
 
   @Input() public form: FormGroup;
   @Output() public closeEmitter = new EventEmitter<boolean>();
@@ -43,10 +46,10 @@ export class ContractRightContentComponent extends GenericDestroyPageComponent i
   constructor(public dialog: MatDialog, private store: Store<AppState>) {
     super();
     this.$savedChecklist = this.store.pipe(select(getAllSavedChecklistSelector),
-      debounceTime(3000),
-      takeUntil(this.$unsubscribe));
+      debounceTime(3000));
+    this.$users = this.store.pipe(select(getAllSimpleUsersSelector))
   }
-  
+
   ngOnInit() { }
 
   public getChecklist(id: string): void {

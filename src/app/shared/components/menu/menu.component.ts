@@ -1,5 +1,6 @@
 import { environment } from './../../../../environments/environment';
 import { Component, OnInit, Input } from '@angular/core';
+import { ISimpleItem } from '../../generics/generic.model';
 
 @Component({
   selector: 'il-menu',
@@ -12,10 +13,16 @@ export class MenuComponent implements OnInit {
   @Input()
   public menu: {
     label: string, children?: Array<{
-      label: string, route?: string
-    }>, route?: string
+      label: string, user_route?: string
+    }>, user_route?: string
   };
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log('menu', this.menu)
+  }
+
+  public hasChildren(menu: ISimpleItem): boolean {
+    return this.menu && this.menu.children.length > 0;
+  }
 }

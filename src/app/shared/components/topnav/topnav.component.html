@@ -1,14 +1,14 @@
 <div fxLayout="row" class="top-nav fade-in" fxLayoutAlign="start center" fxLayoutGap="20px">
-  <div fxFlex fxLayoutAlign="start center">
+  <div *ngIf="($menus | async) as menus" fxFlex fxLayoutAlign="start center">
     <div class="menu-box logo" fxFlex="10">
       <img routerLink="/dashboard" [src]="imgPath + 'logo.png'" />
     </div>
-    <ng-container *ngFor="let menu of toolbarMenu; let i = index">
-      <div class="menu-box" [routerLink]="menu?.route" fxFlex="25" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:
+    <ng-container *ngFor="let menu of menus; let i = index">
+      <div class="menu-box" [routerLink]="menu?.user_route" fxFlex="25" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:
         false}" fxFlex="25" *ngIf="menu?.children">
         <il-menu [menu]="menu"></il-menu>
       </div>
-      <div class="menu-box" [routerLink]="menu?.route" *ngIf="!menu?.children" fxFlex="25" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">{{ menu?.label }}</div>
+      <div class="menu-box" [routerLink]="menu?.user_route" *ngIf="!menu?.children" fxFlex="25" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:false}">{{ menu?.label }}</div>
     </ng-container>
   </div>
   <div fxFlex="20" fxLayoutAlign="end center" fxLayoutGap="40px">

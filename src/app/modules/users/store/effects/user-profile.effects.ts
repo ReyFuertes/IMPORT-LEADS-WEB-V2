@@ -14,10 +14,14 @@ export class UserProfileEffects {
   updateProfileAction$ = createEffect(() => this.actions$.pipe(
     ofType(updateProfileAction),
     mergeMap(({ payload }) => this.userProfileSrv.patch(payload).pipe(
-      tap(() => {
-        this.store.dispatch(appNotification({
-          notification: { success: true, message: 'Successfully updated' }
-        }));
+      tap((res) => {
+        const localUser = JSON.parse(localStorage.getItem('at') || null);
+        if (res) {
+          this.store.dispatch(loadUserProfileAction({ id: localUser.user.id }));
+          this.store.dispatch(appNotification({
+            notification: { success: true, message: 'Successfully updated' }
+          }));
+        }
       }),
       map((response: IUserProfile) => {
         return updateProfileSuccessAction({ response });

@@ -28,9 +28,9 @@
     </div>
     <div fxLayout="row" fxFlex fxLayoutGap="20px">
       <il-input fxFlex="30" [form]="form" isFloatLabel="true" inputType="email" controlName="email" placeholder="Email"></il-input>
-      <il-dropdown-multi-select fxFlex="30" [form]="form" controlName="access" placeHolder="Access" [dataList]="$access | async">
+      <il-dropdown-multi-select fxFlex="30" [form]="form" controlName="access" placeHolder="Access" [options]="$access | async">
       </il-dropdown-multi-select>
-      <il-dropdown-multi-select fxFlex="30" [form]="form" controlName="role" placeHolder="Role" [dataList]="$roles | async">
+      <il-dropdown-multi-select fxFlex="30" [form]="form" controlName="role" placeHolder="Role" [options]="$roles | async">
       </il-dropdown-multi-select>
     </div>
     <div>

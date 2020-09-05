@@ -46,11 +46,11 @@ export class UserProfileDetailsComponent extends GenericDestroyPageComponent imp
     super();
     this.form = this.fb.group({
       id: [null],
-      position: [null, Validators.required],
-      role: [null, Validators.required],
+      position: [null],
+      role: [null],
       company_address: [null],
       company_linkedin: [null],
-      company_name: [null, Validators.required],
+      company_name: [null],
       email: [null],
       facebook: [null],
       firstname: [null],

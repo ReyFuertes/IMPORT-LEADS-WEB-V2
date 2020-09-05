@@ -15,10 +15,10 @@ export interface IUser {
   email?: string;
   username?: string;
   password?: string;
-  user_role?: IRole[];
+  user_role?: IUserRole[];
   company?: string;
   phone?: string;
-  access?: IAccess[]
+  user_access?: IUserAccess[]
 }
 export interface IUserRole {
   id?: string;
@@ -41,7 +41,7 @@ export interface IUserMgmt {
   password?: string;
   salt?: string;
   contract?: IContract;
-  user_access?: IUserAccess[] | string[];
+  user_access?: IUserAccess[] | any;
   user_role?: IRole[];
 }
 export interface IUserTableData {

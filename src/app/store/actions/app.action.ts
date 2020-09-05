@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { IAccess } from 'src/app/models/user.model';
-import { IRole } from 'src/app/modules/user-management/user-mgmt.model';
+import { IRole, IUserAccess } from 'src/app/modules/user-management/user-mgmt.model';
 
 export enum AppActionTypes {
   initAppAction = '[App] init',
@@ -8,8 +8,18 @@ export enum AppActionTypes {
   loadAccessAction = '[App] load user access',
   loadAccessSuccessAction = '[App] load user access (success)',
   loadAllRolesAction = '[User Mgmt] load roles',
-  loadAllRolesSuccessAction = '[User Mgmt] load roles (success)'
+  loadAllRolesSuccessAction = '[User Mgmt] load roles (success)',
+  getUserAccessAction = '[User] user access',
+  getUserAccessSuccessAction = '[User] user access (success)'
 }
+export const getUserAccessAction = createAction(
+  AppActionTypes.getUserAccessAction,
+  props<{ id: string }>()
+);
+export const getUserAccessSuccessAction = createAction(
+  AppActionTypes.getUserAccessSuccessAction,
+  props<{ response: IUserAccess[] }>()
+);
 export const loadAllRolesAction = createAction(
   AppActionTypes.loadAllRolesAction
 );

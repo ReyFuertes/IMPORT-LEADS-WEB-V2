@@ -7,11 +7,16 @@ export interface AddEditDialogState {
   formValues?: any;
   state?: AddEditState
 }
-export interface ISimpleItem {
-  label: string;
+export interface ISimpleItem extends ISimpleAttribute {
+  label?: string;
   value?: string;
+}
+export interface ISimpleAttribute {
   _id?: string;
   id?: string;
+  parent?: ISimpleItem;
+  children?: ISimpleItem[];
+  user_route?: string;
 }
 export interface Menu {
   label: string;

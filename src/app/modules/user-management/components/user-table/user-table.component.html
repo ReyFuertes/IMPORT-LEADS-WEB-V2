@@ -3,7 +3,8 @@
     <th mat-header-cell *matHeaderCellDef> {{ column !== 'action' ? column: ''}} </th>
     <td [id]="i" mat-cell *matCellDef="let item">
       <div fxLayout="row" fxLayoutAlign="start center" *ngIf="!isNoExpand(i)">
-        <img *ngIf="i === 0" class="user-pic" [src]="imgPath + 'sample-profile.png'" />
+        <img *ngIf="i === 0 && item?.image" class="user-pic" [src]="apiImagePath + item?.image" />
+        <img *ngIf="i === 0 && !item?.image" class="user-pic" [src]="imgPath + 'no-image.png'" />
         <span>{{item[column]}}</span>
       </div>
       <il-popover-multi-select *ngIf="isNoExpand(i) && !isLast(columnsToDisplay, i)" [idx]="i" [label]="column" 

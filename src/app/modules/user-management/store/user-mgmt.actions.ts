@@ -14,7 +14,17 @@ export enum UserMgmtActionTypes {
   signUpUserSuccessAction = '[User Mgmt] sign up user (success)',
   deleteUserAction = '[User Mgmt] delete user',
   deleteUserSuccessAction = '[User Mgmt] delete user (success)',
+  saveUserAction = '[User Mgmt] save user',
+  saveUserSuccessAction = '[User Mgmt] save user (success)'
 }
+export const saveUserAction = createAction(
+  UserMgmtActionTypes.saveUserAction,
+  props<{ payload: IUser }>()
+);
+export const saveUserSuccessAction = createAction(
+  UserMgmtActionTypes.saveUserSuccessAction,
+  props<{ response: IUser }>()
+);
 export const deleteUserAction = createAction(
   UserMgmtActionTypes.deleteUserAction,
   props<{ id: string }>()
@@ -37,7 +47,7 @@ export const addUserAction = createAction(
 );
 export const addUserSuccessAction = createAction(
   UserMgmtActionTypes.addUserSuccessAction,
-  props<{ response: IUserMgmt }>()
+  props<{ response: IUser[] }>()
 );
 export const saveUserRoleAction = createAction(
   UserMgmtActionTypes.saveUserRoleAction,
@@ -53,7 +63,7 @@ export const saveUserAccessAction = createAction(
 );
 export const saveUserAccessSuccessAction = createAction(
   UserMgmtActionTypes.saveUserAccessSuccessAction,
-  props<{ response: IUserAccess }>()
+  props<{ response: IUserAccess[] }>()
 );
 export const loadAllUsersAction = createAction(
   UserMgmtActionTypes.loadAllUsersAction

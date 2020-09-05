@@ -11,55 +11,59 @@ import { ISimpleItem } from '../../generics/generic.model';
   templateUrl: './dropdown-multi-select.component.html',
   styleUrls: ['./dropdown-multi-select.component.scss']
 })
-export class DropdownMultiSelectComponent extends GenericControl<ISimpleItem> implements OnInit, OnDestroy {
+export class DropdownMultiSelectComponent extends GenericControl<ISimpleItem> implements OnInit, OnChanges {
   @Input() public form: FormGroup;
   @Input() public placeHolder: string = '';
   @Input() public searchItem: boolean = false;
-  @Input() public dataList: any[] = [];
+  @Input() public options: ISimpleItem[];
   @Input() public controlName: any;
   @Output() public valueEmitter = new EventEmitter<any>();
 
   public dataFilterForm = new FormControl();
-  public filteredData$ = new ReplaySubject<any>();
+  public $filteredData = new ReplaySubject<any>();
 
   private newDataList: any;
-  private _unsubscribe$ = new Subject<void>();
 
   constructor() {
     super();
   }
 
   ngOnInit() {
-    //when edit mode pass id to display selected item
+    /* when edit mode pass id to display selected item */
     const id: string = this.form.get(this.controlName).value &&
       this.form.get(this.controlName).value.id || null;
     if (id) this.form.get(this.controlName).patchValue(id);
 
-    //filter etc..
-    this.newDataList = this.dataList.slice();
-    this.filteredData$.next(this.newDataList);
-    this.dataFilterForm.valueChanges
-      .pipe(takeUntil(this._unsubscribe$))
-      .subscribe(() => {
-        this.filterdata();
-      });
+    this.newDataList = this.options && this.options.slice();
+    if (this.newDataList) {
+      this.$filteredData.next(this.newDataList);
+      this.dataFilterForm.valueChanges
+        .subscribe(() => {
+          this.filterdata();
+        });
+    }
   }
-  ngOnDestroy(): void {
-    this._unsubscribe$.next();
-    this._unsubscribe$.complete();
-  }
+
   private filterdata(): void {
     let search: string = this.dataFilterForm.value;
-
     if (!search) {
-      this.filteredData$.next(this.newDataList);
+      this.$filteredData.next(this.newDataList);
       return;
     } else {
       search = search.toLowerCase();
     }
 
-    this.filteredData$.next(
+    this.$filteredData.next(
       this.newDataList.filter(data => data.label.toLowerCase().indexOf(search) > -1)
     );
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes && changes.form && changes.form.currentValue) {
+      this.form = changes.form.currentValue;
+    }
+    if (changes && changes.controlName && changes.controlName.currentValue) {
+      this.controlName = changes.controlName.currentValue;
+    }
   }
 }

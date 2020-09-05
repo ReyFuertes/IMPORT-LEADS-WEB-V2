@@ -20,13 +20,12 @@ export class AuthEffect {
     ofType(loginAction),
     mergeMap(({ cred }) => this.authSrv.post(cred, 'signin')
       .pipe(
-        tap((accessToken) => {
+        map((accessToken: any) => {
           if (accessToken) {
             localStorage.setItem('at', JSON.stringify(accessToken));
             this.router.navigateByUrl('dashboard/contracts');
           }
-        }),
-        map((accessToken: any) => {
+
           return loginSuccessAction({ accessToken });
         }),
         catchError((error: any) => {

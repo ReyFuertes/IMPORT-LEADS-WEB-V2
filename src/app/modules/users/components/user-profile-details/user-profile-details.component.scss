@@ -74,6 +74,9 @@ h3 {
   color: $color-gray-1 !important;
 }
 :host ::ng-deep {
+  .mat-form-field-appearance-legacy .mat-form-field-wrapper {
+    width: 100% !important;
+  }
   .il-textarea .mat-form-field-infix {
     width: 500px;
   }

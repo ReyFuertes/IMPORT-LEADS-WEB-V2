@@ -7,41 +7,48 @@
         <h4>User Info</h4>
         <div>
           <div fxLayout="row" fxFlex fxLayoutGap="20px">
-            <il-input fxFlex="25" [isFloatLabel]="true" [form]="formUser" isFloatLabel="true" controlName="firstname" placeholder="Firstname"></il-input>
-            <il-input fxFlex="25" [isFloatLabel]="true" [form]="formUser" isFloatLabel="true" controlName="lastname" placeholder="Lastname"></il-input>
-            <il-input fxFlex="25" [isFloatLabel]="true" [form]="formUser" isFloatLabel="true" controlName="company_name" placeholder="Company"></il-input>
-            <il-input fxFlex="25" [isFloatLabel]="true" [form]="formUser" isFloatLabel="true" controlName="phone" placeholder="Phone number"></il-input>
-          </div>
-        </div>
-        <div>
-          <div fxLayout="row wrap" fxLayoutGap="20px">
-            <il-input fxFlex="25" [isFloatLabel]="true" [form]="formUser" isFloatLabel="true" controlName="username" placeholder="Username"></il-input>
-            <il-input fxFlex="25" [isFloatLabel]="true" [form]="formUser" isFloatLabel="true" inputType="password" controlName="password" placeholder="Password"></il-input>
-            <il-input fxFlex="25" [isFloatLabel]="true" [form]="formUser" isFloatLabel="true" inputType="email" controlName="email" placeholder="Email"></il-input>
-            <il-dropdown-multi-select fxFlex="25" [isFloatLabel]="true" [form]="formUser" controlName="access" placeHolder="Access" [dataList]="$access | async">
+            <il-input fxFlex="25" [isFloatLabel]="true" [form]="form" isFloatLabel="true" controlName="username" placeholder="Username"></il-input>
+            <!-- this can only be viewed by admin -->
+            <il-dropdown-multi-select fxFlex="25" [isFloatLabel]="true" [form]="form" controlName="user_access" placeHolder="Access" [options]="($access | async)">
             </il-dropdown-multi-select>
-            <il-dropdown-multi-select fxFlex="25" [isFloatLabel]="true" [form]="formUser" controlName="role" placeHolder="Role" [dataList]="$roles | async">
+            <!-- this can only be viewed by admin -->
+            <il-dropdown-multi-select fxFlex="25" [isFloatLabel]="true" [form]="form" controlName="user_role" placeHolder="Role" [options]="($roles | async)">
             </il-dropdown-multi-select>
+            <div fxFlex="25"></div>
           </div>
         </div>
       </div>
+
       <!-- user profile -->
       <div fxLayout="column">
         <h4>User Profile</h4>
         <div fxLayout="column">
           <div fxFlex fxLayout="column" fxLayoutGap="20px">
             <div fxFlex fxLayout="column" fxLayoutAlign="start start">
+
               <div class="ctrl-container" fxLayout="row" fxLayoutGap="40px">
-                <il-input fxFlex="25" [isFloatLabel]="true" [form]="formUserProfile" isFloatLabel="true" controlName="phone" placeholder="Phone"></il-input>
-                <il-input fxFlex="25" [isFloatLabel]="true" [form]="formUserProfile" isFloatLabel="true" controlName="email" placeholder="Email"></il-input>
-                <il-input fxFlex="25" [isFloatLabel]="true" [form]="formUserProfile" isFloatLabel="true" controlName="company_linkedin" placeholder="Company linkedin"></il-input>
-                <il-input fxFlex="25" [isFloatLabel]="true" [form]="formUserProfile" isFloatLabel="true" controlName="facebook" placeholder="Facebook"></il-input>
+                <il-input fxFlex="25" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true" controlName="firstname" placeholder="Firstname"></il-input>
+                <il-input fxFlex="25" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true" controlName="lastname" placeholder="Lastname"></il-input>
+                <il-input fxFlex="25" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true" controlName="phone" placeholder="Phone number"></il-input>
+                <il-input fxFlex="25" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true" controlName="company_name" placeholder="Company"></il-input>
               </div>
+
               <div class="ctrl-container" fxLayout="row" fxLayoutGap="40px">
-                <il-input fxFlex="25" [isFloatLabel]="true" [form]="formUserProfile" isFloatLabel="true" controlName="twitter" placeholder="Twitter"></il-input>
-                <il-input fxFlex="25" [isFloatLabel]="true" [form]="formUserProfile" isFloatLabel="true" controlName="wechatid" placeholder="WeChat ID"></il-input>
-                <il-input fxFlex="25" [isFloatLabel]="true" [form]="formUserProfile" isFloatLabel="true" controlName="qqid" placeholder="QQid"></il-input>
-                <div fxFlex="25"></div>
+                <il-input fxFlex="25" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true" inputType="email" controlName="email" placeholder="Email"></il-input>
+                <il-input fxFlex="25" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true" controlName="phone" placeholder="Phone"></il-input>
+                <il-input fxFlex="25" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true" controlName="email" placeholder="Email"></il-input>
+                <il-input fxFlex="25" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true" controlName="company_linkedin" placeholder="Company linkedin"></il-input>
+              </div>
+
+              <div class="ctrl-container" fxLayout="row" fxLayoutGap="40px">
+                <il-input fxFlex="25" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true" controlName="facebook" placeholder="Facebook"></il-input>
+                <il-input fxFlex="25" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true" controlName="twitter" placeholder="Twitter"></il-input>
+                <il-input fxFlex="25" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true" controlName="wechatid" placeholder="WeChat ID"></il-input>
+                <il-input fxFlex="25" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true" controlName="qqid" placeholder="QQid"></il-input>
+              </div>
+
+              <div class="ctrl-container" fxLayout="row" fxLayoutGap="40px">
+                <il-input fxFlex="25" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true" controlName="position" placeholder="Position"></il-input>
               </div>
             </div>
           </div>
@@ -51,20 +58,20 @@
             <h3>Company Details</h3>
             <div class="ctrl-container" fxLayout="column">
               <div fxLayout="row" fxLayoutGap="20px">
-                <il-input fxFlex="25" [isFloatLabel]="true" [form]="formUserProfile" isFloatLabel="true" controlName="company_name" placeholder="Company Name"></il-input>
-                <il-input fxFlex="25" [isFloatLabel]="true" [form]="formUserProfile" isFloatLabel="true" controlName="company_linkedin" placeholder="Company Linkedin"></il-input>
+                <il-input fxFlex="25" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true" controlName="company_name" placeholder="Company Name"></il-input>
+                <il-input fxFlex="25" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true" controlName="company_linkedin" placeholder="Company Linkedin"></il-input>
                 <div fxFlex="25"></div>
                 <div fxFlex="25"></div>
               </div>
-              <il-textarea fxFlex="50" fxFlex [isFloatLabel]="true" [form]="formUserProfile" isFloatLabel="true" controlName="company_address" placeholder="Company Address"></il-textarea>
+              <il-textarea fxFlex="50" fxFlex [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true" controlName="company_address" placeholder="Company Address"></il-textarea>
             </div>
           </div>
         </div>
       </div>
       <!-- actions -->
       <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="20px">
-        <button mat-flat-button class="il-button default large">Cancel</button>
-        <button mat-flat-button class="il-button primary large" (click)="onSave()">Update</button>
+        <button mat-flat-button class="il-button default large" routerLink="/dashboard/user-management">Cancel</button>
+        <button [disabled]="!form.valid" mat-flat-button class="il-button primary large" (click)="onSave()">Update</button>
       </div>
     </div>
   </mat-card>

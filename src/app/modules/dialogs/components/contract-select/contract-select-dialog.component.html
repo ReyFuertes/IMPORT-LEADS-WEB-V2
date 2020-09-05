@@ -6,7 +6,7 @@
   </div>
   <div class="content">
     <div *ngIf="form" fxLayoutAlign="start center" fxLayout="row" fxLayoutGap="40px">
-      <il-dropdown-multi-select fxFlex *ngIf="contracts" placeHolder="Select Contract" [searchItem]="true" [dataList]="contracts" (selectItemChange)="handleSelectChange($event)">
+      <il-dropdown-multi-select fxFlex *ngIf="contracts" placeHolder="Select Contract" [searchItem]="true" [options]="contracts" (selectItemChange)="handleSelectChange($event)">
       </il-dropdown-multi-select>
     </div>
   </div>

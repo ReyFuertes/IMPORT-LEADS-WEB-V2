@@ -2,7 +2,7 @@ import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { tap, map, switchMap } from 'rxjs/operators';
-import { initAppAction, initAppSuccessAction, loadAccessAction, loadAccessSuccessAction, loadAllRolesAction, loadAllRolesSuccessAction } from '../actions/app.action';
+import { initAppAction, initAppSuccessAction, loadAccessAction, loadAccessSuccessAction, loadAllRolesAction, loadAllRolesSuccessAction, getUserAccessAction, getUserAccessSuccessAction } from '../actions/app.action';
 import { logoutAction, logoutSuccessAction } from 'src/app/modules/auth/store/auth.action';
 import { Router } from '@angular/router';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
@@ -10,11 +10,21 @@ import { loadVenuesAction } from 'src/app/modules/venues/store/venues.action';
 import { IAccess } from 'src/app/models/user.model';
 import { AccessService } from 'src/app/services/api.service';
 import { of } from 'rxjs';
-import { RolesService } from 'src/app/modules/user-management/user-mgmt.service';
-import { IRole } from 'src/app/modules/user-management/user-mgmt.model';
+import { RolesService, UserAccessService } from 'src/app/modules/user-management/user-mgmt.service';
+import { IRole, IUserAccess } from 'src/app/modules/user-management/user-mgmt.model';
 
 @Injectable()
 export class InitAppEffect {
+  getUserAccessAction$ = createEffect(() => this.actions$.pipe(
+    ofType(getUserAccessAction),
+    switchMap(({ id }) => {
+      return this.userAccessSrv.getAll(id).pipe(
+        map((response: IUserAccess[]) => {
+          return getUserAccessSuccessAction({ response });
+        })
+      )
+    })
+  ));
   loadAllRolesAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadAllRolesAction),
     switchMap(() => {
@@ -51,6 +61,11 @@ export class InitAppEffect {
             this.store.dispatch(loadVenuesAction());
             this.store.dispatch(loadAccessAction());
             this.store.dispatch(loadAllRolesAction());
+
+            const at = JSON.parse(localStorage.getItem('at')) || null;
+            if (at && at.user) {
+              this.store.dispatch(getUserAccessAction({ id: at.user.id }))
+            }
           }
         }),
         map((accessToken: any) => {
@@ -64,6 +79,6 @@ export class InitAppEffect {
   ));
 
   constructor(private store: Store<AppState>, private actions$: Actions,
-    private router: Router, private accessSrv: AccessService,
+    private router: Router, private accessSrv: AccessService, private userAccessSrv: UserAccessService,
     private roleSrv: RolesService) { }
 }

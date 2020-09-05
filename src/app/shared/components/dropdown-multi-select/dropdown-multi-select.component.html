@@ -1,8 +1,8 @@
 <div *ngIf="form" [formGroup]="form">
   <mat-form-field [floatLabel]="isFloatLabel == true ? '' : 'never'">
     <mat-select multiple="true" #multiSelect [placeholder]="placeHolder" [formControlName]="controlName">
-      <mat-option *ngFor="let item of filteredData$ | async" [value]="item?.value">
-        {{ item.label }}
+      <mat-option *ngFor="let item of ($filteredData | async)" [value]="item?.value">
+        {{ item.label | titlecase }}
       </mat-option>
     </mat-select>
   </mat-form-field>

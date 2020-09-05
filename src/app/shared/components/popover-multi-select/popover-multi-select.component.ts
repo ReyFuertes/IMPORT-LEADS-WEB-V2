@@ -24,7 +24,6 @@ export class PopoverMultiSelectComponent implements OnInit {
   ngOnInit() {
     this.selOption = this.options
       && this.options.filter(o => o.value === this.values.filter(v => o.value == v)[0]);
-    console.log('selOption', this.selOption)
 
   }
 

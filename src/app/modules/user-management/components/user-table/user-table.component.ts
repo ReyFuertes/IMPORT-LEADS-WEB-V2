@@ -29,6 +29,7 @@ import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confir
   ],
 })
 export class UserTableComponent extends GenericDestroyPageComponent implements OnInit {
+  public apiImagePath: string = environment.apiImagePath;
   public imgPath: string = environment.imgPath;
   public svgPath: string = environment.svgPath;
   public dataSource: any;
@@ -54,7 +55,7 @@ export class UserTableComponent extends GenericDestroyPageComponent implements O
     super();
     this.$users = this.store.pipe(select(getAllUsersSelector));
     this.$users.pipe(takeUntil(this.$unsubscribe),
-      //take(2),
+      take(2),
       tap((res) => {
         if (res && res.length > 0) {
           this.dataSource = res;
@@ -65,13 +66,16 @@ export class UserTableComponent extends GenericDestroyPageComponent implements O
       })).subscribe();
 
     this.store.pipe(select(getAccessSelector))
-      .pipe(tap(res => {
+      .pipe(take(1), tap(res => {
         if (res) this.accessOptions = res;
       })).subscribe();
 
-    this.store.pipe(select(getAllRolesSelector)).pipe(tap(res => {
+    this.store.pipe(select(getAllRolesSelector)).pipe(take(2), tap(res => {
       if (res) this.rolesOptions = res;
     })).subscribe();
+
+    /* trigger reload to all users so we will get the updated data */
+    this.store.dispatch(loadAllUsersAction());
   }
 
   ngOnInit(): void { }
@@ -108,7 +112,6 @@ export class UserTableComponent extends GenericDestroyPageComponent implements O
           && values.user_role.length > 0
           && values.user_role.map(i => i.role && i.role.id) || [];
     }
-
     return ret;
   }
 
@@ -140,8 +143,7 @@ export class UserTableComponent extends GenericDestroyPageComponent implements O
           }
         }));
         break;
-      default:
-        break;
+      default: break;
     }
   }
 

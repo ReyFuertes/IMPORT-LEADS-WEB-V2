@@ -35,7 +35,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    //this.store.subscribe(res => console.log(res))
+    this.store.subscribe(res => console.log(res))
 
     this.cdRef.detectChanges();
   }

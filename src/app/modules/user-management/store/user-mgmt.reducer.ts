@@ -1,7 +1,7 @@
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityAdapter, createEntityAdapter, EntityState } from '@ngrx/entity';
 import { IUserMgmt, IUserAccess, IRole } from '../user-mgmt.model';
-import { loadAllUsersSuccessAction, signUpUserAction, signUpUserSuccessAction, deleteUserSuccessAction } from './user-mgmt.actions';
+import { loadAllUsersSuccessAction, signUpUserAction, signUpUserSuccessAction, deleteUserSuccessAction, saveUserAccessSuccessAction, addUserSuccessAction } from './user-mgmt.actions';
 import * as _ from 'lodash';
 export interface UserMgmtState extends EntityState<IUserMgmt> {
   access?: IUserAccess[],
@@ -14,6 +14,19 @@ export const initialState: UserMgmtState = adapter.getInitialState({
 });
 const userMgmtReducer = createReducer(
   initialState,
+  /* remove this because the table is refereshing */
+  // on(saveUserAccessSuccessAction, (state, action) => {
+  //   const userId = action.response.map(r => r.user.id).shift();
+  //   if (userId)
+  //     return ({ ...adapter.updateOne({ id: userId, changes: { user_access: action.response } }, state) });
+  //   else return state;
+  // }),
+  // on(addUserSuccessAction, (state) => {
+  //   return adapter.removeAll({ ...state });
+  // }),
+  // on(addUserSuccessAction, (state, action) => {
+  //   return ({ ...adapter.addAll(action.response, state) });
+  // }),
   on(deleteUserSuccessAction, (state, action) => {
     return ({ ...adapter.removeOne(action.deleted.id, state) })
   }),

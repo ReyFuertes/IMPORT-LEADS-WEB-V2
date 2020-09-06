@@ -37,7 +37,7 @@
   img {
     min-width: 15px;
   }
-  &:last-child {
+  .delete {
     color: $color-red;
   }
 }
@@ -57,9 +57,9 @@
 .img {
   width: 100px;
   height: 100px;
-  background-size:cover;
-  background-position:center center;
-  background-repeat:no-repeat;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
   cursor: default;
   border-radius: 4px;
   box-shadow: $box-shadow;

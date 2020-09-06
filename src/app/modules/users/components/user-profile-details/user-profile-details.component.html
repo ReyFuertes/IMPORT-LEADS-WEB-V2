@@ -18,17 +18,7 @@
         <span class="link" (click)="uploader?.click()">Browse</span>
       </div>
       <div fxFlex>
-        <il-textarea fxFlex [isFloatLabel]="true" [form]="form" rows="5" isFloatLabel="true" controlName="self_intro" placeholder="Self Intro"></il-textarea>
-
-        <!-- NOTE: THIS WILL BE DISPLAYED IN ADMIN LEVEL -->
-        <!-- <div>
-          <div *ngIf="form" fxFlex fxLayout="row" fxLayoutGap="20px">
-            <il-input fxFlex="30" [form]="form" isFloatLabel="true" controlName="position" placeholder="Position"></il-input>
-            <il-dropdown-multi-select fxFlex [form]="form" controlName="role" placeHolder="Role" [options]="roles">
-            </il-dropdown-multi-select>
-            <il-input fxFlex="30" [form]="form" isFloatLabel="true" controlName="company_name" placeholder="Company"></il-input>
-          </div>
-        </div> -->
+        <il-textarea fxFlex [isFloatLabel]="true" [form]="form" rows="7" [isFloatLabel]="true" controlName="self_intro" placeholder="Self Intro"></il-textarea>
       </div>
     </div>
   </div>
@@ -39,60 +29,28 @@
           <div fxFlex>
             <h3>Contacts</h3>
           </div>
-          <div (click)="isContactEditMode = !isContactEditMode" class="action-profile" fxFlex="120px" fxLayoutAlign="end center">
-            <img *ngIf="!isContactEditMode" [src]="svgPath + 'edit-icon-blue.svg'" />
-            <span [ngClass]="{'is-edit': isContactEditMode}">{{ !isContactEditMode ? 'Edit' : 'Close' }}</span>
-          </div>
         </div>
         <div fxFlex class="item-container" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="40px">
           <div fxFlex="20">
-            <div>Phone Number</div>
-            <div>
-              <span *ngIf="!isContactEditMode">{{ detail?.phone }}</span>
-              <il-input *ngIf="isContactEditMode" [form]="form" isFloatLabel="true" controlName="phone" placeholder="Phone"></il-input>
-            </div>
+            <il-input [form]="form" [isFloatLabel]="true" controlName="phone" placeholder="Phone Number"></il-input>
           </div>
           <div fxFlex="20">
-            <div>Email</div>
-            <div>
-              <span *ngIf="!isContactEditMode">{{ detail?.email }}</span>
-              <il-input *ngIf="isContactEditMode" [form]="form" isFloatLabel="true" controlName="email" placeholder="Email"></il-input>
-            </div>
+            <il-input [form]="form" [isFloatLabel]="true" controlName="email" placeholder="Email"></il-input>
           </div>
           <div fxFlex="20">
-            <div>Linked Profile</div>
-            <div>
-              <span *ngIf="!isContactEditMode">{{ detail?.company_linkedin }}</span>
-              <il-input *ngIf="isContactEditMode" [form]="form" isFloatLabel="true" controlName="company_linkedin" placeholder="Company linkedin"></il-input>
-            </div>
+            <il-input [form]="form" [isFloatLabel]="true" controlName="company_linkedin" placeholder="Linked Profile"></il-input>
           </div>
           <div fxFlex="20">
-            <div>Facebook Profile</div>
-            <div>
-              <span *ngIf="!isContactEditMode">{{ detail?.facebook }}</span>
-              <il-input *ngIf="isContactEditMode" [form]="form" isFloatLabel="true" controlName="facebook" placeholder="Facebook"></il-input>
-            </div>
+            <il-input [form]="form" [isFloatLabel]="true" controlName="facebook" placeholder="Facebook Profile"></il-input>
           </div>
           <div fxFlex="20">
-            <div>Twitter Profile</div>
-            <div>
-              <span *ngIf="!isContactEditMode">{{ detail?.twitter }}</span>
-              <il-input *ngIf="isContactEditMode" [form]="form" isFloatLabel="true" controlName="twitter" placeholder="Twitter"></il-input>
-            </div>
+            <il-input [form]="form" [isFloatLabel]="true" controlName="twitter" placeholder="Twitter Profile"></il-input>
           </div>
           <div fxFlex="20">
-            <div>Wechat ID</div>
-            <div>
-              <span *ngIf="!isContactEditMode">{{ detail?.wechatid }}</span>
-              <il-input *ngIf="isContactEditMode" [form]="form" isFloatLabel="true" controlName="wechatid" placeholder="WeChat ID"></il-input>
-            </div>
+            <il-input [form]="form" [isFloatLabel]="true" controlName="wechatid" placeholder="WeChat ID"></il-input>
           </div>
           <div fxFlex="20">
-            <div>QQ ID</div>
-            <div>
-              <span *ngIf="!isContactEditMode">{{ detail?.qqid }}</span>
-              <il-input *ngIf="isContactEditMode" [form]="form" isFloatLabel="true" controlName="qqid" placeholder="QQid"></il-input>
-            </div>
+            <il-input [form]="form" [isFloatLabel]="true" controlName="qqid" placeholder="QQ ID"></il-input>
           </div>
         </div>
       </div>
@@ -106,31 +64,18 @@
             <h3>Company Details</h3>
           </div>
           <div (click)="isComDetailEditMode = !isComDetailEditMode" class="action-profile" fxFlex="120px" fxLayoutAlign="end center">
-            <img *ngIf="!isComDetailEditMode" [src]="svgPath + 'edit-icon-blue.svg'" />
-            <span [ngClass]="{'is-edit': isComDetailEditMode}">{{ !isComDetailEditMode ? 'Edit' : 'Close' }}</span>
           </div>
         </div>
         <div fxFlex class="item-container" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="40px">
           <div fxFlex="20">
-            <div>Company Name</div>
-            <div>
-              <span *ngIf="!isComDetailEditMode">{{ detail?.company_name }}</span>
-              <il-input *ngIf="isComDetailEditMode" fxFlex="30" [form]="form" isFloatLabel="true" controlName="company_name" placeholder="Phone"></il-input>
-            </div>
+            <il-input [form]="form" [isFloatLabel]="true" controlName="company_name" placeholder="Company Name"></il-input>
+
           </div>
           <div fxFlex="20">
-            <div>Company Linked Profile</div>
-            <div>
-              <span *ngIf="!isComDetailEditMode">{{ detail?.company_linkedin }}</span>
-              <il-input *ngIf="isComDetailEditMode" fxFlex="30" [form]="form" isFloatLabel="true" controlName="company_linkedin" placeholder="Phone"></il-input>
-            </div>
+            <il-input [form]="form" [isFloatLabel]="true" controlName="company_linkedin" placeholder="Company Linked Profile"></il-input>
           </div>
           <div fxFlex="40">
-            <div>Address</div>
-            <div>
-              <span *ngIf="!isComDetailEditMode">{{ detail?.company_address }}</span>
-              <il-textarea *ngIf="isComDetailEditMode" fxFlex="30" [form]="form" isFloatLabel="true" controlName="company_address" placeholder="Phone"></il-textarea>
-            </div>
+            <il-textarea [form]="form" [isFloatLabel]="true" controlName="company_address" placeholder="Address"></il-textarea>
           </div>
         </div>
       </div>

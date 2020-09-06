@@ -76,43 +76,35 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   }
 
   ngOnInit() {
-    this.options = [
-      {
-        id: 1,
-        label: 'Edit contract',
-        icon: 'edit-icon-blue.svg',
-        action: this.editContract
-      },
-      {
-        id: 2,
-        label: 'Download',
-        icon: 'download-icon-blue.svg'
-      },
-      {
-        id: 3,
-        label: 'Create or update checklist',
-        icon: 'templates-icon-blue.svg',
-        action: this.createUpdateTemplate
-      },
-      {
-        id: 4,
-        label: 'Save as template',
-        icon: 'save-icon-blue.svg',
-        action: this.saveContractAsTemplate
-      },
-      {
-        id: 5,
-        label: 'Create Category',
-        icon: 'save-icon-blue.svg',
-        action: this.onCreateCategory
-      },
-      {
-        id: 6,
-        label: 'Delete contract',
-        icon: 'delete-icon-red.svg',
-        action: this.onDeleteContract
-      }
-    ];
+    this.options = [{
+      id: 1,
+      label: 'Edit contract',
+      icon: 'edit-icon-blue.svg',
+      action: this.editContract
+    },
+    {
+      id: 2,
+      label: 'Download',
+      icon: 'download-icon-blue.svg'
+    },
+    {
+      id: 3,
+      label: 'Create or update checklist',
+      icon: 'templates-icon-blue.svg',
+      action: this.createUpdateTemplate
+    },
+    {
+      id: 4,
+      label: 'Save as template',
+      icon: 'save-icon-blue.svg',
+      action: this.saveContractAsTemplate
+    },
+    {
+      id: 5,
+      label: 'Create Category',
+      icon: 'save-icon-blue.svg',
+      action: this.onCreateCategory
+    }];
 
     fromEvent(window, "scroll").subscribe((e: any) => {
       document.querySelector('.inner-container').scrollTop = (document.documentElement.scrollTop);
@@ -203,7 +195,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     const selectedChecklistItems = this.checklistItems && this.checklistItems.filter(ci => {
       return checklistProductIds && checklistProductIds.includes(ci.contract_product.id)
     });
-    
+
     /* build the payload for saving */
     checklistProductIds.forEach(productId => {
       this.checklistTerms.forEach(term => {
@@ -215,7 +207,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
         })
       });
     });
-    
+
     const payload: ISavedChecklistPayload = {
       id: this.savedChecklistSourceId,
       checklist_name: `cl-${new Date().getTime()}`,
@@ -224,7 +216,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       checklist_items: selectedChecklistItems,
       checklist_contract: { id: this.id }
     }
-    
+
     if (payload) {
       this.store.dispatch(saveChecklistAction({ payload }));
 

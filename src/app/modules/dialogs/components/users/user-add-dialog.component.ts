@@ -60,7 +60,7 @@ export class UserAddDialogComponent extends GenericDestroyPageComponent implemen
       setTimeout(() => {
         this.store.dispatch(addUserAction({ payload: this.form.value }));
         this.dialogRef.close();
-      }, 1000);
+      }, 500);
     }
   }
 }

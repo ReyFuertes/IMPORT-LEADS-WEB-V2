@@ -15,7 +15,7 @@
         <div fxFlex="100px" class="pnl-actions" fxLayoutAlign="end center">
           <div class="menu-icon" *ngIf="hoveredIndex === element?.id && selectedIndex === null" fxLayoutGap="10px">
             <img [src]="svgPath + 'edit-icon-blue.svg'" (click)="selectedIndex = element?.id" />
-            <img [src]="svgPath + 'delete-icon-red.svg'" (click)="onDelete(element)">
+            <img *appHasRole="'admin'" [src]="svgPath + 'delete-icon-red.svg'" (click)="onDelete(element)">
           </div>
           <div class="menu-icon" *ngIf="hoveredIndex === element?.id && selectedIndex === element?.id" fxLayoutGap="10px">
             <img [src]="svgPath + 'close-icon-blue.svg'" (click)="onClose()" />

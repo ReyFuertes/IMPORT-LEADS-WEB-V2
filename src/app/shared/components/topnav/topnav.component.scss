@@ -25,9 +25,16 @@ img.profile-pic {
   }
 }
 ::ng-deep {
+  .mat-menu-content:not(:empty) {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
   .mat-menu-item {
     height: 40px !important;
     max-height: 40px !important;
     line-height: 40px !important;
+    &:not(:last-child) {
+      border-bottom: thin $color-gray-3 solid !important;
+    }
   }
 }

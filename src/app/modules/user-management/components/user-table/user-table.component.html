@@ -4,8 +4,10 @@
       <th mat-header-cell *matHeaderCellDef> {{ column !== 'action' ? splitToSentCase(column): ''}} </th>
       <td [id]="i" mat-cell *matCellDef="let item">
         <div fxLayout="row" fxLayoutAlign="start center" *ngIf="!isNoExpand(i)">
-          <img *ngIf="i === 0 && item?.image" class="user-pic" [src]="apiImagePath + item?.image" />
-          <img *ngIf="i === 0 && !item?.image" class="user-pic" [src]="imgPath + 'no-image.png'" />
+          <div *ngIf="i === 0" class="img-container">
+            <img *ngIf="item?.image" class="user-pic" [src]="apiImagePath + item?.image" />
+            <img *ngIf="!item?.image" class="user-pic" [src]="imgPath + 'no-image.png'" />
+          </div>
           <span>{{item[column]}}</span>
         </div>
         <il-popover-multi-select *ngIf="isNoExpand(i) && !isLast(columnsToDisplay, i)" [idx]="i" [label]="column" [options]="isAccessOrRoles(column)" [values]="fmtToIds(item, column)"

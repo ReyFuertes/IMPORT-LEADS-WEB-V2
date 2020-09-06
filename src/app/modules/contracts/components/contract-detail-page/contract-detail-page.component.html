@@ -7,6 +7,10 @@
       <img [src]="svgPath + option?.icon" />
       <span [matTooltip]="option?.label">{{ option?.label }}</span>
     </div>
+    <div *appHasRole="'admin'" class="action-item delete" (click)="onDeleteContract()" fxLayoutAlign="start center" fxLayoutGap="5px">
+      <img [src]="svgPath + 'delete-icon-red.svg'" />
+      <span matTooltip="Delete Contract">Delete Contract</span>
+    </div>
   </div>
   <mat-card>
     <div fxLayout="column">

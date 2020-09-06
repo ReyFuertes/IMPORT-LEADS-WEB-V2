@@ -23,8 +23,7 @@
 }
 ::ng-deep {
   .mat-menu-panel {
-    // height: 55px !important;
-    min-height: 55px !important;
+    min-height: 40px !important;
     overflow: hidden;
   }
   .mat-menu-item {

@@ -22,24 +22,24 @@ export class AppComponent implements OnInit, AfterViewInit {
   public svgPath: string = environment.svgPath;
 
   constructor(public loaderSrv: LoaderService, private store: Store<AppState>, private cdRef: ChangeDetectorRef) {
+  }
+
+  ngOnInit(): void {
     this.store.dispatch(initAppAction());
-    
+
+    //this.store.subscribe(res => console.log(res))
     this.$notify = this.store.pipe(select(getSuccessSelector), delay(100));
 
     /* remove notification 2 seconds */
     this.$notify.pipe(debounceTime(2000)).subscribe((res) => {
       if (res)
         this.store.dispatch(removeNotification())
+      this.cdRef.detectChanges();
     });
 
     /* check if user islogin */
     this.$isLoggedIn = this.store.pipe(select(getIsLoggedInSelector));
-  }
 
-  ngOnInit(): void {
-    this.store.subscribe(res => console.log(res))
-
-    this.cdRef.detectChanges();
   }
 
   ngAfterViewInit(): void {

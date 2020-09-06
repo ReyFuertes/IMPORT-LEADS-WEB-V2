@@ -52,7 +52,7 @@
           <il-ellipse-menu class="menu-ellipse" *ngIf="hoveredIndex !== i"></il-ellipse-menu>
           <div class="menu-icon" *ngIf="hoveredIndex === i && selectedIndex === null">
             <img class="edit" [src]="svgPath + 'edit-icon-blue.svg'" matTooltip="Edit" />
-            <img class="delete" [src]="svgPath + 'delete-icon-red.svg'" (click)="onDelete(item?.id)" matTooltip="Delete">
+            <img *appHasRole="'admin'" class="delete" [src]="svgPath + 'delete-icon-red.svg'" (click)="onDelete(item?.id)" matTooltip="Delete">
           </div>
           <div class="menu-icon" *ngIf="hoveredIndex === i && selectedIndex === i">
             <img [src]="svgPath + 'close-icon-blue.svg'" class="no-expand" (click)="onClose()" matTooltip="Close" />

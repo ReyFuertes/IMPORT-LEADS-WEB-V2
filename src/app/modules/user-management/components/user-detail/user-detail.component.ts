@@ -34,6 +34,7 @@ export class UserDetailComponent extends GenericDestroyPageComponent implements 
       username: [null],
       user_access: [null],
       user_role: [null],
+      password: [null],
       user_profile: this.fb.group({
         firstname: [null],
         lastname: [null],
@@ -54,12 +55,11 @@ export class UserDetailComponent extends GenericDestroyPageComponent implements 
 
     /* trigger reload to all users so we will get the updated data */
     this.store.dispatch(loadAllUsersAction());
-
-    this.$access = this.store.pipe(select(getAccessSelector));
-    this.$roles = this.store.pipe(select(getAllRolesSelector));
   }
 
   ngOnInit(): void {
+    this.$access = this.store.pipe(select(getAccessSelector));
+    this.$roles = this.store.pipe(select(getAllRolesSelector));
   }
 
   ngAfterViewInit(): void {
@@ -68,12 +68,12 @@ export class UserDetailComponent extends GenericDestroyPageComponent implements 
       if (this.id) {
         this.store.pipe(select(getUserByIdSelector(this.id)))
           .pipe(takeUntil(this.$unsubscribe), tap((user: IUser) => {
-            console.log(user)
+
             let userAccess = user && user.user_access.map(u => {
               return String(u.access.id)
             });
             let userRoles = user && user.user_role.map(u => {
-              
+
               return String(u.role.id)
             });
             let formUser = Object.assign({}, user, { user_access: userAccess }, { user_role: userRoles });
@@ -89,12 +89,9 @@ export class UserDetailComponent extends GenericDestroyPageComponent implements 
     if (this.form.valid && this.id) {
       const payload = {
         id: this.id,
-        username: this.form.get('username').value,
-        user_profile: this.form.get('user_profile').value,
-        user_access: this.form.get('user_access').value,
-        user_role: this.form.get('user_role').value
+        ...this.form.value
       }
-      this.store.dispatch(saveUserAction({ payload: this.form.value }));
+      this.store.dispatch(saveUserAction({ payload }));
     }
   }
 

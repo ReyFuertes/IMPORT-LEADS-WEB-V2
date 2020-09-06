@@ -10,11 +10,12 @@ import { takeUntil, tap, take } from 'rxjs/operators';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { environment } from 'src/environments/environment';
 import * as _ from 'lodash';
-import { MatPaginator, MatDialog } from '@angular/material';
+import { MatPaginator, MatDialog, MatSort } from '@angular/material';
 import { Router } from '@angular/router';
 import { getAccessSelector, getAllRolesSelector } from 'src/app/store/selectors/app.selector';
 import { saveUserAccessAction, loadAllUsersAction, saveUserRoleAction, deleteUserAction } from '../../store/user-mgmt.actions';
 import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
+import { splitToSentCase } from 'src/app/shared/util/format-value';
 
 @Component({
   selector: 'il-user-table',
@@ -33,7 +34,7 @@ export class UserTableComponent extends GenericDestroyPageComponent implements O
   public imgPath: string = environment.imgPath;
   public svgPath: string = environment.svgPath;
   public dataSource: any;
-  public columnsToDisplay = ['name', 'position', 'role', 'company', 'phone', 'access', 'action'];
+  public columnsToDisplay = ['name', 'position', 'role', 'company_name', 'phone', 'access', 'action'];
   public expandedElement: IUserMgmt | null;
   public accessOptions: ISimpleItem[];
   public noExpandCols: number[] = [2, 5, 6];
@@ -44,8 +45,10 @@ export class UserTableComponent extends GenericDestroyPageComponent implements O
   public rolesOptions: ISimpleItem[] = [];
   public defaultPageSize: number = 25;
   public pageSizeOptions: number[] = [10, 15, 25, 100];
+  public splitToSentCase = splitToSentCase;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   public isAccessOrRoles(col: string): ISimpleItem[] {
     return col === 'access' ? this.accessOptions : this.rolesOptions;
@@ -60,6 +63,8 @@ export class UserTableComponent extends GenericDestroyPageComponent implements O
         if (res && res.length > 0) {
           this.dataSource = res;
           this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+
           this.cols = Object.keys(res[0])
             .filter(r => !this.excludedCols.includes(r));
         }

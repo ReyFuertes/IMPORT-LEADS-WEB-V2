@@ -1,10 +1,10 @@
 <div [id]="idx">
-  <div [id]="idx" class="menu-cap" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+  <div [id]="idx" class="menu-cap" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
     <div fxFlex [id]="idx" [matMenuTriggerFor]="menu">
       <span [id]="idx" *ngIf="!hasOption && !values">Select {{label | titlecase }}</span>
       <span [id]="idx">{{ fmtSelValue | titlecase }}</span>
     </div>
-    <img fxFlex="10px" [id]="idx" [matMenuTriggerFor]="menu" class="arrow" [src]="svgPath + 'arrow-down-icon-black.svg'">
+    <img fxFlex="30px" [id]="idx" [matMenuTriggerFor]="menu" class="arrow" [src]="svgPath + 'arrow-down-icon-black.svg'">
   </div>
   <mat-menu #menu="matMenu" yPosition="below" xPosition="before">
     <button *ngFor="let option of options" mat-menu-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" (click)="$event.stopPropagation()">

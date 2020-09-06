@@ -1,6 +1,6 @@
-<table mat-table [dataSource]="dataSource" multiTemplateDataRows>
+<table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
   <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay; let i = index">
-    <th mat-header-cell *matHeaderCellDef> {{ column !== 'action' ? column: ''}} </th>
+    <th mat-header-cell *matHeaderCellDef> {{ column !== 'action' ? splitToSentCase(column): ''}} </th>
     <td [id]="i" mat-cell *matCellDef="let item">
       <div fxLayout="row" fxLayoutAlign="start center" *ngIf="!isNoExpand(i)">
         <img *ngIf="i === 0 && item?.image" class="user-pic" [src]="apiImagePath + item?.image" />

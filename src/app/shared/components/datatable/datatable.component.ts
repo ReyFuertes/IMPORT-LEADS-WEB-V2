@@ -8,6 +8,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter, AfterViewInit, ChangeDetectorRef, OnChanges, SimpleChanges } from '@angular/core';
+import { splitToSentCase } from '../../util/format-value';
 
 @Component({
   selector: 'iv-datatable',
@@ -29,7 +30,8 @@ export class DatatableComponent extends GenericRowComponent implements OnInit, A
 
   public svgPath: string = environment.svgPath;
   public dataSource: MatTableDataSource<any[]>;
-
+  public splitToSentCase = splitToSentCase;
+  
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
@@ -103,14 +105,6 @@ export class DatatableComponent extends GenericRowComponent implements OnInit, A
     if (changes && changes.data && changes.data.currentValue) {
       this.setData(this.formatItems(changes.data.currentValue));
     }
-  }
-
-  public splitToSentCase(str: string): string {
-    return str.replace(
-      /([-_][a-z])/g,
-      (group) => group.toUpperCase()
-        .replace('_', ' ')
-        .split(/(?=[A-Z])/).join(' '));
   }
 
   public get displayedCols(): string[] {

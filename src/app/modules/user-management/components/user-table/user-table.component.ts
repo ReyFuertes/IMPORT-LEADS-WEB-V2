@@ -1,21 +1,22 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, SimpleChanges } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { IDropdownSelect, ISimpleItem } from 'src/app/shared/generics/generic.model';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { getTableUsersSelector } from '../../store/user-mgmt.selectors';
-import { Observable } from 'rxjs';
-import { IUserMgmt, IUserTableData, IUserAccess } from '../../user-mgmt.model';
-import { takeUntil, tap, take } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { IUserMgmt, IUserTableData, IUserAccess, IUser } from '../../user-mgmt.model';
+import { takeUntil, tap, take, debounceTime } from 'rxjs/operators';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { environment } from 'src/environments/environment';
 import * as _ from 'lodash';
-import { MatPaginator, MatDialog, MatSort } from '@angular/material';
+import { MatPaginator, MatDialog, MatSort, MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
 import { getAccessSelector, getAllRolesSelector } from 'src/app/store/selectors/app.selector';
 import { saveUserAccessAction, loadAllUsersAction, saveUserRoleAction, deleteUserAction } from '../../store/user-mgmt.actions';
 import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
 import { splitToSentCase } from 'src/app/shared/util/format-value';
+import { GenericContainer } from 'src/app/shared/generics/generic-container';
 
 @Component({
   selector: 'il-user-table',
@@ -29,12 +30,12 @@ import { splitToSentCase } from 'src/app/shared/util/format-value';
     ]),
   ],
 })
-export class UserTableComponent extends GenericDestroyPageComponent implements OnInit {
+export class UserTableComponent extends GenericContainer  {
   public apiImagePath: string = environment.apiImagePath;
   public imgPath: string = environment.imgPath;
   public svgPath: string = environment.svgPath;
   public dataSource: any;
-  public columnsToDisplay = ['name', 'position', 'role', 'company_name', 'phone', 'access', 'action'];
+  public columnsToDisplay = ['username', 'position', 'role', 'company_name', 'phone', 'access', 'action'];
   public expandedElement: IUserMgmt | null;
   public accessOptions: ISimpleItem[];
   public noExpandCols: number[] = [2, 5, 6];
@@ -61,9 +62,7 @@ export class UserTableComponent extends GenericDestroyPageComponent implements O
       take(2),
       tap((res) => {
         if (res && res.length > 0) {
-          this.dataSource = res;
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
+          this.setData(res);
 
           this.cols = Object.keys(res[0])
             .filter(r => !this.excludedCols.includes(r));
@@ -80,13 +79,43 @@ export class UserTableComponent extends GenericDestroyPageComponent implements O
     })).subscribe();
 
     /* trigger reload to all users so we will get the updated data */
-    this.store.dispatch(loadAllUsersAction());
+    //this.store.dispatch(loadAllUsersAction());
   }
 
-  ngOnInit(): void { }
+  private setData(data: any): void {
+    this.dataSource = new MatTableDataSource<any>(data);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes && changes.data && changes.data.currentValue) {
+      this.setData(changes.data.currentValue);
+    }
+  }
 
   public toDetail(id: string): void {
     this.router.navigateByUrl(`/dashboard/user-management/${id}/detail`);
+  }
+
+  public fmtItem(item: IUser, col?: string) {
+    const _item = Object.assign({}, item);
+    if (col === 'user_access') {
+      return this.fmt(_item, 'user_access', 'access', 'access_name');
+    } else if (col === 'user_role') {
+      return this.fmt(_item, 'user_role', 'role', 'role_name');
+    } else {
+      return item[col];
+    }
+  }
+
+  public fmt(item: IUser, col: string, propIdx: string, propName: string) {
+    const _item = Object.assign({}, item);
+    const ret = _item
+      && _item[col]
+      && _item[col].map(a => a[propIdx] && a[propIdx][propName]).join(', ');
+
+    return ret;
   }
 
   public onDelete(id: string): void {

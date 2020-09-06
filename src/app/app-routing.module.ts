@@ -6,7 +6,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   {
     path: 'dashboard',
-    //canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     children: [
       { path: 'contracts', loadChildren: './modules/contracts/contracts.module#ContractsModule' },
       { path: 'inspection-insights', loadChildren: './modules/inspection-insights/inspection-insights.module#InspectionInsightsModule' },

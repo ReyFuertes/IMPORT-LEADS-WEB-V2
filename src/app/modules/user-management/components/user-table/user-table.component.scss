@@ -1,6 +1,12 @@
 @import "src/styleguide/shared";
+.user-table {
+  @include page-container;
+  margin-top: 0 !important;
+  padding: 0 !important;
+}
 table {
   width: 100%;
+  transition: all 0.3s ease-in !important;
 }
 .tbl-el-detail {
   overflow: hidden;
@@ -19,10 +25,14 @@ table {
   background-color: $color-gray-5;
 }
 .tbl-el-diagram {
-  padding: 20px 0;
+  padding: 20px;
   width: 100%;
   font-size: 14px;
   > div {
+    &:first-child {
+      margin-bottom: 20px;
+      min-height: 40px;
+    }
     min-height: 30px;
     display: flex;
     flex-direction: column;
@@ -55,9 +65,11 @@ tr {
     }
     &:nth-child(4) {
       width: 200px;
+      min-width: 200px;
     }
     &:nth-child(5) {
-      width: 200px;
+      width: 180px;
+      min-width: 180px;
     }
     &:nth-child(6) {
       min-width: 200px;
@@ -70,10 +82,10 @@ tr {
     height: 0;
   }
   &.tbl-el-row:not(.expanded-row):hover {
-    background: whitesmoke;
+    background: $color-gray-3;
   }
   &.tbl-el-row:not(.expanded-row):active {
-    background: #efefef;
+    background: $color-gray-3;
   }
 }
 .tbl-el-row td {
@@ -105,5 +117,12 @@ tr {
     cursor: pointer;
     line-height: 50px;
     height: 50px;
+  }
+}
+:host ::ng-deep {
+  .mat-column-username {
+    > div {
+      min-width: 200px;
+    }
   }
 }

@@ -5,6 +5,9 @@
 
 <p-blockUI [blocked]="(loaderSrv?.isLoading | async) && ($isLoggedIn | async)">
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  <div fxFlexFill fxLayout="row" fxLayoutAlign="center center">
+    <img [src]="svgPath + 'loader.svg'" />
+  </div>
 </p-blockUI>
 
 <div fxFlexFill>

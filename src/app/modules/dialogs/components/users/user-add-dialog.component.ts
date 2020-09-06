@@ -33,7 +33,6 @@ export class UserAddDialogComponent extends GenericDestroyPageComponent implemen
       lastname: [''],
       company_name: [''],
       phone: [''],
-      email: [''],
       access: [null],
       role: [null]
     });

@@ -46,6 +46,11 @@
     height: 50px;
   }
 }
+::ng-deep {
+  .ui-blockui img {
+    z-index: 99999 !important;
+  }
+}
 @media (max-width: 1280px) {
   .sidebar-container {
     width: 210px !important;

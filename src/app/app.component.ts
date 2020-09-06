@@ -8,6 +8,7 @@ import { delay, take, debounceTime } from 'rxjs/operators';
 import { initAppAction } from './store/actions/app.action';
 import { getIsLoggedInSelector } from './store/selectors/app.selector';
 import { LoaderService } from './services/loader.interceptor';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   public title: string = 'Import Leads';
   public $notify: Observable<INotification>;
   public $isLoggedIn: Observable<boolean>;
+  public svgPath: string = environment.svgPath;
 
   constructor(public loaderSrv: LoaderService, private store: Store<AppState>, private cdRef: ChangeDetectorRef) {
     this.store.dispatch(initAppAction());

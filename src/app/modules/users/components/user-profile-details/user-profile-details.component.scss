@@ -3,8 +3,7 @@
   padding: 0px;
 }
 .card-row {
-  padding: 40px;
-
+  padding: 20px 30px;
   button:nth-of-type(1) {
     margin-right: 16px;
   }
@@ -17,13 +16,13 @@ h3 {
   color: $color-gray-1;
 }
 .img-container {
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   background-color: $color-gray-3;
   img {
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
   }
 }

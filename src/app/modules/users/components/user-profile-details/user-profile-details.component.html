@@ -18,8 +18,8 @@
         <span class="link" (click)="uploader?.click()">Browse</span>
       </div>
       <div fxFlex>
-        <span class="self-intro">Self introduction</span>
-        <div class="self-desc">{{ detail?.self_intro }}</div>
+        <il-textarea fxFlex [isFloatLabel]="true" [form]="form" rows="5" isFloatLabel="true" controlName="self_intro" placeholder="Self Intro"></il-textarea>
+
         <!-- NOTE: THIS WILL BE DISPLAYED IN ADMIN LEVEL -->
         <!-- <div>
           <div *ngIf="form" fxFlex fxLayout="row" fxLayoutGap="20px">

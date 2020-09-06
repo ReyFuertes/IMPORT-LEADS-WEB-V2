@@ -67,6 +67,7 @@ export class UserProfileDetailsComponent extends GenericDestroyPageComponent imp
   ngOnInit() {
     if (this.detail)
       this.form.patchValue(this.detail);
+
   }
 
   public updateProfile(): void {

@@ -10,14 +10,14 @@
   <div class="content" fxLayout="column" fxLayoutGap="10px">
     <div>
       <div fxLayout="row" fxFlex fxLayoutGap="20px">
-        <il-input fxFlex="50" [form]="form" isFloatLabel="true" controlName="firstname" placeholder="Firstname"></il-input>
-        <il-input fxFlex="50" [form]="form" isFloatLabel="true" controlName="lastname" placeholder="Lastname"></il-input>
+        <il-input fxFlex="50" [form]="form.get('user_profile')" isFloatLabel="true" controlName="firstname" placeholder="Firstname"></il-input>
+        <il-input fxFlex="50" [form]="form.get('user_profile')" isFloatLabel="true" controlName="lastname" placeholder="Lastname"></il-input>
       </div>
     </div>
     <div>
       <div fxLayout="row" fxFlex fxLayoutGap="20px">
-        <il-input fxFlex="50" [form]="form" isFloatLabel="true" controlName="company_name" placeholder="Company"></il-input>
-        <il-input fxFlex="50" [form]="form" isFloatLabel="true" controlName="phone" placeholder="Phone number"></il-input>
+        <il-input fxFlex="50" [form]="form.get('user_profile')" isFloatLabel="true" controlName="company_name" placeholder="Company"></il-input>
+        <il-input fxFlex="50" [form]="form.get('user_profile')" isFloatLabel="true" controlName="phone" placeholder="Phone number"></il-input>
       </div>
     </div>
     <div>

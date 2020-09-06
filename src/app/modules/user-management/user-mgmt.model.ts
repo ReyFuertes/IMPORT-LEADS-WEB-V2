@@ -12,7 +12,8 @@ export interface IUser {
   user_role?: IUserRole[];
   company?: string;
   phone?: string;
-  user_access?: IUserAccess[]
+  user_access?: IUserAccess[];
+  image?: string;
 }
 export interface IUserRole {
   id?: string;

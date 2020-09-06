@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
 import { take, takeUntil, tap } from 'rxjs/operators';
@@ -27,17 +27,18 @@ export class UserAddDialogComponent extends GenericDestroyPageComponent implemen
     super();
     this.form = this.fb.group({
       id: [''],
-      username: [''],
-      password: [''],
-      firstname: [''],
-      lastname: [''],
-      company_name: [''],
-      phone: [''],
-      access: [null],
-      role: [null]
+      username: [null, Validators.required],
+      password: [null, Validators.required],
+      user_profile: this.fb.group({
+        phone: [null, Validators.required],
+        company_name: [null, Validators.required],
+        firstname: [null, Validators.required],
+        lastname: [null, Validators.required],
+      }),
+      access: [null, Validators.required],
+      role: [null, Validators.required],
     });
 
-    //manually mark as valid if has value
     this.form && this.form.get('role').valueChanges.pipe(take(1)).subscribe(res => {
       if (res) this.form.controls['role'].setErrors(null);
     })
@@ -46,9 +47,7 @@ export class UserAddDialogComponent extends GenericDestroyPageComponent implemen
     this.$roles = this.store.pipe(select(getAllRolesSelector))
   }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   public onSave(): void {
     if (this.form.value && this.form.valid) {
@@ -59,26 +58,9 @@ export class UserAddDialogComponent extends GenericDestroyPageComponent implemen
       }));
 
       setTimeout(() => {
-        this.store.dispatch(addUserAction({
-          payload: {
-            username,
-            password,
-            user_profile: {
-              email: this.form.get('email').value,
-              phone: this.form.get('phone').value,
-              company_name: this.form.get('company_name').value,
-              firstname: this.form.get('firstname').value,
-              lastname: this.form.get('lastname').value,
-            },
-            user_access: this.form.get('access').value,
-            user_role: this.form.get('role').value,
-          }
-        }));
+        this.store.dispatch(addUserAction({ payload: this.form.value }));
         this.dialogRef.close();
       }, 1000);
     }
   }
-
-  public handleSelectChange(role: any) { }
-
 }

@@ -1,4 +1,8 @@
 @import "src/styleguide/shared";
+.img-container {
+  width: 40px;
+  height: 40px;
+}
 .user-table {
   @include page-container;
   margin-top: 0 !important;

@@ -6,10 +6,9 @@ import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { logoutAction } from 'src/app/modules/auth/store/auth.action';
 import { IUser } from 'src/app/modules/user-management/user-mgmt.model';
 import { Observable } from 'rxjs';
-import { IAccess } from 'src/app/models/user.model';
 import { getAccessSelector, getUserAccessSelector } from 'src/app/store/selectors/app.selector';
 import { ISimpleItem } from '../../generics/generic.model';
-import { filter, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'il-topnav',
@@ -18,6 +17,7 @@ import { filter, map } from 'rxjs/operators';
 })
 
 export class TopNavComponent implements OnInit {
+  public apilUrlPath: string = environment.apiImagePath;
   public svgPath: string = environment.svgPath;
   public imgPath: string = environment.imgPath;
   public toolbarMenu: Array<{
@@ -37,7 +37,7 @@ export class TopNavComponent implements OnInit {
       if (res) {
         /* process user access menus */
         this.accessMenus.push(...res);
- 
+
         this.$menus = this.store.pipe(select(getAccessSelector), map(m => {
           /* filter the parent menus */
           let parentMenuMatches = m && m.filter(
@@ -53,7 +53,6 @@ export class TopNavComponent implements OnInit {
 
           return parentMenuMatches;
         }));
-        this.$menus.subscribe(res => console.log('menus', res))
       }
     })
 
@@ -61,6 +60,12 @@ export class TopNavComponent implements OnInit {
     if (localUser) {
       this.user = localUser.user;
     }
+  }
+
+  public get getProfilePic(): string {
+    return this.user && this.user.image
+      ? this.apilUrlPath + this.user.image
+      : this.imgPath + 'no-image.png';
   }
 
   public onLogout(): void {

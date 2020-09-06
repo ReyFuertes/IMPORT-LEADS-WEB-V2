@@ -59,7 +59,6 @@ export class UserTableComponent extends GenericContainer  {
     super();
     this.$users = this.store.pipe(select(getTableUsersSelector));
     this.$users.pipe(takeUntil(this.$unsubscribe),
-      take(2),
       tap((res) => {
         if (res && res.length > 0) {
           this.setData(res);

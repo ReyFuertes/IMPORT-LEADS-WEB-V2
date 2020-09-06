@@ -17,7 +17,7 @@
       <span matBadge="4" matBadgeColor="warn"></span>
     </div>
     <div class="settings" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-      <img [src]="imgPath + 'profile.png'" />
+      <img class="profile-pic" [src]="getProfilePic" />
       <span class="username" [matTooltip]="user?.username" [matMenuTriggerFor]="menu">{{ user?.username }}</span>
       <img class="arrow" [matMenuTriggerFor]="menu" [src]="svgPath + 'arrow-down-icon-black.svg'" />
       <mat-menu #menu="matMenu">

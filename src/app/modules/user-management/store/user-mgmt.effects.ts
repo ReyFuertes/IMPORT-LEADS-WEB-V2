@@ -36,7 +36,7 @@ export class UserMgmtEffects {
           if (created)
             this.store.dispatch(appNotification({
               notification: { success: true, message: 'User successfully Deleted' }
-            }))
+            }));
         }),
         map((deleted: IUser) => {
           return deleteUserSuccessAction({ deleted });
@@ -57,11 +57,7 @@ export class UserMgmtEffects {
     ofType(addUserAction),
     switchMap(({ payload }) => {
       return this.userMgmtSrv.post(payload).pipe(
-        tap(() => {
-          setTimeout(() => {
-            this.store.dispatch(loadAllUsersAction())
-          }, 1000);
-        }),
+        tap(() => setTimeout(() => this.store.dispatch(loadAllUsersAction()), 1000)),
         tap((created) => {
           if (created)
             this.store.dispatch(appNotification({

@@ -1,5 +1,5 @@
 <div class="col-header" fxLayoutAlign="center center" fxLayoutGap="10px">
-  <div *ngFor="let col of colsHeaders; let first = first" [fxFlex.gt-lg]="col?.width" [fxFlex]="first ? '16.6' : col?.width">{{ col?.label }}</div>
+  <div *ngFor="let col of colsHeader; let first = first" [fxFlex.gt-lg]="col?.width" [fxFlex]="first ? '16.6' : col?.width">{{ col?.label }}</div>
 </div>
 <div class="il-draggable-expansion">
   <mat-accordion cdkDropList (cdkDropListDropped)="drop($event)">

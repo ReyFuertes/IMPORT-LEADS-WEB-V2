@@ -1,5 +1,5 @@
 <div class="col-header" fxLayoutAlign="center center" fxLayoutGap="10px">
-  <div *ngFor="let col of colsHeaders" [fxFlex]="col?.width">{{ col?.label }}</div>
+  <div *ngFor="let col of colsHeader" [fxFlex]="col?.width">{{ col?.label }}</div>
 </div>
 <div *ngFor="let item of items| slice:1; let i = index" class="product-list" fxLayout="row" fxLayoutGap="10px">
   <div fxFlex="34" fxLayoutAlign="start center">

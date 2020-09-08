@@ -19,7 +19,7 @@ export class InspectionActivePanelComponent extends GenericRowComponent implemen
   public imgPath: string = environment.imgPath;
   public menus: Menu[];
 
-  @Input() public colsHeaders: Array<{ label: string, width?: string | number }>;
+  @Input() public colsHeader: Array<{ label: string, width?: string | number }>;
 
   @Input() public activeInspections: IActiveInspection[];
   @Input() public isCategory: boolean = false;

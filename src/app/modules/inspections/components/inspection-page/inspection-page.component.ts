@@ -8,6 +8,7 @@ import { getAllSavedChecklistSelector } from 'src/app/modules/contracts/store/se
 import { ISavedChecklistItem } from 'src/app/modules/contracts/contract.model';
 import { takeUntil, tap } from 'rxjs/operators';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
+import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 
 @Component({
   selector: 'il-inspection-page',
@@ -16,54 +17,42 @@ import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-des
 })
 
 export class InspectionPageComponent extends GenericDestroyPageComponent implements OnInit {
-  public ctCols: Array<{ label: string, width?: string | number }> = [
-    {
-      label: 'Contract Name',
-      width: 35
-    },
-    {
-      label: 'Assigned to',
-      width: 35
-    },
-    {
-      label: 'Configured Run Date',
-      width: 20
-    },
-    {
-      label: 'Run Count',
-      width: 10
-    },
-    {
-      label: '',
-      width: 5
-    }
-  ];
-  public catCols: Array<{ label: string, width?: string | number }> = [
-    {
-      label: 'Contract Name',
-      width: 40
-    },
-    {
-      label: 'Assigned to',
-      width: 32
-    },
-    {
-      label: 'Start Date',
-      width: 10
-    },
-    {
-      label: 'End Date',
-      width: 10
-    },
-    {
-      label: 'Run Date',
-      width: 10
-    },
-    {
-      label: 'Total Amount',
-      width: 10
-    }
-  ];
+  public activeCols: ISimpleItem[] = [{
+    label: 'Contract Name',
+    value: '35'
+  }, {
+    label: 'Assigned to',
+    value: '35'
+  }, {
+    label: 'Configured Run Date',
+    value: '20'
+  }, {
+    label: 'Run Count',
+    value: '10'
+  }, {
+    label: '',
+    value: '5'
+  }];
+  
+  public finishedCols: ISimpleItem[] = [{
+    label: 'Contract Name',
+    value: '40'
+  }, {
+    label: 'Assigned to',
+    value: '32'
+  }, {
+    label: 'Start Date',
+    value: '10'
+  }, {
+    label: 'End Date',
+    value: '10'
+  }, {
+    label: 'Run Date',
+    value: '10'
+  }, {
+    label: 'Total Amount',
+    value: '10'
+  }];
   public $savedChecklists: Observable<IActiveInspection[]>;
   public activeInspections: IActiveInspection[];
 

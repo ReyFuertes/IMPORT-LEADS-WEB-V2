@@ -11,7 +11,7 @@ import { IRelatedProduct } from '../../venues.models';
 export class VenueExpansionListComponent implements OnInit {
   @Input() public items: IRelatedProduct[];
   @Input()
-  public colsHeaders: Array<{ label: string, width?: string | number }> = [
+  public colsHeader: Array<{ label: string, width?: string | number }> = [
     {
       label: '',
       width: 15

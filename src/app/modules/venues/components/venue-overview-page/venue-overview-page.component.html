@@ -12,8 +12,8 @@
     </mat-button-toggle-group>
   </div>
   <div>
-    <il-venue-products *ngIf="isProduct" [colsHeaders]="colProducts" [items]="venues"></il-venue-products>
-    <il-venue-address *ngIf="!isProduct" [colsHeaders]="colAddress" [items]="venues"></il-venue-address>
+    <il-venue-products *ngIf="isProduct" [colsHeader]="colProducts" [items]="venues"></il-venue-products>
+    <il-venue-address *ngIf="!isProduct" [colsHeader]="colAddress" [items]="venues"></il-venue-address>
   </div>
 
   <div class="action-btn">

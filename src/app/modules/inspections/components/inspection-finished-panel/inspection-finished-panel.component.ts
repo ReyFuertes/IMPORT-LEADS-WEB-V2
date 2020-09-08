@@ -15,12 +15,9 @@ export class InspectionFinishedPanelComponent extends GenericRowComponent implem
   public svgPath: string = environment.svgPath;
   public imgPath: string = environment.imgPath;
   public menus: Menu[];
-  @Input()
-  public colsHeaders: Array<{ label: string, width?: string | number }>;
-  @Input()
-  public items: InspectionPanelModel[];
-  @Input()
-  public isCategory: boolean = false;
+  @Input() public colsHeaders: Array<{ label: string, width?: string | number }>;
+  @Input() public items: InspectionPanelModel[];
+  @Input() public isCategory: boolean = false;
   constructor(private router: Router) {
     super();
   }
@@ -32,7 +29,7 @@ export class InspectionFinishedPanelComponent extends GenericRowComponent implem
   }
 
   ngOnInit() {
-    this.menus =  [
+    this.menus = [
       {
         label: 'REPORT',
         value: 'REPORT',

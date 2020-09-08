@@ -3,25 +3,25 @@
 </div>
 <div class="il-draggable-expansion">
   <mat-accordion cdkDropList (cdkDropListDropped)="drop($event)">
-    <mat-expansion-panel (click)="expandPnl(pnl, $event, i)" cdkDrag (cdkDragStarted)="dragStarted(true)" #pnl="matExpansionPanel" *ngFor="let item of inspectionChecklist; let i = index" hideToggle="true">
+    <mat-expansion-panel (click)="expandPnl(pnl, $event, i)" cdkDrag (cdkDragStarted)="dragStarted(true)" #pnl="matExpansionPanel" *ngFor="let item of activeInspections; let i = index" hideToggle="true">
 
       <mat-expansion-panel-header (keydown.Space)="$event.stopImmediatePropagation()" (keydown.Enter)="$event.stopImmediatePropagation()" (click)="onClickPnl(pnl, $event, i)" (mouseover)="mouseover(i)" (mouseleave)="mouseout()">
-        <div class="pnl-header" fxLayout="row" fxLayoutGap="10px">
+        <div *ngIf="activeInspections" class="pnl-header" fxLayout="row" fxLayoutGap="10px">
           <img cdkDragHandle [src]="svgPath + 'drag-icon.svg'" />
           <div fxFlex="35" class="contact-title" [matTooltip]="item?.title" fxLayoutAlign="start center">
-            <span>{{item?.contract?.contract_name}}</span>
+            <span>{{item?.checklist_contract?.contract_name}}</span>
           </div>
-          <div fxFlex="35" class="assigned-to" [matTooltip]="item?.assignedTo" fxLayoutAlign="start center" fxLayoutGap="10px">
+          <div fxFlex="35" class="assigned-to" [matTooltip]="item?.user?.username" fxLayoutAlign="start center" fxLayoutGap="10px">
             <div class="img-circle">
-              <img [src]="imgPath + 'profile.png'" />
+              <img [src]="apiImagePath + item?.user?.image" />
             </div>
-            <span>{{ item?.assigned_to }}</span>
+            <span>{{ item?.user?.username }}</span>
           </div>
-          <div fxFlex="20" [matTooltip]="item?.dateRun" fxLayoutAlign="start center">
+          <div fxFlex="20" [matTooltip]="item?.desired_run_date" fxLayoutAlign="start center">
             <span>{{ item?.desired_run_date | date: 'MM/dd/yyyy' }}</span>
           </div>
-          <div fxFlex="10" [matTooltip]="item?.dateRun" fxLayoutAlign="start center">
-            <span>Test: {{i}}</span>
+          <div fxFlex="10" fxLayoutAlign="start center">
+            <span>Run Count: {{i}}</span>
           </div>
           <div class="action-col" fxFlex="5" fxLayoutAlign="end center">
             <il-popover-menu [menus]="menus" class="action-col" (click)="$event.stopPropagation();"></il-popover-menu>

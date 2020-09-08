@@ -1,4 +1,4 @@
-import { IInspectionChecklist } from './../inspections.models';
+import { IActiveInspection } from './../inspections.models';
 import { IContractChecklist } from './../../contracts/contract.model';
 import { createAction, props } from '@ngrx/store';
 
@@ -11,5 +11,5 @@ export const loadInspectionChecklistAction = createAction(
 );
 export const loadInspectionChecklistSuccessAction = createAction(
   CategoryActionTypes.loadInspectionChecklistSuccessAction,
-  props<{ items: IInspectionChecklist[] }>()
+  props<{ response: IActiveInspection[] }>()
 );

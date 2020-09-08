@@ -11,9 +11,7 @@ export const getUserRolesSelector = createSelector(
 )
 export const getUserAccessSelector = createSelector(
   selectedState,
-  state => {
-    return state && state.userAccess
-  }
+  state => state && state.userAccess
 )
 export const getAllRolesSelector = createSelector(
   selectedState,

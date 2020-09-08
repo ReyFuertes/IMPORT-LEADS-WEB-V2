@@ -1,11 +1,13 @@
 import { Observable } from 'rxjs';
-import { getInspectionChecklistSelector } from './../../store/inspection.selector';
+import { getActiveInspectionsSelector } from './../../store/inspection.selector';
 import { AppState } from './../../../contracts/store/reducers/index';
 import { Store, select } from '@ngrx/store';
-import { InspectionPanelModel, IInspectionChecklist } from './../../inspections.models';
+import { IActiveInspection } from './../../inspections.models';
 import { Component, OnInit } from '@angular/core';
 import { getAllSavedChecklistSelector } from 'src/app/modules/contracts/store/selectors/saved-checklist.selector';
 import { ISavedChecklistItem } from 'src/app/modules/contracts/contract.model';
+import { takeUntil, tap } from 'rxjs/operators';
+import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 
 @Component({
   selector: 'il-inspection-page',
@@ -13,9 +15,7 @@ import { ISavedChecklistItem } from 'src/app/modules/contracts/contract.model';
   styleUrls: ['./inspection-page.component.scss']
 })
 
-export class InspectionPageComponent implements OnInit {
-  public $savedChecklists: Observable<ISavedChecklistItem[]>;
-
+export class InspectionPageComponent extends GenericDestroyPageComponent implements OnInit {
   public ctCols: Array<{ label: string, width?: string | number }> = [
     {
       label: 'Contract Name',
@@ -30,7 +30,7 @@ export class InspectionPageComponent implements OnInit {
       width: 20
     },
     {
-      label: 'Total Amount',
+      label: 'Run Count',
       width: 10
     },
     {
@@ -64,9 +64,16 @@ export class InspectionPageComponent implements OnInit {
       width: 10
     }
   ];
+  public $savedChecklists: Observable<IActiveInspection[]>;
+  public activeInspections: IActiveInspection[];
+
   constructor(private store: Store<AppState>) {
-    this.$savedChecklists = this.store.pipe(select(getAllSavedChecklistSelector));
-    this.$savedChecklists.subscribe(res => console.log(res));
+    super();
+
+    this.$savedChecklists = this.store.pipe(select(getActiveInspectionsSelector));
+    this.$savedChecklists.pipe(takeUntil(this.$unsubscribe),
+      tap((res) => this.activeInspections = res))
+      .subscribe();
   }
 
   ngOnInit() { }

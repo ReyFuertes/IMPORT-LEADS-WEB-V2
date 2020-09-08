@@ -17,7 +17,8 @@ import { AuthEffect } from './modules/auth/store/auth.effect';
 import { InitAppEffect } from './store/effects/app.effect';
 import { LoaderInterceptor, LoaderService } from './services/loader.interceptor';
 import { BlockUIModule } from 'primeng/blockui';
-import { MatProgressSpinnerModule, MatProgressBarModule } from '@angular/material';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { AccessService } from './services/api.service';
 import { UserMgmtEffects } from './modules/user-management/store/user-mgmt.effects';
 

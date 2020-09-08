@@ -1,7 +1,7 @@
 <div *ngIf="form" [formGroup]="form" class="il-input" [ngClass]="{'center': isCenter}">
   <mat-form-field [ngClass]="{'has-border': hasBorder, 'read-only': isReadOnly, 'errors': hasError}" [floatLabel]="isFloatLabel == true ? '' : 'never'">
-    <input *ngIf="isNumberOnly" [InputMaxLength]="inputMaxLen" matInput [formControlName]="controlName" numbersOnly currencyFormatter [placeholder]="placeholder" autocomplete="off" [required]="isRequired" [readonly]="isReadOnly">
-    <input [ngClass]="{'errors': hasError}" *ngIf="!isNumberOnly" [InputMaxLength]="inputMaxLen" matInput [formControlName]="controlName" [placeholder]="placeholder" autocomplete="off" [required]="isRequired" [type]="inputType" [readonly]="isReadOnly">
+    <input *ngIf="isNumberOnly" [InputMaxLength]="inputMaxLen" matInput [formControlName]="controlName" numbersOnly currencyFormatter [placeholder]="placeholder" autocomplete="off" required [readonly]="isReadOnly">
+    <input [ngClass]="{'errors': hasError}" *ngIf="!isNumberOnly" [InputMaxLength]="inputMaxLen" matInput [formControlName]="controlName" [placeholder]="placeholder" autocomplete="off" required [type]="inputType" [readonly]="isReadOnly">
     <div *ngIf="form.get(controlName).touched && !form.get(controlName).valid && showErrors
     || !form.get(controlName).valid && showErrors" class="errors" [ngClass]="{'center': isCenter}">Invalid</div>
   </mat-form-field>

@@ -31,13 +31,11 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { TopNavComponent } from './components/topnav/topnav.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { NgModule } from '@angular/core';
-import { MatCheckboxModule, MatIconModule, MatListModule, MatFormFieldModule, MatInputModule, MatBadgeModule, MatMenuModule, MatSelectModule, MatButtonModule, MatAutocompleteModule, MatExpansionModule, MatDatepickerModule, MatNativeDateModule, MatTooltipModule, MatTableModule, MatSortModule, MatPaginatorModule } from '@angular/material';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CircleGraphComponent } from './components/circle-graph/circle-graph.component';
 import { DropdownMultiSelectComponent } from './components/dropdown-multi-select/dropdown-multi-select.component';
-import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { PopoverSelectComponent } from './components/popover-select/popover-select.component';
 import { PopoverMultiSelectComponent } from './components/popover-multi-select/popover-multi-select.component';
 import { StarRatingComponent } from './components/star-rating/star-rating.component';
@@ -49,6 +47,25 @@ import { CurrencyFormatterDirective } from './directives/currency-formatter.dire
 import { customCurrencyPipe } from './pipes/custom-currency.pipe';
 import { QuillModule } from 'ngx-quill'
 import { HasRoleDirective } from './directives/user.role.directive';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatListModule } from '@angular/material/list';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 const materialModules = [
   MatListModule,

@@ -2,7 +2,7 @@ import { GenericContainer } from './../../../shared/generics/generic-container';
 import { Store } from '@ngrx/store';
 import { AppState } from './../../../store/app.reducer';
 import { Component, OnInit } from '@angular/core';
-import { loadProducts } from '../store/products.actions';
+import { loadProductsAction } from '../store/products.actions';
 
 @Component({
   selector: 'il-products-container',
@@ -13,7 +13,7 @@ import { loadProducts } from '../store/products.actions';
 export class ProductsContainerComponent extends GenericContainer implements OnInit {
   constructor(private store: Store<AppState>) {
     super();
-    this.store.dispatch(loadProducts());
+    this.store.dispatch(loadProductsAction());
   }
 }
 

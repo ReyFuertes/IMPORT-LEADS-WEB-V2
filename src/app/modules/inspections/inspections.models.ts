@@ -1,11 +1,18 @@
 import { ISimpleItem } from './../../shared/generics/generic.model';
+import { IUser } from '../user-management/user-mgmt.model';
 
-export class IInspectionChecklist {
+export class IFinishedInspection {}
+
+export class IActiveInspection {
   id?: string;
-  contract: {
+  checklist_contract?: {
     id?: string;
     contract_name?: string;
-  }
+  };
+  user?: IUser;
+  desired_run_date?: string;
+  run_count?: string;
+
 }
 export interface InspectionPanelModel {
   id: string;

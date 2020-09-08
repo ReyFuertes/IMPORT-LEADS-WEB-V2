@@ -14,6 +14,6 @@ import { loadSavedChecklistAction } from '../../contracts/store/actions/saved-ch
 export class InspectionsContainerComponent extends GenericContainer implements OnInit {
   constructor(private store: Store<AppState>) {
     super();
-    this.store.dispatch(loadSavedChecklistAction())
+    this.store.dispatch(loadSavedChecklistAction());
   }
 }

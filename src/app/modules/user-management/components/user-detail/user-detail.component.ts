@@ -31,13 +31,13 @@ export class UserDetailComponent extends GenericDestroyPageComponent implements 
     super();
     this.form = this.fb.group({
       id: [null],
-      username: [null],
+      username: [null, Validators.required],
       user_access: [null],
       user_role: [null],
-      password: [null],
+      password: [null, Validators.required],
       user_profile: this.fb.group({
-        firstname: [null],
-        lastname: [null],
+        firstname: [null, Validators.required],
+        lastname: [null, Validators.required],
         position: [null],
         company_address: [null],
         company_linkedin: [null],

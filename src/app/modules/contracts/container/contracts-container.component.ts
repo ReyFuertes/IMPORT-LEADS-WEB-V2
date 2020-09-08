@@ -4,7 +4,7 @@ import { AppState } from './../../../store/app.reducer';
 import { GenericContainer } from './../../../shared/generics/generic-container';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { loadProducts } from '../../products/store/products.actions';
+import { loadProductsAction } from '../../products/store/products.actions';
 import { loadSavedChecklistAction } from '../store/actions/saved-checklist.action';
 
 @Component({
@@ -17,7 +17,7 @@ export class ContractsContainerComponent extends GenericContainer implements OnI
   constructor(private store: Store<AppState>) {
     super();
     this.store.dispatch(loadContractsAction(null));
-    this.store.dispatch(loadProducts());
+    this.store.dispatch(loadProductsAction());
     this.store.dispatch(loadTags());
     this.store.dispatch(loadSavedChecklistAction())
   }

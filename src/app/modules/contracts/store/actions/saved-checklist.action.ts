@@ -24,7 +24,6 @@ export const loadSavedChecklistSuccessAction = createAction(
   SavedChecklistActionTypes.loadSavedChecklistSuccessAction,
   props<{ items: ISavedChecklistItem[] }>()
 );
-
 export const saveChecklistAction = createAction(
   SavedChecklistActionTypes.saveChecklistAction,
   props<{ payload: ISavedChecklistPayload }>()

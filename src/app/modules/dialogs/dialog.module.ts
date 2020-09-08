@@ -13,7 +13,6 @@ import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ContractAddDialogComponent } from './components/contracts-add/contract-add-dialog.component';
 import { NgModule } from '@angular/core';
-import { MatDialogModule, MatButtonModule, MatListModule, MatCheckboxModule } from '@angular/material';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { VenuesAddDialogComponent } from './components/venues-add/venues-add-dialog.component';
 import { UserAddDialogComponent } from './components/users/user-add-dialog.component';
@@ -25,6 +24,10 @@ import { TagsQuestionDialogComponent } from './components/tags-question/tags-que
 import { ChatUserDialogComponent } from './components/chat-user/chat-user-dialog.component';
 import { ChatDetailDialogComponent } from './components/chat-detail/chat-detail-dialog.component';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 const dialogComponents = [
   ContractAddDialogComponent,

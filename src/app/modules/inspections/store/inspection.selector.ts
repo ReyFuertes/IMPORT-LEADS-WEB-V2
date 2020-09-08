@@ -3,11 +3,15 @@ import { AppState } from 'src/app/store/app.reducer';
 import * as fromInspection from './inspection.reducer'
 
 export const selectedState = (state: AppState) => state.inspection;
-export const getInspectionChecklistSelector = createSelector(
+export const getActiveInspectionsSelector = createSelector(
   selectedState,
-  state => state.inspectionChecklist || []
+  state => state.activeInspection || []
 );
-export const getInspectionChecklistByIdSelector = (id: string) => createSelector(
-  selectedState,
-  state => state.inspectionChecklist[id]
-);
+// export const getInspectionChecklistSelector = createSelector(
+//   selectedState,
+//   state => state.inspectionChecklist || []
+// );
+// export const getInspectionChecklistByIdSelector = (id: string) => createSelector(
+//   selectedState,
+//   state => state.inspectionChecklist[id]
+// );

@@ -12,6 +12,9 @@
   @include il-input;
 }
 :host ::ng-deep {
+  .mat-form-field-required-marker {
+    color: $color-red !important;
+  }
   input.mat-input-element {
     line-height: 20px;
   }

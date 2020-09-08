@@ -1,5 +1,5 @@
 import { ISimpleItem } from './../../../shared/generics/generic.model';
-import { loadProducts, loadProductsSuccess, addProductSuccess, deleteProductSuccess, updateProductSuccess } from './products.actions';
+import { loadProductsAction, loadProductsSuccessAction, addProductSuccessAction, deleteProductSuccessAction, updateProductSuccessAction } from './products.actions';
 import { IProduct } from './../products.model';
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
@@ -13,25 +13,26 @@ export const initialState: ContractProductsState = adapter.getInitialState({
 });
 const productsReducer = createReducer(
   initialState,
-  on(updateProductSuccess, (state, action) => {
+  on(updateProductSuccessAction, (state, action) => {
     return adapter.updateOne({ id: action.updated.id, changes: action.updated }, state)
   }),
-  on(deleteProductSuccess, (state, action) => {
+  on(deleteProductSuccessAction, (state, action) => {
     return adapter.removeOne(action.deleted.id, state)
   }),
-  on(addProductSuccess, (state, action) => {
+  on(addProductSuccessAction, (state, action) => {
     return adapter.addOne(action.created, state)
   }),
-  on(loadProducts, (state) => {
+  on(loadProductsAction, (state) => {
     return ({ ...adapter.removeAll(state) })
   }),
-  on(loadProductsSuccess, (state, action) => {
+  on(loadProductsSuccessAction, (state, action) => {
     return ({ ...adapter.addAll(action.items, state) })
   })
 );
 export function ProductsReducer(state: ContractProductsState, action: Action) {
   return productsReducer(state, action);
 }
+/* move this to selector */
 export const getAllProducts = (state: ContractProductsState) => {
   let products = state && state.entities ? Object.values(state.entities) : null;
   products = products && products.map(p => {

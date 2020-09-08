@@ -1,5 +1,3 @@
-import { saveChecklistItemSuccessAction } from './../actions/saved-checklist-item.action';
-import { sortByDesc } from 'src/app/shared/util/sort';
 import { ISavedChecklistItem } from './../../contract.model';
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';

@@ -10,13 +10,16 @@ import { takeUntil, tap, take, debounceTime } from 'rxjs/operators';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { environment } from 'src/environments/environment';
 import * as _ from 'lodash';
-import { MatPaginator, MatDialog, MatSort, MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
 import { getAccessSelector, getAllRolesSelector } from 'src/app/store/selectors/app.selector';
 import { saveUserAccessAction, loadAllUsersAction, saveUserRoleAction, deleteUserAction } from '../../store/user-mgmt.actions';
 import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
 import { splitToSentCase } from 'src/app/shared/util/format-value';
 import { GenericContainer } from 'src/app/shared/generics/generic-container';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'il-user-table',

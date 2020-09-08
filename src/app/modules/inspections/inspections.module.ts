@@ -23,31 +23,41 @@ import { InspectionPageComponent } from './components/inspection-page/inspection
 import { NgModule } from '@angular/core';
 import { InspectionsContainerComponent } from './container/inspections-container.component';
 import { RouterModule, Routes } from '@angular/router';
-import { MatIconModule, MatTabsModule, MatButtonModule, MatListModule, MatFormFieldModule, MatInputModule, MatMenuModule, MatSelectModule, MatExpansionModule, MatCardModule, MatDialogModule, MatSlideToggleModule, MatTooltipModule, MatTableModule, MatRadioModule } from '@angular/material';
+import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatListModule } from '@angular/material/list';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ChartsModule } from 'ng2-charts';
 import { InspectionActivePanelComponent } from './components/inspection-active-panel/inspection-active-panel.component';
 import { InspectionFinishedPanelComponent } from './components/inspection-finished-panel/inspection-finished-panel.component';
-import { ChecklistEffect } from '../contracts/store/effects/contract-checklist.effect';
 import { InspectionReducer } from './store/inspection.reducer';
+import { SavedChecklistService } from '../contracts/services/saved-checklist';
+import { MatRadioModule } from '@angular/material/radio';
 
 const routes: Routes = [
   {
     path: '',
     component: InspectionsContainerComponent,
-    children: [
-      {
-        path: '',
-        component: InspectionPageComponent
-      },
-      {
-        path: 'run-template',
-        component: InspectionRunPageComponent
-      },
-      {
-        path: 'report',
-        component: InspectionReportPageComponent
-      }
-    ]
+    children: [{
+      path: '',
+      component: InspectionPageComponent
+    }, {
+      path: 'run-template',
+      component: InspectionRunPageComponent
+    }, {
+      path: 'report',
+      component: InspectionReportPageComponent
+    }]
   }
 ];
 
@@ -88,8 +98,7 @@ const primeNgModules = [];
     RouterModule.forChild(routes),
     StoreModule.forFeature('inspection', InspectionReducer),
     EffectsModule.forFeature([
-      InspectionEffect,
-      ChecklistEffect
+      InspectionEffect
     ])
   ],
   exports: [],
@@ -110,6 +119,6 @@ const primeNgModules = [];
     InspectionActivePanelComponent,
     InspectionFinishedPanelComponent
   ],
-  providers: [ChecklistService],
+  providers: [ChecklistService, SavedChecklistService],
 })
 export class InspectionModule { }

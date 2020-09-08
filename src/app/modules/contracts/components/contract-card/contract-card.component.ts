@@ -22,8 +22,4 @@ export class ContractCardComponent implements OnInit {
   public gotoDetail(id: string): void {
     this.router.navigateByUrl(`dashboard/contracts/${id}/detail`);
   }
-
-  public getFullName(user: User): string {
-    return `${user.firstname} ${user.lastname}`;
-  }
 }

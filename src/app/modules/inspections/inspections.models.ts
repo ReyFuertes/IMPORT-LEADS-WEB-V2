@@ -2,6 +2,7 @@ import { ISimpleItem } from './../../shared/generics/generic.model';
 import { IUser } from '../user-management/user-mgmt.model';
 import { ISavedChecklistItem } from '../contracts/contract.model';
 import { IVenue } from '../venues/venues.models';
+import { IProduct } from '../products/products.model';
 
 export class IFinishedInspection { }
 
@@ -16,6 +17,7 @@ export class IActiveInspection {
   run_count?: string;
   checklist_items?: any[];
   venue: IVenue;
+  products: IProduct[]
 }
 export interface InspectionPanelModel {
   id: string;

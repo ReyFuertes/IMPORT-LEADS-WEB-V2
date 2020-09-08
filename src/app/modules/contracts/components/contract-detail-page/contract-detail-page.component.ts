@@ -28,6 +28,7 @@ import { getChecklistSelector } from '../../store/selectors/contract-checklist.s
 import { saveChecklistAction } from '../../store/actions/saved-checklist.action';
 import { v4 as uuid } from 'uuid';
 import * as moment from 'moment';
+import { IUser } from 'src/app/modules/user-management/user-mgmt.model';
 
 @Component({
   selector: 'il-contract-detail-page',
@@ -53,6 +54,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   public formChecklist: FormGroup;
   public checklistTerms: IContractTermProduct[];
   public savedChecklistSourceId: string;
+  public user: IUser;
 
   @Output()
   public openNavChange = new EventEmitter<boolean>();
@@ -73,6 +75,9 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       assignedTo: ['1'],
       desiredRunDate: [new Date()]
     });
+
+    const at = JSON.parse(localStorage.getItem('at')) || null;
+    if (at && at.user) this.user = at.user;
   }
 
   ngOnInit() {
@@ -214,9 +219,10 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       assigned_to: this.formChecklist.get('assignedTo').value,
       desired_run_date: moment(this.formChecklist.get('desiredRunDate').value, 'MM-DD-YYYY HH:mm').format('MM-DD-YYYY HH:mm'),
       checklist_items: selectedChecklistItems,
-      checklist_contract: { id: this.id }
+      checklist_contract: { id: this.id },
+      user: this.user
     }
-
+ 
     if (payload) {
       this.store.dispatch(saveChecklistAction({ payload }));
 
@@ -290,10 +296,6 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
 
   public get getContractImages(): IProductImage[] {
     return this.contractImages.slice(0, 4);
-  }
-
-  public getFullName(user: User): string {
-    return user ? `${user.firstname} ${user.lastname}` : '';
   }
 
   public getBg = (url: string): string => `url(${url})`;

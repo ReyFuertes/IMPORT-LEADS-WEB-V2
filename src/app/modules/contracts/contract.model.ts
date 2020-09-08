@@ -23,6 +23,7 @@ export interface ISavedChecklistResponse extends ISavedChecklist {
 export interface ISavedChecklistPayload extends ISavedChecklist {
   checklist_items?: IContractChecklistItem[];
   checklist_contract?: { id: string };
+  user?: IUser;
 }
 export interface ICommonIdPayload {
   id: string,
@@ -49,6 +50,7 @@ export interface IContractCategoryTerm {
 }
 export interface IContractChecklistItem extends IChecklist {
   contract_product?: { id?: string, product?: IProduct };
+  user?: IUser;
   created_at?: string;
   updated_at?: string;
 }

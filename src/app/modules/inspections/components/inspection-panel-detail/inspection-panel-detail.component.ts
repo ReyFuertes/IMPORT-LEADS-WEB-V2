@@ -18,10 +18,10 @@ export class InspectionPanelDetailComponent implements OnInit {
   }
 
   public get getProducts(): any {
-    return this.detail.checklist_items.map(ci => {
+    return this.detail.products.map(ci => {
       return {
-        label: ci.contract_product.product.product_name,
-        value: ci.contract_product.product.id
+        label: ci.product_name,
+        value: ci.id
       };
     })
   }

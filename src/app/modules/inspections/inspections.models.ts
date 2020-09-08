@@ -1,7 +1,9 @@
 import { ISimpleItem } from './../../shared/generics/generic.model';
 import { IUser } from '../user-management/user-mgmt.model';
+import { ISavedChecklistItem } from '../contracts/contract.model';
+import { IVenue } from '../venues/venues.models';
 
-export class IFinishedInspection {}
+export class IFinishedInspection { }
 
 export class IActiveInspection {
   id?: string;
@@ -12,7 +14,8 @@ export class IActiveInspection {
   user?: IUser;
   desired_run_date?: string;
   run_count?: string;
-
+  checklist_items?: any[];
+  venue: IVenue;
 }
 export interface InspectionPanelModel {
   id: string;

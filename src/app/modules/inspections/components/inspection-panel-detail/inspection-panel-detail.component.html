@@ -1,29 +1,30 @@
 <div class="content" fxLayout="column" fxLayoutGap="20px">
-  <div class="detail" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+  <div *ngIf="detail" class="detail" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
     <div fxFlex="15" fxLayout="column">
       <span>Сontact Person</span>
-      <span>Tammy Li</span>
+      <span>{{ detail?.venue?.contact }}</span>
     </div>
     <div fxFlex="15" fxLayout="column">
       <span>Phone Number</span>
-      <span>+86 10 0000 0000</span>
+      <span>{{ detail?.venue?.phone }}</span>
     </div>
     <div fxFlex="15" fxLayout="column">
       <span>Venue</span>
-      <span>Venue Name</span>
+      <span>{{ detail?.venue?.name }}</span>
     </div>
     <div fxFlex fxLayout="column">
       <span>Address</span>
-      <span>Haizhu Qu, Guangzhou Shi, Guangdong Sheng China </span>
+      <span>{{ detail?.venue?.location }}</span>
     </div>
   </div>
   <div class="brief">
-    <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text
-      ever since the 1500s.</span>
+    <span>{{ detail?.checklist_contract?.details }}</span>
   </div>
   <div class="product">
-    <p>Products</p>
-    <il-pill *ngFor="let product of products" [item]="product">
-    </il-pill>
+    <h4>Products</h4>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+      <il-pill *ngFor="let product of getProducts" [item]="product">
+      </il-pill>
+    </div>
   </div>
 </div>

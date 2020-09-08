@@ -1,5 +1,6 @@
 import { ISimpleItem } from './../../../../shared/generics/generic.model';
 import { Component, OnInit, Input } from '@angular/core';
+import { IActiveInspection } from '../../inspections.models';
 
 @Component({
   selector: 'il-inspection-panel-detail',
@@ -8,9 +9,20 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 
 export class InspectionPanelDetailComponent implements OnInit {
-  @Input()
-  public products: ISimpleItem[];
+  @Input() public detail: IActiveInspection;
+
   constructor() { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    console.log(this.detail)
+  }
+
+  public get getProducts(): any {
+    return this.detail.checklist_items.map(ci => {
+      return {
+        label: ci.contract_product.product.product_name,
+        value: ci.contract_product.product.id
+      };
+    })
+  }
 }

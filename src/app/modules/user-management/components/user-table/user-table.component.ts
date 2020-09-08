@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, SimpleChanges } from '@angular/core';
+import { Component, OnInit, ViewChild, SimpleChanges, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { IDropdownSelect, ISimpleItem } from 'src/app/shared/generics/generic.model';
 import { Store, select } from '@ngrx/store';
@@ -33,7 +33,7 @@ import { MatTableDataSource } from '@angular/material/table';
     ]),
   ],
 })
-export class UserTableComponent extends GenericContainer  {
+export class UserTableComponent extends GenericContainer implements AfterViewInit {
   public apiImagePath: string = environment.apiImagePath;
   public imgPath: string = environment.imgPath;
   public svgPath: string = environment.svgPath;
@@ -58,10 +58,21 @@ export class UserTableComponent extends GenericContainer  {
     return col === 'access' ? this.accessOptions : this.rolesOptions;
   }
 
-  constructor(private dialog: MatDialog, private router: Router, private store: Store<AppState>) {
+  constructor(private cdRef: ChangeDetectorRef, private dialog: MatDialog, private router: Router, private store: Store<AppState>) {
     super();
+    /* trigger reload to all users so we will get the updated data */
+    //this.store.dispatch(loadAllUsersAction());
+  }
+
+  private setData(data: any): void {
+    this.dataSource = new MatTableDataSource<any>(data);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  ngAfterViewInit(): void {
     this.$users = this.store.pipe(select(getTableUsersSelector));
-    this.$users.pipe(takeUntil(this.$unsubscribe),
+    this.$users.pipe(debounceTime(100), takeUntil(this.$unsubscribe),
       tap((res) => {
         if (res && res.length > 0) {
           this.setData(res);
@@ -72,22 +83,15 @@ export class UserTableComponent extends GenericContainer  {
       })).subscribe();
 
     this.store.pipe(select(getAccessSelector))
-      .pipe(take(1), tap(res => {
+      .pipe(tap(res => {
         if (res) this.accessOptions = res;
       })).subscribe();
 
-    this.store.pipe(select(getAllRolesSelector)).pipe(take(2), tap(res => {
+    this.store.pipe(select(getAllRolesSelector)).pipe(tap(res => {
       if (res) this.rolesOptions = res;
     })).subscribe();
 
-    /* trigger reload to all users so we will get the updated data */
-    //this.store.dispatch(loadAllUsersAction());
-  }
-
-  private setData(data: any): void {
-    this.dataSource = new MatTableDataSource<any>(data);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.cdRef.detectChanges();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

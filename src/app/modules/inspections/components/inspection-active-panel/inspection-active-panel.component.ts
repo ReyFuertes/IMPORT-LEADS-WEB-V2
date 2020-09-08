@@ -52,10 +52,6 @@ export class InspectionActivePanelComponent extends GenericRowComponent implemen
       value: 'DELETE',
       icon: 'delete-icon-red.svg'
     }];
-
-    setTimeout(() => {
-      console.log(this.activeInspections)
-    }, 1000);
   }
 
   public dragStarted(event: any): void {

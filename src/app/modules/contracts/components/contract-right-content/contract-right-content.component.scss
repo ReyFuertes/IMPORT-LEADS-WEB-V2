@@ -13,6 +13,8 @@
     }
     > div {
       height: 20px;
+      white-space: nowrap;
+      @include truncate;
       &:first-child {
         font-size: 13px;
         font-weight: 500;

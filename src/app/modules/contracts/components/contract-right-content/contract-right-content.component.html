@@ -28,9 +28,9 @@
       <mat-tab label="Saved Checklist">
         <div fxLayout="column" fxLayoutAlign="start start">
           <div *ngIf="($savedChecklist | async) as savedChecklists" fxLayout="column" class="saved-checklist-list">
-            <div *ngFor="let item of savedChecklists" (click)="getChecklist(item?.id)" class="temp-row" fxLayout="column">
+            <div *ngFor="let item of savedChecklists" (click)="getChecklist(item?.id)" class="temp-row" fxLayout="column" fxLayoutGap="5px">
               <div>{{ item?.checklist_name }}</div>
-              <div>Inspector: {{ item?.assigned_to }}</div>
+              <div [matTooltip]="item?.user?.username">Inspector: {{ item?.user?.username }}</div>
               <div>Date: {{ item?.desired_run_date | date:"short" }}</div>
             </div>
           </div>

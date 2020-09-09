@@ -45,12 +45,13 @@ export class ContractRightContentComponent extends GenericDestroyPageComponent i
 
   constructor(public dialog: MatDialog, private store: Store<AppState>) {
     super();
-    this.$savedChecklist = this.store.pipe(select(getAllSavedChecklistSelector),
-      debounceTime(3000));
-    this.$users = this.store.pipe(select(getAllSimpleUsersSelector))
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.$savedChecklist = this.store.pipe(select(getAllSavedChecklistSelector));
+    this.$savedChecklist.subscribe(res => console.log(res))
+    this.$users = this.store.pipe(select(getAllSimpleUsersSelector))
+  }
 
   public getChecklist(id: string): void {
     this.store.dispatch(getSavedChecklistByIdAction({ id }));

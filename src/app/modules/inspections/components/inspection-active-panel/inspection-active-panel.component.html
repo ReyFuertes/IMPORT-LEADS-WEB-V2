@@ -13,7 +13,8 @@
           </div>
           <div fxFlex="35" class="assigned-to" [matTooltip]="item?.user?.username" fxLayoutAlign="start center" fxLayoutGap="10px">
             <div class="img-circle">
-              <img [src]="apiImagePath + item?.user?.image" />
+              <img *ngIf="item?.user?.image" [src]="apiImagePath + item?.user?.image" />
+              <img *ngIf="!item?.user?.image" [src]="imgPath + 'no-image.png'" />
             </div>
             <span>{{ item?.user?.username }}</span>
           </div>

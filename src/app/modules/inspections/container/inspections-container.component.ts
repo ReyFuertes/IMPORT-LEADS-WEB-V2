@@ -1,4 +1,4 @@
-import { loadInspectionChecklistAction } from './../store/inspection.action';
+import { loadActiveInspectionAction } from './../store/inspection.action';
 import { AppState } from 'src/app/store/app.reducer';
 import { GenericContainer } from './../../../shared/generics/generic-container';
 import { Component, OnInit } from '@angular/core';

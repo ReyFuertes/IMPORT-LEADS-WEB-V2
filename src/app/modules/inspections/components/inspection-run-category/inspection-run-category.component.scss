@@ -1,0 +1,53 @@
+@import "src/styleguide/shared";
+.il-button {
+  @include il-button;
+}
+table {
+  width: 100%;
+}
+.qr-header {
+  background-color: $color-white;
+  height: 56px;
+  width: 100%;
+  opacity: 1;
+}
+::ng-deep {
+  mat-radio-group {
+    min-height: 105px !important;
+  }
+  .mat-radio-button {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+  }
+  th.mat-header-cell,
+  td.mat-cell,
+  td.mat-footer-cell {
+    padding-right: 20px !important;
+  }
+  td.mat-cell {
+    padding-top: 20px !important;
+    vertical-align: top !important;
+    &:nth-child(2) {
+      p {
+        margin: 0 !important;
+      }
+    }
+  }
+  .mat-column-term_name {
+    width: 20%;
+  }
+  .mat-column-term_description {
+    width: 40%;
+  }
+  .mat-column-verification {
+    width: 10%;
+  }
+  .mat-column-remarks {
+    width: 10%;
+  }
+  .mat-radio-label-content {
+    padding-left: 3px;
+    padding-right: 10px;
+  }
+}

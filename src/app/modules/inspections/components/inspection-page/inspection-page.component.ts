@@ -33,7 +33,7 @@ export class InspectionPageComponent extends GenericDestroyPageComponent impleme
     label: '',
     value: '5'
   }];
-  
+
   public finishedCols: ISimpleItem[] = [{
     label: 'Contract Name',
     value: '40'

@@ -48,7 +48,9 @@
       </button>
     </div>
   </div>
-  <div>
-    <il-inspection-quality-requirement></il-inspection-quality-requirement>
+  <div *ngIf="($inspectionRun | async) as inspectionRun">
+    <ng-container *ngFor="let run of inspectionRun">
+      <il-inspection-run-category [item]="run"></il-inspection-run-category>
+    </ng-container>
   </div>
 </div>

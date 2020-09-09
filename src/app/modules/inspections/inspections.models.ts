@@ -1,6 +1,6 @@
 import { ISimpleItem } from './../../shared/generics/generic.model';
 import { IUser } from '../user-management/user-mgmt.model';
-import { ISavedChecklistItem } from '../contracts/contract.model';
+import { ISavedChecklistItem, IContractProduct, IContractTerm, IContractCategory } from '../contracts/contract.model';
 import { IVenue } from '../venues/venues.models';
 import { IProduct } from '../products/products.model';
 
@@ -17,7 +17,21 @@ export interface IInspectionChecklist {
 }
 export interface IInspectionRun {
   id?: string;
-  saved_checklist?: { id: string };
+  created_at?: string;
+  saved_checklist_id?: string;
+  updated_at?: string;
+  saved_checklist?: {
+    id?: string;
+    checklist_name?: string;
+    desired_run_date?: string;
+    created_at?: string;
+    updated_at?: string;
+    checklist_items?: {
+      contract_product: IContractProduct,
+      contract_term: IContractTerm,
+      contract_category: IContractCategory
+    }[]
+  };
 }
 
 export class IFinishedInspection { }

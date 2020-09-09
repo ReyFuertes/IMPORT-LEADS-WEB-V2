@@ -11,7 +11,6 @@ import { InspectorReportInspectorComponent } from './components/inspection-repor
 import { InspectionReportInspectionComponent } from './components/inspection-report-inspections/inspection-report-inspections.component';
 import { InspectionReportPageComponent } from './components/inspection-report-page/inspection-report-page.component';
 import { DialogModule } from './../dialogs/dialog.module';
-import { InspectionQualityRequirementComponent } from './components/inspection-quality-requirement/inspection-quality-requirement.component';
 import { InspectionRunPageComponent } from './components/inspection-run-page/inspection-run-page.component';
 import { InspectionPanelDetailComponent } from './components/inspection-panel-detail/inspection-panel-detail.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -44,6 +43,8 @@ import { InspectionReducer } from './store/inspection.reducer';
 import { SavedChecklistService } from '../contracts/services/saved-checklist';
 import { MatRadioModule } from '@angular/material/radio';
 import { InspectionChecklistService, InspectionRunService } from './inspections.service';
+import { InspectionRunResolver } from './inspection-run.resolver';
+import { InspectionRunCategoryComponent } from './components/inspection-run-category/inspection-run-category.component';
 
 const routes: Routes = [
   {
@@ -54,7 +55,10 @@ const routes: Routes = [
       component: InspectionPageComponent
     }, {
       path: ':id/run',
-      component: InspectionRunPageComponent
+      component: InspectionRunPageComponent,
+      resolve: {
+        inspectionRun: InspectionRunResolver
+      }
     }, {
       path: 'report',
       component: InspectionReportPageComponent
@@ -108,7 +112,6 @@ const primeNgModules = [];
     InspectionPageComponent,
     InspectionPanelDetailComponent,
     InspectionRunPageComponent,
-    InspectionQualityRequirementComponent,
     InspectionReportPageComponent,
     InspectorReportInspectorComponent,
     InspectionReportInspectionComponent,
@@ -118,13 +121,15 @@ const primeNgModules = [];
     InspectionReportFailuresComponent,
     InspectionReportCommentsComponent,
     InspectionActivePanelComponent,
-    InspectionFinishedPanelComponent
+    InspectionFinishedPanelComponent,
+    InspectionRunCategoryComponent
   ],
   providers: [
     ChecklistService, 
     SavedChecklistService,
     InspectionRunService, 
-    InspectionChecklistService
+    InspectionChecklistService,
+    InspectionRunResolver
   ],
 })
 export class InspectionModule { }

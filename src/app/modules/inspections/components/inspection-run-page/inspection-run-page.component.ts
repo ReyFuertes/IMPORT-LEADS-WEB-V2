@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { environment } from './../../../../../environments/environment';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'il-inspection-run-page',
@@ -9,12 +9,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./inspection-run-page.component.scss']
 })
 
-export class InspectionRunPageComponent implements OnInit {
+export class InspectionRunPageComponent implements OnInit, AfterViewInit {
   public svgPath: string = environment.svgPath;
   public form: FormGroup;
   public formNavigateTo: FormGroup;
   
-  constructor(private router: Router, private fb: FormBuilder) {
+  constructor(private cdRef: ChangeDetectorRef, private router: Router, private fb: FormBuilder) {
     this.form = this.fb.group({
       items: ['']
     });
@@ -27,5 +27,9 @@ export class InspectionRunPageComponent implements OnInit {
 
   public onBack(): void {
     this.router.navigateByUrl('/dashboard/inspections');
+  }
+
+  ngAfterViewInit(): void {
+    this.cdRef.detectChanges();
   }
 }

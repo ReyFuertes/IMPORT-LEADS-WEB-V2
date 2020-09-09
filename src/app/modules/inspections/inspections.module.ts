@@ -43,6 +43,7 @@ import { InspectionFinishedPanelComponent } from './components/inspection-finish
 import { InspectionReducer } from './store/inspection.reducer';
 import { SavedChecklistService } from '../contracts/services/saved-checklist';
 import { MatRadioModule } from '@angular/material/radio';
+import { InspectionChecklistService, InspectionRunService } from './inspections.service';
 
 const routes: Routes = [
   {
@@ -52,7 +53,7 @@ const routes: Routes = [
       path: '',
       component: InspectionPageComponent
     }, {
-      path: 'run-template',
+      path: ':id/run',
       component: InspectionRunPageComponent
     }, {
       path: 'report',
@@ -119,6 +120,11 @@ const primeNgModules = [];
     InspectionActivePanelComponent,
     InspectionFinishedPanelComponent
   ],
-  providers: [ChecklistService, SavedChecklistService],
+  providers: [
+    ChecklistService, 
+    SavedChecklistService,
+    InspectionRunService, 
+    InspectionChecklistService
+  ],
 })
 export class InspectionModule { }

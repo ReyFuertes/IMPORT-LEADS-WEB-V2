@@ -24,7 +24,13 @@
             <span>Run Count: {{i}}</span>
           </div>
           <div class="action-col" fxFlex="5" fxLayoutAlign="end center">
-            <il-popover-menu [menus]="menus" class="action-col" (click)="$event.stopPropagation();"></il-popover-menu>
+            <img [src]="svgPath + 'dots-icon-blue.svg'" [matMenuTriggerFor]="menu" />
+            <mat-menu #menu="matMenu">
+              <button *ngFor="let menu of menus" (click)="menu?.action(item)" mat-menu-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                <img [src]="svgPath + menu?.icon" />
+                <span>{{ menu?.label }}</span>
+              </button>
+            </mat-menu>
           </div>
         </div>
       </mat-expansion-panel-header>

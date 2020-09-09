@@ -10,8 +10,8 @@ import { Component, OnInit, Input } from '@angular/core';
 
 export class PopoverMenuComponent implements OnInit {
   public svgPath: string = environment.svgPath;
-  @Input()
-  public menus: Menu[];
+  @Input() public menus: Menu[];
+  
   constructor() { }
 
   ngOnInit() { }

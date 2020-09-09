@@ -19,10 +19,10 @@ export interface ISimpleAttribute {
   user_route?: string;
 }
 export interface Menu {
-  label: string;
-  value: string;
+  label?: string;
+  value?: any;
   icon?: string;
-  action?: () => void;
+  action?: (menu: any) => void;
 }
 
 export interface IDropdownSelect {

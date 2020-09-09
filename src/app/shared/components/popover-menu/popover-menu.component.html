@@ -1,6 +1,6 @@
 <img [src]="svgPath + 'dots-icon-blue.svg'" [matMenuTriggerFor]="menu" />
 <mat-menu #menu="matMenu">
-  <button *ngFor="let menu of menus" (click)="menu?.action()" mat-menu-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+  <button *ngFor="let menu of menus" (click)="menu?.action(menu)" mat-menu-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
     <img [src]="svgPath + menu?.icon" />
     <span>{{ menu?.label }}</span>
   </button>

@@ -4,6 +4,22 @@ import { ISavedChecklistItem } from '../contracts/contract.model';
 import { IVenue } from '../venues/venues.models';
 import { IProduct } from '../products/products.model';
 
+export enum InspectionVerification {
+  ok = 1,
+  failed = 2,
+  comment = 3
+}
+export interface IInspectionChecklist {
+  id?: string;
+  verification?: InspectionVerification;
+  remarks?: string;
+  inspection_run?: IInspectionRun;
+}
+export interface IInspectionRun {
+  id?: string;
+  saved_checklist?: { id: string };
+}
+
 export class IFinishedInspection { }
 
 export class IActiveInspection {

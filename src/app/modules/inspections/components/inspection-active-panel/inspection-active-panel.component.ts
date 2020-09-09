@@ -7,6 +7,7 @@ import { IActiveInspection } from './../../inspections.models';
 import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, Input } from '@angular/core';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
+import { runInspectionAction } from '../../store/inspection.action';
 
 @Component({
   selector: 'il-inspection-active-panel',
@@ -17,10 +18,26 @@ export class InspectionActivePanelComponent extends GenericRowComponent implemen
   public apiImagePath: string = environment.apiImagePath;
   public svgPath: string = environment.svgPath;
   public imgPath: string = environment.imgPath;
-  public menus: Menu[];
+  public menus: Menu[] = [{
+    label: 'RUN',
+    icon: 'edit-icon-black.svg',
+    action: (item) => {
+      this.store.dispatch(runInspectionAction({
+        run: {
+          saved_checklist: { id: item.id }
+        }
+      }))
+    }
+  }, {
+    label: 'REPORT',
+    icon: 'inspection-icon-black.svg',
+    action: () => this.router.navigateByUrl('/dashboard/inspections/report')
+  }, {
+    label: 'DELETE',
+    icon: 'delete-icon-red.svg'
+  }];;
 
   @Input() public colsHeader: Array<{ label: string, width?: string | number }>;
-
   @Input() public activeInspections: IActiveInspection[];
   @Input() public isCategory: boolean = false;
 
@@ -34,25 +51,7 @@ export class InspectionActivePanelComponent extends GenericRowComponent implemen
     this.dragStart = false;
   }
 
-  ngOnInit() {
-    this.menus = [{
-      label: 'RUN',
-      value: 'RUN',
-      icon: 'edit-icon-black.svg',
-      action: () => {
-        this.router.navigateByUrl('/dashboard/inspections/run-template')
-      }
-    }, {
-      label: 'REPORT',
-      value: 'REPORT',
-      icon: 'inspection-icon-black.svg',
-      action: this.onOpenReport
-    }, {
-      label: 'DELETE',
-      value: 'DELETE',
-      icon: 'delete-icon-red.svg'
-    }];
-  }
+  ngOnInit() { }
 
   public dragStarted(event: any): void {
     this.dragStart = event;
@@ -60,10 +59,6 @@ export class InspectionActivePanelComponent extends GenericRowComponent implemen
 
   public onEdit = (): void => {
     this.router.navigateByUrl('/dashboard/inspections/run-template');
-  }
-
-  public onOpenReport = (): void => {
-    this.router.navigateByUrl('/dashboard/inspections/report');
   }
 
   public expandPnl(pnl: any, event: any, i: number): void {

@@ -13,6 +13,7 @@ export class InspectionRunPageComponent implements OnInit {
   public svgPath: string = environment.svgPath;
   public form: FormGroup;
   public formNavigateTo: FormGroup;
+  
   constructor(private router: Router, private fb: FormBuilder) {
     this.form = this.fb.group({
       items: ['']

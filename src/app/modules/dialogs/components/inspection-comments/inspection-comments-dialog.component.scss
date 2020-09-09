@@ -21,6 +21,9 @@ il-textarea {
   width: 100%;
 }
 :host ::ng-deep {
+  .mat-list-base .mat-list-item .mat-list-item-content, .mat-list-base .mat-list-option .mat-list-item-content {
+    font-size: 14px;
+  }
   .mat-focused .mat-form-field-underline {
     background-color: $color-primary !important;
   }

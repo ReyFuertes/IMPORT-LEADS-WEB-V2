@@ -18,6 +18,13 @@
     background: $color-white !important;
     height: 96px !important;
     cursor: pointer;
+    > div {
+      min-height: 30px;
+      img {
+        width: 20px;
+        height: 20px;
+      }
+    }
   }
   .ngx-file-drop__drop-zone {
     border-radius: 0 !important;

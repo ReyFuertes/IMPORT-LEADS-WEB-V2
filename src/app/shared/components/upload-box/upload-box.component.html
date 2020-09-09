@@ -1,6 +1,6 @@
 <ngx-file-drop [ngClass]="{'disabled': disabled}" (click)="!disabled ? uploader.click(): null" (onFileDrop)="dropped($event)" (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
   <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
-    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
       <img [src]="svgPath + 'camera-icon-blue.svg'" />
       <span>{{ disabled ? 'Image max count reached' : label}}</span>
     </div>

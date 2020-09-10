@@ -4,7 +4,7 @@
   </div>
   <div class="actions-panel" fxLayout="row" fxLayoutAlign="start center">
     <div fxFlex="40" fxLayoutGap="5px">
-      <button [matMenuTriggerFor]="appMenu" class="il-button il-bordered-blue" mat-flat-button>
+      <button [matMenuTriggerFor]="appMenu" class="il-button il-bordered-blue navigate-to" mat-flat-button>
         <img [src]="svgPath + 'enter-icon-blue.svg'" />
         <span>Navigate to</span>
       </button>
@@ -14,7 +14,7 @@
           <button mat-flat-button class="il-button primary">Go</button>
         </div>
       </mat-menu>
-      <button class="il-button il-bordered-blue" mat-flat-button>
+      <button class="il-button il-bordered-blue delete-current" mat-flat-button>
         <img [src]="svgPath + 'delete-icon-blue.svg'" />
         <span>Delete current and go back </span>
       </button>

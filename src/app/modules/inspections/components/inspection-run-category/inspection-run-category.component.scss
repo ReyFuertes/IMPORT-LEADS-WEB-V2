@@ -11,7 +11,20 @@ table {
   width: 100%;
   opacity: 1;
 }
+.category {
+  background-color: $color-white;
+  padding: 10px;
+  border-bottom: thin $color-gray-3 solid;
+}
+h4 {
+  font-size: 18px;
+  font-weight: 500;
+  color: $color-black-2;
+}
 ::ng-deep {
+  tr.mat-header-row {
+    height: 35px !important;
+  }
   mat-radio-group {
     min-height: 105px !important;
   }

@@ -4,6 +4,7 @@ import { InspectionCommentDialogComponent } from '../../../dialogs/components/in
 import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, Input } from '@angular/core';
 import { IInspectionRun } from '../../inspections.models';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'il-inspection-run-category',
@@ -25,9 +26,22 @@ export class InspectionRunCategoryComponent implements OnInit {
   constructor(public dialog: MatDialog) { }
 
   ngOnInit() {
-    this.dataSource = this.item?.saved_checklist?.checklist_items?.map(i => {
-      return i.contract_term
-    }) || null
+    let source = this.item?.saved_checklist?.checklist_items.map(i => {
+      return {
+        category: i.contract_category.category.category_name,
+        terms: i.contract_term
+      }
+    }) || null;
+
+    this.dataSource = Object.values(source.reduce((result, { category, terms, }) => {
+      if (!result[category]) result[category] = { /* Create new group */
+        category,
+        terms: []
+      };
+      result[category].terms.push({ ...terms });
+      return result;
+    }, {}));
+    console.log(this.dataSource)
   }
 
   public handleSelOption(option: ISimpleItem): void {

@@ -9,7 +9,7 @@ export const getInspectionRunSelector = createSelector(
 );
 export const getActiveInspectionsSelector = createSelector(
   selectedState,
-  state => state?.activeInspection || []
+  state => state?.activeInspection
 );
 export const hasInspectionLoadedSelector = createSelector(
   selectedState,

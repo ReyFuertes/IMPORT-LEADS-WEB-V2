@@ -9,6 +9,7 @@ import { ISavedChecklistItem } from 'src/app/modules/contracts/contract.model';
 import { takeUntil, tap } from 'rxjs/operators';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { ISimpleItem } from 'src/app/shared/generics/generic.model';
+import { loadSavedChecklistAction } from 'src/app/modules/contracts/store/actions/saved-checklist.action';
 
 @Component({
   selector: 'il-inspection-page',
@@ -61,9 +62,12 @@ export class InspectionPageComponent extends GenericDestroyPageComponent impleme
 
     this.$savedChecklists = this.store.pipe(select(getActiveInspectionsSelector));
     this.$savedChecklists.pipe(takeUntil(this.$unsubscribe),
-      tap((res) => this.activeInspections = res))
-      .subscribe();
+      tap((res) => {
+        if (res) this.activeInspections = res
+      })).subscribe();
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.store.dispatch(loadSavedChecklistAction());
+  }
 }

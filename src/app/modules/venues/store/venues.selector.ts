@@ -5,7 +5,7 @@ import * as fromVenues from './venues.reducer'
 export const selectedState = (state: AppState) => state.venues;
 export const getVenuesSelector = createSelector(
   selectedState,
-  fromVenues.getVenues
+  state => Object.values(state.entities)
 );
 export const getImageToUploadSelector = createSelector(
   selectedState,

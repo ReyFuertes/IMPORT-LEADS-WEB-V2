@@ -17,7 +17,6 @@ export class InspectionRunResolver implements Resolve<boolean> {
         if (!loaded) {
           const id = route.paramMap.get('id') || null;
           if (id) {
-            console.log('loading resolver', id)
             this.store.dispatch(loadInspectionRunAction({ id }));
           }
         }

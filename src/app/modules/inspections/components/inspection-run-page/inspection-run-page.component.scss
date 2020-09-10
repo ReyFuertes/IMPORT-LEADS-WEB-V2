@@ -1,4 +1,13 @@
 @import "src/styleguide/shared";
+h1 {
+  margin-bottom: 10px;
+}
+.navigate-to {
+  min-width: 130px;
+}
+.delete-current {
+  min-width: 200px;
+}
 .irp-container {
   > div {
     margin-bottom: 5px;
@@ -24,7 +33,6 @@
 .title {
   width: 100%;
   margin-bottom: 20px;
-  margin-top: 20px;
 }
 .actions-panel {
   background-color: $color-white;

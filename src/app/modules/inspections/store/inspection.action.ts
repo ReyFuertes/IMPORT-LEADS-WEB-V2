@@ -11,14 +11,18 @@ export enum InspectionActionTypes {
   createInspectionChecklistSuccessAction = '[Inspection Run] create inspection checklist (success)',
   loadInspectionRunAction = '[Inspection Checklist] load inspection run',
   loadInspectionRunSuccessAction = '[Inspection Checklist] load inspection run (success)',
+  clearLoadAction = '[Inspection Run] clear load',
 }
+export const clearLoadAction = createAction(
+  InspectionActionTypes.clearLoadAction
+);
 export const loadInspectionRunAction = createAction(
   InspectionActionTypes.loadInspectionRunAction,
   props<{ id: string }>()
 );
 export const loadInspectionRunSuccessAction = createAction(
   InspectionActionTypes.loadInspectionRunSuccessAction,
-  props<{ response: IInspectionRun[] }>()
+  props<{ response: IInspectionRun }>()
 );
 export const createInspectionChecklistAction = createAction(
   InspectionActionTypes.createInspectionChecklistAction,

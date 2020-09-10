@@ -46,8 +46,9 @@ export class IActiveInspection {
   desired_run_date?: string;
   run_count?: string;
   checklist_items?: any[];
-  venue: IVenue;
-  products: IProduct[]
+  venue?: IVenue;
+  products?: IProduct[];
+  inspectionCount?: number;
 }
 export interface InspectionPanelModel {
   id: string;

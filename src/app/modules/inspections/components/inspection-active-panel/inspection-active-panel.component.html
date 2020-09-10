@@ -22,7 +22,7 @@
             <span>{{ item?.desired_run_date | date: 'MM/dd/yyyy' }}</span>
           </div>
           <div fxFlex="10" fxLayoutAlign="start center">
-            <span>Run Count: {{i}}</span>
+            <span>{{ item?.inspectionCount }}</span>
           </div>
           <div class="action-col" fxFlex="5" fxLayoutAlign="end center">
             <img [src]="svgPath + 'dots-icon-blue.svg'" [matMenuTriggerFor]="menu" />

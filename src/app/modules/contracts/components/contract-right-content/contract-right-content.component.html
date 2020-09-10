@@ -11,8 +11,8 @@
       <mat-tab label="New Checklist">
         <div class="new-template" fxLayout="column" fxLayoutGap="10px">
           <div>
-            <il-dropdown-select [options]="($users | async)" [form]="form" [controlName]="'assignedTo'" placeholder="Assigned To"></il-dropdown-select>
-            <il-datepicker [form]="form" [controlName]="'desiredRunDate'" [placeholder]="'Desired run date'"></il-datepicker>
+            <il-dropdown-select [options]="($users | async)" [form]="form" controlName="assignedTo" placeholder="Assigned To"></il-dropdown-select>
+            <il-datepicker [form]="form" controlName="desiredRunDate" [placeholder]="'Desired run date'"></il-datepicker>
           </div>
           <div class="content" fxLayout="column" fxLayoutAlign="start start">
             <div fxLayout="row" fxLayoutAlign="center center">

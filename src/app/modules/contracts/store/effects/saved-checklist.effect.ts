@@ -12,7 +12,7 @@ import { appNotification } from 'src/app/store/actions/notification.action';
 export class SavedChecklistEffect {
   getSavedChecklistByIdAction$ = createEffect(() => this.actions$.pipe(
     ofType(getSavedChecklistByIdAction),
-    mergeMap(({ id }) => this.savedChecklistSrv.getById(id).pipe(
+    mergeMap(({ id }) => this.savedChecklistSrv.getAll(`${id}`).pipe(
       map((response: ISavedChecklistResponse[]) => {
         return getSavedChecklistByIdSuccessAction({ response });
       })

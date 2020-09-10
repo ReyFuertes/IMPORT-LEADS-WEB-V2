@@ -18,7 +18,7 @@ export class InspectionRunPageComponent implements OnInit, AfterViewInit {
   public svgPath: string = environment.svgPath;
   public form: FormGroup;
   public formNavigateTo: FormGroup;
-  public $inspectionRun: Observable<IInspectionRun[]>;
+  public $inspectionRun: Observable<any>;
 
   constructor(private store: Store<AppState>, private cdRef: ChangeDetectorRef, private router: Router, private fb: FormBuilder) {
     this.form = this.fb.group({

@@ -72,7 +72,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       images: [null]
     });
     this.formChecklist = this.fb.group({
-      assignedTo: ['1'],
+      assignedTo: [null, Validators.required],
       desiredRunDate: [new Date()]
     });
 
@@ -220,14 +220,15 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       desired_run_date: moment(this.formChecklist.get('desiredRunDate').value, 'MM-DD-YYYY HH:mm').format('MM-DD-YYYY HH:mm'),
       checklist_items: selectedChecklistItems,
       checklist_contract: { id: this.id },
-      user: this.user
+      user: { id: this.formChecklist.get('assignedTo').value }
     }
- 
+
     if (payload) {
       this.store.dispatch(saveChecklistAction({ payload }));
 
       /* clear checklist after saved */
       setTimeout(() => {
+        this.formChecklist.reset();
         this.store.dispatch(clearChecklistProductsAction());
         this.store.dispatch(clearChecklistSourceAction());
         this.store.dispatch(clearAllSelectedTerms());
@@ -236,12 +237,10 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     }
   }
 
-  private onDeleteContract = (): void => {
+  public onDeleteContract(): void {
     const dialogRef = this.dialog.open(ConfirmationComponent, {
       width: '410px',
-      data: {
-        action: 0
-      }
+      data: { action: 0 }
     });
     dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
       .subscribe(result => {

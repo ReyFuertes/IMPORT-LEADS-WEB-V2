@@ -13,7 +13,7 @@ import { appNotification } from 'src/app/store/actions/notification.action';
 export class ContractProductsEffect {
   loadContractProducts$ = createEffect(() => this.actions$.pipe(
     ofType(loadContractProducts),
-    mergeMap(({ id }) => this.contractProductService.getById(id).pipe(
+    mergeMap(({ id }) => this.contractProductService.getAll(`${id}`).pipe(
       map((items: IContractProduct[]) => {
         return loadContractProductSuccess({ items });
       })

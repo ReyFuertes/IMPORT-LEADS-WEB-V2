@@ -14,8 +14,8 @@ export class InspectionEffect {
   loadInspectionRunAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadInspectionRunAction),
     mergeMap(({ id }) => {
-      return this.inspectionRunSrv.getAll(id).pipe(
-        map((response: IInspectionRun[]) => {
+      return this.inspectionRunSrv.getById(id).pipe(
+        map((response: IInspectionRun) => {
           return loadInspectionRunSuccessAction({ response });
         })
       )

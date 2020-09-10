@@ -5,16 +5,16 @@ import { Router } from '@angular/router';
 import { Menu } from './../../../../shared/generics/generic.model';
 import { IActiveInspection } from './../../inspections.models';
 import { environment } from './../../../../../environments/environment';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
-import { runInspectionAction } from '../../store/inspection.action';
+import { runInspectionAction, clearLoadAction } from '../../store/inspection.action';
 
 @Component({
   selector: 'il-inspection-active-panel',
   templateUrl: './inspection-active-panel.component.html',
   styleUrls: ['./inspection-active-panel.component.scss']
 })
-export class InspectionActivePanelComponent extends GenericRowComponent implements OnInit {
+export class InspectionActivePanelComponent extends GenericRowComponent implements OnInit, OnChanges {
   public apiImagePath: string = environment.apiImagePath;
   public svgPath: string = environment.svgPath;
   public imgPath: string = environment.imgPath;
@@ -52,6 +52,10 @@ export class InspectionActivePanelComponent extends GenericRowComponent implemen
   }
 
   ngOnInit() { }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.store.dispatch(clearLoadAction());
+  }
 
   public dragStarted(event: any): void {
     this.dragStart = event;

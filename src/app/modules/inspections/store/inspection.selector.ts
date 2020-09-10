@@ -5,7 +5,7 @@ import * as fromInspection from './inspection.reducer'
 export const selectedState = (state: AppState) => state.inspection;
 export const getInspectionRunSelector = createSelector(
   selectedState,
-  state => state?.runInspection || []
+  state => state?.runInspection
 );
 export const getActiveInspectionsSelector = createSelector(
   selectedState,

@@ -1,13 +1,11 @@
 import { IActiveInspection, IFinishedInspection, IInspectionRun } from './../inspections.models';
-import { loadActiveInspectionSuccessAction, loadInspectionRunSuccessAction } from './inspection.action';
+import { loadActiveInspectionSuccessAction, loadInspectionRunSuccessAction, clearLoadAction } from './inspection.action';
 import { createReducer, on, Action } from "@ngrx/store";
-import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
-
 export interface InspectionState {
   loaded?: boolean;
   activeInspection?: IActiveInspection[],
   finishedInspection?: IFinishedInspection[],
-  runInspection?: IInspectionRun[]
+  runInspection?: IInspectionRun
 }
 export const initialState: InspectionState = {
   loaded: null,
@@ -17,6 +15,9 @@ export const initialState: InspectionState = {
 };
 const inspectionReducer = createReducer(
   initialState,
+  on(clearLoadAction, (state) => {
+    return Object.assign({}, state, { loaded: null });
+  }),
   on(loadActiveInspectionSuccessAction, (state, action) => {
     return Object.assign({}, state, { activeInspection: action.response });
   }),

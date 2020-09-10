@@ -1,6 +1,6 @@
-<div class="irp-container">
+<div *ngIf="($inspectionRun | async) as inspectionRun" class="irp-container">
   <div class="title">
-    <h1>Wood bead bracelet checklist: #10</h1>
+    <h1>{{ inspectionRun?.saved_checklist?.checklist_name | uppercase }}</h1>
   </div>
   <div class="actions-panel" fxLayout="row" fxLayoutAlign="start center">
     <div fxFlex="40" fxLayoutGap="5px">
@@ -48,9 +48,9 @@
       </button>
     </div>
   </div>
-  <div *ngIf="($inspectionRun | async) as inspectionRun">
-    <ng-container *ngFor="let run of inspectionRun">
-      <il-inspection-run-category [item]="run"></il-inspection-run-category>
+  <div>
+    <ng-container>
+      <il-inspection-run-category [item]="inspectionRun"></il-inspection-run-category>
     </ng-container>
   </div>
 </div>

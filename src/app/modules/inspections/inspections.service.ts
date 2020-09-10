@@ -10,7 +10,7 @@ export class InspectionsService extends BaseService<IActiveInspection> {
   }
 }
 @Injectable({ providedIn: 'root' })
-export class InspectionRunService extends BaseService<IInspectionRun | { id: string }> {
+export class InspectionRunService extends BaseService<IInspectionRun> {
   constructor(http: HttpClient) {
     super(http, 'inspection-run');
   }

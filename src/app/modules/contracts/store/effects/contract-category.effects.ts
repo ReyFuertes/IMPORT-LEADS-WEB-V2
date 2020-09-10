@@ -12,7 +12,7 @@ import { appNotification } from 'src/app/store/actions/notification.action';
 export class ContractCategoryEffect {
   deleteContractCategoryAction$ = createEffect(() => this.actions$.pipe(
     ofType(deleteContractCategoryAction),
-    mergeMap(({ id }) => this.contractCategoryService.delete(id).pipe(
+    mergeMap(({ id }) => this.contractCategorySrv.delete(id).pipe(
       map((deleted: IContractCategory) => {
         return deleteContractCategoryActionSuccess({ deleted });
       })
@@ -20,15 +20,15 @@ export class ContractCategoryEffect {
   ));
   loadContractCategoryAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadContractCategoryAction),
-    mergeMap(({ id }) => this.contractCategoryService.getById(id, 'contract').pipe(
-      map((items: IContractCategory[]) => {
+    mergeMap(({ id }) => this.contractCategorySrv.getAll(`${id}/contract`).pipe(
+      map((items: any[]) => {
         return loadContractCategoryActionSuccess({ items });
       })
     ))
   ));
   addContractCategoryAction$ = createEffect(() => this.actions$.pipe(
     ofType(addContractCategoryAction),
-    mergeMap(({ payload }) => this.contractCategoryService.post(payload)
+    mergeMap(({ payload }) => this.contractCategorySrv.post(payload)
       .pipe(
         tap((created) => {
           if (created)
@@ -45,6 +45,6 @@ export class ContractCategoryEffect {
   constructor(
     private store: Store<AppState>,
     private actions$: Actions,
-    private contractCategoryService: ContractCategoryService,
+    private contractCategorySrv: ContractCategoryService,
   ) { }
 }

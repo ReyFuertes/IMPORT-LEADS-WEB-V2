@@ -32,9 +32,7 @@ const venuesReducer = createReducer(
 export function VenuesReducer(state: VenuesState, action: Action) {
   return venuesReducer(state, action);
 }
-export const getVenues = (state: VenuesState) => {
-  return state && state.entities ? Object.values(state.entities) : null;
-};
+
 export const getImageToUpload= (state: VenuesState) => {
   return state && state.imagesToUpload;
 };

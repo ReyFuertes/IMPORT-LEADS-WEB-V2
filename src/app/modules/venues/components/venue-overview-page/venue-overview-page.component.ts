@@ -1,6 +1,5 @@
 import { updateVenueAction, addVenueAction, uploadVenueImageAction } from './../../store/venues.action';
 import { getVenuesSelector } from './../../store/venues.selector';
-import { getVenues } from './../../store/venues.reducer';
 import { Observable } from 'rxjs';
 import { AppState } from './../../../../store/app.reducer';
 import { Store, select } from '@ngrx/store';

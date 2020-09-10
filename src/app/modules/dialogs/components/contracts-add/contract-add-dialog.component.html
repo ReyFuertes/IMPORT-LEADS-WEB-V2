@@ -11,7 +11,7 @@
     <!-- contract details -->
     <div *ngIf="form" fxLayoutAlign="start center" fxLayout="row" fxLayoutGap="40px">
       <il-input fxFlex="25" [form]="form" isFloatLabel="true" [controlName]="'contract_name'" placeholder="Contract Name"></il-input>
-      <il-dropdown-select fxFlex placeHolder="Select Venues" [form]="form" [controlName]="'venue'" [options]="venues">
+      <il-dropdown-select fxFlex placeHolder="Select Venues" [form]="form" controlName="venue" [options]="venues">
       </il-dropdown-select>
       <il-datepicker fxFlex="25" [form]="form" [controlName]="'start_date'" [placeholder]="'Start Date'"></il-datepicker>
       <il-datepicker fxFlex="25" [form]="form" [controlName]="'delivery_date'" [placeholder]="'Delivery Date'"></il-datepicker>

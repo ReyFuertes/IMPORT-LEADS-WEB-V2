@@ -21,7 +21,7 @@ h4 {
   font-weight: 500;
   color: $color-black-2;
 }
-::ng-deep {
+:host ::ng-deep {
   tr.mat-header-row {
     height: 35px !important;
   }

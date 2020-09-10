@@ -15,9 +15,9 @@ export class InspectionRunCategoryComponent implements OnInit {
   public displayedColumns: string[] = ['term_name', 'term_description', 'verification', 'remarks'];
   public dataSource: any[];
   public verifOptions: ISimpleItem[] = [
-    { label: 'Ok', value: '' },
-    { label: 'Failed', value: '' },
-    { label: 'Comment', value: '' }
+    { label: 'Ok', value: '1' },
+    { label: 'Failed', value: '2' },
+    { label: 'Comment', value: '3' }
   ];
 
   @Input() public item: IInspectionRun;
@@ -30,15 +30,11 @@ export class InspectionRunCategoryComponent implements OnInit {
     }) || null
   }
 
-  public onRemarks(option: any): void {
+  public handleSelOption(option: ISimpleItem): void {
     if (option.label !== 'Ok') {
       const dialogRef = this.dialog.open(InspectionCommentDialogComponent, {});
       dialogRef.afterClosed().subscribe(result => { });
     }
-  }
-
-  private updateData(): void {
-
   }
 
   public showComment(): void {

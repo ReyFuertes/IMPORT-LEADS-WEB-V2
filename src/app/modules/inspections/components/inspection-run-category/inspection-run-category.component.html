@@ -14,10 +14,8 @@
 
   <ng-container matColumnDef="verification">
     <th mat-header-cell *matHeaderCellDef> Verification </th>
-    <td mat-cell *matCellDef>
-      <mat-radio-group aria-label="Select an option" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
-        <mat-radio-button *ngFor="let option of verifOptions; let i = index" (click)="onRemarks(option)" [value]="option?.label">{{ option?.label }}</mat-radio-button>
-      </mat-radio-group>
+    <td mat-cell *matCellDef="let item">
+      <il-radio-group [name]="item?.id" selected="1" (valueEmitter)="handleSelOption($event)" [options]="verifOptions"></il-radio-group>
     </td>
   </ng-container>
 

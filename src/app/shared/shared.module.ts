@@ -66,6 +66,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { RadioGroupComponent } from './components/radio-group/radio-group.component';
+import { MatRadioModule } from '@angular/material/radio';
 
 const materialModules = [
   MatListModule,
@@ -85,7 +87,8 @@ const materialModules = [
   MatTooltipModule,
   MatSortModule,
   MatTableModule,
-  MatPaginatorModule
+  MatPaginatorModule,
+  MatRadioModule
 ];
 
 const primeNgModules = [
@@ -128,7 +131,8 @@ const sharedComponents = [
   DropdownSelectSearchComponent,
   EditorComponent,
   InputSwitchComponent,
-  HasRoleDirective
+  HasRoleDirective,
+  RadioGroupComponent
 ];
 
 const directives = [

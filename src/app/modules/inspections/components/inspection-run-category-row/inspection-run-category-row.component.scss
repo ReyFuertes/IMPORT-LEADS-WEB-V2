@@ -1,0 +1,11 @@
+@import "src/styleguide/shared";
+.il-button {
+  @include il-button;
+}
+tr {
+  border-bottom: thin $color-gray-3 solid;
+}
+td {
+  padding: 10px;
+  font-size: 14px;
+}

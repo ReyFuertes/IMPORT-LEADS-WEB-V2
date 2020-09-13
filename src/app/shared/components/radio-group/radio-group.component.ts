@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 import { ISimpleItem } from '../../generics/generic.model';
 
 @Component({
@@ -6,7 +6,7 @@ import { ISimpleItem } from '../../generics/generic.model';
   templateUrl: './radio-group.component.html',
   styleUrls: ['./radio-group.component.scss']
 })
-export class RadioGroupComponent implements OnInit {
+export class RadioGroupComponent implements OnInit, OnChanges {
   @Input() public options: ISimpleItem[];
   @Input() public name: string;
   @Input() public selected: string;
@@ -17,8 +17,14 @@ export class RadioGroupComponent implements OnInit {
 
   ngOnInit(): void { }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    //if (changes && changes.selected && changes.selected.currentValue) {
+      this.selected = changes.selected.currentValue;
+      console.log('changes', changes)
+    //}
+  }
+
   public isSelected(value: any): boolean {
     return this.selected === value;
   }
-
 }

@@ -4,6 +4,8 @@
 }
 table {
   width: 100%;
+  border-collapse: collapse;
+  background-color: $color-white;
 }
 .qr-header {
   background-color: $color-white;

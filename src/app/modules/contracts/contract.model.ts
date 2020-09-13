@@ -1,6 +1,7 @@
 import { ITag } from './../tags/tags.model';
 import { IProduct } from './../products/products.model';
 import { IUser } from '../user-management/user-mgmt.model';
+import { InspectionVeriType } from '../inspections/inspections.models';
 
 export enum ProductActionStatus {
   Override = 1,
@@ -66,7 +67,8 @@ export interface IContractTerm extends ICoreModel {
   term_name?: string;
   term_description?: string;
   contract_category?: IContractCategory;
-  contract_tag?: ITag
+  contract_tag?: ITag;
+  verification?: string;
 }
 export interface IContractCategory extends ICoreModel {
   category?: ICategory;

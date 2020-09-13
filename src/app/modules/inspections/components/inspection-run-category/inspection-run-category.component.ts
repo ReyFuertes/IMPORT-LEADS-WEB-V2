@@ -1,10 +1,9 @@
-import { AddEditState, ISimpleItem } from '../../../../shared/generics/generic.model';
-import { InspectionRunCommentDialogComponent } from '../../../dialogs/components/inspection-run-comment/inspection-run-comment-dialog.component';
-import { InspectionCommentDialogComponent } from '../../../dialogs/components/inspection-comments/inspection-comments-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { Component, OnInit, Input } from '@angular/core';
-import { IInspectionRun } from '../../inspections.models';
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
+import { IInspectionRun, InspectionVeriType } from '../../inspections.models';
 import * as _ from 'lodash';
+import { AppState } from 'src/app/modules/contracts/store/reducers';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'il-inspection-run-category',
@@ -15,21 +14,21 @@ import * as _ from 'lodash';
 export class InspectionRunCategoryComponent implements OnInit {
   public displayedColumns: string[] = ['term_name', 'term_description', 'verification', 'remarks'];
   public dataSource: any[];
-  public verifOptions: ISimpleItem[] = [
-    { label: 'Ok', value: '1' },
-    { label: 'Failed', value: '2' },
-    { label: 'Comment', value: '3' }
-  ];
+  public inspectionVeriType = InspectionVeriType;
+  public termVerifications: any[] = [];
+  public termVerification: any;
 
   @Input() public item: IInspectionRun;
 
-  constructor(public dialog: MatDialog) { }
+  constructor(private store: Store<AppState>, private cdRef: ChangeDetectorRef, public dialog: MatDialog) { }
 
   ngOnInit() {
     let source = this.item?.saved_checklist?.checklist_items.map(i => {
       return {
         category: i.contract_category.category.category_name,
-        terms: i.contract_term
+        terms: Object.assign({}, i.contract_term, {
+          verification: i.contract_term?.verification ? i.contract_term.verification : this.inspectionVeriType.ok
+        })
       }
     }) || null;
 
@@ -41,21 +40,9 @@ export class InspectionRunCategoryComponent implements OnInit {
       result[category].terms.push({ ...terms });
       return result;
     }, {}));
-    console.log(this.dataSource)
-  }
 
-  public handleSelOption(option: ISimpleItem): void {
-    if (option.label !== 'Ok') {
-      const dialogRef = this.dialog.open(InspectionCommentDialogComponent, {});
-      dialogRef.afterClosed().subscribe(result => { });
-    }
-  }
-
-  public showComment(): void {
-    const dialogRef = this.dialog.open(InspectionRunCommentDialogComponent, {
-      data: {}
-    });
-    dialogRef.afterClosed().subscribe();
   }
 }
+
+
 

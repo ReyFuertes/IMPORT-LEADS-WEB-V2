@@ -4,14 +4,14 @@ import { ISavedChecklistItem, IContractProduct, IContractTerm, IContractCategory
 import { IVenue } from '../venues/venues.models';
 import { IProduct } from '../products/products.model';
 
-export enum InspectionVerification {
-  ok = 1,
-  failed = 2,
-  comment = 3
+export enum InspectionVeriType {
+  ok = 'ok',
+  failed = 'failed',
+  comment = 'comment'
 }
 export interface IInspectionChecklist {
   id?: string;
-  verification?: InspectionVerification;
+  verification?: InspectionVeriType;
   remarks?: string;
   inspection_run?: IInspectionRun;
 }
@@ -33,9 +33,7 @@ export interface IInspectionRun {
     }[]
   };
 }
-
 export class IFinishedInspection { }
-
 export class IActiveInspection {
   id?: string;
   checklist_contract?: {

@@ -1,0 +1,15 @@
+<tr fxLayout="row" fxLayoutGap="20px">
+  <td fxFlex="200px">{{row?.term_name}}</td>
+  <td fxFlex>
+    <div [innerHTML]="row?.term_description"></div>
+  </td>
+  <td fxFlex="120px">
+    <il-radio-group [name]="row?.id" [selected]="row?.verification" (valueEmitter)="handleSelOption($event, row)" [options]="verifOptions">
+    </il-radio-group>
+  </td>
+  <td fxFlex="120px">
+    <button *ngIf="isVerified(row?.verification)" class="il-button purple" mat-flat-button>
+      <span>Remarks</span>
+    </button>
+  </td>
+</tr>

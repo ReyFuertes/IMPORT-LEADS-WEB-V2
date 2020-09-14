@@ -35,7 +35,6 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
   }
 
   ngOnInit() {
-    console.log('row', this.row)
   }
 
   public onRemarks(event: any): void {

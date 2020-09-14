@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { getActiveInspectionsSelector } from './../../store/inspection.selector';
+import { getActiveInspectionsSelector } from './../../store/selectors/inspection.selector';
 import { AppState } from './../../../contracts/store/reducers/index';
 import { Store, select } from '@ngrx/store';
 import { IActiveInspection } from './../../inspections.models';

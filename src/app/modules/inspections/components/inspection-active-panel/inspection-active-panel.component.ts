@@ -7,7 +7,7 @@ import { IActiveInspection } from './../../inspections.models';
 import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
-import { runInspectionAction, clearLoadAction } from '../../store/inspection.action';
+import { runInspectionAction, clearLoadAction } from '../../store/actions/inspection.action';
 
 @Component({
   selector: 'il-inspection-active-panel',
@@ -23,7 +23,7 @@ export class InspectionActivePanelComponent extends GenericRowComponent implemen
     icon: 'edit-icon-black.svg',
     action: (item) => {
       this.store.dispatch(runInspectionAction({
-        run: {
+        payload: {
           saved_checklist: { id: item.id }
         }
       }))

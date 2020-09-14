@@ -4,8 +4,8 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { filter, first, tap } from 'rxjs/operators';
 import { AppState } from 'src/app/store/app.reducer';
-import { hasInspectionLoadedSelector } from './store/inspection.selector';
-import { loadInspectionRunAction } from './store/inspection.action';
+import { hasInspectionLoadedSelector } from './store/selectors/inspection.selector';
+import { loadInspectionRunAction } from './store/actions/inspection.action';
 
 @Injectable()
 export class InspectionRunResolver implements Resolve<boolean> {

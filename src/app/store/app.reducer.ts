@@ -1,5 +1,3 @@
-import { InspectionState, InspectionReducer } from './../modules/inspections/store/inspection.reducer';
-import { ContractModuleState } from './../modules/contracts/store/reducers/index';
 import { TagsState, TagsReducer } from './../modules/tags/store/reducers/tags.reducer';
 import { ContractProductsState, ProductsReducer } from './../modules/products/store/products.reducer';
 import { ActionReducerMap } from '@ngrx/store';
@@ -14,7 +12,6 @@ export interface AppState {
   venues?: VenuesState,
   products?: ContractProductsState,
   tags?: TagsState,
-  inspection?: InspectionState,
   auth: AuthState,
   userMgmt?: UserMgmtState
 }
@@ -24,7 +21,6 @@ export const reducers: ActionReducerMap<AppState> = {
   venues: VenuesReducer,
   products: ProductsReducer,
   tags: TagsReducer,
-  inspection: InspectionReducer,
   auth: AuthReducer,
   userMgmt: UserMgmtReducer
 };

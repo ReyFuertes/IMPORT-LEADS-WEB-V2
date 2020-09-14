@@ -3,12 +3,14 @@ import { InspectionRunCommentDialogComponent } from '../../../dialogs/components
 import { InspectionCommentDialogComponent } from '../../../dialogs/components/inspection-comments/inspection-comments-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, Input, SimpleChanges, OnChanges, ChangeDetectorRef } from '@angular/core';
-import { IInspectionRun, InspectionVeriType } from '../../inspections.models';
+import { IInsChecklistTerm, IInspectionRun, InspectionVeriType } from '../../inspections.models';
 import * as _ from 'lodash';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { Store } from '@ngrx/store';
-import { updateSourceTermAction } from '../../store/inspection.action';
 import { IContractTerm } from 'src/app/modules/contracts/contract.model';
+import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
+import { takeUntil } from 'rxjs/operators';
+import { saveInsChecklistAction } from '../../store/actions/inspection-checklist.action';
 
 @Component({
   selector: 'il-inspection-run-category-row',
@@ -16,51 +18,78 @@ import { IContractTerm } from 'src/app/modules/contracts/contract.model';
   styleUrls: ['./inspection-run-category-row.component.scss']
 })
 
-export class InspectionRunCategoryRowComponent implements OnInit, OnChanges {
+export class InspectionRunCategoryRowComponent extends GenericDestroyPageComponent implements OnInit {
   public verifOptions: ISimpleItem[] = [
     { label: 'Ok', value: 'ok' },
     { label: 'Failed', value: 'failed' },
     { label: 'Comment', value: 'comment' }
   ];
   public inspectionVeriType = InspectionVeriType;
-
-  @Input() public row: IContractTerm;
   public term: IContractTerm;
 
-  constructor(private store: Store<AppState>, private cdRef: ChangeDetectorRef, public dialog: MatDialog) { }
+  @Input() public row: IInsChecklistTerm;
+  @Input() public inspectId: string;
 
-  ngOnInit() { }
+  constructor(private store: Store<AppState>, private cdRef: ChangeDetectorRef, public dialog: MatDialog) {
+    super();
+  }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes)
+  ngOnInit() {
+    console.log('row', this.row)
   }
 
   public onRemarks(event: any): void {
-    console.log(event)
   }
 
   public isVerified(verification: string): boolean {
     return verification !== null && verification !== this.inspectionVeriType?.ok
   }
 
-  public handleSelOption(option: ISimpleItem, item: IContractTerm): void {
-    const prevSelection = Object.assign({}, item, { verification: item.verification });
-  
+  public handleSelOption(option: ISimpleItem, item: IInsChecklistTerm): void {
+    const prevSelection = Object.assign({}, item, {
+      checklist_item: {
+        verification: item.checklist_item.verification
+      }
+    });
+
     if (option.label !== 'Ok') {
       const dialogRef = this.dialog.open(InspectionCommentDialogComponent, {});
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.row.verification = option.value;
-        } else {
-          this.row.verification = null;
-          setTimeout(() => {
-            this.row.verification = prevSelection.verification
-          });
-        }
-        this.cdRef.detectChanges();
-      });
+      dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+        .subscribe((result) => {
+          if (result) {
+            this.row.checklist_item.verification = option.value;
+
+            /* save verification and comments */
+            this.store.dispatch(saveInsChecklistAction({
+              payload: {
+                verification: this.row?.checklist_item?.verification,
+                comment: result.comments,
+                inspection_run: { id: this.inspectId },
+                contract_term: { id: item.id }
+              }
+            }));
+          } else {
+            this.row = Object.assign({}, this.row, {
+              checklist_item: {
+                verification: null
+              }
+            });
+            setTimeout(() => {
+              this.row = Object.assign({}, this.row, {
+                checklist_item: {
+                  verification: prevSelection.checklist_item.verification
+                }
+              });
+            });
+          }
+          this.cdRef.detectChanges();
+        });
     } else {
-      this.row.verification = option.value;
+      this.row = Object.assign({}, this.row, {
+        checklist_item: {
+          verification: option.value
+        }
+      });
     }
   }
 

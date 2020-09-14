@@ -4,11 +4,9 @@
       <h4>{{ source?.category }}</h4>
     </div>
     <table>
-      <tbody>
-        <ng-container *ngFor="let row of source?.terms; let i = index">
-          <il-inspection-run-category-row [row]="row"></il-inspection-run-category-row>
-        </ng-container>
-      </tbody>
+      <ng-container *ngFor="let row of source?.terms; let i = index">
+        <il-inspection-run-category-row [inspectId]="item?.id" [row]="row"></il-inspection-run-category-row>
+      </ng-container>
     </table>
   </div>
 </div>

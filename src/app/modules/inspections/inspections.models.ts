@@ -1,9 +1,21 @@
 import { ISimpleItem } from './../../shared/generics/generic.model';
 import { IUser } from '../user-management/user-mgmt.model';
-import { ISavedChecklistItem, IContractProduct, IContractTerm, IContractCategory } from '../contracts/contract.model';
+import { IContractProduct, IContractTerm, IContractCategory } from '../contracts/contract.model';
 import { IVenue } from '../venues/venues.models';
 import { IProduct } from '../products/products.model';
 
+export interface IInsChecklistTerm {
+  id?: string;
+  checklist_item: {
+    id?: string;
+    verification?: string;
+    comment?: string;
+    created_at?: string;
+    updated_at?: string;
+  }
+  term_description?: string;
+  term_name?: string;
+}
 export enum InspectionVeriType {
   ok = 'ok',
   failed = 'failed',
@@ -11,27 +23,39 @@ export enum InspectionVeriType {
 }
 export interface IInspectionChecklist {
   id?: string;
-  verification?: InspectionVeriType;
-  remarks?: string;
+  verification?: string;
+  comment?: string;
   inspection_run?: IInspectionRun;
+  contract_term?: IContractTerm
+}
+export interface IInsCheckItem {
+  id?: string;
+  verification?: string;
+  comment?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 export interface IInspectionRun {
   id?: string;
+  checklist?: IInsChecklist;
+}
+export interface IInspectionRunPayload {
+  id?: string;
+  saved_checklist?: IInsChecklist;
+}
+export interface IInsChecklist {
+  id?: string;
+  checklist_name?: string;
+  desired_run_date?: string;
   created_at?: string;
-  saved_checklist_id?: string;
   updated_at?: string;
-  saved_checklist?: {
-    id?: string;
-    checklist_name?: string;
-    desired_run_date?: string;
-    created_at?: string;
-    updated_at?: string;
-    checklist_items?: {
-      contract_product: IContractProduct,
-      contract_term: IContractTerm,
-      contract_category: IContractCategory
-    }[]
-  };
+  items?: IInspectionRunItem[]
+}
+export interface IInspectionRunItem {
+  contract_product?: IContractProduct,
+  contract_term?: IContractTerm,
+  contract_category?: IContractCategory,
+  checklist_item?: IInsCheckItem
 }
 export class IFinishedInspection { }
 export class IActiveInspection {

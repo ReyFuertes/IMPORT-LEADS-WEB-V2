@@ -1,4 +1,3 @@
-import { ContractModuleState } from './index';
 import { loadContractProductSuccess, updateContractProductsSuccess, removeSelectedProductAction, selectProductAction } from './../actions/contract-product.action';
 import { IContractProduct } from './../../contract.model';
 import { createReducer, on, Action } from "@ngrx/store";

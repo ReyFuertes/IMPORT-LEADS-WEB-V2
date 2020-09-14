@@ -1,6 +1,6 @@
-import { IActiveInspection, IInspectionRun, IInspectionChecklist } from './../inspections.models';
-import { IContractChecklist, IContractTerm } from './../../contracts/contract.model';
 import { createAction, props } from '@ngrx/store';
+import { IContractTerm } from 'src/app/modules/contracts/contract.model';
+import { IActiveInspection, IInspectionChecklist, IInspectionRun, IInspectionRunPayload } from '../../inspections.models';
 
 export enum InspectionActionTypes {
   loadActiveInspectionAction = '[Inspection Checklist] load active inspection',
@@ -9,8 +9,8 @@ export enum InspectionActionTypes {
   runInspectionSuccessAction = '[Inspection Run] run inspection (success)',
   createInspectionChecklistAction = '[Inspection Run] create inspection checklist',
   createInspectionChecklistSuccessAction = '[Inspection Run] create inspection checklist (success)',
-  loadInspectionRunAction = '[Inspection Checklist] load inspection run',
-  loadInspectionRunSuccessAction = '[Inspection Checklist] load inspection run (success)',
+  loadInspectionRunAction = '[Inspection Run] load inspection run',
+  loadInspectionRunSuccessAction = '[Inspection Run] load inspection run (success)',
   clearLoadAction = '[Inspection Run] clear load',
   updateSourceTermAction = '[Inspection Run] update source term',
 }
@@ -39,7 +39,7 @@ export const createInspectionChecklistSuccessAction = createAction(
 );
 export const runInspectionAction = createAction(
   InspectionActionTypes.runInspectionAction,
-  props<{ run: IInspectionRun }>()
+  props<{ payload: IInspectionRunPayload }>()
 );
 export const runInspectionSuccessAction = createAction(
   InspectionActionTypes.runInspectionSuccessAction,

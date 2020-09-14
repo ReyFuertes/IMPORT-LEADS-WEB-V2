@@ -1,5 +1,5 @@
 import { environment } from './../../../../../environments/environment';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
@@ -17,8 +17,8 @@ export class InspectionCommentDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<InspectionCommentDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {}) {
     this.form = this.fb.group({
-      comment: [''],
-      attachment: [null]
+      comments: [null, Validators.required],
+      images: [null]
     });
   }
 

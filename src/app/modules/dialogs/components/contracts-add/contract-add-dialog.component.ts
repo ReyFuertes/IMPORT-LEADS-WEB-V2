@@ -76,7 +76,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
     this.form.controls['delivery_date'].patchValue(delivery_date);
     this.form.controls['details'].patchValue(details);
     this.form.controls['images'].patchValue(images);
-    debugger
+    
     this.store.dispatch(cacheImages({ images: Object.assign([], images) }));
   }
   ngOnInit() {

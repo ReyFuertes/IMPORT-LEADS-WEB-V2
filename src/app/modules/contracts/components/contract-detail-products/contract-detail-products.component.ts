@@ -1,4 +1,4 @@
-import { loadActiveInspectionAction } from './../../../inspections/store/inspection.action';
+import { loadActiveInspectionAction } from './../../../inspections/store/actions/inspection.action';
 import { getChecklistSelector, getChecklistItemByContractProductIds } from './../../store/selectors/contract-checklist.selector';
 import { addItemToSourceAction, addItemToChecklistTermsAction, removeTermFormChecklistAction, addItemToChecklistProductsAction, removeItemFromChecklistProductsAction, clearChecklistProductsAction, clearAllSelectedTerms, clearChecklistSourceAction, setToMultiUpdateStatusAction, resetUpdateStatusAction, processItemsToChecklistAction, addItemToChecklistEntitiesAction, processItemsToChecklistEntitiesAction, removeItemFromEntitiesByProductId } from './../../store/actions/contract-checklist.action';
 import { getSelectedProductsSelector } from './../../store/selectors/contract-product-selector';

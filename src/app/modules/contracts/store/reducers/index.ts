@@ -6,7 +6,7 @@ import * as fromCategory from '../reducers/category.reducer';
 import { ActionReducerMap } from '@ngrx/store';
 import * as fromRoot from 'src/app/store/app.reducer';
 import * as fromChecklist from '../reducers/contract-checklist.reducer';
-import * as fromInspection from '../../../inspections/store/inspection.reducer';
+import * as fromInspection from '../../../inspections/store/reducers/inspection.reducer';
 import * as fromSavedChecklistItem from '../../store/reducers/saved-checklist-item.reducer';
 import * as fromSavedChecklist from '../../store/reducers/saved-checklist.reducer';
 

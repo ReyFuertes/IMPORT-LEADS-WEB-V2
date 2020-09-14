@@ -3,10 +3,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IInspectionRun } from '../../inspections.models';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
-import { getInspectionRunSelector } from '../../store/inspection.selector';
+import { getInspectionRunSelector } from '../../store/selectors/inspection.selector';
 
 @Component({
   selector: 'il-inspection-run-page',
@@ -31,7 +30,6 @@ export class InspectionRunPageComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.$inspectionRun = this.store.pipe(select(getInspectionRunSelector));
-    this.$inspectionRun.subscribe(res => console.log('inspectionRun', res))
   }
 
   public onBack(): void {

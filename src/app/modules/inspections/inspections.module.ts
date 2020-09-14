@@ -1,5 +1,5 @@
 import { EffectsModule } from '@ngrx/effects';
-import { InspectionEffect } from './store/inspection.effect';
+import { InspectionEffect } from './store/effects/inspection.effect';
 import { StoreModule } from '@ngrx/store';
 import { ChecklistService } from './../contracts/services/contract-checklist.service';
 import { InspectionReportCommentsComponent } from './components/inspection-report-comments/inspection-report-comments.component';
@@ -39,13 +39,14 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ChartsModule } from 'ng2-charts';
 import { InspectionActivePanelComponent } from './components/inspection-active-panel/inspection-active-panel.component';
 import { InspectionFinishedPanelComponent } from './components/inspection-finished-panel/inspection-finished-panel.component';
-import { InspectionReducer } from './store/inspection.reducer';
 import { SavedChecklistService } from '../contracts/services/saved-checklist';
 import { MatRadioModule } from '@angular/material/radio';
 import { InspectionChecklistService, InspectionRunService } from './inspections.service';
 import { InspectionRunResolver } from './inspection-run.resolver';
 import { InspectionRunCategoryComponent } from './components/inspection-run-category/inspection-run-category.component';
 import { InspectionRunCategoryRowComponent } from './components/inspection-run-category-row/inspection-run-category-row.component';
+import { reducers } from './store/reducers';
+import { InspectionChecklistEffect } from './store/effects/inspection-checklist.effect';
 
 const routes: Routes = [
   {
@@ -102,9 +103,10 @@ const primeNgModules = [];
     ...materialModules,
     ...primeNgModules,
     RouterModule.forChild(routes),
-    StoreModule.forFeature('inspection', InspectionReducer),
+    StoreModule.forFeature('inspectionModule', reducers),
     EffectsModule.forFeature([
-      InspectionEffect
+      InspectionEffect,
+      InspectionChecklistEffect
     ])
   ],
   exports: [],

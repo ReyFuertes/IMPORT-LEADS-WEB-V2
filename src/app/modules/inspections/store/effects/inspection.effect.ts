@@ -1,13 +1,13 @@
-import { IActiveInspection, IInspectionChecklist, IInspectionRun } from './../inspections.models';
-import { loadActiveInspectionSuccessAction, runInspectionAction, runInspectionSuccessAction, createInspectionChecklistAction, createInspectionChecklistSuccessAction, loadInspectionRunAction, loadInspectionRunSuccessAction } from './inspection.action';
+import { IActiveInspection, IInspectionChecklist, IInspectionRun } from './../../inspections.models';
+import { loadActiveInspectionSuccessAction, runInspectionAction, runInspectionSuccessAction, createInspectionChecklistAction, createInspectionChecklistSuccessAction, loadInspectionRunAction, loadInspectionRunSuccessAction } from '../actions/inspection.action';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import { loadSavedChecklistAction } from '../../contracts/store/actions/saved-checklist.action';
-import { InspectionsService, InspectionRunService, InspectionChecklistService } from '../inspections.service';
+import { loadSavedChecklistAction } from '../../../contracts/store/actions/saved-checklist.action';
+import { InspectionsService, InspectionRunService, InspectionChecklistService } from '../../inspections.service';
 import { Router } from '@angular/router';
-import { AppState } from '../../contracts/store/reducers';
+import { AppState } from '../../../contracts/store/reducers';
 
 @Injectable()
 export class InspectionEffect {
@@ -31,7 +31,7 @@ export class InspectionEffect {
           }
         }),
         map((response: IInspectionChecklist) => {
-          
+
           return createInspectionChecklistSuccessAction({ response });
         })
       )
@@ -39,18 +39,17 @@ export class InspectionEffect {
   ));
   runInspectionAction$ = createEffect(() => this.actions$.pipe(
     ofType(runInspectionAction),
-    mergeMap(({ run }) => {
-      return this.inspectionRunSrv.post(run)
-        .pipe(
-          tap(({ id }: any) => {
-            if (id) { /* create an inspection checklist */
-              this.store.dispatch(createInspectionChecklistAction({
-                payload: { inspection_run: { id } }
-              }))
-            }
-          }),
-          map((response: IActiveInspection[]) => runInspectionSuccessAction({ response }))
-        )
+    mergeMap(({ payload }) => {
+      return this.inspectionRunSrv.post(payload).pipe(
+        tap(({ id }: any) => {
+          if (id) { /* create an inspection checklist */
+            this.store.dispatch(createInspectionChecklistAction({
+              payload: { inspection_run: { id } }
+            }))
+          }
+        }),
+        map((response: IActiveInspection[]) => runInspectionSuccessAction({ response }))
+      )
     })
   ));
   loadSavedChecklistAction$ = createEffect(() => this.actions$.pipe(

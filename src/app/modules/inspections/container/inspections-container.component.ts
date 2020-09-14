@@ -1,9 +1,7 @@
-import { loadActiveInspectionAction } from './../store/inspection.action';
 import { AppState } from 'src/app/store/app.reducer';
 import { GenericContainer } from './../../../shared/generics/generic-container';
 import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { loadSavedChecklistAction } from '../../contracts/store/actions/saved-checklist.action';
 
 @Component({
   selector: 'il-inspections-container',

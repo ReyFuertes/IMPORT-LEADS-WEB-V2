@@ -1,4 +1,3 @@
-import { ISimpleItem } from './../../../../shared/generics/generic.model';
 import { Component, OnInit, Input } from '@angular/core';
 import { IActiveInspection } from '../../inspections.models';
 
@@ -14,7 +13,6 @@ export class InspectionPanelDetailComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.detail)
   }
 
   public get getProducts(): any {

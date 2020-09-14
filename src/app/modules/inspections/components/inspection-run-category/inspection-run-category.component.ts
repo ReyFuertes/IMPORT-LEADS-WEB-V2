@@ -12,7 +12,7 @@ import { Store } from '@ngrx/store';
 })
 
 export class InspectionRunCategoryComponent implements OnInit {
-  public displayedColumns: string[] = ['term_name', 'term_description', 'verification', 'remarks'];
+  public displayedColumns: string[] = ['term_name', 'term_description', 'verification', 'Comments'];
   public dataSource: any[];
   public inspectionVeriType = InspectionVeriType;
   public termVerifications: any[] = [];
@@ -23,12 +23,14 @@ export class InspectionRunCategoryComponent implements OnInit {
   constructor(private store: Store<AppState>, private cdRef: ChangeDetectorRef, public dialog: MatDialog) { }
 
   ngOnInit() {
-    let source = this.item?.saved_checklist?.checklist_items.map(i => {
+    let source = this.item?.checklist?.items.map(i => {
       return {
         category: i.contract_category.category.category_name,
         terms: Object.assign({}, i.contract_term, {
-          verification: i.contract_term?.verification ? i.contract_term.verification : this.inspectionVeriType.ok
-        })
+          checklist_item: Object.assign({}, i.checklist_item, {
+            verification: i.checklist_item?.verification ? i.checklist_item.verification : this.inspectionVeriType.ok,
+          })
+        }),
       }
     }) || null;
 
@@ -40,6 +42,7 @@ export class InspectionRunCategoryComponent implements OnInit {
       result[category].terms.push({ ...terms });
       return result;
     }, {}));
+
 
   }
 }

@@ -1,5 +1,5 @@
-import { IActiveInspection, IFinishedInspection, IInspectionRun } from './../inspections.models';
-import { loadActiveInspectionSuccessAction, loadInspectionRunSuccessAction, clearLoadAction, updateSourceTermAction } from './inspection.action';
+import { IActiveInspection, IFinishedInspection, IInspectionRun } from './../../inspections.models';
+import { loadActiveInspectionSuccessAction, loadInspectionRunSuccessAction, clearLoadAction, updateSourceTermAction } from '../actions/inspection.action';
 import { createReducer, on, Action } from "@ngrx/store";
 export interface InspectionState {
   loaded?: boolean;
@@ -13,13 +13,13 @@ export const initialState: InspectionState = {
   finishedInspection: null,
   runInspection: null
 };
-const inspectionReducer = createReducer(
+const reducer = createReducer(
   initialState,
   on(updateSourceTermAction, (state, action) => {
     /* override the term */
     let newState = Object.assign({}, state);
     let checklist_items: any;
-    checklist_items = newState?.runInspection?.saved_checklist?.checklist_items?.map((item, idx) => {
+    checklist_items = newState?.runInspection?.checklist?.items?.map((item, idx) => {
       if (item.contract_term.id === action.term.id) {
         return Object.assign({}, item, { contract_term: action.term });
       }
@@ -42,5 +42,5 @@ const inspectionReducer = createReducer(
   })
 );
 export function InspectionReducer(state: InspectionState, action: Action) {
-  return inspectionReducer(state, action);
+  return reducer(state, action);
 }

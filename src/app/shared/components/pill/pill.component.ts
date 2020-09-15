@@ -1,4 +1,4 @@
-import { PillState, IContractProduct } from './../../../modules/contracts/contract.model';
+import { PillStateType, IContractProduct } from './../../../modules/contracts/contract.model';
 import { ISimpleItem } from './../../generics/generic.model';
 import { GenericControl } from './../../generics/generic-control';
 import { environment } from './../../../../environments/environment';
@@ -18,13 +18,13 @@ export class PillComponent extends GenericControl<ISimpleItem> implements OnInit
   @Input() public selectable: boolean = false;
   @Input() public enableHighlight: boolean = false;
   @Input() public enabled: boolean = true;
-  @Input() public state: PillState;
+  @Input() public state: PillStateType;
   @Input() public size: string = 'medium';
   @Input() public reset: boolean = false;
   @Input() public hasRemoveIcon: boolean = true;
   @Input() public isSelected: boolean = false;
   @Output() public removeEmitter = new EventEmitter<number>();
-  @Output() public stateEmitter = new EventEmitter<PillState>();
+  @Output() public stateEmitter = new EventEmitter<PillStateType>();
   @Output() public deSelectEmitter = new EventEmitter<ISimpleItem>();
   @Output() public preSelectEmitter = new EventEmitter<ISimpleItem>();
 

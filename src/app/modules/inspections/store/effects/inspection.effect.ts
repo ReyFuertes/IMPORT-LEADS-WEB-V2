@@ -42,10 +42,8 @@ export class InspectionEffect {
     mergeMap(({ payload }) => {
       return this.inspectionRunSrv.post(payload).pipe(
         tap(({ id }: any) => {
-          if (id) { /* create an inspection checklist */
-            this.store.dispatch(createInspectionChecklistAction({
-              payload: { inspection_run: { id } }
-            }))
+          if (id) {
+            this.router.navigateByUrl(`/dashboard/inspections/${id}/run`);
           }
         }),
         map((response: IActiveInspection[]) => runInspectionSuccessAction({ response }))

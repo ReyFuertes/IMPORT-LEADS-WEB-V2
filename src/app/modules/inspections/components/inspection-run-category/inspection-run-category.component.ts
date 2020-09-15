@@ -25,7 +25,9 @@ export class InspectionRunCategoryComponent implements OnInit {
   ngOnInit() {
     let source = this.item?.checklist?.items.map(i => {
       return {
+        id: i?.contract_category?.id,
         category: i.contract_category.category.category_name,
+        saved_checklist: { id: this.item?.checklist.id },
         terms: Object.assign({}, i.contract_term, {
           checklist_item: Object.assign({}, i.checklist_item, {
             verification: i.checklist_item?.verification ? i.checklist_item.verification : this.inspectionVeriType.ok,
@@ -34,16 +36,17 @@ export class InspectionRunCategoryComponent implements OnInit {
       }
     }) || null;
 
-    this.dataSource = Object.values(source.reduce((result, { category, terms, }) => {
+    this.dataSource = Object.values(source.reduce((result, { id, saved_checklist, category, terms, }) => {
       if (!result[category]) result[category] = { /* Create new group */
+        id,
+        saved_checklist,
         category,
         terms: []
       };
       result[category].terms.push({ ...terms });
       return result;
     }, {}));
-
-
+    console.log('item', this.dataSource)
   }
 }
 

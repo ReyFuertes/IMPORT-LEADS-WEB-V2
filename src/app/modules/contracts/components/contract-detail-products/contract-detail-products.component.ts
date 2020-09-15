@@ -9,7 +9,7 @@ import { getAllContractProductsSelector } from './../../store/selectors/contract
 import { addContractProducts, deleteContractProduct, updateContractProduct, selectProductAction, removeSelectedProductAction, clearPreSelectProducts } from './../../store/actions/contract-product.action';
 import { AppState } from 'src/app/store/app.reducer';
 import { Store, select } from '@ngrx/store';
-import { PillState, IContract, IContractProduct, IContractChecklist, IContractChecklistItem, IContractTerm, IOverrideChecklistItem, ICommonIdPayload, IContractTermProduct, ProductActionStatus } from './../../contract.model';
+import { PillStateType, IContract, IContractProduct, IContractChecklist, IContractChecklistItem, IContractTerm, IOverrideChecklistItem, ICommonIdPayload, IContractTermProduct, ProductStatusType } from './../../contract.model';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ISimpleItem } from './../../../../shared/generics/generic.model';
@@ -36,7 +36,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   public form: FormGroup;
   public hasSubProducts: boolean = false;
   public isEditProduct: boolean = false;
-  public state: PillState = PillState.default;
+  public state: PillStateType = PillStateType.default;
   public suggestions: ISimpleItem[];
   public isDisabled: boolean = false;
   public initInputProduct: boolean = false;
@@ -204,7 +204,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       /* perform apply and override here */
       if (this.checklistSource && this.checklistProducts.length >= 1) {
         const action = this.isProductHasChecklist(item.id)
-          ? ProductActionStatus.Override : ProductActionStatus.Apply;
+          ? ProductStatusType.Override : ProductStatusType.Apply;
 
         if (this.isProductHasChecklist(item.id) /* if the selected product has a checklist */
           /* if the selected product doesnt have a checklist and the source has a checklist */
@@ -241,7 +241,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
     this.store.dispatch(processItemsToChecklistAction());
   }
 
-  private overrideOrApply(item: ICommonIdPayload, action: ProductActionStatus): void {
+  private overrideOrApply(item: ICommonIdPayload, action: ProductStatusType): void {
     const dialogRef = this.dialog.open(ConfirmationComponent, {
       width: '410px',
       data: { action }
@@ -249,7 +249,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
     dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
       .subscribe(result => {
         if (result) {
-          if (action === ProductActionStatus.Override) {
+          if (action === ProductStatusType.Override) {
             /* remove entities on selected product */
             this.store.dispatch(removeItemFromEntitiesByProductId({ id: item.id }));
 
@@ -261,7 +261,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
               this.store.dispatch(processItemsToChecklistAction());
             }, 100);
 
-          } else if (action === ProductActionStatus.Apply) {
+          } else if (action === ProductStatusType.Apply) {
             this.store.dispatch(addItemToChecklistProductsAction({ item }));
           }
           /* process to checklist entities */

@@ -3,7 +3,7 @@ import { getActiveInspectionsSelector } from './../../store/selectors/inspection
 import { AppState } from './../../../contracts/store/reducers/index';
 import { Store, select } from '@ngrx/store';
 import { IActiveInspection } from './../../inspections.models';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { getAllSavedChecklistSelector } from 'src/app/modules/contracts/store/selectors/saved-checklist.selector';
 import { ISavedChecklistItem } from 'src/app/modules/contracts/contract.model';
 import { takeUntil, tap } from 'rxjs/operators';
@@ -17,7 +17,7 @@ import { loadSavedChecklistAction } from 'src/app/modules/contracts/store/action
   styleUrls: ['./inspection-page.component.scss']
 })
 
-export class InspectionPageComponent extends GenericDestroyPageComponent implements OnInit {
+export class InspectionPageComponent extends GenericDestroyPageComponent implements OnInit, AfterViewInit {
   public activeCols: ISimpleItem[] = [{
     label: 'Contract Name',
     value: '35'
@@ -57,17 +57,21 @@ export class InspectionPageComponent extends GenericDestroyPageComponent impleme
   public $savedChecklists: Observable<IActiveInspection[]>;
   public activeInspections: IActiveInspection[];
 
-  constructor(private store: Store<AppState>) {
+  constructor(private cdRef: ChangeDetectorRef, private store: Store<AppState>) {
     super();
+  }
 
+  ngOnInit() {
     this.$savedChecklists = this.store.pipe(select(getActiveInspectionsSelector));
     this.$savedChecklists.pipe(takeUntil(this.$unsubscribe),
       tap((res) => {
         if (res) this.activeInspections = res
       })).subscribe();
+
+    this.store.dispatch(loadSavedChecklistAction());
   }
 
-  ngOnInit() {
-    this.store.dispatch(loadSavedChecklistAction());
+  ngAfterViewInit(): void {
+    this.cdRef.detectChanges();
   }
 }

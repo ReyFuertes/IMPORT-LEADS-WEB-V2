@@ -1,9 +1,8 @@
 import { ITag } from './../tags/tags.model';
 import { IProduct } from './../products/products.model';
 import { IUser } from '../user-management/user-mgmt.model';
-import { InspectionVeriType } from '../inspections/inspections.models';
 
-export enum ProductActionStatus {
+export enum ProductStatusType {
   Override = 1,
   Apply = 2
 }
@@ -52,11 +51,11 @@ export interface IContractCategoryTerm {
 export interface IContractChecklistItem extends IChecklist {
   contract_product?: { id?: string, product?: IProduct };
   user?: IUser;
-  created_at?: string;
-  updated_at?: string;
 }
 export interface IContractChecklist extends IChecklist {
   checklist_product?: { id: string }[];
+  created_at?: string;
+  updated_at?: string;
 }
 export interface IChecklist extends ICoreModel {
   contract_contract?: { id: string };
@@ -93,7 +92,7 @@ export interface IProductImage extends ICoreModel {
   mimetype?: string;
   contractId?: string;
 }
-export enum PillState {
+export enum PillStateType {
   default = 0,
   reset = 1
 }

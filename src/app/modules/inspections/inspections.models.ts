@@ -1,6 +1,6 @@
 import { ISimpleItem } from './../../shared/generics/generic.model';
 import { IUser } from '../user-management/user-mgmt.model';
-import { IContractProduct, IContractTerm, IContractCategory } from '../contracts/contract.model';
+import { IContractProduct, IContractTerm, IContractCategory, ISavedChecklist } from '../contracts/contract.model';
 import { IVenue } from '../venues/venues.models';
 import { IProduct } from '../products/products.model';
 
@@ -26,7 +26,9 @@ export interface IInspectionChecklist {
   verification?: string;
   comment?: string;
   inspection_run?: IInspectionRun;
-  contract_term?: IContractTerm
+  contract_term?: IContractTerm;
+  contract_category?: IContractCategory,
+  saved_checklist?: ISavedChecklist
 }
 export interface IInsCheckItem {
   id?: string;

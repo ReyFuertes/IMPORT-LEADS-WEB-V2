@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Menu } from './../../../../shared/generics/generic.model';
 import { IActiveInspection } from './../../inspections.models';
 import { environment } from './../../../../../environments/environment';
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
 import { runInspectionAction, clearLoadAction } from '../../store/actions/inspection.action';
 
@@ -14,7 +14,7 @@ import { runInspectionAction, clearLoadAction } from '../../store/actions/inspec
   templateUrl: './inspection-active-panel.component.html',
   styleUrls: ['./inspection-active-panel.component.scss']
 })
-export class InspectionActivePanelComponent extends GenericRowComponent implements OnInit, OnChanges {
+export class InspectionActivePanelComponent extends GenericRowComponent implements OnInit, OnChanges, AfterViewInit {
   public apiImagePath: string = environment.apiImagePath;
   public svgPath: string = environment.svgPath;
   public imgPath: string = environment.imgPath;
@@ -41,7 +41,7 @@ export class InspectionActivePanelComponent extends GenericRowComponent implemen
   @Input() public activeInspections: IActiveInspection[];
   @Input() public isCategory: boolean = false;
 
-  constructor(private store: Store<AppState>, private router: Router) {
+  constructor(private cdRef: ChangeDetectorRef, private store: Store<AppState>, private router: Router) {
     super();
   }
 
@@ -52,6 +52,10 @@ export class InspectionActivePanelComponent extends GenericRowComponent implemen
   }
 
   ngOnInit() { }
+
+  ngAfterViewInit(): void {
+    this.cdRef.detectChanges();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.store.dispatch(clearLoadAction());

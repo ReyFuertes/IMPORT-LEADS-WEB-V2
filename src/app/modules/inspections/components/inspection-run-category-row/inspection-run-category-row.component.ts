@@ -29,16 +29,18 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
 
   @Input() public row: IInsChecklistTerm;
   @Input() public inspectId: string;
+  @Input() public categoryId: string;
+  @Input() public checklistId: string;
 
   constructor(private store: Store<AppState>, private cdRef: ChangeDetectorRef, public dialog: MatDialog) {
     super();
   }
 
   ngOnInit() {
+    console.log(this.categoryId)
   }
 
-  public onRemarks(event: any): void {
-  }
+  public onRemarks(event: any): void { }
 
   public isVerified(verification: string): boolean {
     return verification !== null && verification !== this.inspectionVeriType?.ok
@@ -50,21 +52,23 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
         verification: item.checklist_item.verification
       }
     });
-
+    
     if (option.label !== 'Ok') {
       const dialogRef = this.dialog.open(InspectionCommentDialogComponent, {});
       dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
         .subscribe((result) => {
           if (result) {
             this.row.checklist_item.verification = option.value;
-
+            
             /* save verification and comments */
             this.store.dispatch(saveInsChecklistAction({
               payload: {
                 verification: this.row?.checklist_item?.verification,
                 comment: result.comments,
                 inspection_run: { id: this.inspectId },
-                contract_term: { id: item.id }
+                contract_term: { id: item.id },
+                contract_category: { id: this.categoryId },
+                saved_checklist: { id: this.checklistId }
               }
             }));
           } else {

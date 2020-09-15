@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ISimpleItem, Menu } from './../../../../shared/generics/generic.model';
 import { InspectionPanelModel } from './../../inspections.models';
 import { environment } from './../../../../../environments/environment';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
 
 @Component({
@@ -11,14 +11,14 @@ import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
   templateUrl: './inspection-finished-panel.component.html',
   styleUrls: ['./inspection-finished-panel.component.scss']
 })
-export class InspectionFinishedPanelComponent extends GenericRowComponent implements OnInit {
+export class InspectionFinishedPanelComponent extends GenericRowComponent implements OnInit, AfterViewInit {
   public svgPath: string = environment.svgPath;
   public imgPath: string = environment.imgPath;
   public menus: Menu[];
   @Input() public colsHeader: Array<{ label: string, width?: string | number }>;
   @Input() public items: InspectionPanelModel[];
   @Input() public isCategory: boolean = false;
-  constructor(private router: Router) {
+  constructor(private cdRef: ChangeDetectorRef, private router: Router) {
     super();
   }
 
@@ -42,6 +42,10 @@ export class InspectionFinishedPanelComponent extends GenericRowComponent implem
         icon: 'delete-icon-red.svg'
       }
     ];
+  }
+
+  ngAfterViewInit(): void {
+    this.cdRef.detectChanges();
   }
 
   public dragStarted(event: any): void {

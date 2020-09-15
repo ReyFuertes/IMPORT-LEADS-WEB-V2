@@ -16,7 +16,7 @@ export class InspectionChecklistEffect {
     mergeMap(({ payload }) => {
       return this.insChecklistSrv.post(payload).pipe(
         tap((response: IInspectionChecklist) => {
-          if (response && response.inspection_run) {
+          if (response && response?.inspection_run) {
             this.store.dispatch(loadInspectionRunAction({ id: response?.inspection_run?.id }));
           }
         }),

@@ -5,7 +5,7 @@ import { ConfirmationComponent } from './components/confirmation/confirmation.co
 import { InspectionRunCommentDialogComponent } from './components/inspection-run-comment/inspection-run-comment-dialog.component';
 import { ContractCategoryTitleDialogComponent } from './components/contract-category-title/contract-category-title-dialog.component';
 import { ContractCategoryDialogComponent } from './components/contract-category/contract-category-dialog.component';
-import { InspectionCommentDialogComponent } from './components/inspection-comments/inspection-comments-dialog.component';
+import { InspectionCommentDialogComponent } from './components/inspection-comment/inspection-comment-dialog.component';
 import { BriefDialogComponent } from './components/brief/brief-dialog.component';
 import { AQLDialogComponent } from './components/aql/aql-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';

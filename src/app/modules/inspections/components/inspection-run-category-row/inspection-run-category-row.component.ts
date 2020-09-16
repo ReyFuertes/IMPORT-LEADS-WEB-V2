@@ -1,6 +1,5 @@
 import { AddEditState, ISimpleItem } from '../../../../shared/generics/generic.model';
-import { InspectionRunCommentDialogComponent } from '../../../dialogs/components/inspection-run-comment/inspection-run-comment-dialog.component';
-import { InspectionCommentDialogComponent } from '../../../dialogs/components/inspection-comments/inspection-comments-dialog.component';
+import { InspectionCommentDialogComponent } from '../../../dialogs/components/inspection-comment/inspection-comment-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, Input, SimpleChanges, OnChanges, ChangeDetectorRef } from '@angular/core';
 import { IInsChecklistTerm, IInspectionRun, InspectionVeriType } from '../../inspections.models';
@@ -10,7 +9,9 @@ import { Store } from '@ngrx/store';
 import { IContractTerm } from 'src/app/modules/contracts/contract.model';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { takeUntil } from 'rxjs/operators';
-import { saveInsChecklistAction } from '../../store/actions/inspection-checklist.action';
+import { deleteInsChecklistAction, getInsChecklistAction, saveInsChecklistAction } from '../../store/actions/inspection-checklist.action';
+import { ModalStateType } from 'src/app/models/generic.model';
+import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
 
 @Component({
   selector: 'il-inspection-run-category-row',
@@ -30,36 +31,29 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
   @Input() public row: IInsChecklistTerm;
   @Input() public inspectId: string;
   @Input() public categoryId: string;
-  @Input() public checklistId: string;
+  @Input() public savedChecklistId: string;
+  @Input() public runId: string;
 
   constructor(private store: Store<AppState>, private cdRef: ChangeDetectorRef, public dialog: MatDialog) {
     super();
   }
 
-  ngOnInit() {
-    console.log(this.categoryId)
-  }
-
-  public onRemarks(event: any): void { }
+  ngOnInit() { }
 
   public isVerified(verification: string): boolean {
     return verification !== null && verification !== this.inspectionVeriType?.ok
   }
 
   public handleSelOption(option: ISimpleItem, item: IInsChecklistTerm): void {
-    const prevSelection = Object.assign({}, item, {
-      checklist_item: {
-        verification: item.checklist_item.verification
-      }
-    });
-    
+    const prevSelection = Object.assign({}, item);
+
     if (option.label !== 'Ok') {
       const dialogRef = this.dialog.open(InspectionCommentDialogComponent, {});
       dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
         .subscribe((result) => {
           if (result) {
             this.row.checklist_item.verification = option.value;
-            
+
             /* save verification and comments */
             this.store.dispatch(saveInsChecklistAction({
               payload: {
@@ -68,7 +62,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
                 inspection_run: { id: this.inspectId },
                 contract_term: { id: item.id },
                 contract_category: { id: this.categoryId },
-                saved_checklist: { id: this.checklistId }
+                saved_checklist: { id: this.savedChecklistId }
               }
             }));
           } else {
@@ -79,30 +73,45 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
             });
             setTimeout(() => {
               this.row = Object.assign({}, this.row, {
-                checklist_item: {
+                checklist_item: Object.assign({}, item.checklist_item, {
                   verification: prevSelection.checklist_item.verification
-                }
+                })
               });
             });
           }
           this.cdRef.detectChanges();
         });
     } else {
-      this.row = Object.assign({}, this.row, {
-        checklist_item: {
-          verification: option.value
-        }
+      const dialogRef = this.dialog.open(ConfirmationComponent, {
+        width: '410px',
+        data: { action: 2 }
       });
+      dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+        .subscribe(result => {
+          if (result) {
+            this.store.dispatch(deleteInsChecklistAction({ id: item?.checklist_item?.id }));
+
+            this.row = Object.assign({}, this.row, {
+              checklist_item: {
+                verification: option.value
+              }
+            });
+          }
+        });
     }
   }
 
   public showComment(): void {
-    const dialogRef = this.dialog.open(InspectionRunCommentDialogComponent, {
-      data: {}
-    });
-    dialogRef.afterClosed().subscribe();
+    if (this.inspectId) {
+      this.store.dispatch(getInsChecklistAction({ id: this.runId }));
+
+      const dialogRef = this.dialog.open(InspectionCommentDialogComponent, {
+        data: { state: ModalStateType.edit, id: this.runId }
+      });
+      dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+        .subscribe(res => {
+
+        })
+    }
   }
 }
-
-
-

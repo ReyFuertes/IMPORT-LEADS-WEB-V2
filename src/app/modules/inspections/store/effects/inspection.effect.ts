@@ -5,7 +5,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { loadSavedChecklistAction } from '../../../contracts/store/actions/saved-checklist.action';
-import { InspectionsService, InspectionRunService, InspectionChecklistService } from '../../inspections.service';
+import { InspectionsService, InspectionChecklistRunService, InspectionChecklistService } from '../../inspections.service';
 import { Router } from '@angular/router';
 import { AppState } from '../../../contracts/store/reducers';
 
@@ -67,7 +67,7 @@ export class InspectionEffect {
     private router: Router,
     private store: Store<AppState>,
     private inspectionSrv: InspectionsService,
-    private inspectionRunSrv: InspectionRunService,
+    private inspectionRunSrv: InspectionChecklistRunService,
     private inspectionChecklistSrv: InspectionChecklistService
   ) { }
 }

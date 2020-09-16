@@ -46,5 +46,6 @@ export class InspectionRunCategoryComponent implements OnInit {
       result[category].terms.push({ ...terms });
       return result;
     }, {}));
+    console.log('dataSource', this.dataSource)
   }
 }

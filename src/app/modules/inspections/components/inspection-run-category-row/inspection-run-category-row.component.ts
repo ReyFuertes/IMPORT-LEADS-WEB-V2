@@ -6,7 +6,7 @@ import { IInsChecklistTerm, IInspectionRun, InspectionVeriType } from '../../ins
 import * as _ from 'lodash';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { Store } from '@ngrx/store';
-import { IContractTerm } from 'src/app/modules/contracts/contract.model';
+import { IChecklist, IContractTerm } from 'src/app/modules/contracts/contract.model';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { takeUntil } from 'rxjs/operators';
 import { deleteInsChecklistAction, getInsChecklistAction, saveInsChecklistAction } from '../../store/actions/inspection-checklist.action';
@@ -31,7 +31,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
   @Input() public row: IInsChecklistTerm;
   @Input() public inspectId: string;
   @Input() public categoryId: string;
-  @Input() public savedChecklistId: string;
+  @Input() public savedChecklist: IChecklist;
   @Input() public runId: string;
 
   constructor(private store: Store<AppState>, private cdRef: ChangeDetectorRef, public dialog: MatDialog) {
@@ -62,7 +62,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
                 inspection_run: { id: this.inspectId },
                 contract_term: { id: item.id },
                 contract_category: { id: this.categoryId },
-                saved_checklist: { id: this.savedChecklistId }
+                saved_checklist: { id: this.savedChecklist?.id }
               }
             }));
           } else {
@@ -74,7 +74,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
             setTimeout(() => {
               this.row = Object.assign({}, this.row, {
                 checklist_item: Object.assign({}, item.checklist_item, {
-                  verification: prevSelection.checklist_item.verification
+                  verification: prevSelection?.checklist_item?.verification
                 })
               });
             });
@@ -89,12 +89,12 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
       dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
         .subscribe(result => {
           if (result) {
+            debugger
             this.store.dispatch(deleteInsChecklistAction({ id: item?.checklist_item?.id }));
-
             this.row = Object.assign({}, this.row, {
-              checklist_item: {
-                verification: option.value
-              }
+              checklist_item: Object.assign({}, item.checklist_item, {
+                verification: option?.value
+              })
             });
           }
         });

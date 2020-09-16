@@ -5,7 +5,7 @@
     </div>
     <table>
       <ng-container *ngFor="let row of source?.terms; let i = index">
-        <il-inspection-run-category-row [runId]="source?.id" [savedChecklistId]="source?.saved_checklist?.id" [inspectId]="item?.id" [categoryId]="source?.id" [row]="row"></il-inspection-run-category-row>
+        <il-inspection-run-category-row [runId]="source?.id" [savedChecklist]="source?.saved_checklist" [inspectId]="item?.id" [categoryId]="source?.id" [row]="row"></il-inspection-run-category-row>
       </ng-container>
     </table>
   </div>

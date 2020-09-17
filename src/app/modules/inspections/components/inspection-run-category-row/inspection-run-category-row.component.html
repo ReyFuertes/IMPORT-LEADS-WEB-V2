@@ -8,7 +8,7 @@
     </il-radio-group>
   </td>
   <td fxFlex="120px">
-    <button *ngIf="isVerified(row?.checklist_item?.verification)" (click)="showComment()" class="il-button purple" mat-flat-button>
+    <button *ngIf="isVerified(row?.checklist_item?.verification)" (click)="showComment(row?.checklist_item?.id)" class="il-button purple" mat-flat-button>
       <span>Remarks</span>
     </button>
   </td>

@@ -30,6 +30,7 @@ export class InspectionRunPageComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.$inspectionRun = this.store.pipe(select(getInspectionRunSelector));
+    this.$inspectionRun.subscribe(res => console.log('this.$inspectionRun', res))
   }
 
   public onBack(): void {

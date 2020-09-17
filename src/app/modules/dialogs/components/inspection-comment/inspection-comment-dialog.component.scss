@@ -10,8 +10,8 @@
   @include il-dialog;
   width: 672px;
   .content {
-    height: 352px;
-    min-height: 352px;
+    height: 385px;
+    min-height: 385px;
   }
 }
 .header {
@@ -23,6 +23,7 @@ il-textarea {
 :host ::ng-deep {
   .mat-list-base .mat-list-item .mat-list-item-content, .mat-list-base .mat-list-option .mat-list-item-content {
     font-size: 14px;
+    height: 40px !important;
   }
   .mat-focused .mat-form-field-underline {
     background-color: $color-primary !important;

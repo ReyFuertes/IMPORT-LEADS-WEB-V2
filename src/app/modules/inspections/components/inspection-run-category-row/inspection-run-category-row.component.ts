@@ -12,6 +12,7 @@ import { takeUntil } from 'rxjs/operators';
 import { deleteInsChecklistAction, getInsChecklistAction, saveInsChecklistAction } from '../../store/actions/inspection-checklist.action';
 import { ModalStateType } from 'src/app/models/generic.model';
 import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
+import { InspectionChecklistService } from '../../inspections.service';
 
 @Component({
   selector: 'il-inspection-run-category-row',
@@ -83,13 +84,11 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
         });
     } else {
       const dialogRef = this.dialog.open(ConfirmationComponent, {
-        width: '410px',
-        data: { action: 2 }
+        width: '410px', data: { action: 2 }
       });
       dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
         .subscribe(result => {
           if (result) {
-            debugger
             this.store.dispatch(deleteInsChecklistAction({ id: item?.checklist_item?.id }));
             this.row = Object.assign({}, this.row, {
               checklist_item: Object.assign({}, item.checklist_item, {
@@ -101,17 +100,15 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
     }
   }
 
-  public showComment(): void {
-    if (this.inspectId) {
-      this.store.dispatch(getInsChecklistAction({ id: this.runId }));
+  public showComment(id: string): void {
+    console.log(this.row)
+    debugger
+    const dialogRef = this.dialog.open(InspectionCommentDialogComponent, {
+      data: { state: ModalStateType.edit, id }
+    });
+    dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+      .subscribe(res => {
 
-      const dialogRef = this.dialog.open(InspectionCommentDialogComponent, {
-        data: { state: ModalStateType.edit, id: this.runId }
-      });
-      dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
-        .subscribe(res => {
-
-        })
-    }
+      })
   }
 }

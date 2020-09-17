@@ -1,5 +1,5 @@
 import { MatDialog } from '@angular/material/dialog';
-import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef, OnChanges, SimpleChanges } from '@angular/core';
 import { IInspectionRun, InspectionVeriType } from '../../inspections.models';
 import * as _ from 'lodash';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
@@ -11,7 +11,7 @@ import { Store } from '@ngrx/store';
   styleUrls: ['./inspection-run-category.component.scss']
 })
 
-export class InspectionRunCategoryComponent implements OnInit {
+export class InspectionRunCategoryComponent implements OnInit, OnChanges {
   public displayedColumns: string[] = ['term_name', 'term_description', 'verification', 'Comments'];
   public dataSource: any[];
   public inspectionVeriType = InspectionVeriType;
@@ -23,6 +23,14 @@ export class InspectionRunCategoryComponent implements OnInit {
   constructor(private store: Store<AppState>, private cdRef: ChangeDetectorRef, public dialog: MatDialog) { }
 
   ngOnInit() {
+    this.processItem();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.processItem();
+  }
+
+  private processItem(): void {
     let source = this.item?.checklist?.items.map(i => {
       return {
         id: i?.contract_category?.id,
@@ -46,6 +54,5 @@ export class InspectionRunCategoryComponent implements OnInit {
       result[category].terms.push({ ...terms });
       return result;
     }, {}));
-    console.log('dataSource', this.dataSource)
   }
 }

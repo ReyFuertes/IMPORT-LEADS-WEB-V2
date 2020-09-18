@@ -40,6 +40,7 @@ export interface IInsCheckItem {
 export interface IInspectionRun {
   id?: string;
   checklist?: IInsChecklist;
+  count?: number;
 }
 export interface IInspectionRunPayload {
   id?: string;

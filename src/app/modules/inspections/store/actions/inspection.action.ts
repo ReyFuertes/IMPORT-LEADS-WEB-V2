@@ -13,7 +13,17 @@ export enum InspectionActionTypes {
   loadInspectionRunSuccessAction = '[Inspection Run] load inspection run (success)',
   clearLoadAction = '[Inspection Run] clear load',
   updateSourceTermAction = '[Inspection Run] update source term',
+  runNextInspectionAction = '[Inspection Run] run next inspection',
+  runNextInspectionSuccessAction = '[Inspection Run] run next inspection (success)',
 }
+export const runNextInspectionAction = createAction(
+  InspectionActionTypes.runNextInspectionAction,
+  props<{ payload: { id: string, count: number } }>()
+);
+export const runNextInspectionSuccessAction = createAction(
+  InspectionActionTypes.runNextInspectionSuccessAction,
+  props<{ response: any }>()
+);
 export const updateSourceTermAction = createAction(
   InspectionActionTypes.updateSourceTermAction,
   props<{ term: IContractTerm }>()

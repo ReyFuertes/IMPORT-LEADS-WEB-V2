@@ -6,6 +6,8 @@ import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { getInspectionRunSelector } from '../../store/selectors/inspection.selector';
+import { runInspectionAction, runNextInspectionAction } from '../../store/actions/inspection.action';
+import { IInspectionRun, IInspectionRunItem } from '../../inspections.models';
 
 @Component({
   selector: 'il-inspection-run-page',
@@ -30,7 +32,15 @@ export class InspectionRunPageComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.$inspectionRun = this.store.pipe(select(getInspectionRunSelector));
-    this.$inspectionRun.subscribe(res => console.log('this.$inspectionRun', res))
+  }
+
+  public onNext(ins: IInspectionRun): void {
+    this.store.dispatch(runNextInspectionAction({
+      payload: {
+        id: ins.id,
+        count: ins.count
+      }
+    }))
   }
 
   public onBack(): void {

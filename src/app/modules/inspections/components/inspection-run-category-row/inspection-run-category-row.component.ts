@@ -101,8 +101,6 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
   }
 
   public showComment(id: string): void {
-    console.log(this.row)
-    debugger
     const dialogRef = this.dialog.open(InspectionCommentDialogComponent, {
       data: { state: ModalStateType.edit, id }
     });

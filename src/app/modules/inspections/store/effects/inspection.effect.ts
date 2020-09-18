@@ -1,5 +1,5 @@
 import { IActiveInspection, IInspectionChecklist, IInspectionRun } from './../../inspections.models';
-import { loadActiveInspectionSuccessAction, runInspectionAction, runInspectionSuccessAction, createInspectionChecklistAction, createInspectionChecklistSuccessAction, loadInspectionRunAction, loadInspectionRunSuccessAction } from '../actions/inspection.action';
+import { loadActiveInspectionSuccessAction, runInspectionAction, runInspectionSuccessAction, createInspectionChecklistAction, createInspectionChecklistSuccessAction, loadInspectionRunAction, loadInspectionRunSuccessAction, runNextInspectionAction, runNextInspectionSuccessAction } from '../actions/inspection.action';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
@@ -11,6 +11,19 @@ import { AppState } from '../../../contracts/store/reducers';
 
 @Injectable()
 export class InspectionEffect {
+  runNextInspectionAction$ = createEffect(() => this.actions$.pipe(
+    ofType(runNextInspectionAction),
+    mergeMap(({ payload }) => {
+      return this.inspectionRunSrv.post(payload, 'next').pipe(
+        tap(({ id }: any) => {
+          if (id) this.router.navigateByUrl(`/dashboard/inspections/${id}/run`);
+        }),
+        tap(({ id }) => this.store.dispatch(loadInspectionRunAction({ id }))),
+        map((response: any) => runNextInspectionSuccessAction({ response }))
+      )
+    })
+  ));
+
   loadInspectionRunAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadInspectionRunAction),
     mergeMap(({ id }) => {
@@ -31,7 +44,6 @@ export class InspectionEffect {
           }
         }),
         map((response: IInspectionChecklist) => {
-
           return createInspectionChecklistSuccessAction({ response });
         })
       )
@@ -42,10 +54,10 @@ export class InspectionEffect {
     mergeMap(({ payload }) => {
       return this.inspectionRunSrv.post(payload).pipe(
         tap(({ id }: any) => {
-          if (id) {
+          if (id)
             this.router.navigateByUrl(`/dashboard/inspections/${id}/run`);
-          }
         }),
+        tap(({ id }) => this.store.dispatch(loadInspectionRunAction({ id }))),
         map((response: IActiveInspection[]) => runInspectionSuccessAction({ response }))
       )
     })

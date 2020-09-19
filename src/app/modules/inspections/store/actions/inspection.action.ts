@@ -15,10 +15,20 @@ export enum InspectionActionTypes {
   updateSourceTermAction = '[Inspection Run] update source term',
   runNextInspectionAction = '[Inspection Run] run next inspection',
   runNextInspectionSuccessAction = '[Inspection Run] run next inspection (success)',
+  runPrevInspectionAction = '[Inspection Run] run prev inspection',
+  runPrevInspectionSuccessAction = '[Inspection Run] run prev inspection (success)',
 }
+export const runPrevInspectionAction = createAction(
+  InspectionActionTypes.runPrevInspectionAction,
+  props<{ payload: { id: string } }>()
+);
+export const runPrevInspectionSuccessAction = createAction(
+  InspectionActionTypes.runPrevInspectionSuccessAction,
+  props<{ response: any }>()
+);
 export const runNextInspectionAction = createAction(
   InspectionActionTypes.runNextInspectionAction,
-  props<{ payload: { id: string, count: number } }>()
+  props<{ payload: { id: string } }>()
 );
 export const runNextInspectionSuccessAction = createAction(
   InspectionActionTypes.runNextInspectionSuccessAction,

@@ -24,7 +24,7 @@
     </div>
 
     <div fxFlex fxLayoutAlign="end center" fxLayoutGap="5px">
-      <button class="il-button il-bg-blue" mat-flat-button>
+      <button (click)="onPrev(inspectionRun)" class="il-button il-bg-blue" mat-flat-button>
         <img [src]="svgPath + 'arrow-left-icon-white.svg'" />
         <span>Previous</span>
       </button>

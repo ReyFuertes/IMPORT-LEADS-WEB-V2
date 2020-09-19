@@ -1,5 +1,5 @@
 import { IActiveInspection, IInspectionChecklist, IInspectionRun } from './../../inspections.models';
-import { loadActiveInspectionSuccessAction, runInspectionAction, runInspectionSuccessAction, createInspectionChecklistAction, createInspectionChecklistSuccessAction, loadInspectionRunAction, loadInspectionRunSuccessAction, runNextInspectionAction, runNextInspectionSuccessAction } from '../actions/inspection.action';
+import { loadActiveInspectionSuccessAction, runInspectionAction, runInspectionSuccessAction, createInspectionChecklistAction, createInspectionChecklistSuccessAction, loadInspectionRunAction, loadInspectionRunSuccessAction, runNextInspectionAction, runNextInspectionSuccessAction, runPrevInspectionAction, runPrevInspectionSuccessAction } from '../actions/inspection.action';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
@@ -11,6 +11,18 @@ import { AppState } from '../../../contracts/store/reducers';
 
 @Injectable()
 export class InspectionEffect {
+  runPrevInspectionAction$ = createEffect(() => this.actions$.pipe(
+    ofType(runPrevInspectionAction),
+    mergeMap(({ payload }) => {
+      return this.inspectionRunSrv.post(payload, 'prev').pipe(
+        tap(({ id }: any) => {
+          if (id) this.router.navigateByUrl(`/dashboard/inspections/${id}/run`);
+        }),
+        tap(({ id }) => this.store.dispatch(loadInspectionRunAction({ id }))),
+        map((response: any) => runPrevInspectionSuccessAction({ response }))
+      )
+    })
+  ));
   runNextInspectionAction$ = createEffect(() => this.actions$.pipe(
     ofType(runNextInspectionAction),
     mergeMap(({ payload }) => {

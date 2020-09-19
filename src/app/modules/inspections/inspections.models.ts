@@ -4,6 +4,15 @@ import { IContractProduct, IContractTerm, IContractCategory, ISavedChecklist } f
 import { IVenue } from '../venues/venues.models';
 import { IProduct } from '../products/products.model';
 
+export interface IInspectionChecklistImage {
+  id?: string;
+  image?: any;
+  filename?: string;
+  file?: File;
+  size?: any;
+  mimetype?: string;
+  inspection_checklist?: { id: string };
+}
 export interface IInsChecklistTerm {
   id?: string;
   checklist_item: {

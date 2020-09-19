@@ -9,7 +9,7 @@ import { Store } from '@ngrx/store';
 import { IChecklist, IContractTerm } from 'src/app/modules/contracts/contract.model';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { takeUntil } from 'rxjs/operators';
-import { deleteInsChecklistAction, getInsChecklistAction, saveInsChecklistAction } from '../../store/actions/inspection-checklist.action';
+import { deleteInsChecklistAction, getInsChecklistAction, saveInsChecklistAction, updateInsChecklistAction } from '../../store/actions/inspection-checklist.action';
 import { ModalStateType } from 'src/app/models/generic.model';
 import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
 import { InspectionChecklistService } from '../../inspections.service';
@@ -105,8 +105,15 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
       data: { state: ModalStateType.edit, id }
     });
     dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
-      .subscribe(res => {
-
+      .subscribe(result => {
+        if (result) {
+          this.store.dispatch(updateInsChecklistAction({
+            payload: {
+              id: result?.id,
+              comment: result?.comments
+            }
+          }));
+        }
       })
   }
 }

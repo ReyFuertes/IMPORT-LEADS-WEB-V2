@@ -1,7 +1,7 @@
 import { ContractModuleState } from './../../store/reducers/index';
 import { ContractsState } from './../../store/reducers/contract.reducer';
 import { getAllContractsSelector } from './../../store/selectors/contracts.selector';
-import { clearCachedImages } from './../../store/actions/contracts.action';
+import { clearCachedImagesAction } from './../../store/actions/contracts.action';
 import { AddEditState } from 'src/app/shared/generics/generic.model';
 import { tap, delay, take, debounceTime, takeUntil } from 'rxjs/operators'
 import { AppState, reducers } from './../../../../store/app.reducer';
@@ -48,7 +48,7 @@ export class ContractOverviewPageComponent extends GenericDestroyPageComponent i
     this.dragStart = event;
   }
   public addContractAction(): void {
-    this.store.dispatch(clearCachedImages());
+    this.store.dispatch(clearCachedImagesAction());
 
     const dialogRef = this.dialog.open(ContractAddDialogComponent, {
       data: { state: AddEditState.Add }

@@ -5,10 +5,22 @@
     </div>
     <h2>Comments on</h2>
   </div>
-  <div class="content">
+  <div [ngClass]="{'images-height': hasImgs}" class="content">
     <div fxLayoutAlign="start start" fxLayout="column" fxLayoutGap="20px">
       <il-textarea rows="5" [noResize]="true" [isFloatLabel]="false" [form]="form" controlName="comments" placeholder="Comment here..."></il-textarea>
-      <il-upload-box></il-upload-box>
+      <il-upload-box (imageEmitter)="onImageChange($event)" fxFlex="30"></il-upload-box>
+    </div>
+    <!-- inspection images -->
+    <div *ngIf="hasImgs">
+      <div cdkDropList (cdkDropListDropped)="drop($event)" fxLayout="row" class="image-list" cdkDropListOrientation="horizontal" fxLayoutAlign="start center">
+        <div class="drag-box" cdkDrag *ngFor="let cached of getInsImages" [cdkDragData]="cached" fxLayoutAlign="center center">
+          <div class="drag-placeholder" *cdkDragPlaceholder></div>
+          <div fxLayout="column" fxLayoutAlign="center end">
+            <img class="remove" (click)="onRemoveCachedImage(cached)" [src]="svgPath + 'cancel-red-16px.svg'">
+            <div class="thumb-img" [ngStyle]="{'background-image': getBg(cached?.image ? cached?.image : imgUrl + cached?.filename)}"></div>
+          </div>
+        </div>
+      </div>
     </div>
     <div>
       <mat-list role="list">

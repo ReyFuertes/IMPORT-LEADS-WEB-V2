@@ -13,7 +13,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AddEditState } from 'src/app/shared/generics/generic.model';
 import { Store, select } from '@ngrx/store';
-import { addContractAction, uploadContractImagesAction, cacheImages, updateContractAction } from 'src/app/modules/contracts/store/actions/contracts.action';
+import { addContractAction, uploadContractImagesAction, cacheImagesAction, updateContractAction } from 'src/app/modules/contracts/store/actions/contracts.action';
 import { v4 as uuid } from 'uuid';
 import { ActivatedRoute } from '@angular/router';
 import { convertBlobToBase64 } from 'src/app/shared/util/convert-to-blob';
@@ -77,7 +77,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
     this.form.controls['details'].patchValue(details);
     this.form.controls['images'].patchValue(images);
     
-    this.store.dispatch(cacheImages({ images: Object.assign([], images) }));
+    this.store.dispatch(cacheImagesAction({ images: Object.assign([], images) }));
   }
   ngOnInit() {
     /* we call these from state because the data that is stored/pushed in here is from dropped images */
@@ -148,7 +148,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
     const index: number = this.cachedImages.indexOf(image);
     if (index !== -1) {
       this.cachedImages.splice(index, 1);
-      this.store.dispatch(cacheImages({ images: this.cachedImages }));
+      this.store.dispatch(cacheImagesAction({ images: this.cachedImages }));
     }
   }
   /* when you drop an image this gets executed */
@@ -169,6 +169,6 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
           }
         }))
       .subscribe((result) => this.store
-        .dispatch(cacheImages({ images: this.cachedImages.concat([result]) })));
+        .dispatch(cacheImagesAction({ images: this.cachedImages.concat([result]) })));
   }
 }

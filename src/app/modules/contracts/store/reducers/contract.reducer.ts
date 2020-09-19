@@ -1,6 +1,6 @@
 import { addImageUploadState, removeImageUploadState } from './../actions/contracts.action';
 import { ContractModuleState } from './index';
-import { loadContractsAction, loadContractSuccess, addContractSuccess, cacheImages, clearCachedImages, updateContractSuccess, deleteContractSuccess } from '../actions/contracts.action';
+import { loadContractsAction, loadContractSuccessAction, addContractSuccessAction, cacheImagesAction, clearCachedImagesAction, updateContractSuccess, deleteContractSuccess } from '../actions/contracts.action';
 import { IContract, IProductImage, IContractProduct } from './../../contract.model';
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
@@ -35,19 +35,19 @@ const contractsReducer = createReducer(
   on(loadContractsAction, (state) => {
     return ({ ...adapter.removeAll(state) });
   }),
-  on(loadContractSuccess, (state, action) => {
+  on(loadContractSuccessAction, (state, action) => {
     return ({ ...adapter.addAll(action.items, state) })
   }),
   on(updateContractSuccess, (state, action) => {
     return adapter.updateOne({ id: action.updated.id, changes: action.updated }, state)
   }),
-  on(addContractSuccess, (state, action) => {
+  on(addContractSuccessAction, (state, action) => {
     return adapter.addOne(action.created, state)
   }),
-  on(cacheImages, (state, action) => {
+  on(cacheImagesAction, (state, action) => {
     return ({ ...state, cachedImages: action.images })
   }),
-  on(clearCachedImages, (state) => {
+  on(clearCachedImagesAction, (state) => {
     return ({ ...state, cachedImages: null })
   })
 );

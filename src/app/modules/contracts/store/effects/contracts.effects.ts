@@ -6,7 +6,7 @@ import { ContractsService } from './../../services/contracts.service';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap, tap, switchMap } from 'rxjs/operators';
-import { loadContractsAction, loadContractSuccess, addContractAction, addContractSuccess, uploadContractImagesAction, uploadContractImageSuccess, ReOrderImagesAction, updateContractAction, updateContractSuccess, deleteContractAction, deleteContractSuccess, uploadTermImageAction, addImageUploadState } from '../actions/contracts.action';
+import { loadContractsAction, loadContractSuccessAction, addContractAction, addContractSuccessAction, uploadContractImagesAction, uploadContractImageSuccessAction, ReOrderImagesAction, updateContractAction, updateContractSuccess, deleteContractAction, deleteContractSuccess, uploadTermImageAction, addImageUploadState } from '../actions/contracts.action';
 import { Store } from '@ngrx/store';
 import { appNotification } from 'src/app/store/actions/notification.action';
 
@@ -46,7 +46,7 @@ export class ContractsEffect {
         tap(() => this.store.dispatch(appNotification({ notification: { success: true, message: 'Contract successfully Added' } }))),
         map((created: IContract) => {
           if (created)
-            return addContractSuccess({ created });
+            return addContractSuccessAction({ created });
         })
       ))
   ));
@@ -55,7 +55,7 @@ export class ContractsEffect {
     ofType(loadContractsAction),
     mergeMap(({ param }) => this.contractsService.getAll(param).pipe(
       map((items: IContract[]) => {
-        return loadContractSuccess({ items });
+        return loadContractSuccessAction({ items });
       })
     ))
   ));
@@ -65,7 +65,7 @@ export class ContractsEffect {
     mergeMap(({ files }) => {
       return this.uploadService.upload(files, 'multiple').pipe(
         map((file: any) => {
-          return uploadContractImageSuccess({});
+          return uploadContractImageSuccessAction({});
         })
       )
     })

@@ -128,7 +128,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
         item.user = locaUser.user
       }
 
-      //save/upload contract
+      /* save/upload contract */
       this.store.dispatch(addContractAction({ item }));
     } else {
       this.store.dispatch(updateContractAction({ item }));

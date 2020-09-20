@@ -21,3 +21,10 @@ export class InspectionChecklistService extends BaseService<IInspectionChecklist
     super(http, 'inspection-checklist');
   }
 }
+
+@Injectable({ providedIn: 'root' })
+export class InspectionChecklistImageService extends BaseService<IInspectionChecklist | IInspectionRun> {
+  constructor(http: HttpClient) {
+    super(http, 'inspection-checklist-image');
+  }
+}

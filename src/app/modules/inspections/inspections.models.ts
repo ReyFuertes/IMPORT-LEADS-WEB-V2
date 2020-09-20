@@ -11,7 +11,7 @@ export interface IInspectionChecklistImage {
   file?: File;
   size?: any;
   mimetype?: string;
-  inspection_checklist?: { id: string };
+  inspection_checklist_run?: { id: string };
 }
 export interface IInsChecklistTerm {
   id?: string;
@@ -34,7 +34,7 @@ export interface IInspectionChecklist {
   id?: string;
   verification?: string;
   comment?: string;
-  inspection_run?: IInspectionRun;
+  inspection_checklist_run?: IInspectionRun;
   contract_term?: IContractTerm;
   contract_category?: IContractCategory,
   saved_checklist?: ISavedChecklist

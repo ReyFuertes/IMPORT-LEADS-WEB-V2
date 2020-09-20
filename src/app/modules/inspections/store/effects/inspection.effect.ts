@@ -52,7 +52,7 @@ export class InspectionEffect {
       return this.inspectionChecklistSrv.post(payload).pipe(
         tap((response: IInspectionChecklist) => {
           if (response) {
-            this.router.navigateByUrl(`/dashboard/inspections/${response?.inspection_run?.id}/run`);
+            this.router.navigateByUrl(`/dashboard/inspections/${response?.inspection_checklist_run?.id}/run`);
           }
         }),
         map((response: IInspectionChecklist) => {

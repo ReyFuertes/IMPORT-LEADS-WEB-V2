@@ -1,24 +1,51 @@
-import { IInspectionChecklist, IInspectionRun } from './../../inspections.models';
+import { IInspectionChecklist, IInspectionChecklistImage, IInspectionRun } from './../../inspections.models';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import { InspectionChecklistService } from '../../inspections.service';
+import { InspectionChecklistService, InspectionChecklistImageService } from '../../inspections.service';
 import { Router } from '@angular/router';
 import { AppState } from '../../../contracts/store/reducers';
-import { deleteInsChecklistAction, getInsChecklistAction, getInsChecklistSuccessAction, saveInsChecklistAction, saveInsChecklistSuccessAction, updateInsChecklistAction, updateInsChecklistSuccessAction } from '../../store/actions/inspection-checklist.action';
+import { deleteInsChecklistAction, getInsChecklistAction, getInsChecklistSuccessAction, saveInsChecklisImageAction, saveInsChecklisImageSuccessAction, saveInsChecklistAction, saveInsChecklistSuccessAction, updateInsChecklistAction, updateInsChecklistSuccessAction, saveInsChecklistImageFilesAction, updateInsChecklistImageFilesSuccessAction, removeInsChecklistImageAction } from '../../store/actions/inspection-checklist.action';
 import { loadInspectionRunAction } from '../actions/inspection.action';
 import { appNotification } from 'src/app/store/actions/notification.action';
+import { UploadService } from 'src/app/services/upload.service';
 
 @Injectable()
 export class InspectionChecklistEffect {
+  removeInsChecklistImageAction$ = createEffect(() => this.actions$.pipe(
+    ofType(removeInsChecklistImageAction),
+    switchMap(({ image }) =>
+      this.InsChecklistImageSrv.delete(image?.id)
+    )), { dispatch: false });
+
+  saveInsChecklistImageFilesAction$ = createEffect(() => this.actions$.pipe(
+    ofType(saveInsChecklistImageFilesAction),
+    mergeMap(({ files }) => {
+      return this.uploadSrv.upload(files, 'multiple').pipe(
+        map((response: any) => {
+          return updateInsChecklistImageFilesSuccessAction({ response });
+        })
+      )
+    })
+  ));
+  saveInsChecklisImageAction$ = createEffect(() => this.actions$.pipe(
+    ofType(saveInsChecklisImageAction),
+    mergeMap(({ payload }) => {
+      return this.InsChecklistImageSrv.post(payload).pipe(
+        map((response: IInspectionChecklistImage[]) => {
+          return saveInsChecklisImageSuccessAction({ response });
+        })
+      )
+    })
+  ));
   updateInsChecklistAction$ = createEffect(() => this.actions$.pipe(
     ofType(updateInsChecklistAction),
     mergeMap(({ payload }) => {
       return this.insChecklistSrv.patch(payload).pipe(
         tap((response: IInspectionChecklist) => {
-          if (response && response?.inspection_run) {
-            this.store.dispatch(loadInspectionRunAction({ id: response?.inspection_run?.id }));
+          if (response && response?.inspection_checklist_run) {
+            this.store.dispatch(loadInspectionRunAction({ id: response?.inspection_checklist_run?.id }));
           };
 
           this.store.dispatch(appNotification({
@@ -57,8 +84,8 @@ export class InspectionChecklistEffect {
     mergeMap(({ payload }) => {
       return this.insChecklistSrv.post(payload).pipe(
         tap((response: IInspectionChecklist) => {
-          if (response && response?.inspection_run) {
-            this.store.dispatch(loadInspectionRunAction({ id: response?.inspection_run?.id }));
+          if (response && response?.inspection_checklist_run) {
+            this.store.dispatch(loadInspectionRunAction({ id: response?.inspection_checklist_run?.id }));
           };
 
           this.store.dispatch(appNotification({
@@ -76,6 +103,8 @@ export class InspectionChecklistEffect {
     private actions$: Actions,
     private router: Router,
     private store: Store<AppState>,
-    private insChecklistSrv: InspectionChecklistService
+    private uploadSrv: UploadService,
+    private insChecklistSrv: InspectionChecklistService,
+    private InsChecklistImageSrv: InspectionChecklistImageService
   ) { }
 }

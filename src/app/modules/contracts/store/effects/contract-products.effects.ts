@@ -1,7 +1,7 @@
 import { AppState } from 'src/app/store/app.reducer';
 import { Store } from '@ngrx/store';
 import { IContractProduct } from './../../contract.model';
-import { mergeMap, map, tap } from 'rxjs/operators';
+import { mergeMap, map, tap, switchMap } from 'rxjs/operators';
 import { ContractProductService } from './../../services/contract-products.service';
 import { addContractProducts, addContractProductsSuccess, loadContractProducts, loadContractProductSuccess, deleteContractProduct, updateContractProductsSuccess, updateContractProduct } from './../actions/contract-product.action';
 import { Injectable } from '@angular/core';
@@ -53,7 +53,7 @@ export class ContractProductsEffect {
   ));
   deleteContractProduct$ = createEffect(() => this.actions$.pipe(
     ofType(deleteContractProduct),
-    mergeMap(({ id }) =>
+    switchMap(({ id }) =>
       this.contractProductService.delete(id)
     )), { dispatch: false });
 

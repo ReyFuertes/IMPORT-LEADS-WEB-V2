@@ -9,10 +9,40 @@ export enum InspectionActionTypes {
   getInsChecklistSuccessAction = '[Inspection Checklist] get checklist (success)',
   deleteInsChecklistAction = '[Inspection Checklist] delete checklist',
   addInsChecklistImageAction = '[Inspection Checklist] add checklist image',
-  removeInsChecklistImageAction = '[Inspection Checklist] remove checklist image',
+  addInsChecklistImagesAction = '[Inspection Checklist] add multiple checklist images',
   updateInsChecklistAction = '[Inspection Checklist] update checklist',
   updateInsChecklistSuccessAction = '[Inspection Checklist] update checklist (success)',
+  saveInsChecklisImageAction = '[Inspection Checklist] save checklist image',
+  saveInsChecklisImageSuccessAction = '[Inspection Checklist] save checklist image (success)',
+  saveInsChecklistImageFilesAction = '[Inspection Checklist] upload checklist image',
+  updateInsChecklistImageFilesSuccessAction = '[Inspection Checklist] upload checklist image (success)',
+  removeInsChecklistImageAction = '[Inspection Checklist] remove checklist image',
+  removeInsChecklistImageSuccessAction = '[Inspection Checklist] delete image checklist (success)',
+  clearInsChecklistImageAction = '[Inspection Checklist] clear checklist image',
 }
+export const clearInsChecklistImageAction = createAction(
+  InspectionActionTypes.clearInsChecklistImageAction
+);
+export const removeInsChecklistImageSuccessAction = createAction(
+  InspectionActionTypes.removeInsChecklistImageSuccessAction,
+  props<{ response: IInspectionChecklistImage }>()
+);
+export const saveInsChecklistImageFilesAction = createAction(
+  InspectionActionTypes.saveInsChecklistImageFilesAction,
+  props<{ files: any }>()
+);
+export const updateInsChecklistImageFilesSuccessAction = createAction(
+  InspectionActionTypes.updateInsChecklistImageFilesSuccessAction,
+  props<{ response: any }>()
+);
+export const saveInsChecklisImageAction = createAction(
+  InspectionActionTypes.saveInsChecklisImageAction,
+  props<{ payload: IInspectionChecklistImage[] }>()
+);
+export const saveInsChecklisImageSuccessAction = createAction(
+  InspectionActionTypes.saveInsChecklisImageSuccessAction,
+  props<{ response: IInspectionChecklistImage[] }>()
+);
 export const updateInsChecklistAction = createAction(
   InspectionActionTypes.updateInsChecklistAction,
   props<{ payload: IInspectionChecklist }>()
@@ -28,6 +58,10 @@ export const removeInsChecklistImageAction = createAction(
 export const addInsChecklistImageAction = createAction(
   InspectionActionTypes.addInsChecklistImageAction,
   props<{ image: IInspectionChecklistImage }>()
+);
+export const addInsChecklistImagesAction = createAction(
+  InspectionActionTypes.addInsChecklistImagesAction,
+  props<{ images: IInspectionChecklistImage[] }>()
 );
 export const deleteInsChecklistAction = createAction(
   InspectionActionTypes.deleteInsChecklistAction,

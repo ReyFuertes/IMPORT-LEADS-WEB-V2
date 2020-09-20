@@ -2,17 +2,18 @@ import { AddEditState, ISimpleItem } from '../../../../shared/generics/generic.m
 import { InspectionCommentDialogComponent } from '../../../dialogs/components/inspection-comment/inspection-comment-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, Input, SimpleChanges, OnChanges, ChangeDetectorRef } from '@angular/core';
-import { IInsChecklistTerm, IInspectionRun, InspectionVeriType } from '../../inspections.models';
+import { IInsChecklistTerm, IInspectionChecklistImage, IInspectionRun, InspectionVeriType } from '../../inspections.models';
 import * as _ from 'lodash';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { IChecklist, IContractTerm } from 'src/app/modules/contracts/contract.model';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
-import { takeUntil } from 'rxjs/operators';
-import { deleteInsChecklistAction, getInsChecklistAction, saveInsChecklistAction, updateInsChecklistAction } from '../../store/actions/inspection-checklist.action';
+import { takeUntil, tap } from 'rxjs/operators';
+import { deleteInsChecklistAction, getInsChecklistAction, saveInsChecklisImageAction, saveInsChecklistAction, saveInsChecklistImageFilesAction, updateInsChecklistAction } from '../../store/actions/inspection-checklist.action';
 import { ModalStateType } from 'src/app/models/generic.model';
 import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
 import { InspectionChecklistService } from '../../inspections.service';
+import { getInsChecklistImagesSelector } from '../../store/selectors/inspection-checklist.selector';
 
 @Component({
   selector: 'il-inspection-run-category-row',
@@ -28,15 +29,29 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
   ];
   public inspectionVeriType = InspectionVeriType;
   public term: IContractTerm;
+  public images: IInspectionChecklistImage[];
 
   @Input() public row: IInsChecklistTerm;
-  @Input() public inspectId: string;
+  @Input() public checklist_run_id: string;
   @Input() public categoryId: string;
   @Input() public savedChecklist: IChecklist;
   @Input() public runId: string;
 
   constructor(private store: Store<AppState>, private cdRef: ChangeDetectorRef, public dialog: MatDialog) {
     super();
+    this.store.pipe(select(getInsChecklistImagesSelector),
+      takeUntil(this.$unsubscribe),
+      tap((res) => {
+        if (res) {
+          this.images = res.map(r => {
+            return ({
+              ...r,
+              inspection_checklist_run: { id: this.checklist_run_id },
+              contract_term: { id: this.row.id }
+            })
+          })
+        }
+      })).subscribe();
   }
 
   ngOnInit() { }
@@ -60,7 +75,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
               payload: {
                 verification: this.row?.checklist_item?.verification,
                 comment: result.comments,
-                inspection_run: { id: this.inspectId },
+                inspection_checklist_run: { id: this.checklist_run_id },
                 contract_term: { id: item.id },
                 contract_category: { id: this.categoryId },
                 saved_checklist: { id: this.savedChecklist?.id }
@@ -100,20 +115,41 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
     }
   }
 
-  public showComment(id: string): void {
+  public showComment = (id: string): void => {
     const dialogRef = this.dialog.open(InspectionCommentDialogComponent, {
       data: { state: ModalStateType.edit, id }
     });
     dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
       .subscribe(result => {
         if (result) {
+          /* update comment */
           this.store.dispatch(updateInsChecklistAction({
             payload: {
               id: result?.id,
               comment: result?.comments
             }
           }));
+
+          /* save images */
+          this.store.dispatch(saveInsChecklisImageAction({
+            payload: this.images
+          }));
+
+          /* upload image */
+          let formData = new FormData();
+          this.cnsFileObj(formData);
+
+          this.store.dispatch(saveInsChecklistImageFilesAction({ files: formData }));
         }
       })
+  }
+
+  /* NOTE: move this to a utility or abstraction class */
+  private cnsFileObj(files: FormData): any {
+    return Object.values(this.images) && this.images.map(ci => {
+      if (ci.file)
+        files.append('files', ci.file, ci.filename);
+      return { id: ci.id, filename: ci.filename, size: ci.size, mimetype: ci.mimetype }
+    }) || null;
   }
 }

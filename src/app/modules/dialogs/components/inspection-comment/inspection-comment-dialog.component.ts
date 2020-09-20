@@ -1,12 +1,12 @@
 import { environment } from './../../../../../environments/environment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ModalStateType } from 'src/app/models/generic.model';
 import { AppState } from 'src/app/store/app.reducer';
 import { select, Store } from '@ngrx/store';
 import { InspectionChecklistService } from 'src/app/modules/inspections/inspections.service';
-import { map, take, takeUntil, tap } from 'rxjs/operators';
+import { debounceTime, map, take, takeUntil, tap } from 'rxjs/operators';
 import { IInspectionChecklistImage } from 'src/app/modules/inspections/inspections.models';
 import { convertBlobToBase64 } from 'src/app/shared/util/convert-to-blob';
 import { v4 as uuid } from 'uuid';
@@ -22,7 +22,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./inspection-comment-dialog.component.scss']
 })
 
-export class InspectionCommentDialogComponent extends GenericDestroyPageComponent implements OnInit {
+export class InspectionCommentDialogComponent extends GenericDestroyPageComponent implements OnInit, AfterViewInit {
   public svgPath: string = environment.svgPath;
   public form: FormGroup;
   public cachedImages: IInspectionChecklistImage[] = [];
@@ -30,7 +30,7 @@ export class InspectionCommentDialogComponent extends GenericDestroyPageComponen
   public files: File[] = [];
   public imgUrl: string = `${environment.apiUrl}contracts/image/`;
 
-  constructor(private insChecklistSrv: InspectionChecklistService, private store: Store<AppState>, public fb: FormBuilder,
+  constructor(private cdRef: ChangeDetectorRef, private insChecklistSrv: InspectionChecklistService, private store: Store<AppState>, public fb: FormBuilder,
     public dialogRef: MatDialogRef<InspectionCommentDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
     super();
@@ -60,29 +60,10 @@ export class InspectionCommentDialogComponent extends GenericDestroyPageComponen
           this.form.get('images').patchValue(this.cachedImages);
         }
       })).subscribe();
-
-    if (ModalStateType.edit && this.data?.id) {
-      this.insChecklistSrv.getById(this.data?.id)
-        .pipe(tap((res: any) => {
-          if (res) {
-            const { comment, images } = res.shift();
-
-            /* clear all the state images first */
-            this.store.dispatch(clearInsChecklistImageAction());
-
-            /* add all images to state when edit */
-            this.store.dispatch(addInsChecklistImagesAction({ images: images }))
-
-            this.form.get('id').patchValue(this.data?.id);
-            this.form.get('comments').patchValue(comment);
-          }
-        })).subscribe();
-    }
   }
 
   /* when you drop an image this gets executed */
   public onImageChange(event: any): void {
-
     let file: any
     if (_.isObject(event)) {
       file = event;
@@ -110,6 +91,29 @@ export class InspectionCommentDialogComponent extends GenericDestroyPageComponen
       .subscribe((image) => {
         this.store.dispatch(addInsChecklistImageAction({ image }));
       });
+  }
+
+  ngAfterViewInit(): void {
+    if (ModalStateType.edit && this.data?.id) {
+      this.insChecklistSrv.getById(this.data?.id).pipe(
+        takeUntil(this.$unsubscribe),
+        debounceTime(100),
+        tap((res: any) => {
+          if (res) {
+            const { comment, images } = res.shift();
+
+            /* clear all the state images first */
+            this.store.dispatch(clearInsChecklistImageAction());
+
+            /* add all images to state when edit */
+            this.store.dispatch(addInsChecklistImagesAction({ images: images }))
+
+            this.form.get('id').patchValue(this.data?.id);
+            this.form.get('comments').patchValue(comment);
+          }
+        })).subscribe();
+      this.cdRef.detectChanges();
+    }
   }
 
   public onSave(): void {

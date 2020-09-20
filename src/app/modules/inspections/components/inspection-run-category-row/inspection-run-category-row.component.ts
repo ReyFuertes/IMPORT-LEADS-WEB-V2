@@ -9,7 +9,7 @@ import { select, Store } from '@ngrx/store';
 import { IChecklist, IContractTerm } from 'src/app/modules/contracts/contract.model';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { takeUntil, tap } from 'rxjs/operators';
-import { deleteInsChecklistAction, getInsChecklistAction, saveInsChecklisImageAction, saveInsChecklistAction, saveInsChecklistImageFilesAction, updateInsChecklistAction } from '../../store/actions/inspection-checklist.action';
+import { clearInsChecklistImageAction, deleteInsChecklistAction, getInsChecklistAction, saveInsChecklisImageAction, saveInsChecklistAction, saveInsChecklistImageFilesAction, updateInsChecklistAction } from '../../store/actions/inspection-checklist.action';
 import { ModalStateType } from 'src/app/models/generic.model';
 import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
 import { InspectionChecklistService } from '../../inspections.service';
@@ -47,7 +47,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
             return ({
               ...r,
               inspection_checklist_run: { id: this.checklist_run_id },
-              contract_term: { id: this.row.id }
+              contract_term: { id: this.row?.id }
             })
           })
         }
@@ -62,6 +62,9 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
 
   public handleSelOption(option: ISimpleItem, item: IInsChecklistTerm): void {
     const prevSelection = Object.assign({}, item);
+
+    /* clear all the state images first */
+    this.store.dispatch(clearInsChecklistImageAction());
 
     if (option.label !== 'Ok') {
       const dialogRef = this.dialog.open(InspectionCommentDialogComponent, {});
@@ -81,6 +84,8 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
                 saved_checklist: { id: this.savedChecklist?.id }
               }
             }));
+
+            this.saveAndUpdateImage();
           } else {
             this.row = Object.assign({}, this.row, {
               checklist_item: {
@@ -130,18 +135,24 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
             }
           }));
 
-          /* save images */
-          this.store.dispatch(saveInsChecklisImageAction({
-            payload: this.images
-          }));
-
-          /* upload image */
-          let formData = new FormData();
-          this.cnsFileObj(formData);
-
-          this.store.dispatch(saveInsChecklistImageFilesAction({ files: formData }));
+          this.saveAndUpdateImage();
         }
       })
+  }
+
+  private saveAndUpdateImage(): void {
+    setTimeout(() => {
+      /* save images */
+      this.store.dispatch(saveInsChecklisImageAction({
+        payload: this.images
+      }));
+    });
+
+    /* upload image */
+    let formData = new FormData();
+    this.cnsFileObj(formData);
+
+    this.store.dispatch(saveInsChecklistImageFilesAction({ files: formData }));
   }
 
   /* NOTE: move this to a utility or abstraction class */

@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
 import { environment } from './../../../../environments/environment';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
 @Component({
   selector: 'il-upload-box',
@@ -9,7 +9,7 @@ import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 
   styleUrls: ['./upload-box.component.scss']
 })
 
-export class UploadBoxComponent implements OnInit {
+export class UploadBoxComponent implements OnInit, AfterViewInit {
   public svgPath: string = environment.svgPath;
   public files: NgxFileDropEntry[] = [];
 
@@ -17,9 +17,13 @@ export class UploadBoxComponent implements OnInit {
   @Input() public disabled: boolean = false;
   @Output() public imageEmitter = new EventEmitter<File>();
 
-  constructor() { }
+  constructor(private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() { }
+
+  ngAfterViewInit(): void {
+    this.cdRef.detectChanges();
+  }
 
   public dropped(files: NgxFileDropEntry[]) {
     this.files = files;

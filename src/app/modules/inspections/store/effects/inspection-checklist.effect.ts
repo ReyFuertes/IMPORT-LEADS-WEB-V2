@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { InspectionChecklistService, InspectionChecklistImageService } from '../../inspections.service';
 import { Router } from '@angular/router';
 import { AppState } from '../../../contracts/store/reducers';
-import { deleteInsChecklistAction, getInsChecklistAction, getInsChecklistSuccessAction, saveInsChecklisImageAction, saveInsChecklisImageSuccessAction, saveInsChecklistAction, saveInsChecklistSuccessAction, updateInsChecklistAction, updateInsChecklistSuccessAction, saveInsChecklistImageFilesAction, updateInsChecklistImageFilesSuccessAction, removeInsChecklistImageAction } from '../../store/actions/inspection-checklist.action';
+import { deleteInsChecklistAction, getInsChecklistAction, getInsChecklistSuccessAction, saveInsChecklisImageAction, saveInsChecklisImageSuccessAction, saveInsChecklistAction, saveInsChecklistSuccessAction, updateInsChecklistAction, updateInsChecklistSuccessAction, saveInsChecklistImageFilesAction, updateInsChecklistImageFilesSuccessAction, removeInsChecklistImageAction, clearInsChecklistImageAction } from '../../store/actions/inspection-checklist.action';
 import { loadInspectionRunAction } from '../actions/inspection.action';
 import { appNotification } from 'src/app/store/actions/notification.action';
 import { UploadService } from 'src/app/services/upload.service';
@@ -33,6 +33,7 @@ export class InspectionChecklistEffect {
     ofType(saveInsChecklisImageAction),
     mergeMap(({ payload }) => {
       return this.InsChecklistImageSrv.post(payload).pipe(
+        tap(()=> this.store.dispatch(clearInsChecklistImageAction())),
         map((response: IInspectionChecklistImage[]) => {
           return saveInsChecklisImageSuccessAction({ response });
         })

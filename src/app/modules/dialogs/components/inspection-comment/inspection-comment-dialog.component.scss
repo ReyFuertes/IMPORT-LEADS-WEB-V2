@@ -10,6 +10,9 @@
 .il-button {
   @include il-button;
 }
+.img-container {
+  min-height: 130px;
+}
 .il-dialog {
   @include il-dialog;
   width: 672px;

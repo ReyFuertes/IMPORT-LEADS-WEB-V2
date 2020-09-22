@@ -60,7 +60,7 @@ export class UserExpansionPanelComponent extends GenericRowComponent implements 
   public dragStart: boolean = false;
 
   @Input() public users: User[];
-  @Input() public colsHeader: Array<{ label: string, width?: string | number }>;
+  @Input() public colsHeader: Array<{ label: string, width?: any }>;
 
   constructor() {
     super();

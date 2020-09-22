@@ -1,11 +1,11 @@
 export interface IProduct {
   _id?: string;
   id?: string;
-  product_name?: string | any;
-  qty?: string | number;
-  cost?: string | number;
+  product_name?: any;
+  qty?: any;
+  cost?: any;
   sub_products?: IProduct[];
-  parent?: IProduct | any;
+  parent?: any;
   pos?: number;
   child_id?: string;
   created_at?: Date;

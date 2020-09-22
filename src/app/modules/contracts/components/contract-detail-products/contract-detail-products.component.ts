@@ -529,7 +529,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
           item.removeAt(i);
 
           /* collect the contract product to be removed */
-          let toRemove: IContractProduct;
+          let toRemove: any;
           this.$contractProducts
             .pipe(takeUntil(this.$unsubscribe))
             .subscribe(p => {

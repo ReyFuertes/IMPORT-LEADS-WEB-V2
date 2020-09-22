@@ -37,7 +37,7 @@ export class InspectionActivePanelComponent extends GenericRowComponent implemen
     icon: 'delete-icon-red.svg'
   }];;
 
-  @Input() public colsHeader: Array<{ label: string, width?: string | number }>;
+  @Input() public colsHeader: Array<{ label: string, width?: any }>;
   @Input() public activeInspections: IActiveInspection[];
   @Input() public isCategory: boolean = false;
 

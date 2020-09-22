@@ -15,7 +15,7 @@ export class InspectionFinishedPanelComponent extends GenericRowComponent implem
   public svgPath: string = environment.svgPath;
   public imgPath: string = environment.imgPath;
   public menus: Menu[];
-  @Input() public colsHeader: Array<{ label: string, width?: string | number }>;
+  @Input() public colsHeader: Array<{ label: string, width?: any }>;
   @Input() public items: InspectionPanelModel[];
   @Input() public isCategory: boolean = false;
   constructor(private cdRef: ChangeDetectorRef, private router: Router) {

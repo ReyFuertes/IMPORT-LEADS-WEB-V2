@@ -14,7 +14,7 @@ export class PerformanceInsightsVenueComponent extends GenericRowComponent imple
   @Input()
   public items: InsightVenue[];
   @Input()
-  public colsHeader: Array<{ label: string, width?: string | number, icon?: string }>;
+  public colsHeader: Array<{ label: string, width?: any, icon?: string }>;
   public dragStart: boolean = false;
 
   constructor() {

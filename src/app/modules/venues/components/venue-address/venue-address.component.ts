@@ -27,7 +27,7 @@ export class VenueAddressComponent extends GenericRowComponent implements OnInit
   public dragStart: boolean = false;
 
   @Input() public items: IVenue[];
-  @Input() public colsHeader: Array<{ label: string, width?: string | number }>;
+  @Input() public colsHeader: Array<{ label: string, width?: any }>;
 
   public drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.items, event.previousIndex, event.currentIndex);

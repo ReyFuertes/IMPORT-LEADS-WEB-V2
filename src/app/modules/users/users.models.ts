@@ -36,6 +36,6 @@ export interface UserAccess {
 }
 
 export interface UserRole {
-  value: string | number;
+  value: any;
   label: string;
 }

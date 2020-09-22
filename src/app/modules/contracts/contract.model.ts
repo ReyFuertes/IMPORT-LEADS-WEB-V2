@@ -113,8 +113,8 @@ export enum PillStateType {
 export interface IContract extends ICoreModel {
   contract_name: string;
   venue?: any;
-  start_date?: Date | string;
-  delivery_date?: Date | string;
+  start_date?: any;
+  delivery_date?: any;
   details?: string;
   attachments?: any[];
   images?: IProductImage[];

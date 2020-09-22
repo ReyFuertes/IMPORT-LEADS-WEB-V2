@@ -1,7 +1,7 @@
 export interface InsightVenue {
   id: number;
   venue: string;
-  product: {label: string, value?: string | number};
+  product: {label: string, value?: any};
   passRate: number;
   failureRate: number;
   materials: number;
@@ -9,5 +9,5 @@ export interface InsightVenue {
   appearance: number;
   hideCol: string;
   techMes: number;
-  relatedProducts?: Array<{ label: string, value?: string | number }>;
+  relatedProducts?: Array<{ label: string, value?: any }>;
 }

@@ -28,7 +28,7 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
   public hoveredIndex: number | null = null;
   public selectedIndex: number | null = null;
   @Input()
-  public colsHeader: Array<{ label: string, width?: string | number }>;
+  public colsHeader: Array<{ label: string, width?: any }>;
   public rates = new Array(5);
   @Input()
   public isProduct: boolean;

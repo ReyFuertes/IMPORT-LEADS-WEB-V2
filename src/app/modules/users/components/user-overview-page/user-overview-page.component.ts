@@ -154,7 +154,7 @@ export class UserOverviewPageComponent implements OnInit {
       ]
     }
   ];
-  public ctColsUsers: Array<{ label: string, width?: string | number }> = [
+  public ctColsUsers: Array<{ label: string, width?: any }> = [
     {
       label: 'Name',
       width: 20

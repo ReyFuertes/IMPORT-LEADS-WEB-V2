@@ -19,7 +19,7 @@ import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-des
 export class VenueOverviewPageComponent extends GenericDestroyPageComponent implements OnInit {
   public isProduct: boolean = true;
   public venues: IVenue[];
-  public colProducts: Array<{ label: string, width?: string | number }> = [
+  public colProducts: Array<{ label: string, width?: any }> = [
     {
       label: 'Venue name',
       width: 22.5
@@ -52,7 +52,7 @@ export class VenueOverviewPageComponent extends GenericDestroyPageComponent impl
       label: '',
     }
   ];
-  public colAddress: Array<{ label: string, width?: string | number }> = [
+  public colAddress: Array<{ label: string, width?: any }> = [
     {
       label: 'Venue name',
       width: 27.5

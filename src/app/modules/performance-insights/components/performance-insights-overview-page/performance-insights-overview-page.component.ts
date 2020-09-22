@@ -79,7 +79,7 @@ export class PerformanceInsightsOverviewPageComponent implements OnInit {
       ]
     }
   ];
-  public ctColsInsightVenue: Array<{ label: string, width?: string | number, icon?: string }> = [
+  public ctColsInsightVenue: Array<{ label: string, width?: any, icon?: string }> = [
     {
       label: 'Venue',
       width: 15,

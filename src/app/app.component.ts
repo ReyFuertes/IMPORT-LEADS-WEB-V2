@@ -27,7 +27,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.store.dispatch(initAppAction());
 
-    //this.store.subscribe(res => console.log(res))
+    this.store.subscribe(res => console.log(res))
     this.$notify = this.store.pipe(select(getSuccessSelector), delay(100));
 
     /* remove notification 2 seconds */

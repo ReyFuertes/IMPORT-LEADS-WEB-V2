@@ -5,7 +5,7 @@ import { Component, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/co
 import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
-import { getInspectionRunSelector } from '../../store/selectors/inspection.selector';
+import { getInspectionRunFilterByProductIdSelector, getInspectionRunSelector } from '../../store/selectors/inspection.selector';
 import { runNextInspectionAction, runPrevInspectionAction } from '../../store/actions/inspection.action';
 import { IInspectionRun } from '../../inspections.models';
 import { ISimpleItem } from 'src/app/shared/generics/generic.model';
@@ -50,7 +50,8 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   }
 
   public handleValueEmitter(event: any): void {
-    console.log(event)
+    /* filter checklist by product */
+    this.$inspectionRun = this.store.pipe(select(getInspectionRunFilterByProductIdSelector(event)));
   }
 
   public onPrev(ins: IInspectionRun): void {

@@ -86,7 +86,7 @@ export interface IContractProduct extends ICoreModel {
   cost?: string;
   created_at?: string;
   parent_id?: string;
-  product: { 
+  product?: { 
     id?: string;
     product_name?: string;
     pos?: string; 

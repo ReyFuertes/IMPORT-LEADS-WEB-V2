@@ -20,7 +20,7 @@ export enum InspectionActionTypes {
 }
 export const runPrevInspectionAction = createAction(
   InspectionActionTypes.runPrevInspectionAction,
-  props<{ payload: { id: string } }>()
+  props<{ payload: { id: string, saved_checklist_id: string } }>()
 );
 export const runPrevInspectionSuccessAction = createAction(
   InspectionActionTypes.runPrevInspectionSuccessAction,
@@ -28,7 +28,7 @@ export const runPrevInspectionSuccessAction = createAction(
 );
 export const runNextInspectionAction = createAction(
   InspectionActionTypes.runNextInspectionAction,
-  props<{ payload: { id: string } }>()
+  props<{ payload: { id: string, saved_checklist_id: string } }>()
 );
 export const runNextInspectionSuccessAction = createAction(
   InspectionActionTypes.runNextInspectionSuccessAction,

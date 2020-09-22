@@ -10,6 +10,14 @@
   .cdk-overlay-pane {
     @include adjust-dropdown-overlay($adjust: true);
   }
+  .mat-select-panel .mat-optgroup-label,
+  .mat-select-panel .mat-option {
+    height: 41px !important;
+    font-size: 14px !important;
+  }
+  .mat-select-value-text {
+    font-size: 14px !important;
+  }
 }
 :host ::ng-deep {
   .mat-form-field-label {

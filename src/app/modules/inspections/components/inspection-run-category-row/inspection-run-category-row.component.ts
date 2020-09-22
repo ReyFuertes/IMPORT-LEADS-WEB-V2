@@ -146,11 +146,13 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
   private saveAndUpdateImage(): void {
     setTimeout(() => {
       /* save images */
-      this.store.dispatch(saveInsChecklisImageAction({
-        payload: this.images
-      }));
+      if (this.images && this.images.length > 0) {
+        this.store.dispatch(saveInsChecklisImageAction({
+          payload: this.images
+        }));
+      }
     });
-
+    
     /* upload image */
     let formData = new FormData();
     this.cnsFileObj(formData);

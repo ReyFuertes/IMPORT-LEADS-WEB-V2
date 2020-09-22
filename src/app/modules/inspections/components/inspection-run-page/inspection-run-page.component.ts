@@ -45,7 +45,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
           value: c.contract_product.id
         }
       })
-      this.products = _.uniqBy(this.products, 'value')
+      this.products = _.uniqBy(this.products, 'value');
     })
   }
 
@@ -55,11 +55,11 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   }
 
   public onPrev(ins: IInspectionRun): void {
-    this.store.dispatch(runPrevInspectionAction({ payload: { id: ins.id } }));
+    this.store.dispatch(runPrevInspectionAction({ payload: { id: ins.id, saved_checklist_id: ins?.checklist?.id } }));
   }
 
   public onNext(ins: IInspectionRun): void {
-    this.store.dispatch(runNextInspectionAction({ payload: { id: ins.id } }));
+    this.store.dispatch(runNextInspectionAction({ payload: { id: ins.id, saved_checklist_id: ins?.checklist?.id } }));
   }
 
   public onBack(): void {

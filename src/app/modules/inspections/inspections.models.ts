@@ -64,6 +64,7 @@ export interface IInsChecklist {
   items?: IInspectionRunItem[]
 }
 export interface IInspectionRunItem {
+  id?: string;
   contract_product?: IContractProduct,
   contract_term?: IContractTerm,
   contract_category?: IContractCategory,

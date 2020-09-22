@@ -1,15 +1,14 @@
 import { loadActiveInspectionAction } from './../../../inspections/store/actions/inspection.action';
-import { getChecklistSelector, getChecklistItemByContractProductIds } from './../../store/selectors/contract-checklist.selector';
-import { addItemToSourceAction, addItemToChecklistTermsAction, removeTermFormChecklistAction, addItemToChecklistProductsAction, removeItemFromChecklistProductsAction, clearChecklistProductsAction, clearAllSelectedTerms, clearChecklistSourceAction, setToMultiUpdateStatusAction, resetUpdateStatusAction, processItemsToChecklistAction, addItemToChecklistEntitiesAction, processItemsToChecklistEntitiesAction, removeItemFromEntitiesByProductId } from './../../store/actions/contract-checklist.action';
+import { getChecklistSelector } from './../../store/selectors/contract-checklist.selector';
+import { addItemToSourceAction, addItemToChecklistTermsAction, addItemToChecklistProductsAction, removeItemFromChecklistProductsAction, clearChecklistProductsAction, clearAllSelectedTerms, clearChecklistSourceAction, setToMultiUpdateStatusAction, resetUpdateStatusAction, processItemsToChecklistAction, processItemsToChecklistEntitiesAction, removeItemFromEntitiesByProductId } from './../../store/actions/contract-checklist.action';
 import { getSelectedProductsSelector } from './../../store/selectors/contract-product-selector';
-import { getCategoryTermsSelector } from './../../store/selectors/contract-category.selector';
 import { getProductsSelector } from './../../../products/store/products.selector';
 import { IProduct } from './../../../products/products.model';
 import { getAllContractProductsSelector } from './../../store/selectors/contracts.selector';
 import { addContractProducts, deleteContractProduct, updateContractProduct, selectProductAction, removeSelectedProductAction, clearPreSelectProducts } from './../../store/actions/contract-product.action';
 import { AppState } from 'src/app/store/app.reducer';
 import { Store, select } from '@ngrx/store';
-import { PillStateType, IContract, IContractProduct, IContractChecklist, IContractChecklistItem, IContractTerm, IOverrideChecklistItem, ICommonIdPayload, IContractTermProduct, ProductStatusType } from './../../contract.model';
+import { PillStateType, IContract, IContractProduct, IContractChecklistItem, ICommonIdPayload, IContractTermProduct, ProductStatusType } from './../../contract.model';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ISimpleItem } from './../../../../shared/generics/generic.model';
@@ -19,7 +18,6 @@ import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { take, takeUntil, tap, debounceTime } from 'rxjs/operators';
 import { Subject, Observable, pipe, of } from 'rxjs';
 import * as _ from 'lodash';
-import { interval } from 'rxjs';
 import { GenericDetailPageComponent } from 'src/app/shared/generics/generic-detail-page';
 
 @Component({
@@ -412,7 +410,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
         qty, cost
       }, _.identity),
       children: Object.assign([], this.fmtSubProducts(sub_products)),
-      contract: { id: this.contract.id, contract_name: this.contract.contract_name }
+      contract: { id: this.contract.id, contract_name: this.contract?.contract_name }
     };
   }
 
@@ -432,7 +430,6 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
     this.form.controls['cost'].patchValue(cost);
     this.form.controls['sub_products'].patchValue(this.fmtSubProducts(sub_products));
 
-    /* map/format subproducts */
     const subProducts = this.fmtSubProducts(sub_products);
     this.formSubProdsArr = this.form.get('sub_products') as FormArray;
     if (this.formSubProdsArr)
@@ -556,13 +553,6 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
           }
         }
       });
-  }
-
-  public removeSelection(): void {
-    // const pillArrContainer = document.querySelectorAll('.pill-container');
-    // pillArrContainer && pillArrContainer.forEach((item) => {
-    //   item.classList.remove("selected");
-    // })
   }
 
   public get isNavOpenAndEdit(): boolean {

@@ -12,7 +12,6 @@ import { takeUntil, tap } from 'rxjs/operators';
 import { clearInsChecklistImageAction, deleteInsChecklistAction, getInsChecklistAction, saveInsChecklisImageAction, saveInsChecklistAction, saveInsChecklistImageFilesAction, updateInsChecklistAction } from '../../store/actions/inspection-checklist.action';
 import { ModalStateType } from 'src/app/models/generic.model';
 import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
-import { InspectionChecklistService } from '../../inspections.service';
 import { getInsChecklistImagesSelector } from '../../store/selectors/inspection-checklist.selector';
 
 @Component({
@@ -43,7 +42,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
       takeUntil(this.$unsubscribe),
       tap((res) => {
         if (res) {
-          this.images = res.map(r => {
+          this.images = res?.map(r => {
             return ({
               ...r,
               inspection_checklist_run: { id: this.checklist_run_id },
@@ -56,8 +55,12 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
 
   ngOnInit() { }
 
+  public get getSelection(): any {
+    return this.row?.checklist_item?.verification || String(this.inspectionVeriType.ok);
+  }
+
   public isVerified(verification: string): boolean {
-    return verification !== null && verification !== this.inspectionVeriType?.ok
+    return verification !== null && verification !== this.inspectionVeriType.ok
   }
 
   public handleSelOption(option: ISimpleItem, item: IInsChecklistTerm): void {

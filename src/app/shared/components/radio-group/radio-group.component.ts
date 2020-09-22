@@ -18,16 +18,12 @@ export class RadioGroupComponent implements OnInit, OnChanges {
   ngOnInit(): void { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // if (changes && changes.selected && changes.selected.currentValue) {
-    //   this.selected = changes.selected.currentValue;
-    // }
+    if (changes && changes.selected && changes.selected.currentValue) {
+      this.selected = changes.selected.currentValue;
+    }
   }
 
   public onChange(option: ISimpleItem): void {
     this.valueEmitter.emit(option)
-  }
-
-  public isSelected(value: any): boolean {
-    return this.selected === value;
   }
 }

@@ -1,4 +1,4 @@
-<tr fxLayout="row" fxLayoutGap="20px">
+<tr *ngIf="row" fxLayout="row" fxLayoutGap="20px">
   <td fxFlex="200px">{{row?.term_name}}</td>
   <td fxFlex>
     <div [innerHTML]="row?.term_description"></div>

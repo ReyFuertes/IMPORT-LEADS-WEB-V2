@@ -1,52 +1,18 @@
 @import "src/styleguide/shared";
 @import "src/styleguide/overrides";
+.placeholder {
+  font-size: 14px;
+  position: absolute;
+  color: $color-black-2;
+  top: 9px;
+}
 ::ng-deep {
-  .mat-form-field-appearance-legacy .mat-form-field-label span {
-    position: relative;
-    top: -1px;
-  }
   .cdk-overlay-pane {
     @include adjust-dropdown-overlay($adjust: true);
   }
 }
-img {
-  position: relative;
-  top: 4px;
-}
 :host ::ng-deep {
   .mat-form-field-label {
-    text-align: right;
-    position: relative;
-    top: 3px;
-    height: 30px;
     font-size: 14px;
-    font-weight: 500;
-  }
-  .mat-select-value-text {
-    font-size: 14px !important;
-    height: 16px !important;
-  }
-  .mat-form-field-infix {
-    padding-top: 2px !important;
-  }
-  .mat-select-arrow {
-    width: 0;
-    height: 0;
-    border-left: 0 !important;
-    border-right: 0 !important;
-    border-top: none !important;
-  }
-  .mat-form-field-appearance-legacy .mat-form-field-wrapper {
-    padding-bottom: 0px;
-  }
-  .mat-option-text {
-    font-size: 14px !important;
-  }
-}
-
-::ng-deep {
-  .cdk-overlay-pane {
-    transform: none !important;
-    margin: 30px 0;
   }
 }

@@ -82,6 +82,20 @@ export interface IContractProduct extends ICoreModel {
   parent?: IProduct
   sub_products?: IProduct[],
   contract?: IContract;
+  child_id?: string;
+  cost?: string;
+  created_at?: string;
+  parent_id?: string;
+  product: { 
+    id?: string;
+    product_name?: string;
+    pos?: string; 
+    created_at?: string;
+    updated_at?: string;
+  },
+  qty?: number;
+  term_description?: string;
+  updated_at?: string;
 }
 export interface IProductImage extends ICoreModel {
   image?: any;

@@ -26,8 +26,6 @@ import { Store, select } from '@ngrx/store';
 import * as _ from 'lodash';
 import { getChecklistSelector } from '../../store/selectors/contract-checklist.selector';
 import { saveChecklistAction } from '../../store/actions/saved-checklist.action';
-import { v4 as uuid } from 'uuid';
-import * as moment from 'moment';
 import { IUser } from 'src/app/modules/user-management/user-mgmt.model';
 
 @Component({
@@ -55,9 +53,9 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   public checklistTerms: IContractTermProduct[];
   public savedChecklistSourceId: string;
   public user: IUser;
+  public checklistEntities: IContractChecklistItem[] = [];
 
-  @Output()
-  public openNavChange = new EventEmitter<boolean>();
+  @Output() public openNavChange = new EventEmitter<boolean>();
   @ViewChild('scrollPnl', { static: false }) public scrollPnl: any;
 
   constructor(private router: Router, private store: Store<AppState>, private route: ActivatedRoute, public fb: FormBuilder, public dialog: MatDialog) {
@@ -78,6 +76,8 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
 
     const at = JSON.parse(localStorage.getItem('at')) || null;
     if (at && at.user) this.user = at.user;
+
+
   }
 
   ngOnInit() {
@@ -144,6 +144,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
         this.checkListProducts = res.checklistProducts || [];
         this.checklistTerms = res.checklistTerms || [];
         this.savedChecklistSourceId = res.saveChecklistSource ? res.saveChecklistSource.id : null;
+        this.checklistEntities = Object.values(res.entities) || [];
 
       })).subscribe();
   }
@@ -191,38 +192,25 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   }
 
   public onSaveChecklist(): void {
-    /* get the selected checklist product/s ids,
-      it will be the basis of our saved checklist item/s
-     */
-
-    const checklistProductIds = this.checkListProducts && this.checkListProducts.map(cp => cp._id);
-    /* get the checklist item base on product ids */
-    const selectedChecklistItems = this.checklistItems && this.checklistItems.filter(ci => {
-      return checklistProductIds && checklistProductIds.includes(ci.contract_product.id)
+    const checklist_items = this.checklistEntities.map((c: IContractChecklistItem) => {
+      return {
+        contract_category: c.contract_category,
+        contract_contract: c.contract_contract,
+        contract_product: c.contract_product,
+        contract_term: c.contract_term
+      }
     });
-
-    /* build the payload for saving */
-    checklistProductIds.forEach(productId => {
-      this.checklistTerms.forEach(term => {
-        selectedChecklistItems.push({
-          contract_product: { id: productId, product: { id: term.product_id } },
-          contract_category: { id: term.category_id },
-          contract_contract: { id: this.id },
-          contract_term: { id: term.term_id }
-        })
-      });
-    });
-
+    
     const payload: ISavedChecklistPayload = {
       id: this.savedChecklistSourceId,
       checklist_name: `cl-${new Date().getTime()}`,
       assigned_to: this.formChecklist.get('assignedTo').value,
-      desired_run_date: moment(this.formChecklist.get('desiredRunDate').value, 'MM-DD-YYYY HH:mm').format('MM-DD-YYYY HH:mm'),
-      checklist_items: selectedChecklistItems,
+      desired_run_date: this.formChecklist.get('desiredRunDate').value,
+      checklist_items,
       checklist_contract: { id: this.id },
       user: { id: this.formChecklist.get('assignedTo').value }
     }
-
+    
     if (payload) {
       this.store.dispatch(saveChecklistAction({ payload }));
 
@@ -284,9 +272,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   }
 
   public get isChecklistValid(): boolean {
-    return this.formChecklist.valid
-      && (this.checkListProducts && this.checkListProducts.length > 0)
-      && (this.checklistItems && this.checklistItems.length > 0);
+    return this.formChecklist.valid && this.checklistEntities.length > 0;
   }
 
   public get hasImgs(): boolean {

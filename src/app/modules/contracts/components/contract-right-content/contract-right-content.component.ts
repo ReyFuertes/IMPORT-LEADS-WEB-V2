@@ -24,18 +24,6 @@ import { getAllSimpleUsersSelector } from 'src/app/modules/user-management/store
 
 export class ContractRightContentComponent extends GenericDestroyPageComponent implements OnInit {
   public svgPath: string = environment.svgPath;
-  public assignments: ISimpleItem[] = [{
-    label: 'Rey Fuertes',
-    value: '1'
-  },
-  {
-    label: 'Juan dela Cruz',
-    value: '2'
-  },
-  {
-    label: 'Ben Booterkooper',
-    value: '3'
-  }];
   public $savedChecklist: Observable<ISavedChecklistItem[]>;
   public $users: Observable<ISimpleItem[]>;
 

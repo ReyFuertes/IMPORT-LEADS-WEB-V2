@@ -170,10 +170,10 @@ const reducer = createReducer(
     return Object.assign({}, state, { checklistProducts });
   }),
   on(removeItemFromChecklistProductsAction, (state, action) => {
-    let checklistProducts: ICommonIdPayload[] = state.checklistProducts || [];
+    let checklistProducts: ICommonIdPayload[] = Object.assign([], state.checklistProducts);
     let matches = checklistProducts.filter(cp => action.item.id === cp.id);
 
-    if (matches && matches.length) {
+    if (matches && matches.length > 0) {
       matches.forEach(match => {
         _.remove(checklistProducts, { id: match.id });
       });

@@ -46,9 +46,7 @@
   <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
     <il-input fxFlex="122px" [form]="form" isFloatLabel="true" [inputMaxLen]="10" controlName="items" placeholder="Items checked for this run"></il-input>
     <div fxFlex fxLayoutAlign="end center">
-      <button class="il-button il-bg-blue" mat-flat-button>
-        <span>Select Product</span>
-      </button>
+      <il-dropdown-select-search (valueEmitter)="handleValueEmitter($event)" placeholder="Products" [options]="products"></il-dropdown-select-search>
     </div>
   </div>
   <div>

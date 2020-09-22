@@ -15,7 +15,6 @@ const reducer = createReducer(
     return Object.assign({}, state, { checklistImages: null });
   }),
   on(saveInsChecklisImageSuccessAction, (state) => {
-    debugger
     /* just remove the cached images after saving */
     return Object.assign({}, state, { checklistImages: null });
   }),

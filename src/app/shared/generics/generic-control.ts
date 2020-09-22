@@ -1,13 +1,20 @@
 import { FormGroup } from '@angular/forms';
-import { Input, Output, EventEmitter } from '@angular/core';
+import { Input, Output, EventEmitter, Directive } from '@angular/core';
+import { GenericDestroyPageComponent } from './generic-destroy-page';
+import { environment } from 'src/environments/environment';
 
-export class GenericControl<T> {
+@Directive()
+export abstract class GenericControl<T> extends GenericDestroyPageComponent {
   @Input() public placeholder: string;
-  @Input() public items: Array<T>;
+  @Input() public options: Array<T>;
   @Input() public item: T;
   @Input() public controlName: any;
   @Input() public form: FormGroup;
   @Input() public isFloatLabel: boolean = false;
+  @Input() public selectedItem: T;
+
+  public svgPath: string = environment.svgPath;
+  public imgPath: string = environment.imgPath;
 
   @Output() public valueEmitter = new EventEmitter<T>();
 }

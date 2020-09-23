@@ -17,7 +17,17 @@ export enum InspectionActionTypes {
   runNextInspectionSuccessAction = '[Inspection Run] run next inspection (success)',
   runPrevInspectionAction = '[Inspection Run] run prev inspection',
   runPrevInspectionSuccessAction = '[Inspection Run] run prev inspection (success)',
+  changeInspectionStatusAction = '[Inspection Run] change inspection status',
+  changeInspectionStatusSuccessAction = '[Inspection Run] change inspection status (success)',
 }
+export const changeInspectionStatusAction = createAction(
+  InspectionActionTypes.changeInspectionStatusAction,
+  props<{ payload: IInspectionRunPayload }>()
+);
+export const changeInspectionStatusSuccessAction = createAction(
+  InspectionActionTypes.changeInspectionStatusSuccessAction,
+  props<{ response: IInspectionRunPayload }>()
+);
 export const runPrevInspectionAction = createAction(
   InspectionActionTypes.runPrevInspectionAction,
   props<{ payload: { id: string, saved_checklist_id: string } }>()

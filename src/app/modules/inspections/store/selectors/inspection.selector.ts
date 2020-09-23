@@ -1,8 +1,13 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { AppState } from 'src/app/store/app.reducer';
 import { InspectionModuleState } from '../reducers';
 
 export const selectContractModuleState = createFeatureSelector<InspectionModuleState>('inspectionModule');
+export const getInspectionRunStatusSelector = createSelector(
+  selectContractModuleState,
+  state => {
+    return state?.inspection?.runInspection?.run_status;
+  }
+);
 export const getInspectionRunFilterByProductIdSelector = (id: string) => createSelector(
   selectContractModuleState,
   state => {

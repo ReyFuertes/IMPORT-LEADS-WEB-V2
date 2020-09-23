@@ -4,7 +4,7 @@
     <div [innerHTML]="row?.term_description"></div>
   </td>
   <td fxFlex="120px">
-    <il-radio-group [name]="row?.id" [selected]="row?.checklist_item?.verification" (valueEmitter)="handleSelOption($event, row)" [options]="verifOptions">
+    <il-radio-group [disabled]="isPaused" [name]="row?.id" [selected]="row?.checklist_item?.verification" (valueEmitter)="handleSelOption($event, row)" [options]="verifOptions">
     </il-radio-group>
   </td>
   <td fxFlex="120px">

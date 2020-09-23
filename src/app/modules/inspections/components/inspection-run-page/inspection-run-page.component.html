@@ -24,19 +24,20 @@
     </div>
 
     <div fxFlex fxLayoutAlign="end center" fxLayoutGap="5px">
-      <button (click)="onPrev(inspectionRun)" class="il-button il-bg-blue" mat-flat-button>
+      <button [disabled]="!isPaused" (click)="onPrev(inspectionRun)" class="il-button il-bg-blue" mat-flat-button>
         <img [src]="svgPath + 'arrow-left-icon-white.svg'" />
         <span>Previous</span>
       </button>
-      <button (click)="onNext(inspectionRun)" class="il-button il-bg-blue" mat-flat-button>
+      <button [disabled]="!isPaused" (click)="onNext(inspectionRun)" class="il-button il-bg-blue" mat-flat-button>
         <span>Next</span>
         <img [src]="svgPath + 'arrow-right-icon-white.svg'" />
       </button>
-      <button mat-flat-button class="il-button il-bg-green">
+      <button (click)="onPause(inspectionRun)" mat-flat-button class="il-button il-bg-green">
         <img [src]="svgPath + 'pause-icon-white.svg'" />
-        <span>Pause run</span>
+        <span *ngIf="isPaused">Pause run</span>
+        <span *ngIf="!isPaused">Resume run</span>
       </button>
-      <button mat-flat-button class="il-button il-bg-red">
+      <button (click)="onStop(inspectionRun)" mat-flat-button class="il-button il-bg-red">
         <img [src]="svgPath + 'stop-icon-white.svg'" />
         <span>Stop run</span>
       </button>

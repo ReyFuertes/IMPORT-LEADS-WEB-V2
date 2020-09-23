@@ -5,13 +5,13 @@ import { Component, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/co
 import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
-import { getInspectionRunFilterByProductIdSelector, getInspectionRunSelector } from '../../store/selectors/inspection.selector';
-import { runNextInspectionAction, runPrevInspectionAction } from '../../store/actions/inspection.action';
-import { IInspectionRun } from '../../inspections.models';
+import { getInspectionRunFilterByProductIdSelector, getInspectionRunSelector, getInspectionRunStatusSelector } from '../../store/selectors/inspection.selector';
+import { runNextInspectionAction, runPrevInspectionAction, changeInspectionStatusAction } from '../../store/actions/inspection.action';
+import { IInspectionRun, RunStatusType } from '../../inspections.models';
 import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 import * as _ from 'lodash';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 @Component({
   selector: 'il-inspection-run-page',
   templateUrl: './inspection-run-page.component.html',
@@ -24,6 +24,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   public formNavigateTo: FormGroup;
   public $inspectionRun: Observable<IInspectionRun>;
   public products: ISimpleItem[] = [];
+  public runInspectionStatus: string;
 
   constructor(private store: Store<AppState>, private cdRef: ChangeDetectorRef, private router: Router, private fb: FormBuilder) {
     super();
@@ -33,7 +34,11 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
     this.formNavigateTo = this.fb.group({
       position: [null]
     });
-    console.log(this.products)
+
+    this.store.pipe(select(getInspectionRunStatusSelector),
+      tap(res => {
+        this.runInspectionStatus = res;
+      })).subscribe();
   }
 
   ngOnInit() {
@@ -47,6 +52,28 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       })
       this.products = _.uniqBy(this.products, 'value');
     })
+  }
+
+  public get isPaused(): boolean {
+    return this.runInspectionStatus !== RunStatusType.pause;
+  }
+
+  public onStop(ins: IInspectionRun): void {
+    const payload = {
+      id: ins?.id,
+      saved_checklist: ins?.checklist,
+      run_status: RunStatusType.stop
+    }
+    this.store.dispatch(changeInspectionStatusAction({ payload }));
+  }
+
+  public onPause(ins: IInspectionRun): void {
+    const payload = {
+      id: ins?.id,
+      saved_checklist: ins?.checklist,
+      run_status: this.runInspectionStatus === RunStatusType.pause ? null : RunStatusType.pause
+    }
+    this.store.dispatch(changeInspectionStatusAction({ payload }));
   }
 
   public handleValueEmitter(event: any): void {

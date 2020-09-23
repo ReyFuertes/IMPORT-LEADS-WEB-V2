@@ -1,5 +1,5 @@
-import { IActiveInspection, IInspectionChecklist, IInspectionRun } from './../../inspections.models';
-import { loadActiveInspectionSuccessAction, runInspectionAction, runInspectionSuccessAction, createInspectionChecklistAction, createInspectionChecklistSuccessAction, loadInspectionRunAction, loadInspectionRunSuccessAction, runNextInspectionAction, runNextInspectionSuccessAction, runPrevInspectionAction, runPrevInspectionSuccessAction } from '../actions/inspection.action';
+import { IActiveInspection, IInspectionChecklist, IInspectionRun, IInspectionRunPayload, RunStatusType } from './../../inspections.models';
+import { loadActiveInspectionSuccessAction, runInspectionAction, runInspectionSuccessAction, createInspectionChecklistAction, createInspectionChecklistSuccessAction, loadInspectionRunAction, loadInspectionRunSuccessAction, runNextInspectionAction, runNextInspectionSuccessAction, runPrevInspectionAction, runPrevInspectionSuccessAction, changeInspectionStatusAction, changeInspectionStatusSuccessAction } from '../actions/inspection.action';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
@@ -8,13 +8,38 @@ import { loadSavedChecklistAction } from '../../../contracts/store/actions/saved
 import { InspectionsService, InspectionChecklistRunService, InspectionChecklistService } from '../../inspections.service';
 import { Router } from '@angular/router';
 import { AppState } from '../../../contracts/store/reducers';
+import { appNotification } from 'src/app/store/actions/notification.action';
 
 @Injectable()
 export class InspectionEffect {
+  changeInspectionStatusAction$ = createEffect(() => this.actions$.pipe(
+    ofType(changeInspectionStatusAction),
+    switchMap(({ payload }) => {
+      return this.inspectionChecklistRunSrv.post(payload, 'status').pipe(
+        tap((response: IInspectionRunPayload) => this.store.dispatch(loadInspectionRunAction({ id: response?.id }))),
+        tap((response: IInspectionRunPayload) => {
+          /* if run is stop the redirect it run report for results */
+          if (response?.run_status == RunStatusType.stop) {
+            this.store.dispatch(appNotification({
+              notification: { error: true, message: 'Inspection run is stopped, Redirecting you to report page.' }
+            }));
+
+            setTimeout(() => this.router.navigateByUrl(`/dashboard/inspections/${response?.id}/report`), 3000);
+          }
+          else if (response?.run_status == RunStatusType.pause) {
+            this.store.dispatch(appNotification({
+              notification: { success: true, message: 'Inspection run is paused' }
+            }));
+          }
+        }),
+        map((response: any) => changeInspectionStatusSuccessAction({ response }))
+      )
+    })
+  ));
   runPrevInspectionAction$ = createEffect(() => this.actions$.pipe(
     ofType(runPrevInspectionAction),
     mergeMap(({ payload }) => {
-      return this.inspectionRunSrv.post(payload, 'prev').pipe(
+      return this.inspectionChecklistRunSrv.post(payload, 'prev').pipe(
         tap(({ id }: any) => {
           if (id) this.router.navigateByUrl(`/dashboard/inspections/${id}/run`);
         }),
@@ -26,7 +51,7 @@ export class InspectionEffect {
   runNextInspectionAction$ = createEffect(() => this.actions$.pipe(
     ofType(runNextInspectionAction),
     mergeMap(({ payload }) => {
-      return this.inspectionRunSrv.post(payload, 'next').pipe(
+      return this.inspectionChecklistRunSrv.post(payload, 'next').pipe(
         tap(({ id }: any) => {
           if (id) this.router.navigateByUrl(`/dashboard/inspections/${id}/run`);
         }),
@@ -39,7 +64,7 @@ export class InspectionEffect {
   loadInspectionRunAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadInspectionRunAction),
     mergeMap(({ id }) => {
-      return this.inspectionRunSrv.getById(id).pipe(
+      return this.inspectionChecklistRunSrv.getById(id).pipe(
         map((response: IInspectionRun) => {
           return loadInspectionRunSuccessAction({ response });
         })
@@ -64,7 +89,7 @@ export class InspectionEffect {
   runInspectionAction$ = createEffect(() => this.actions$.pipe(
     ofType(runInspectionAction),
     mergeMap(({ payload }) => {
-      return this.inspectionRunSrv.post(payload).pipe(
+      return this.inspectionChecklistRunSrv.post(payload).pipe(
         tap(({ id }: any) => {
           if (id)
             this.router.navigateByUrl(`/dashboard/inspections/${id}/run`);
@@ -91,7 +116,7 @@ export class InspectionEffect {
     private router: Router,
     private store: Store<AppState>,
     private inspectionSrv: InspectionsService,
-    private inspectionRunSrv: InspectionChecklistRunService,
+    private inspectionChecklistRunSrv: InspectionChecklistRunService,
     private inspectionChecklistSrv: InspectionChecklistService
   ) { }
 }

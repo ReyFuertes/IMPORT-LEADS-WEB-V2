@@ -1,8 +1,10 @@
 @import "src/styleguide/shared";
+
 ::ng-deep {
   mat-radio-group {
     min-height: 105px !important;
   }
+
   .mat-radio-button {
     width: 100%;
     min-width: 100%;

@@ -12,6 +12,7 @@
   }
   .detail {
     > div span {
+      min-height: 25px;
       &:first-child {
         font-size: 12px;
         font-weight: normal;

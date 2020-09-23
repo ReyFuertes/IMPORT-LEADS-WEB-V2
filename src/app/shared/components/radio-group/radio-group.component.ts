@@ -10,17 +10,20 @@ export class RadioGroupComponent implements OnInit, OnChanges {
   @Input() public options: ISimpleItem[];
   @Input() public name: string;
   @Input() public selected: string;
+  @Input() public disabled: boolean = false;
 
   @Output() public valueEmitter = new EventEmitter<any>();
 
   constructor() { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    console.log(this.disabled)
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes && changes.selected && changes.selected.currentValue) {
-      this.selected = changes.selected.currentValue;
-    }
+    this.selected = changes?.selected?.currentValue;
+    this.disabled = changes?.disabled?.currentValue;
+    console.log(this.disabled)
   }
 
   public onChange(option: ISimpleItem): void {

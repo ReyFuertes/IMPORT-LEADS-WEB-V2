@@ -62,7 +62,7 @@ const routes: Routes = [
         inspectionRun: InspectionRunResolver
       }
     }, {
-      path: 'report',
+      path: ':id/report',
       component: InspectionReportPageComponent
     }]
   }

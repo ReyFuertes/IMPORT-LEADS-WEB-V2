@@ -2,7 +2,7 @@ import { AddEditState, ISimpleItem } from '../../../../shared/generics/generic.m
 import { InspectionCommentDialogComponent } from '../../../dialogs/components/inspection-comment/inspection-comment-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, Input, SimpleChanges, OnChanges, ChangeDetectorRef } from '@angular/core';
-import { IInsChecklistTerm, IInspectionChecklistImage, IInspectionRun, InspectionVeriType } from '../../inspections.models';
+import { IInsChecklistTerm, IInspectionChecklistImage, IInspectionRun, InspectionVeriType, RunStatusType } from '../../inspections.models';
 import * as _ from 'lodash';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { select, Store } from '@ngrx/store';
@@ -13,6 +13,7 @@ import { clearInsChecklistImageAction, deleteInsChecklistAction, getInsChecklist
 import { ModalStateType } from 'src/app/models/generic.model';
 import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
 import { getInsChecklistImagesSelector } from '../../store/selectors/inspection-checklist.selector';
+import { getInspectionRunStatusSelector } from '../../store/selectors/inspection.selector';
 
 @Component({
   selector: 'il-inspection-run-category-row',
@@ -20,7 +21,7 @@ import { getInsChecklistImagesSelector } from '../../store/selectors/inspection-
   styleUrls: ['./inspection-run-category-row.component.scss']
 })
 
-export class InspectionRunCategoryRowComponent extends GenericDestroyPageComponent implements OnInit {
+export class InspectionRunCategoryRowComponent extends GenericDestroyPageComponent implements OnInit, OnChanges {
   public verifOptions: ISimpleItem[] = [
     { label: 'Ok', value: 'ok' },
     { label: 'Failed', value: 'failed' },
@@ -29,6 +30,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
   public inspectionVeriType = InspectionVeriType;
   public term: IContractTerm;
   public images: IInspectionChecklistImage[];
+  public runInspectionStatus: string;
 
   @Input() public row: IInsChecklistTerm;
   @Input() public checklist_run_id: string;
@@ -53,7 +55,20 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
       })).subscribe();
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.store.pipe(select(getInspectionRunStatusSelector),
+      tap(res => {
+        this.runInspectionStatus = res;
+      })).subscribe();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.runInspectionStatus = changes?.runInspectionStatus?.currentValue;
+  }
+
+  public get isPaused(): boolean {
+    return this.runInspectionStatus == RunStatusType.pause;
+  }
 
   public get getSelection(): any {
     return this.row?.checklist_item?.verification || String(this.inspectionVeriType.ok);
@@ -152,7 +167,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
         }));
       }
     });
-    
+
     /* upload image */
     let formData = new FormData();
     this.cnsFileObj(formData);

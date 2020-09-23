@@ -50,10 +50,17 @@ export interface IInspectionRun {
   id?: string;
   checklist?: IInsChecklist;
   count?: number;
+  run_status?: string;
+}
+export enum RunStatusType {
+  stop = '0',
+  pause = '1',
+  resume = '2'
 }
 export interface IInspectionRunPayload {
   id?: string;
   saved_checklist?: IInsChecklist;
+  run_status?: RunStatusType
 }
 export interface IInsChecklist {
   id?: string;

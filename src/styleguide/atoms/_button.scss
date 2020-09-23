@@ -4,11 +4,14 @@
   font-weight: normal;
   min-width: 112px;
   height: 35px !important;
-  line-height: 25px;
+  line-height: 32px;
   width: fit-content !important;
   &:disabled {
     cursor: not-allowed;
-    opacity: 0.5;
+    opacity: 1;
+    background-color: $color-gray-3;
+    color: $color-black-1;
+    cursor: not-allowed;
   }
 }
 @mixin il-bg-blue {

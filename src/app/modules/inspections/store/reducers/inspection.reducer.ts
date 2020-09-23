@@ -1,20 +1,31 @@
-import { IActiveInspection, IFinishedInspection, IInspectionRun } from './../../inspections.models';
-import { loadActiveInspectionSuccessAction, loadInspectionRunSuccessAction, clearLoadAction, updateSourceTermAction, runInspectionSuccessAction } from '../actions/inspection.action';
+import { IActiveInspection, IFinishedInspection, IInspectionRun, RunStatusType } from './../../inspections.models';
+import { loadActiveInspectionSuccessAction, loadInspectionRunSuccessAction, clearLoadAction, updateSourceTermAction, runInspectionSuccessAction, changeInspectionStatusSuccessAction } from '../actions/inspection.action';
 import { createReducer, on, Action } from "@ngrx/store";
 export interface InspectionState {
   loaded?: boolean;
   activeInspection?: IActiveInspection[],
   finishedInspection?: IFinishedInspection[],
   runInspection?: IInspectionRun
+  isPaused?: boolean
 }
 export const initialState: InspectionState = {
   loaded: null,
   activeInspection: null,
   finishedInspection: null,
-  runInspection: null
+  runInspection: null,
+  isPaused: null
 };
 const reducer = createReducer(
   initialState,
+  on(changeInspectionStatusSuccessAction, (state, action) => {
+    if (action.response.run_status == RunStatusType.pause) {
+      return Object.assign({}, state, { isPaused: true });
+    } else if (action.response.run_status == RunStatusType.resume) {
+      return Object.assign({}, state, { isPaused: null });
+    } else {
+      return Object.assign({}, state, { isPaused: null });
+    }
+  }),
   on(updateSourceTermAction, (state, action) => {
     /* override the term */
     let newState = Object.assign({}, state);

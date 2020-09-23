@@ -33,7 +33,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     /* remove notification 2 seconds */
     this.$notify.pipe(debounceTime(2000)).subscribe((res) => {
       if (res)
-        this.store.dispatch(removeNotification())
+        this.store.dispatch(removeNotification());
+        
       this.cdRef.detectChanges();
     });
 

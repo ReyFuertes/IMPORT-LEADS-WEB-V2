@@ -12,6 +12,8 @@ import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 import * as _ from 'lodash';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { takeUntil, tap } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
 @Component({
   selector: 'il-inspection-run-page',
   templateUrl: './inspection-run-page.component.html',
@@ -26,7 +28,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   public products: ISimpleItem[] = [];
   public runInspectionStatus: string;
 
-  constructor(private store: Store<AppState>, private cdRef: ChangeDetectorRef, private router: Router, private fb: FormBuilder) {
+  constructor(private dialog: MatDialog, private store: Store<AppState>, private cdRef: ChangeDetectorRef, private router: Router, private fb: FormBuilder) {
     super();
     this.form = this.fb.group({
       items: ['']
@@ -44,12 +46,14 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   ngOnInit() {
     this.$inspectionRun = this.store.pipe(select(getInspectionRunSelector));
     this.$inspectionRun.pipe(takeUntil(this.$unsubscribe)).subscribe(res => {
-      this.products = res?.checklist.items.map(c => {
+      this.products = res?.checklist?.items.map(c => {
         return {
           label: c.contract_product.product.product_name,
           value: c.contract_product.id
         }
       })
+      /* insert default value */
+      this.products.unshift({ label: '', value: null });
       this.products = _.uniqBy(this.products, 'value');
     })
   }
@@ -59,26 +63,47 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   }
 
   public onStop(ins: IInspectionRun): void {
-    const payload = {
-      id: ins?.id,
-      saved_checklist: ins?.checklist,
-      run_status: RunStatusType.stop
-    }
-    this.store.dispatch(changeInspectionStatusAction({ payload }));
+    const dialogRef = this.dialog.open(ConfirmationComponent, {
+      width: '410px',
+      data: { action: 4 }
+    });
+    dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+      .subscribe(result => {
+        if (result) {
+          const payload = {
+            id: ins?.id,
+            saved_checklist: ins?.checklist,
+            run_status: RunStatusType.stop
+          }
+          this.store.dispatch(changeInspectionStatusAction({ payload }));
+        }
+      });
   }
 
   public onPause(ins: IInspectionRun): void {
-    const payload = {
-      id: ins?.id,
-      saved_checklist: ins?.checklist,
-      run_status: this.runInspectionStatus === RunStatusType.pause ? null : RunStatusType.pause
-    }
-    this.store.dispatch(changeInspectionStatusAction({ payload }));
+    const dialogRef = this.dialog.open(ConfirmationComponent, {
+      width: '410px',
+      data: { action: 3 }
+    });
+    dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+      .subscribe(result => {
+        if (result) {
+          const payload = {
+            id: ins?.id,
+            saved_checklist: ins?.checklist,
+            run_status: this.runInspectionStatus === RunStatusType.pause ? null : RunStatusType.pause
+          }
+          this.store.dispatch(changeInspectionStatusAction({ payload }));
+        }
+      });
   }
 
   public handleValueEmitter(event: any): void {
     /* filter checklist by product */
-    this.$inspectionRun = this.store.pipe(select(getInspectionRunFilterByProductIdSelector(event)));
+    if (event)
+      this.$inspectionRun = this.store.pipe(select(getInspectionRunFilterByProductIdSelector(event)));
+    else
+      this.$inspectionRun = this.store.pipe(select(getInspectionRunSelector));
   }
 
   public onPrev(ins: IInspectionRun): void {

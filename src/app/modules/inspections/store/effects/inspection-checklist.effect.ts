@@ -33,7 +33,7 @@ export class InspectionChecklistEffect {
     ofType(saveInsChecklisImageAction),
     mergeMap(({ payload }) => {
       return this.InsChecklistImageSrv.post(payload).pipe(
-        tap(()=> this.store.dispatch(clearInsChecklistImageAction())),
+        tap(() => this.store.dispatch(clearInsChecklistImageAction())),
         map((response: IInspectionChecklistImage[]) => {
           return saveInsChecklisImageSuccessAction({ response });
         })

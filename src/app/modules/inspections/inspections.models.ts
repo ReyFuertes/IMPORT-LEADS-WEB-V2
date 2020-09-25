@@ -37,7 +37,8 @@ export interface IInspectionChecklist {
   inspection_checklist_run?: IInspectionRun;
   contract_term?: IContractTerm;
   contract_category?: IContractCategory,
-  saved_checklist?: ISavedChecklist
+  saved_checklist?: ISavedChecklist,
+  contract_product?: IContractProduct
 }
 export interface IInsCheckItem {
   id?: string;
@@ -75,7 +76,8 @@ export interface IInspectionRunItem {
   contract_product?: IContractProduct,
   contract_term?: IContractTerm,
   contract_category?: IContractCategory,
-  checklist_item?: IInsCheckItem
+  checklist_item?: IInsCheckItem,
+  saved_checklist?: ISavedChecklist
 }
 export class IFinishedInspection { }
 export class IActiveInspection {

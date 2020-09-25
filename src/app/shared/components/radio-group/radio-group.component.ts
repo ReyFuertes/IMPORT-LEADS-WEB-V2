@@ -17,13 +17,12 @@ export class RadioGroupComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.disabled)
+
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.selected = changes?.selected?.currentValue;
     this.disabled = changes?.disabled?.currentValue;
-    console.log(this.disabled)
   }
 
   public onChange(option: ISimpleItem): void {

@@ -27,6 +27,9 @@ export class ConfirmationComponent {
   }, {
     label: 'Stop',
     message: 'Are you sure to stop the inspection run?'
+  }, {
+    label: 'Delete and Navigate to',
+    message: 'Are you sure to delete the current inspection run?'
   }];
 
   constructor(public dialogRef: MatDialogRef<ConfirmationComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {

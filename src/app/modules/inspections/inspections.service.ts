@@ -10,13 +10,13 @@ export class InspectionsService extends BaseService<IActiveInspection> {
   }
 }
 @Injectable({ providedIn: 'root' })
-export class InspectionChecklistRunService extends BaseService<IInspectionRun> {
+export class InspectionChecklistRunService extends BaseService<IInspectionRun | { id: string, copyCount: number }> {
   constructor(http: HttpClient) {
     super(http, 'inspection-checklist-run');
   }
 }
 @Injectable({ providedIn: 'root' })
-export class InspectionChecklistService extends BaseService<IInspectionChecklist | IInspectionRun> {
+export class InspectionChecklistService extends BaseService<IInspectionChecklist | IInspectionRun | string> {
   constructor(http: HttpClient) {
     super(http, 'inspection-checklist');
   }

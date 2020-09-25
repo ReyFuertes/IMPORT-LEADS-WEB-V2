@@ -1,5 +1,5 @@
 import { IActiveInspection, IInspectionChecklist, IInspectionRun, IInspectionRunPayload, RunStatusType } from './../../inspections.models';
-import { loadActiveInspectionSuccessAction, runInspectionAction, runInspectionSuccessAction, createInspectionChecklistAction, createInspectionChecklistSuccessAction, loadInspectionRunAction, loadInspectionRunSuccessAction, runNextInspectionAction, runNextInspectionSuccessAction, runPrevInspectionAction, runPrevInspectionSuccessAction, changeInspectionStatusAction, changeInspectionStatusSuccessAction } from '../actions/inspection.action';
+import { loadActiveInspectionSuccessAction, runInspectionAction, runInspectionSuccessAction, createInspectionChecklistAction, createInspectionChecklistSuccessAction, loadInspectionRunAction, loadInspectionRunSuccessAction, runNextInspectionAction, runNextInspectionSuccessAction, runPrevInspectionAction, runPrevInspectionSuccessAction, changeInspectionStatusAction, changeInspectionStatusSuccessAction, deleteAndNavigateToAction, deleteAndNavigateToSuccessAction, copyInspectionAction, copyInspectionSuccessAction } from '../actions/inspection.action';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
@@ -12,6 +12,37 @@ import { appNotification } from 'src/app/store/actions/notification.action';
 
 @Injectable()
 export class InspectionEffect {
+  copyInspectionAction$ = createEffect(() => this.actions$.pipe(
+    ofType(copyInspectionAction),
+    mergeMap(({ id, copyCount }) => {
+      return this.inspectionChecklistRunSrv.post({ id, copyCount }, 'copy').pipe(
+        tap(({ id }: any) => {
+          debugger
+          this.router.navigateByUrl(`dashboard/inspections/${id}/run`);
+          this.store.dispatch(loadInspectionRunAction({ id }));
+        }),
+        map((response: any) => {
+          return copyInspectionSuccessAction({ response });
+        })
+      )
+    })
+  ));
+
+  deleteAndNavigateToAction$ = createEffect(() => this.actions$.pipe(
+    ofType(deleteAndNavigateToAction),
+    mergeMap(({ id }) => {
+      return this.inspectionChecklistRunSrv.post({ id }, 'remove-navigate-to').pipe(
+        tap(({ id }: any) => {
+          this.router.navigateByUrl(`dashboard/inspections/${id}/run`);
+          this.store.dispatch(loadInspectionRunAction({ id }));
+        }),
+        map((response: any) => {
+          return deleteAndNavigateToSuccessAction({ response });
+        })
+      )
+    })
+  ));
+
   changeInspectionStatusAction$ = createEffect(() => this.actions$.pipe(
     ofType(changeInspectionStatusAction),
     switchMap(({ payload }) => {

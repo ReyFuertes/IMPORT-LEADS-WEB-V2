@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { getInspectionRunFilterByProductIdSelector, getInspectionRunSelector, getInspectionRunStatusSelector } from '../../store/selectors/inspection.selector';
-import { runNextInspectionAction, runPrevInspectionAction, changeInspectionStatusAction } from '../../store/actions/inspection.action';
+import { runNextInspectionAction, runPrevInspectionAction, changeInspectionStatusAction, deleteAndNavigateToAction, copyInspectionAction } from '../../store/actions/inspection.action';
 import { IInspectionRun, RunStatusType } from '../../inspections.models';
 import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 import * as _ from 'lodash';
@@ -27,25 +27,28 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   public $inspectionRun: Observable<IInspectionRun>;
   public products: ISimpleItem[] = [];
   public runInspectionStatus: string;
+  public runInspectionCount: number;
 
   constructor(private dialog: MatDialog, private store: Store<AppState>, private cdRef: ChangeDetectorRef, private router: Router, private fb: FormBuilder) {
     super();
     this.form = this.fb.group({
-      items: ['']
-    });
-    this.formNavigateTo = this.fb.group({
-      position: [null]
+      copyCount: [null],
+      items: [null]
     });
 
     this.store.pipe(select(getInspectionRunStatusSelector),
-      tap(res => {
-        this.runInspectionStatus = res;
+      tap((res: any) => {
+        if (res) {
+          this.runInspectionStatus = res;
+        }
       })).subscribe();
   }
 
   ngOnInit() {
     this.$inspectionRun = this.store.pipe(select(getInspectionRunSelector));
     this.$inspectionRun.pipe(takeUntil(this.$unsubscribe)).subscribe(res => {
+      this.runInspectionCount = res?.count;
+
       this.products = res?.checklist?.items.map(c => {
         return {
           label: c.contract_product.product.product_name,
@@ -53,13 +56,32 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
         }
       })
       /* insert default value */
-      this.products.unshift({ label: '', value: null });
-      this.products = _.uniqBy(this.products, 'value');
+      if(this.products) {
+        this.products?.unshift({ label: '', value: null });
+        this.products = _.uniqBy(this.products, 'value');
+      }
     })
+  }
+
+  public get isFirstRecord(): boolean {
+    return Number(this.runInspectionCount) === 1 ? true : false;
   }
 
   public get isPaused(): boolean {
     return this.runInspectionStatus !== RunStatusType.pause;
+  }
+
+  public onDeleteNavigateTo(ins: IInspectionRun): void {
+    const dialogRef = this.dialog.open(ConfirmationComponent, {
+      width: '410px',
+      data: { action: 5 }
+    });
+    dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+      .subscribe(result => {
+        if (result) {
+          this.store.dispatch(deleteAndNavigateToAction({ id: ins?.id }));
+        }
+      });
   }
 
   public onStop(ins: IInspectionRun): void {
@@ -111,7 +133,10 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   }
 
   public onNext(ins: IInspectionRun): void {
-    this.store.dispatch(runNextInspectionAction({ payload: { id: ins.id, saved_checklist_id: ins?.checklist?.id } }));
+    if (this.form.get('copyCount').value) {
+      this.store.dispatch(copyInspectionAction({ id: ins.id, copyCount: Number(this.form.get('copyCount').value) }));
+    } else
+      this.store.dispatch(runNextInspectionAction({ payload: { id: ins.id, saved_checklist_id: ins?.checklist?.id } }));
   }
 
   public onBack(): void {

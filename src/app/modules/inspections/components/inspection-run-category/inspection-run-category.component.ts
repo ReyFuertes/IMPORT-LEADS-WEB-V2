@@ -36,6 +36,8 @@ export class InspectionRunCategoryComponent implements OnInit, OnChanges {
         id: i?.contract_category?.id,
         category: i.contract_category.category.category_name,
         saved_checklist: { id: this.item?.checklist.id },
+        contract_product: i.contract_product,
+        contract_category: i.contract_category,
         terms: Object.assign({}, i.contract_term, {
           checklist_item: Object.assign({}, i.checklist_item, {
             verification: i.checklist_item?.verification ? i.checklist_item.verification : this.inspectionVeriType.ok,
@@ -44,11 +46,14 @@ export class InspectionRunCategoryComponent implements OnInit, OnChanges {
       }
     }) || null;
 
-    this.dataSource = Object.values(source.reduce((result, { id, saved_checklist, category, terms, }) => {
+    this.dataSource = Object.values(source.reduce((result,
+      { id, saved_checklist, category, terms, contract_category, contract_product }) => {
       if (!result[category]) result[category] = { /* Create new group */
         id,
         saved_checklist,
         category,
+        contract_product,
+        contract_category,
         terms: []
       };
       result[category].terms.push({ ...terms });

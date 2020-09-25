@@ -7,45 +7,53 @@
   </div>
   <div class="actions-panel" fxLayout="row" fxLayoutAlign="start center">
     <div fxFlex="40" fxLayoutGap="5px">
-      <button [matMenuTriggerFor]="appMenu" class="il-button il-bordered-blue navigate-to" mat-flat-button>
+      <button  class="il-button il-bordered-blue navigate-to" mat-flat-button>
         <img [src]="svgPath + 'enter-icon-blue.svg'" />
         <span>Navigate to</span>
       </button>
-      <mat-menu class="navigate-to" #appMenu="matMenu">
+      <!-- [matMenuTriggerFor]="appMenu" <mat-menu class="navigate-to" #appMenu="matMenu">
         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-          <il-input fxFlex="100" (click)="$event.stopPropagation();" [form]="formNavigateTo" isFloatLabel="false" [controlName]="'position'" placeholder="Item Position"></il-input>
+          <il-input fxFlex="100" (click)="$event.stopPropagation();" [form]="form" isFloatLabel="false" controlName="" placeholder="Item Position"></il-input>
           <button mat-flat-button class="il-button primary">Go</button>
         </div>
-      </mat-menu>
-      <button class="il-button il-bordered-blue delete-current" mat-flat-button>
+      </mat-menu> -->
+      <button [disabled]="!isPaused || isFirstRecord" (click)="onDeleteNavigateTo(inspectionRun)" class="il-button il-bordered-blue delete-current" mat-flat-button>
         <img [src]="svgPath + 'delete-icon-blue.svg'" />
         <span>Delete current and go back </span>
       </button>
     </div>
 
     <div fxFlex fxLayoutAlign="end center" fxLayoutGap="5px">
-      <button [disabled]="!isPaused" (click)="onPrev(inspectionRun)" class="il-button il-bg-blue" mat-flat-button>
-        <img [src]="svgPath + 'arrow-left-icon-white.svg'" />
-        <span>Previous</span>
+      <button [disabled]="!isPaused || isFirstRecord" (click)="onPrev(inspectionRun)" class="il-button il-bg-blue" mat-flat-button>
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+          <img [src]="svgPath + 'arrow-left-icon-white.svg'" />
+          <span>Previous</span>
+        </div>
       </button>
       <button [disabled]="!isPaused" (click)="onNext(inspectionRun)" class="il-button il-bg-blue" mat-flat-button>
-        <span>Next</span>
-        <img [src]="svgPath + 'arrow-right-icon-white.svg'" />
+        <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="5px">
+          <span>Next</span>
+          <img [src]="svgPath + 'arrow-right-icon-white.svg'" />
+        </div>
       </button>
       <button (click)="onPause(inspectionRun)" mat-flat-button class="il-button il-bg-green">
-        <img [src]="svgPath + 'pause-icon-white.svg'" />
-        <span *ngIf="isPaused">Pause run</span>
-        <span *ngIf="!isPaused">Resume run</span>
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
+          <img [src]="svgPath + 'pause-icon-white.svg'" />
+          <span *ngIf="isPaused">Pause run</span>
+          <span *ngIf="!isPaused">Resume run</span>
+        </div>
       </button>
       <button (click)="onStop(inspectionRun)" mat-flat-button class="il-button il-bg-red">
-        <img [src]="svgPath + 'stop-icon-white.svg'" />
-        <span>Stop run</span>
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
+          <img [src]="svgPath + 'stop-icon-white.svg'" />
+          <span>Stop run</span>
+        </div>
       </button>
     </div>
   </div>
 
   <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
-    <il-input fxFlex="122px" [form]="form" isFloatLabel="true" [inputMaxLen]="10" controlName="items" placeholder="Items checked for this run"></il-input>
+    <il-input fxFlex="122px" [form]="form" isFloatLabel="true" [inputMaxLen]="10" controlName="copyCount" placeholder="Items checked for this run"></il-input>
 
     <div fxFlex fxLayoutAlign="end center">
       <il-dropdown-select-search (valueEmitter)="handleValueEmitter($event)" placeholder="Select Products" [options]="products"></il-dropdown-select-search>

@@ -2,7 +2,7 @@ import { AddEditState, ISimpleItem } from '../../../../shared/generics/generic.m
 import { InspectionCommentDialogComponent } from '../../../dialogs/components/inspection-comment/inspection-comment-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, Input, SimpleChanges, OnChanges, ChangeDetectorRef } from '@angular/core';
-import { IInsChecklistTerm, IInspectionChecklistImage, IInspectionRun, InspectionVeriType, RunStatusType } from '../../inspections.models';
+import { IInsChecklistTerm, IInspectionChecklistImage, IInspectionRun, IInspectionRunItem, InspectionVeriType, RunStatusType } from '../../inspections.models';
 import * as _ from 'lodash';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { select, Store } from '@ngrx/store';
@@ -32,11 +32,9 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
   public images: IInspectionChecklistImage[];
   public runInspectionStatus: string;
 
+  @Input() public checklistRunId: string;
+  @Input() source: IInspectionRunItem;
   @Input() public row: IInsChecklistTerm;
-  @Input() public checklist_run_id: string;
-  @Input() public categoryId: string;
-  @Input() public savedChecklist: IChecklist;
-  @Input() public runId: string;
 
   constructor(private store: Store<AppState>, private cdRef: ChangeDetectorRef, public dialog: MatDialog) {
     super();
@@ -47,7 +45,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
           this.images = res?.map(r => {
             return ({
               ...r,
-              inspection_checklist_run: { id: this.checklist_run_id },
+              inspection_checklist_run: { id: this.checklistRunId },
               contract_term: { id: this.row?.id }
             })
           })
@@ -90,18 +88,19 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
         .subscribe((result) => {
           if (result) {
             this.row.checklist_item.verification = option.value;
-
+            debugger
             /* save verification and comments */
-            this.store.dispatch(saveInsChecklistAction({
-              payload: {
-                verification: this.row?.checklist_item?.verification,
-                comment: result.comments,
-                inspection_checklist_run: { id: this.checklist_run_id },
-                contract_term: { id: item.id },
-                contract_category: { id: this.categoryId },
-                saved_checklist: { id: this.savedChecklist?.id }
-              }
-            }));
+            const payload = {
+              verification: this.row?.checklist_item?.verification,
+              comment: result.comments,
+              inspection_checklist_run: { id: this.checklistRunId },
+              contract_term: { id: item.id },
+              contract_category: { id: this.source.contract_category.id },
+              saved_checklist: { id: this.source?.saved_checklist?.id },
+              contract_product: { id: this.source.contract_product.id }
+            }
+            debugger
+            this.store.dispatch(saveInsChecklistAction({ payload }));
 
             this.saveAndUpdateImage();
           } else {

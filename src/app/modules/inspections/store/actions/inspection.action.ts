@@ -19,7 +19,27 @@ export enum InspectionActionTypes {
   runPrevInspectionSuccessAction = '[Inspection Run] run prev inspection (success)',
   changeInspectionStatusAction = '[Inspection Run] change inspection status',
   changeInspectionStatusSuccessAction = '[Inspection Run] change inspection status (success)',
+  deleteAndNavigateToAction = '[Inspection Checklist] remove and navigate to',
+  deleteAndNavigateToSuccessAction = '[Inspection Checklist] remove and navigate to (success)',
+  copyInspectionAction = '[Inspection Checklist] copy inspection',
+  copyInspectionSuccessAction = '[Inspection Checklist] copy inspection (success)',
 }
+export const copyInspectionAction = createAction(
+  InspectionActionTypes.copyInspectionAction,
+  props<{ id: string, copyCount: number }>()
+);
+export const copyInspectionSuccessAction = createAction(
+  InspectionActionTypes.copyInspectionSuccessAction,
+  props<{ response: IInspectionRun }>()
+);
+export const deleteAndNavigateToAction = createAction(
+  InspectionActionTypes.deleteAndNavigateToAction,
+  props<{ id: string }>()
+);
+export const deleteAndNavigateToSuccessAction = createAction(
+  InspectionActionTypes.deleteAndNavigateToSuccessAction,
+  props<{ response: IInspectionRun }>()
+);
 export const changeInspectionStatusAction = createAction(
   InspectionActionTypes.changeInspectionStatusAction,
   props<{ payload: IInspectionRunPayload }>()

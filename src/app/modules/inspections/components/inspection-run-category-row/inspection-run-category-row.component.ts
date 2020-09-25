@@ -88,7 +88,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
         .subscribe((result) => {
           if (result) {
             this.row.checklist_item.verification = option.value;
-            debugger
+            
             /* save verification and comments */
             const payload = {
               verification: this.row?.checklist_item?.verification,
@@ -99,7 +99,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
               saved_checklist: { id: this.source?.saved_checklist?.id },
               contract_product: { id: this.source.contract_product.id }
             }
-            debugger
+            
             this.store.dispatch(saveInsChecklistAction({ payload }));
 
             this.saveAndUpdateImage();
@@ -120,9 +120,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
           this.cdRef.detectChanges();
         });
     } else {
-      const dialogRef = this.dialog.open(ConfirmationComponent, {
-        width: '410px', data: { action: 2 }
-      });
+      const dialogRef = this.dialog.open(ConfirmationComponent, { width: '410px', data: { action: 2 } });
       dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
         .subscribe(result => {
           if (result) {
@@ -161,9 +159,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
     setTimeout(() => {
       /* save images */
       if (this.images && this.images.length > 0) {
-        this.store.dispatch(saveInsChecklisImageAction({
-          payload: this.images
-        }));
+        this.store.dispatch(saveInsChecklisImageAction({ payload: this.images }));
       }
     });
 

@@ -17,7 +17,6 @@ export class InspectionEffect {
     mergeMap(({ id, copyCount }) => {
       return this.inspectionChecklistRunSrv.post({ id, copyCount }, 'copy').pipe(
         tap(({ id }: any) => {
-          debugger
           this.router.navigateByUrl(`dashboard/inspections/${id}/run`);
           this.store.dispatch(loadInspectionRunAction({ id }));
         }),

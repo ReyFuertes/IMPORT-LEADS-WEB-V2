@@ -30,6 +30,9 @@ export class ConfirmationComponent {
   }, {
     label: 'Delete and Navigate to',
     message: 'Are you sure to delete the current inspection run?'
+  }, {
+    label: 'Copy',
+    message: 'Are you sure to create a copies the current inspection run?'
   }];
 
   constructor(public dialogRef: MatDialogRef<ConfirmationComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {

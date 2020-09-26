@@ -56,7 +56,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
         }
       })
       /* insert default value */
-      if(this.products) {
+      if (this.products) {
         this.products?.unshift({ label: '', value: null });
         this.products = _.uniqBy(this.products, 'value');
       }
@@ -133,10 +133,22 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   }
 
   public onNext(ins: IInspectionRun): void {
-    if (this.form.get('copyCount').value) {
-      this.store.dispatch(copyInspectionAction({ id: ins.id, copyCount: Number(this.form.get('copyCount').value) }));
-    } else
+    if (this.form.get('copyCount').value) { /* create number of copies of the current inspection run */
+      const dialogRef = this.dialog.open(ConfirmationComponent, {
+        width: '410px',
+        data: { action: 6 }
+      });
+      dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+        .subscribe(result => {
+          if (result) {
+            this.store.dispatch(copyInspectionAction({ id: ins.id, copyCount: Number(this.form.get('copyCount').value) }));
+            this.form.get('copyCount').patchValue(null, { emitEvent: false });
+          }
+        });
+    } else {
+      /* create only 1 copy when navigating next */
       this.store.dispatch(runNextInspectionAction({ payload: { id: ins.id, saved_checklist_id: ins?.checklist?.id } }));
+    }
   }
 
   public onBack(): void {

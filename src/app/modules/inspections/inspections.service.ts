@@ -10,7 +10,7 @@ export class InspectionsService extends BaseService<IActiveInspection> {
   }
 }
 @Injectable({ providedIn: 'root' })
-export class InspectionChecklistRunService extends BaseService<IInspectionRun | { id: string, copyCount: number }> {
+export class InspectionChecklistRunService extends BaseService<IInspectionRun | { id: string, copyCount: number } | { saved_checklist_id: string, position: number }> {
   constructor(http: HttpClient) {
     super(http, 'inspection-checklist-run');
   }

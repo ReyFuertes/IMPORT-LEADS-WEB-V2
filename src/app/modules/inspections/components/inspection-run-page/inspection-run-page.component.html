@@ -7,16 +7,18 @@
   </div>
   <div class="actions-panel" fxLayout="row" fxLayoutAlign="start center">
     <div fxFlex="40" fxLayoutGap="5px">
-      <button  class="il-button il-bordered-blue navigate-to" mat-flat-button>
+      <!-- navigate to -->
+      <button [matMenuTriggerFor]="appMenu" class="il-button il-bordered-blue" mat-flat-button>
         <img [src]="svgPath + 'enter-icon-blue.svg'" />
         <span>Navigate to</span>
       </button>
-      <!-- [matMenuTriggerFor]="appMenu" <mat-menu class="navigate-to" #appMenu="matMenu">
+      <mat-menu class="navigate-to" [overlapTrigger]="false" #appMenu="matMenu">
         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-          <il-input fxFlex="100" (click)="$event.stopPropagation();" [form]="form" isFloatLabel="false" controlName="" placeholder="Item Position"></il-input>
-          <button mat-flat-button class="il-button primary">Go</button>
+          <il-input fxFlex="100" (click)="$event.stopPropagation();" [form]="form" isFloatLabel="false" controlName="position" placeholder="Item Position"></il-input>
+          <button (click)="navigateTo()" mat-flat-button class="il-button primary">Go</button>
         </div>
-      </mat-menu> -->
+      </mat-menu>
+
       <button [disabled]="!isPaused || isFirstRecord" (click)="onDeleteNavigateTo(inspectionRun)" class="il-button il-bordered-blue delete-current" mat-flat-button>
         <img [src]="svgPath + 'delete-icon-blue.svg'" />
         <span>Delete current and go back </span>

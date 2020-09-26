@@ -21,7 +21,7 @@
     top: 75%;
   }
 }
-::ng-deep {
+:host ::ng-deep {
   .mat-menu-panel {
     min-height: 40px !important;
     overflow: hidden;

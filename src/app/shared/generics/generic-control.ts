@@ -17,4 +17,10 @@ export abstract class GenericControl<T> extends GenericDestroyPageComponent {
   public imgPath: string = environment.imgPath;
 
   @Output() public valueEmitter = new EventEmitter<T>();
+
+  public get hasError(): boolean {
+    return this.form
+      && this.form?.get(this.controlName)?.errors
+      && this.form?.get(this.controlName)?.touched;
+  }
 }

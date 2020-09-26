@@ -1,17 +1,39 @@
 import { IActiveInspection, IInspectionChecklist, IInspectionRun, IInspectionRunPayload, RunStatusType } from './../../inspections.models';
-import { loadActiveInspectionSuccessAction, runInspectionAction, runInspectionSuccessAction, createInspectionChecklistAction, createInspectionChecklistSuccessAction, loadInspectionRunAction, loadInspectionRunSuccessAction, runNextInspectionAction, runNextInspectionSuccessAction, runPrevInspectionAction, runPrevInspectionSuccessAction, changeInspectionStatusAction, changeInspectionStatusSuccessAction, deleteAndNavigateToAction, deleteAndNavigateToSuccessAction, copyInspectionAction, copyInspectionSuccessAction } from '../actions/inspection.action';
+import { loadActiveInspectionSuccessAction, runInspectionAction, runInspectionSuccessAction, createInspectionChecklistAction, createInspectionChecklistSuccessAction, loadInspectionRunAction, loadInspectionRunSuccessAction, runNextInspectionAction, runNextInspectionSuccessAction, runPrevInspectionAction, runPrevInspectionSuccessAction, changeInspectionStatusAction, changeInspectionStatusSuccessAction, deleteAndNavigateToAction, deleteAndNavigateToSuccessAction, copyInspectionAction, copyInspectionSuccessAction, navigateToInspectionAction, navigateToInspectionSuccessAction, navigateToFailed } from '../actions/inspection.action';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { loadSavedChecklistAction } from '../../../contracts/store/actions/saved-checklist.action';
 import { InspectionsService, InspectionChecklistRunService, InspectionChecklistService } from '../../inspections.service';
 import { Router } from '@angular/router';
 import { AppState } from '../../../contracts/store/reducers';
 import { appNotification } from 'src/app/store/actions/notification.action';
+import { loginFailedAction } from 'src/app/modules/auth/store/auth.action';
+import { of } from 'rxjs';
 
 @Injectable()
 export class InspectionEffect {
+  navigateToInspectionAction$ = createEffect(() => this.actions$.pipe(
+    ofType(navigateToInspectionAction),
+    mergeMap(({ saved_checklist_id, position }) => {
+      return this.inspectionChecklistRunSrv.post({ saved_checklist_id, position }, 'navigate-to').pipe(
+        tap(({ id }: any) => {
+          this.router.navigateByUrl(`dashboard/inspections/${id}/run`);
+          this.store.dispatch(loadInspectionRunAction({ id }));
+        }),
+        map((response: any) => {
+          return navigateToInspectionSuccessAction({ response });
+        }),
+        catchError(() => {
+          return of(appNotification({
+            notification: { error: true, message: 'Position doesnt exist..' }
+          }));
+        })
+      )
+    })
+  ));
+
   copyInspectionAction$ = createEffect(() => this.actions$.pipe(
     ofType(copyInspectionAction),
     mergeMap(({ id, copyCount }) => {
@@ -26,7 +48,6 @@ export class InspectionEffect {
       )
     })
   ));
-
   deleteAndNavigateToAction$ = createEffect(() => this.actions$.pipe(
     ofType(deleteAndNavigateToAction),
     mergeMap(({ id }) => {

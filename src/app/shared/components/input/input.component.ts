@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControlName } from '@angular/forms';
+import { GenericControl } from '../../generics/generic-control';
+import { ISimpleItem } from '../../generics/generic.model';
 
 @Component({
   selector: 'il-input',
@@ -7,10 +9,7 @@ import { FormGroup, FormControlName } from '@angular/forms';
   styleUrls: ['./input.component.scss']
 })
 
-export class InputComponent implements OnInit, OnChanges {
-  @Input() public placeholder: string;
-  @Input() public controlName: any;
-  @Input() public form: FormGroup;
+export class InputComponent extends GenericControl<ISimpleItem> implements OnInit, OnChanges {
   @Input() public isFloatLabel: boolean = false;
   @Input() public isNumberOnly: boolean = false;
   @Input() public isRequired: boolean = false;
@@ -21,19 +20,15 @@ export class InputComponent implements OnInit, OnChanges {
   @Input() public isCenter: boolean = false;
   @Input() public hasBorder: boolean = false;
 
-  constructor() { }
+  constructor() {
+    super();
+  }
 
   ngOnInit() { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes && changes.isReadOnly && changes.isReadOnly.currentValue) {
-      this.isReadOnly = changes.isReadOnly.currentValue;
+    if (changes && changes?.isReadOnly && changes?.isReadOnly?.currentValue) {
+      this.isReadOnly = changes?.isReadOnly?.currentValue;
     }
-  }
-
-  public get hasError(): boolean {
-    return this.form
-      && this.form.get(this.controlName).errors
-      && this.form.get(this.controlName).touched;
   }
 }

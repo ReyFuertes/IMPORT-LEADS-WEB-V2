@@ -41,12 +41,14 @@ h1 {
   margin-left: -30px;
   padding: 0 32px;
 }
-:host ::ng-deep {
+::ng-deep {
   il-dropdown-select-search {
     min-width: 250px;
   }
-  .navigate-to.mat-menu-panel {
+  .mat-menu-panel.navigate-to {
     max-width: 338px !important;
     padding: 0 17px !important;
+    left: 45px !important;
+    position: relative;
   }
 }

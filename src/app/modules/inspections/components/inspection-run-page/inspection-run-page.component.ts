@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { getInspectionRunFilterByProductIdSelector, getInspectionRunSelector, getInspectionRunStatusSelector } from '../../store/selectors/inspection.selector';
-import { runNextInspectionAction, runPrevInspectionAction, changeInspectionStatusAction, deleteAndNavigateToAction, copyInspectionAction } from '../../store/actions/inspection.action';
+import { runNextInspectionAction, runPrevInspectionAction, changeInspectionStatusAction, deleteAndNavigateToAction, copyInspectionAction, navigateToInspectionAction } from '../../store/actions/inspection.action';
 import { IInspectionRun, RunStatusType } from '../../inspections.models';
 import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 import * as _ from 'lodash';
@@ -28,12 +28,14 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   public products: ISimpleItem[] = [];
   public runInspectionStatus: string;
   public runInspectionCount: number;
+  public saved_checklist_id: string
 
   constructor(private dialog: MatDialog, private store: Store<AppState>, private cdRef: ChangeDetectorRef, private router: Router, private fb: FormBuilder) {
     super();
     this.form = this.fb.group({
       copyCount: [null],
-      items: [null]
+      items: [null],
+      position: [null]
     });
 
     this.store.pipe(select(getInspectionRunStatusSelector),
@@ -46,9 +48,10 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
 
   ngOnInit() {
     this.$inspectionRun = this.store.pipe(select(getInspectionRunSelector));
-    this.$inspectionRun.pipe(takeUntil(this.$unsubscribe)).subscribe(res => {
+    this.$inspectionRun.pipe(takeUntil(this.$unsubscribe)).subscribe((res: any) => {
       this.runInspectionCount = res?.count;
-
+      this.saved_checklist_id = res?.checklist.id;
+      
       this.products = res?.checklist?.items.map(c => {
         return {
           label: c.contract_product.product.product_name,
@@ -69,6 +72,14 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
 
   public get isPaused(): boolean {
     return this.runInspectionStatus !== RunStatusType.pause;
+  }
+
+  public navigateTo(): void {
+    const position = this.form.get('position').value;
+    if (position) {
+      this.store.dispatch(navigateToInspectionAction({ saved_checklist_id: this.saved_checklist_id, position }));
+      this.form.get('position').patchValue(null);
+    }
   }
 
   public onDeleteNavigateTo(ins: IInspectionRun): void {

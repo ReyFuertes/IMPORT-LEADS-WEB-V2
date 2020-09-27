@@ -7,7 +7,10 @@ import { IActiveInspection } from './../../inspections.models';
 import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
-import { runInspectionAction, clearLoadAction } from '../../store/actions/inspection.action';
+import { runInspectionAction, clearLoadAction, deleteInspectionAction } from '../../store/actions/inspection.action';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'il-inspection-active-panel',
@@ -34,14 +37,26 @@ export class InspectionActivePanelComponent extends GenericRowComponent implemen
     action: () => this.router.navigateByUrl('/dashboard/inspections/report')
   }, {
     label: 'DELETE',
-    icon: 'delete-icon-red.svg'
+    icon: 'delete-icon-red.svg',
+    action: ({ id }) => {
+      const dialogRef = this.dialog.open(ConfirmationComponent, {
+        width: '410px',
+        data: { action: 0 }
+      });
+      dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+        .subscribe(result => {
+          if (result) {
+            this.store.dispatch(deleteInspectionAction({ id }));
+          }
+        });
+    }
   }];;
 
   @Input() public colsHeader: Array<{ label: string, width?: any }>;
   @Input() public activeInspections: IActiveInspection[];
   @Input() public isCategory: boolean = false;
 
-  constructor(private cdRef: ChangeDetectorRef, private store: Store<AppState>, private router: Router) {
+  constructor(private dialog: MatDialog, private cdRef: ChangeDetectorRef, private store: Store<AppState>, private router: Router) {
     super();
   }
 

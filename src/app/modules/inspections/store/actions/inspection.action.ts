@@ -26,7 +26,17 @@ export enum InspectionActionTypes {
   navigateToInspectionAction = '[Inspection Checklist] navigate to inspection',
   navigateToInspectionSuccessAction = '[Inspection Checklist] navigate to inspection (success)',
   navigateToFailed = '[Inspection Checklist] navigate to (failed)',
+  deleteInspectionAction = '[Inspection Checklist] delete inspection',
+  deleteInspectionSuccessAction = '[Inspection Checklist] delete inspection (success)',
 }
+export const deleteInspectionAction = createAction(
+  InspectionActionTypes.deleteInspectionAction,
+  props<{ id: string }>()
+);
+export const deleteInspectionSuccessAction = createAction(
+  InspectionActionTypes.deleteInspectionSuccessAction,
+  props<{ response: any }>()
+);
 export const navigateToFailed = createAction(
   InspectionActionTypes.navigateToFailed,
   props<{ error: string }>()

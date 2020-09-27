@@ -40,9 +40,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
 
     this.store.pipe(select(getInspectionRunStatusSelector),
       tap((res: any) => {
-        if (res) {
-          this.runInspectionStatus = res;
-        }
+        this.runInspectionStatus = res;
       })).subscribe();
   }
 
@@ -51,7 +49,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
     this.$inspectionRun.pipe(takeUntil(this.$unsubscribe)).subscribe((res: any) => {
       this.runInspectionCount = res?.count;
       this.saved_checklist_id = res?.checklist.id;
-      
+
       this.products = res?.checklist?.items.map(c => {
         return {
           label: c.contract_product.product.product_name,
@@ -71,7 +69,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   }
 
   public get isPaused(): boolean {
-    return this.runInspectionStatus !== RunStatusType.pause;
+    return Number(this.runInspectionStatus) === Number(RunStatusType.pause);
   }
 
   public navigateTo(): void {
@@ -111,6 +109,15 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
           this.store.dispatch(changeInspectionStatusAction({ payload }));
         }
       });
+  }
+
+  public onResume(ins: IInspectionRun): void {
+    const payload = {
+      id: ins?.id,
+      saved_checklist: ins?.checklist,
+      run_status: null
+    }
+    this.store.dispatch(changeInspectionStatusAction({ payload }));
   }
 
   public onPause(ins: IInspectionRun): void {

@@ -19,30 +19,30 @@
         </div>
       </mat-menu>
 
-      <button [disabled]="!isPaused || isFirstRecord" (click)="onDeleteNavigateTo(inspectionRun)" class="il-button il-bordered-blue delete-current" mat-flat-button>
+      <button [disabled]="isPaused || isFirstRecord" (click)="onDeleteNavigateTo(inspectionRun)" class="il-button il-bordered-blue delete-current" mat-flat-button>
         <img [src]="svgPath + 'delete-icon-blue.svg'" />
         <span>Delete current and go back </span>
       </button>
     </div>
 
     <div fxFlex fxLayoutAlign="end center" fxLayoutGap="5px">
-      <button [disabled]="!isPaused || isFirstRecord" (click)="onPrev(inspectionRun)" class="il-button il-bg-blue" mat-flat-button>
+      <button [disabled]="isPaused || isFirstRecord" (click)="onPrev(inspectionRun)" class="il-button il-bg-blue" mat-flat-button>
         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
           <img [src]="svgPath + 'arrow-left-icon-white.svg'" />
           <span>Previous</span>
         </div>
       </button>
-      <button [disabled]="!isPaused" (click)="onNext(inspectionRun)" class="il-button il-bg-blue" mat-flat-button>
+      <button [disabled]="isPaused" (click)="onNext(inspectionRun)" class="il-button il-bg-blue" mat-flat-button>
         <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="5px">
           <span>Next</span>
           <img [src]="svgPath + 'arrow-right-icon-white.svg'" />
         </div>
       </button>
-      <button (click)="onPause(inspectionRun)" mat-flat-button class="il-button il-bg-green">
+      <button (click)="isPaused ? onResume(inspectionRun) : onPause(inspectionRun)" mat-flat-button class="il-button il-bg-green">
         <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
           <img [src]="svgPath + 'pause-icon-white.svg'" />
-          <span *ngIf="isPaused">Pause run</span>
-          <span *ngIf="!isPaused">Resume run</span>
+          <span *ngIf="!isPaused">Pause run</span>
+          <span *ngIf="isPaused">Resume run</span>
         </div>
       </button>
       <button (click)="onStop(inspectionRun)" mat-flat-button class="il-button il-bg-red">

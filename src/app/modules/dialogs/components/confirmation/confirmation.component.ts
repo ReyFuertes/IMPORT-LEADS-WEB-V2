@@ -39,6 +39,6 @@ export class ConfirmationComponent {
   }
 
   public get isColorPrimary(): boolean {
-    return this.data?.action === 2 || this.data?.action === 3;
+    return this.data?.action === 2 || this.data?.action === 3 || this.data?.action === 6;
   }
 }

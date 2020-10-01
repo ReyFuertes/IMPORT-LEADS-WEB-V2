@@ -28,7 +28,8 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   public products: ISimpleItem[] = [];
   public runInspectionStatus: string;
   public runInspectionCount: number;
-  public saved_checklist_id: string
+  public savedChecklistId: string
+  public contractProductId: string;
 
   constructor(private dialog: MatDialog, private store: Store<AppState>, private cdRef: ChangeDetectorRef, private router: Router, private fb: FormBuilder) {
     super();
@@ -48,7 +49,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
     this.$inspectionRun = this.store.pipe(select(getInspectionRunSelector));
     this.$inspectionRun.pipe(takeUntil(this.$unsubscribe)).subscribe((res: any) => {
       this.runInspectionCount = res?.count;
-      this.saved_checklist_id = res?.checklist.id;
+      this.savedChecklistId = res?.checklist.id;
 
       this.products = res?.checklist?.items.map(c => {
         return {
@@ -75,7 +76,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   public navigateTo(): void {
     const position = this.form.get('position').value;
     if (position) {
-      this.store.dispatch(navigateToInspectionAction({ saved_checklist_id: this.saved_checklist_id, position }));
+      this.store.dispatch(navigateToInspectionAction({ saved_checklist_id: this.savedChecklistId, position }));
       this.form.get('position').patchValue(null);
     }
   }
@@ -139,11 +140,12 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   }
 
   public handleValueEmitter(event: any): void {
-    /* filter checklist by product */
     if (event)
       this.$inspectionRun = this.store.pipe(select(getInspectionRunFilterByProductIdSelector(event)));
     else
       this.$inspectionRun = this.store.pipe(select(getInspectionRunSelector));
+
+    this.contractProductId = event;
   }
 
   public onPrev(ins: IInspectionRun): void {
@@ -159,8 +161,14 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
         .subscribe(result => {
           if (result) {
-            this.store.dispatch(copyInspectionAction({ id: ins.id, copyCount: Number(this.form.get('copyCount').value) }));
+            this.store.dispatch(copyInspectionAction({
+              id: ins.id, 
+              copyCount: Number(this.form.get('copyCount').value),
+              contractProductId: this.contractProductId
+            }));
             this.form.get('copyCount').patchValue(null, { emitEvent: false });
+
+            this.form.reset();
           }
         });
     } else {

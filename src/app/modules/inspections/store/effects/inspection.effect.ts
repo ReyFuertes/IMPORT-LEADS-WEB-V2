@@ -37,8 +37,9 @@ export class InspectionEffect {
 
   copyInspectionAction$ = createEffect(() => this.actions$.pipe(
     ofType(copyInspectionAction),
-    mergeMap(({ id, copyCount }) => {
-      return this.inspectionChecklistRunSrv.post({ id, copyCount }, 'copy').pipe(
+    mergeMap(({ id, copyCount, contractProductId }) => {
+      debugger
+      return this.inspectionChecklistRunSrv.post({ id, copyCount, contractProductId }, 'copy').pipe(
         tap(({ id }: any) => {
           this.router.navigateByUrl(`dashboard/inspections/${id}/run`);
           this.store.dispatch(loadInspectionRunAction({ id }));

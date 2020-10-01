@@ -51,7 +51,7 @@ export const navigateToInspectionSuccessAction = createAction(
 );
 export const copyInspectionAction = createAction(
   InspectionActionTypes.copyInspectionAction,
-  props<{ id: string, copyCount: number }>()
+  props<{ id: string, copyCount: number, contractProductId?: string }>()
 );
 export const copyInspectionSuccessAction = createAction(
   InspectionActionTypes.copyInspectionSuccessAction,

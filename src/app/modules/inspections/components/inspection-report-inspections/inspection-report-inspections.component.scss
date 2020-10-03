@@ -1,10 +1,11 @@
 @import "src/styleguide/shared";
 .chart-container{
-  overflow-x: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   padding: 0px 20px;
 }
 .chart-container-inner {
-  height: 220px;
+  height: 650px;
 }
 h2 {
   line-height: 32px;

@@ -3,7 +3,7 @@ import { getUploadImageStateSelector } from './../../../modules/contracts/store/
 import { take, map } from 'rxjs/operators';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { environment } from './../../../../environments/environment';
-import { saveTermImageDetail } from './../../../modules/contracts/store/actions/contract-term.actions';
+import { saveTermImageDetailAction } from './../../../modules/contracts/store/actions/contract-term.actions';
 import { AppState } from './../../../store/app.reducer';
 import { Store, select } from '@ngrx/store';
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
@@ -72,7 +72,7 @@ export class EditorComponent implements OnInit {
         term_id: this.entityId
       }
     }
-    this.store.dispatch(saveTermImageDetail(imagePayload));
+    this.store.dispatch(saveTermImageDetailAction(imagePayload));
   }
 
   public customImageUpload(image: any): void {

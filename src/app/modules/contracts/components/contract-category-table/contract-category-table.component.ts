@@ -1,4 +1,4 @@
-import { addContractTerm, deleteContractTerm, updateContractTerm } from './../../store/actions/contract-term.actions';
+import { addContractTermAction, deleteContractTermAction, updateContractTermAction } from './../../store/actions/contract-term.actions';
 import { loadContractCategoryAction, selTermsForChecklistAction } from './../../store/actions/contract-category.action';
 import { MatTableDataSource } from '@angular/material/table';
 import { IContractTerm, IContractCategoryTerm, IContractChecklistItem, IContractProduct, IContractTermProduct } from './../../contract.model';
@@ -57,7 +57,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   public checkListProducts: IContractProduct[];
 
   @Input() public inCheckListing: boolean = false;
-  @Input() public contract_category: IContractCategory;
+  @Input() public contractCategory: IContractCategory;
   @Output() public categoryTermEmitter = new EventEmitter<any>();
 
   constructor(private store: Store<AppState>, private dialog: MatDialog, private fb: FormBuilder) {
@@ -99,7 +99,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
 
     this.categoryTermEmitter.emit({
       term_id: term.id,
-      category_id: this.contract_category.id,
+      category_id: this.contractCategory.id,
       checked
     });
   }
@@ -110,7 +110,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
 
   public onTagUpdate(event: any, element: IContractTerm): void {
     if (event) {
-      this.store.dispatch(updateContractTerm({
+      this.store.dispatch(updateContractTermAction({
         payload: {
           ...{
             id: element.id,
@@ -142,7 +142,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   }
 
   ngAfterViewInit(): void {
-    this.dataSource = new MatTableDataSource<any>(this.contract_category.terms);
+    this.dataSource = new MatTableDataSource<any>(this.contractCategory.terms);
   }
 
   public getColUuid = (element: any, col: string) => `${element.id}${col}`;
@@ -157,7 +157,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
     dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
       .subscribe(result => {
         if (result) {
-          this.store.dispatch(deleteContractTerm({ id }));
+          this.store.dispatch(deleteContractTermAction({ id }));
           /* this is a bad solution, but due to time development i just needs this */
           this.reloadContractCategory();
         }
@@ -181,7 +181,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
 
   private reloadContractCategory = () =>
     setTimeout(() => {
-      this.store.dispatch(loadContractCategoryAction({ id: this.contract_category.contract.id }))
+      this.store.dispatch(loadContractCategoryAction({ id: this.contractCategory.contract.id }))
     }, 100);
 
   public createTerm(): void {
@@ -194,9 +194,9 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
         if (result) {
           const payload = {
             ...result,
-            contract_category: { id: this.contract_category.id }
+            contractCategory: { id: this.contractCategory.id }
           }
-          this.store.dispatch(addContractTerm({ payload }));
+          this.store.dispatch(addContractTermAction({ payload }));
           /* this is a bad solution, but due to time development i just needs this */
           this.reloadContractCategory();
         }
@@ -207,12 +207,15 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
     e.stopImmediatePropagation();
 
     if (this.form.value) {
-      this.store.dispatch(updateContractTerm({ payload: this.form.value }));
+      this.store.dispatch(updateContractTermAction({ payload: this.form.value }));
     }
 
     setTimeout(() => {
       this.selectedRow = null;
       this.selectedCol = null;
+      debugger
+      /* reload categories */
+      this.store.dispatch(loadContractCategoryAction({ id: this.contractCategory.contract.id }))
     }, 1000);
   }
 
@@ -263,7 +266,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       }
     }
 
-    if (changes && changes.contract_category && changes.contract_category.currentValue)
-      this.dataSource = new MatTableDataSource<any>(changes.contract_category.currentValue.terms);
+    if (changes && changes.contractCategory && changes.contractCategory.currentValue)
+      this.dataSource = new MatTableDataSource<any>(changes.contractCategory.currentValue.terms);
   }
 }

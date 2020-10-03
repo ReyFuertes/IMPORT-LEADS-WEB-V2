@@ -11,9 +11,10 @@ import { IInspectionRun, RunStatusType } from '../../inspections.models';
 import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 import * as _ from 'lodash';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
-import { takeUntil, tap } from 'rxjs/operators';
+import { debounceTime, takeUntil, tap } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
+import { PauseOrRunDialogComponent } from 'src/app/modules/dialogs/components/pause-run/pause-run.component';
 @Component({
   selector: 'il-inspection-run-page',
   templateUrl: './inspection-run-page.component.html',
@@ -25,6 +26,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   public form: FormGroup;
   public formNavigateTo: FormGroup;
   public $inspectionRun: Observable<IInspectionRun>;
+  public inspectionRun: IInspectionRun;
   public products: ISimpleItem[] = [];
   public runInspectionStatus: string;
   public runInspectionCount: number;
@@ -50,6 +52,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
     this.$inspectionRun.pipe(takeUntil(this.$unsubscribe)).subscribe((res: any) => {
       this.runInspectionCount = res?.count;
       this.savedChecklistId = res?.checklist.id;
+      this.inspectionRun = res;
 
       this.products = res?.checklist?.items.map(c => {
         return {
@@ -94,7 +97,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       });
   }
 
-  public onStop(ins: IInspectionRun): void {
+  public onStop(): void {
     const dialogRef = this.dialog.open(ConfirmationComponent, {
       width: '410px',
       data: { action: 4 }
@@ -102,14 +105,18 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
     dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
       .subscribe(result => {
         if (result) {
-          const payload = {
-            id: ins?.id,
-            saved_checklist: ins?.checklist,
-            run_status: RunStatusType.stop
-          }
-          this.store.dispatch(changeInspectionStatusAction({ payload }));
+          this.triggerStop();
         }
       });
+  }
+
+  public triggerStop(): void {
+    const payload = {
+      id: this.inspectionRun?.id,
+      saved_checklist: this.inspectionRun?.checklist,
+      run_status: RunStatusType.stop
+    }
+    this.store.dispatch(changeInspectionStatusAction({ payload }));
   }
 
   public onResume(ins: IInspectionRun): void {
@@ -121,7 +128,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
     this.store.dispatch(changeInspectionStatusAction({ payload }));
   }
 
-  public onPause(ins: IInspectionRun): void {
+  public onPause(): void {
     const dialogRef = this.dialog.open(ConfirmationComponent, {
       width: '410px',
       data: { action: 3 }
@@ -129,14 +136,18 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
     dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
       .subscribe(result => {
         if (result) {
-          const payload = {
-            id: ins?.id,
-            saved_checklist: ins?.checklist,
-            run_status: this.runInspectionStatus === RunStatusType.pause ? null : RunStatusType.pause
-          }
-          this.store.dispatch(changeInspectionStatusAction({ payload }));
+          this.triggerPause();
         }
       });
+  }
+
+  public triggerPause(): void {
+    const payload = {
+      id: this.inspectionRun?.id,
+      saved_checklist: this.inspectionRun?.checklist,
+      run_status: this.runInspectionStatus === RunStatusType.pause ? null : RunStatusType.pause
+    }
+    this.store.dispatch(changeInspectionStatusAction({ payload }));
   }
 
   public handleValueEmitter(event: any): void {
@@ -162,7 +173,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
         .subscribe(result => {
           if (result) {
             this.store.dispatch(copyInspectionAction({
-              id: ins.id, 
+              id: ins.id,
               copyCount: Number(this.form.get('copyCount').value),
               contractProductId: this.contractProductId
             }));
@@ -175,6 +186,11 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       /* create only 1 copy when navigating next */
       this.store.dispatch(runNextInspectionAction({ payload: { id: ins.id, saved_checklist_id: ins?.checklist?.id } }));
     }
+  }
+
+  public $pauseOrRun(): Observable<boolean> {
+    const dialogRef = this.dialog.open(PauseOrRunDialogComponent, { width: '410px', data: { ins: this.inspectionRun } });
+    return dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe), debounceTime(1000))
   }
 
   public onBack(): void {

@@ -1,20 +1,21 @@
 import { AppState } from 'src/app/store/app.reducer';
 import { ImageService } from './../../../../services/images.service';
 import { UploadService } from './../../../../services/upload.service';
-import { updateContractTerm, updateContractTermSuccess, saveTermImageDetail, saveTermImageSuccess } from './../actions/contract-term.actions';
+import { updateContractTermAction, updateContractTermSuccess, saveTermImageDetailAction, saveTermImageSuccess } from './../actions/contract-term.actions';
 import { IContractTerm } from './../../contract.model';
 import { ContractTermService } from './../../services/contract-term.service';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import { addContractTerm, addContractTermSuccess, deleteContractTerm, deleteContractTermSuccess } from '../actions/contract-term.actions';
+import { addContractTermAction, addContractTermSuccess, deleteContractTermAction, deleteContractTermSuccess } from '../actions/contract-term.actions';
 import { appNotification } from 'src/app/store/actions/notification.action';
+import { loadContractCategoryAction } from '../actions/contract-category.action';
 
 @Injectable()
 export class ContractTermEffect {
-  saveTermImageDetail$ = createEffect(() => this.actions$.pipe(
-    ofType(saveTermImageDetail),
+  saveTermImageDetailAction$ = createEffect(() => this.actions$.pipe(
+    ofType(saveTermImageDetailAction),
     mergeMap(({ image }) => this.imageService.post(image)
       .pipe(
         map((created: any) => {
@@ -23,8 +24,8 @@ export class ContractTermEffect {
       ))
   ));
 
-  update$ = createEffect(() => this.actions$.pipe(
-    ofType(updateContractTerm),
+  updateContractTermAction$ = createEffect(() => this.actions$.pipe(
+    ofType(updateContractTermAction),
     mergeMap(({ payload }) => this.contractTermService.patch(payload)
       .pipe(
         tap(() => this.store.dispatch(appNotification({
@@ -37,13 +38,13 @@ export class ContractTermEffect {
       ))
   ));
 
-  delete$ = createEffect(() => this.actions$.pipe(
-    ofType(deleteContractTerm),
+  deleteContractTermAction$ = createEffect(() => this.actions$.pipe(
+    ofType(deleteContractTermAction),
     switchMap(({ id }) => this.contractTermService.delete(id))
   ), { dispatch: false });
 
-  add$ = createEffect(() => this.actions$.pipe(
-    ofType(addContractTerm),
+  addContractTermAction$ = createEffect(() => this.actions$.pipe(
+    ofType(addContractTermAction),
     mergeMap(({ payload }) => this.contractTermService.post(payload)
       .pipe(
         tap(() => this.store.dispatch(appNotification({ notification: { success: true, message: 'Term successfully Added' } }))),

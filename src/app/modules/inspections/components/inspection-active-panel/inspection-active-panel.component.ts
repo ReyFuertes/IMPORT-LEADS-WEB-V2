@@ -34,7 +34,9 @@ export class InspectionActivePanelComponent extends GenericRowComponent implemen
   }, {
     label: 'REPORT',
     icon: 'inspection-icon-black.svg',
-    action: () => this.router.navigateByUrl('/dashboard/inspections/report')
+    action: (item) => {
+      this.router.navigateByUrl(`/dashboard/inspections/${item?.id}/report`);
+    }
   }, {
     label: 'DELETE',
     icon: 'delete-icon-red.svg',

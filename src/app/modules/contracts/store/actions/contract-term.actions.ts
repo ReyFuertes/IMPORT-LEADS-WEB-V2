@@ -3,43 +3,43 @@ import { IContractTerm } from './../../contract.model';
 import { createAction, props } from '@ngrx/store';
 
 export enum TermActionTypes {
-  addContractTerm = '[Contract Term] Add',
+  addContractTermAction = '[Contract Term] Add',
   addContractTermSuccess = '[Contract Term] Add (success)',
   loadContractTerm = '[Contract Term] Load]',
   loadContractTermSuccess = '[Contract Term] Load (success)',
-  deleteContractTerm = '[Contract Term] Delete',
+  deleteContractTermAction = '[Contract Term] Delete',
   deleteContractTermSuccess = '[Contract Term] Delete (success)',
-  updateContractTerm = '[Contract Term] Update',
+  updateContractTermAction = '[Contract Term] Update',
   updateContractTermSuccess = '[Contract Term] Update (success)',
-  saveTermImageDetail = '[Contract Term] Save Image',
+  saveTermImageDetailAction = '[Contract Term] Save Image',
   saveTermImageSuccess = '[Contract Term] Save Image (success)'
 }
 export const saveTermImageSuccess = createAction(
   TermActionTypes.saveTermImageSuccess,
   props<{ created: any }>()
 );
-export const saveTermImageDetail = createAction(
-  TermActionTypes.saveTermImageDetail,
+export const saveTermImageDetailAction = createAction(
+  TermActionTypes.saveTermImageDetailAction,
   props<{ image: IImage }>()
 );
-export const updateContractTerm = createAction(
-  TermActionTypes.updateContractTerm,
+export const updateContractTermAction = createAction(
+  TermActionTypes.updateContractTermAction,
   props<{ payload: IContractTerm }>()
 );
 export const updateContractTermSuccess = createAction(
   TermActionTypes.updateContractTermSuccess,
   props<{ updated: IContractTerm }>()
 );
-export const deleteContractTerm = createAction(
-  TermActionTypes.deleteContractTerm,
+export const deleteContractTermAction = createAction(
+  TermActionTypes.deleteContractTermAction,
   props<{ id: string }>()
 );
 export const deleteContractTermSuccess = createAction(
   TermActionTypes.deleteContractTermSuccess,
   props<{ deleted: IContractTerm }>()
 );
-export const addContractTerm = createAction(
-  TermActionTypes.addContractTerm,
+export const addContractTermAction = createAction(
+  TermActionTypes.addContractTermAction,
   props<{ payload: IContractTerm }>()
 );
 export const addContractTermSuccess = createAction(

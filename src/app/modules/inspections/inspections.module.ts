@@ -47,26 +47,27 @@ import { InspectionRunCategoryComponent } from './components/inspection-run-cate
 import { InspectionRunCategoryRowComponent } from './components/inspection-run-category-row/inspection-run-category-row.component';
 import { reducers } from './store/reducers';
 import { InspectionChecklistEffect } from './store/effects/inspection-checklist.effect';
+import { ChartModule } from 'primeng/chart';
+import { NavigateGuard } from 'src/app/services/navigate.guard';
 
-const routes: Routes = [
-  {
+const routes: Routes = [{
+  path: '',
+  component: InspectionsContainerComponent,
+  children: [{
     path: '',
-    component: InspectionsContainerComponent,
-    children: [{
-      path: '',
-      component: InspectionPageComponent
-    }, {
-      path: ':id/run',
-      component: InspectionRunPageComponent,
-      resolve: {
-        inspectionRun: InspectionRunResolver
-      }
-    }, {
-      path: ':id/report',
-      component: InspectionReportPageComponent
-    }]
-  }
-];
+    component: InspectionPageComponent
+  }, {
+    path: ':id/run',
+    component: InspectionRunPageComponent,
+    resolve: {
+      inspectionRun: InspectionRunResolver
+    },
+    canDeactivate: [NavigateGuard]
+  }, {
+    path: ':id/report',
+    component: InspectionReportPageComponent
+  }]
+}];
 
 const materialModules = [
   MatIconModule,
@@ -88,7 +89,8 @@ const materialModules = [
   MatSlideToggleModule,
   MatTooltipModule,
   MatTableModule,
-  MatRadioModule
+  MatRadioModule,
+  ChartModule
 ];
 const primeNgModules = [];
 @NgModule({
@@ -129,11 +131,12 @@ const primeNgModules = [];
     InspectionRunCategoryRowComponent
   ],
   providers: [
-    ChecklistService, 
+    ChecklistService,
     SavedChecklistService,
-    InspectionChecklistRunService, 
+    InspectionChecklistRunService,
     InspectionChecklistService,
-    InspectionRunResolver
+    InspectionRunResolver,
+    NavigateGuard
   ],
 })
 export class InspectionModule { }

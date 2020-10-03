@@ -28,6 +28,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { PauseOrRunDialogComponent } from './components/pause-run/pause-run.component';
 
 const dialogComponents = [
   ContractAddDialogComponent,
@@ -47,7 +48,8 @@ const dialogComponents = [
   ChatDetailDialogComponent,
   ConfirmationComponent,
   ProductAddDialogComponent,
-  ContractCategoryTermDialogComponent
+  ContractCategoryTermDialogComponent,
+  PauseOrRunDialogComponent
 ];
 
 const materialModules = [

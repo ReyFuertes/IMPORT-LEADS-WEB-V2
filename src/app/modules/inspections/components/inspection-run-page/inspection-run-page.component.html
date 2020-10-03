@@ -38,7 +38,7 @@
           <img [src]="svgPath + 'arrow-right-icon-white.svg'" />
         </div>
       </button>
-      <button (click)="isPaused ? onResume(inspectionRun) : onPause(inspectionRun)" mat-flat-button class="il-button il-bg-green">
+      <button (click)="isPaused ? onResume(inspectionRun) : onPause()" mat-flat-button class="il-button il-bg-green">
         <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
           <img [src]="svgPath + 'pause-icon-white.svg'" />
           <span *ngIf="!isPaused">Pause run</span>

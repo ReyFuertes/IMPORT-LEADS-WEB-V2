@@ -70,21 +70,6 @@ export class InspectionEffect {
     switchMap(({ payload }) => {
       return this.inspectionChecklistRunSrv.post(payload, 'status').pipe(
         tap((response: IInspectionRunPayload) => this.store.dispatch(loadInspectionRunAction({ id: response?.id }))),
-        tap((response: IInspectionRunPayload) => {
-          /* if run is stop the redirect it run report for results */
-          if (response?.run_status == RunStatusType.stop) {
-            this.store.dispatch(appNotification({
-              notification: { error: true, message: 'Inspection run is stopped, Redirecting you to report page.' }
-            }));
-
-            setTimeout(() => this.router.navigateByUrl(`/dashboard/inspections/${response?.id}/report`), 3000);
-          }
-          else if (response?.run_status == RunStatusType.pause) {
-            this.store.dispatch(appNotification({
-              notification: { success: true, message: 'Inspection run is paused' }
-            }));
-          }
-        }),
         map((response: any) => changeInspectionStatusSuccessAction({ response }))
       )
     })

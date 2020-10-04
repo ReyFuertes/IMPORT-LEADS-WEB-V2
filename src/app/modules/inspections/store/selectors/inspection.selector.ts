@@ -2,11 +2,13 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { InspectionModuleState } from '../reducers';
 
 export const selectContractModuleState = createFeatureSelector<InspectionModuleState>('inspectionModule');
+export const getIsPausedSelector = createSelector(
+  selectContractModuleState,
+  state => state?.inspection?.isPaused
+);
 export const getInspectionRunStatusSelector = createSelector(
   selectContractModuleState,
-  state => {
-    return state?.inspection?.runInspection?.run_status;
-  }
+  state =>   state?.inspection?.runInspection?.run_status
 );
 export const getInspectionRunFilterByProductIdSelector = (id: string) => createSelector(
   selectContractModuleState,

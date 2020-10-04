@@ -1,5 +1,5 @@
 import { IActiveInspection, IFinishedInspection, IInspectionRun, RunStatusType } from './../../inspections.models';
-import { loadActiveInspectionSuccessAction, loadInspectionRunSuccessAction, clearLoadAction, updateSourceTermAction, runInspectionSuccessAction, changeInspectionStatusSuccessAction } from '../actions/inspection.action';
+import { loadActiveInspectionSuccessAction, loadInspectionRunSuccessAction, clearLoadAction, updateSourceTermAction, runInspectionSuccessAction, changeInspectionStatusSuccessAction, setPauseInspectionStatusAction } from '../actions/inspection.action';
 import { createReducer, on, Action } from "@ngrx/store";
 export interface InspectionState {
   loaded?: boolean;
@@ -17,6 +17,9 @@ export const initialState: InspectionState = {
 };
 const reducer = createReducer(
   initialState,
+  on(setPauseInspectionStatusAction, (state, action) => {
+    return Object.assign({}, state, { isPaused: action.status });
+  }),
   on(changeInspectionStatusSuccessAction, (state, action) => {
     if (action.response.run_status == RunStatusType.pause) {
       return Object.assign({}, state, { isPaused: true });

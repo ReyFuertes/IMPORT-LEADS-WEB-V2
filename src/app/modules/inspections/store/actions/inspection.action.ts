@@ -28,7 +28,12 @@ export enum InspectionActionTypes {
   navigateToFailed = '[Inspection Checklist] navigate to (failed)',
   deleteInspectionAction = '[Inspection Checklist] delete inspection',
   deleteInspectionSuccessAction = '[Inspection Checklist] delete inspection (success)',
+  setPauseInspectionStatusAction = '[Inspection Checklist] set pause status inspection',
 }
+export const setPauseInspectionStatusAction = createAction(
+  InspectionActionTypes.setPauseInspectionStatusAction,
+  props<{ status: boolean }>()
+);
 export const deleteInspectionAction = createAction(
   InspectionActionTypes.deleteInspectionAction,
   props<{ id: string }>()

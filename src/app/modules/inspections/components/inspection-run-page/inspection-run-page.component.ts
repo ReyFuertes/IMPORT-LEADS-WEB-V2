@@ -2,11 +2,11 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { getInspectionRunFilterByProductIdSelector, getInspectionRunSelector, getInspectionRunStatusSelector } from '../../store/selectors/inspection.selector';
-import { runNextInspectionAction, runPrevInspectionAction, changeInspectionStatusAction, deleteAndNavigateToAction, copyInspectionAction, navigateToInspectionAction } from '../../store/actions/inspection.action';
+import { runNextInspectionAction, runPrevInspectionAction, changeInspectionStatusAction, deleteAndNavigateToAction, copyInspectionAction, navigateToInspectionAction, setPauseInspectionStatusAction } from '../../store/actions/inspection.action';
 import { IInspectionRun, RunStatusType } from '../../inspections.models';
 import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 import * as _ from 'lodash';
@@ -15,6 +15,7 @@ import { debounceTime, takeUntil, tap } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
 import { PauseOrRunDialogComponent } from 'src/app/modules/dialogs/components/pause-run/pause-run.component';
+import { appNotification } from 'src/app/store/actions/notification.action';
 @Component({
   selector: 'il-inspection-run-page',
   templateUrl: './inspection-run-page.component.html',
@@ -32,6 +33,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   public runInspectionCount: number;
   public savedChecklistId: string
   public contractProductId: string;
+  public permitToNavigate: boolean = false;
 
   constructor(private dialog: MatDialog, private store: Store<AppState>, private cdRef: ChangeDetectorRef, private router: Router, private fb: FormBuilder) {
     super();
@@ -44,6 +46,10 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
     this.store.pipe(select(getInspectionRunStatusSelector),
       tap((res: any) => {
         this.runInspectionStatus = res;
+   
+        if (Number(this.runInspectionStatus) === Number(RunStatusType.pause)) {
+          this.store.dispatch(setPauseInspectionStatusAction({ status: true }));
+        } else this.store.dispatch(setPauseInspectionStatusAction({ status: null }));
       })).subscribe();
   }
 
@@ -106,6 +112,13 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       .subscribe(result => {
         if (result) {
           this.triggerStop();
+
+          /* if run is stop the redirect it run report for results */
+          this.store.dispatch(appNotification({
+            notification: { error: true, message: 'Inspection run is stopped, Redirecting you to report page.' }
+          }));
+
+          setTimeout(() => this.router.navigateByUrl(`/dashboard/inspections/${this.inspectionRun?.id}/report`), 3000);
         }
       });
   }
@@ -117,6 +130,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       run_status: RunStatusType.stop
     }
     this.store.dispatch(changeInspectionStatusAction({ payload }));
+    this.permitToNavigate = true;
   }
 
   public onResume(ins: IInspectionRun): void {
@@ -137,6 +151,10 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       .subscribe(result => {
         if (result) {
           this.triggerPause();
+
+          this.store.dispatch(appNotification({
+            notification: { success: true, message: 'Inspection run is paused' }
+          }));
         }
       });
   }
@@ -189,8 +207,12 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   }
 
   public $pauseOrRun(): Observable<boolean> {
-    const dialogRef = this.dialog.open(PauseOrRunDialogComponent, { width: '410px', data: { ins: this.inspectionRun } });
-    return dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe), debounceTime(1000))
+    if (!this.permitToNavigate) {
+      const dialogRef = this.dialog.open(PauseOrRunDialogComponent, { width: '410px', data: { ins: this.inspectionRun } });
+      return dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe), debounceTime(1000))
+    } else {
+      return of(true);
+    }
   }
 
   public onBack(): void {

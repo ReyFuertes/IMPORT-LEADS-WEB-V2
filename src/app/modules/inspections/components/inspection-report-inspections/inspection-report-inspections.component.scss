@@ -29,6 +29,10 @@ h2 {
     .mat-list-item-content {
       display: block;
       padding: 0 20px;
+      h5 {
+        margin-right: 8px;
+        color: $color-black-3;
+      }
     }
   }
   .mat-table {

@@ -56,7 +56,6 @@ const ELEMENT_DATA: Inspection[] = [
 })
 
 export class InspectionReportInspectionComponent implements OnInit {
-
   public inspectionHeader: any[] = [
     { title: 'Total items checked', value: '82' },
     { title: 'Total inspection time', value: '29:43:34' },
@@ -64,6 +63,27 @@ export class InspectionReportInspectionComponent implements OnInit {
     { title: 'Start date', value: '06.10.2019' },
     { title: 'End date', value: '28.10.2019' }
   ];
+
+
+  public insChartOptions = {
+    legend: {
+      display: false
+    },
+    animation: {
+      duration: 2000,
+    },
+  };
+
+  public insChartData = {
+    labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
+      '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'],
+    datasets: [{
+      backgroundColor: CHARTBGCOLOR,
+      borderColor: CHARTBORDERCOLOR,
+      borderWidth: 1,
+      data: [65, 59, 80, 81, 56, 55, 40]
+    }]
+  }
 
   public barChartOptions: ChartOptions = {
     responsive: true,
@@ -79,25 +99,8 @@ export class InspectionReportInspectionComponent implements OnInit {
           display: false
         }
       }],
-    }
+    },
   };
-
-  public insChartOptions = {
-    legend: {
-      display: false
-    }
-  };
-
-  public insChartData = {
-    labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
-      '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'],
-    datasets: [{
-      backgroundColor: CHARTBGCOLOR,
-      borderColor: CHARTBORDERCOLOR,
-      borderWidth: 1,
-      data: [65, 59, 80, 81, 56, 55, 40]
-    }]
-  }
 
   public barChartType: ChartType = 'bar';
   public barChartLabels: Label[] = [

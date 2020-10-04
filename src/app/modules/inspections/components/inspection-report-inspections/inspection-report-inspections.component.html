@@ -2,8 +2,8 @@
   <il-expandable-panel title="Inspections" [expanded]="true">
     <div fxLayout="column" fxLayoutGap="20px">
       <div class="detail" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-        <mat-list fxLayout>
-          <mat-list-item *ngFor="let header of inspectionHeader;" fxFlex>
+        <mat-list fxLayout="row">
+          <mat-list-item *ngFor="let header of inspectionHeader;" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
             <h5>{{header.title}}</h5>
             <h2>{{header.value}}</h2>
           </mat-list-item>

@@ -50,6 +50,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
         if (Number(this.runInspectionStatus) === Number(RunStatusType.pause)) {
           this.store.dispatch(setPauseInspectionStatusAction({ status: true }));
         } else this.store.dispatch(setPauseInspectionStatusAction({ status: null }));
+        
       })).subscribe();
   }
 
@@ -178,10 +179,14 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   }
 
   public onPrev(ins: IInspectionRun): void {
+    this.permitToNavigate = true;
+    
     this.store.dispatch(runPrevInspectionAction({ payload: { id: ins.id, saved_checklist_id: ins?.checklist?.id } }));
   }
 
   public onNext(ins: IInspectionRun): void {
+    this.permitToNavigate = true;
+
     if (this.form.get('copyCount').value) { /* create number of copies of the current inspection run */
       const dialogRef = this.dialog.open(ConfirmationComponent, {
         width: '410px',

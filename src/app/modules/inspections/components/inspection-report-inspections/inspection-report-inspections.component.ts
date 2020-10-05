@@ -64,7 +64,6 @@ export class InspectionReportInspectionComponent implements OnInit {
     { title: 'End date', value: '28.10.2019' }
   ];
 
-
   public insChartOptions = {
     legend: {
       display: false
@@ -75,8 +74,7 @@ export class InspectionReportInspectionComponent implements OnInit {
   };
 
   public insChartData = {
-    labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
-      '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'],
+    labels: [1],
     datasets: [{
       backgroundColor: CHARTBGCOLOR,
       borderColor: CHARTBORDERCOLOR,

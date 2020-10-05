@@ -84,6 +84,8 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   }
 
   public navigateTo(): void {
+    this.permitToNavigate = true;
+    
     const position = this.form.get('position').value;
     if (position) {
       this.store.dispatch(navigateToInspectionAction({ saved_checklist_id: this.savedChecklistId, position }));
@@ -135,6 +137,8 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   }
 
   public onResume(ins: IInspectionRun): void {
+    this.permitToNavigate = true;
+
     const payload = {
       id: ins?.id,
       saved_checklist: ins?.checklist,
@@ -180,7 +184,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
 
   public onPrev(ins: IInspectionRun): void {
     this.permitToNavigate = true;
-    
+
     this.store.dispatch(runPrevInspectionAction({ payload: { id: ins.id, saved_checklist_id: ins?.checklist?.id } }));
   }
 

@@ -6,7 +6,7 @@ import { Observable, of } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { getInspectionRunFilterByProductIdSelector, getInspectionRunSelector, getInspectionRunStatusSelector } from '../../store/selectors/inspection.selector';
-import { runNextInspectionAction, runPrevInspectionAction, changeInspectionStatusAction, deleteAndNavigateToAction, copyInspectionAction, navigateToInspectionAction, setPauseInspectionStatusAction } from '../../store/actions/inspection.action';
+import { runNextInspectionAction, runPrevInspectionAction, changeInspectionRuntimeStatusAction, deleteAndNavigateToAction, copyInspectionAction, navigateToInspectionAction, setPauseInspectionStatusAction } from '../../store/actions/inspection.action';
 import { IInspectionRun, RunStatusType } from '../../inspections.models';
 import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 import * as _ from 'lodash';
@@ -46,11 +46,11 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
     this.store.pipe(select(getInspectionRunStatusSelector),
       tap((res: any) => {
         this.runInspectionStatus = res;
-   
+
         if (Number(this.runInspectionStatus) === Number(RunStatusType.pause)) {
           this.store.dispatch(setPauseInspectionStatusAction({ status: true }));
         } else this.store.dispatch(setPauseInspectionStatusAction({ status: null }));
-        
+
       })).subscribe();
   }
 
@@ -85,7 +85,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
 
   public navigateTo(): void {
     this.permitToNavigate = true;
-    
+
     const position = this.form.get('position').value;
     if (position) {
       this.store.dispatch(navigateToInspectionAction({ saved_checklist_id: this.savedChecklistId, position }));
@@ -129,10 +129,10 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   public triggerStop(): void {
     const payload = {
       id: this.inspectionRun?.id,
-      saved_checklist: this.inspectionRun?.checklist,
+      saved_checklist: { id: this.inspectionRun?.checklist.id },
       run_status: RunStatusType.stop
     }
-    this.store.dispatch(changeInspectionStatusAction({ payload }));
+    this.store.dispatch(changeInspectionRuntimeStatusAction({ payload }));
     this.permitToNavigate = true;
   }
 
@@ -144,7 +144,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       saved_checklist: ins?.checklist,
       run_status: null
     }
-    this.store.dispatch(changeInspectionStatusAction({ payload }));
+    this.store.dispatch(changeInspectionRuntimeStatusAction({ payload }));
   }
 
   public onPause(): void {
@@ -170,7 +170,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       saved_checklist: this.inspectionRun?.checklist,
       run_status: this.runInspectionStatus === RunStatusType.pause ? null : RunStatusType.pause
     }
-    this.store.dispatch(changeInspectionStatusAction({ payload }));
+    this.store.dispatch(changeInspectionRuntimeStatusAction({ payload }));
   }
 
   public handleValueEmitter(event: any): void {

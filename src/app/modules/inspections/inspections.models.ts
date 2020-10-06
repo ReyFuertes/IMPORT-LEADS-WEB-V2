@@ -58,7 +58,7 @@ export enum RunStatusType {
   pause = '1',
   resume = '2'
 }
-export interface IInspectionRunPayload {
+export interface IInspectionRuntime {
   id?: string;
   saved_checklist?: IInsChecklist;
   run_status?: RunStatusType

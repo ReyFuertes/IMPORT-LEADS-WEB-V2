@@ -7,7 +7,7 @@ import { InspectionRunPageComponent } from 'src/app/modules/inspections/componen
 import { IInspectionRun, IInspectionRunItem, RunStatusType } from 'src/app/modules/inspections/inspections.models';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducer';
-import { changeInspectionStatusAction } from 'src/app/modules/inspections/store/actions/inspection.action';
+import { changeInspectionRuntimeStatusAction } from 'src/app/modules/inspections/store/actions/inspection.action';
 
 @Component({
   selector: 'il-pause-run',
@@ -27,7 +27,7 @@ export class PauseOrRunDialogComponent {
       saved_checklist: this.data.ins?.checklist,
       run_status: RunStatusType.stop
     }
-    this.store.dispatch(changeInspectionStatusAction({ payload }));
+    this.store.dispatch(changeInspectionRuntimeStatusAction({ payload }));
     this.dialogRef.close(true);
   }
 
@@ -37,7 +37,7 @@ export class PauseOrRunDialogComponent {
       saved_checklist: this.data.ins?.checklist,
       run_status: RunStatusType.pause
     }
-    this.store.dispatch(changeInspectionStatusAction({ payload }));
+    this.store.dispatch(changeInspectionRuntimeStatusAction({ payload }));
     this.dialogRef.close(true);
   }
 }

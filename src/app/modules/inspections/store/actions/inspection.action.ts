@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { IContractTerm } from 'src/app/modules/contracts/contract.model';
-import { IActiveInspection, IInspectionChecklist, IInspectionRun, IInspectionRunPayload } from '../../inspections.models';
+import { IActiveInspection, IInspectionChecklist, IInspectionRun, IInspectionRuntime } from '../../inspections.models';
 
 export enum InspectionActionTypes {
   loadActiveInspectionAction = '[Inspection Checklist] load active inspection',
@@ -17,8 +17,8 @@ export enum InspectionActionTypes {
   runNextInspectionSuccessAction = '[Inspection Run] run next inspection (success)',
   runPrevInspectionAction = '[Inspection Run] run prev inspection',
   runPrevInspectionSuccessAction = '[Inspection Run] run prev inspection (success)',
-  changeInspectionStatusAction = '[Inspection Run] change inspection status',
-  changeInspectionStatusSuccessAction = '[Inspection Run] change inspection status (success)',
+  changeInspectionRuntimeStatusAction = '[Inspection Run] change inspection status',
+  changeInspectionRuntimeStatusSuccessAction = '[Inspection Run] change inspection status (success)',
   deleteAndNavigateToAction = '[Inspection Checklist] remove and navigate to',
   deleteAndNavigateToSuccessAction = '[Inspection Checklist] remove and navigate to (success)',
   copyInspectionAction = '[Inspection Checklist] copy inspection',
@@ -70,13 +70,13 @@ export const deleteAndNavigateToSuccessAction = createAction(
   InspectionActionTypes.deleteAndNavigateToSuccessAction,
   props<{ response: IInspectionRun }>()
 );
-export const changeInspectionStatusAction = createAction(
-  InspectionActionTypes.changeInspectionStatusAction,
-  props<{ payload: IInspectionRunPayload }>()
+export const changeInspectionRuntimeStatusAction = createAction(
+  InspectionActionTypes.changeInspectionRuntimeStatusAction,
+  props<{ payload: IInspectionRuntime }>()
 );
-export const changeInspectionStatusSuccessAction = createAction(
-  InspectionActionTypes.changeInspectionStatusSuccessAction,
-  props<{ response: IInspectionRunPayload }>()
+export const changeInspectionRuntimeStatusSuccessAction = createAction(
+  InspectionActionTypes.changeInspectionRuntimeStatusSuccessAction,
+  props<{ response: IInspectionRuntime }>()
 );
 export const runPrevInspectionAction = createAction(
   InspectionActionTypes.runPrevInspectionAction,
@@ -119,7 +119,7 @@ export const createInspectionChecklistSuccessAction = createAction(
 );
 export const runInspectionAction = createAction(
   InspectionActionTypes.runInspectionAction,
-  props<{ payload: IInspectionRunPayload }>()
+  props<{ payload: IInspectionRuntime }>()
 );
 export const runInspectionSuccessAction = createAction(
   InspectionActionTypes.runInspectionSuccessAction,

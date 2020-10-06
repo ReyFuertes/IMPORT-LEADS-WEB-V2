@@ -1,11 +1,11 @@
-import { IActiveInspection, IInspectionChecklist, IInspectionRun, IInspectionRunPayload, RunStatusType } from './../../inspections.models';
-import { loadActiveInspectionSuccessAction, runInspectionAction, runInspectionSuccessAction, createInspectionChecklistAction, createInspectionChecklistSuccessAction, loadInspectionRunAction, loadInspectionRunSuccessAction, runNextInspectionAction, runNextInspectionSuccessAction, runPrevInspectionAction, runPrevInspectionSuccessAction, changeInspectionStatusAction, changeInspectionStatusSuccessAction, deleteAndNavigateToAction, deleteAndNavigateToSuccessAction, copyInspectionAction, copyInspectionSuccessAction, navigateToInspectionAction, navigateToInspectionSuccessAction, navigateToFailed, deleteInspectionAction, deleteInspectionSuccessAction } from '../actions/inspection.action';
+import { IActiveInspection, IInspectionChecklist, IInspectionRun, IInspectionRuntime, RunStatusType } from './../../inspections.models';
+import { loadActiveInspectionSuccessAction, runInspectionAction, runInspectionSuccessAction, createInspectionChecklistAction, createInspectionChecklistSuccessAction, loadInspectionRunAction, loadInspectionRunSuccessAction, runNextInspectionAction, runNextInspectionSuccessAction, runPrevInspectionAction, runPrevInspectionSuccessAction, changeInspectionRuntimeStatusAction, changeInspectionRuntimeStatusSuccessAction, deleteAndNavigateToAction, deleteAndNavigateToSuccessAction, copyInspectionAction, copyInspectionSuccessAction, navigateToInspectionAction, navigateToInspectionSuccessAction, navigateToFailed, deleteInspectionAction, deleteInspectionSuccessAction } from '../actions/inspection.action';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { loadSavedChecklistAction } from '../../../contracts/store/actions/saved-checklist.action';
-import { InspectionsService, InspectionChecklistRunService, InspectionChecklistService } from '../../inspections.service';
+import { InspectionsService, InspectionChecklistRunService, InspectionChecklistService, InspectionRuntimeService } from '../../inspections.service';
 import { Router } from '@angular/router';
 import { AppState } from '../../../contracts/store/reducers';
 import { appNotification } from 'src/app/store/actions/notification.action';
@@ -34,7 +34,6 @@ export class InspectionEffect {
       )
     })
   ));
-
   copyInspectionAction$ = createEffect(() => this.actions$.pipe(
     ofType(copyInspectionAction),
     mergeMap(({ id, copyCount, contractProductId }) => {
@@ -64,13 +63,12 @@ export class InspectionEffect {
       )
     })
   ));
-
-  changeInspectionStatusAction$ = createEffect(() => this.actions$.pipe(
-    ofType(changeInspectionStatusAction),
+  changeInspectionRuntimeStatusAction$ = createEffect(() => this.actions$.pipe(
+    ofType(changeInspectionRuntimeStatusAction),
     switchMap(({ payload }) => {
-      return this.inspectionChecklistRunSrv.post(payload, 'status').pipe(
-        tap((response: IInspectionRunPayload) => this.store.dispatch(loadInspectionRunAction({ id: response?.id }))),
-        map((response: any) => changeInspectionStatusSuccessAction({ response }))
+      return this.inspectionRuntimeSrv.post(payload, 'status').pipe(
+        tap((response: IInspectionRuntime) => this.store.dispatch(loadInspectionRunAction({ id: response?.id }))),
+        map((response: any) => changeInspectionRuntimeStatusSuccessAction({ response }))
       )
     })
   ));
@@ -163,12 +161,13 @@ export class InspectionEffect {
   ))
 
   constructor(
-    private actions$: Actions,
     private router: Router,
+    private actions$: Actions,
     private store: Store<AppState>,
     private inspectionSrv: InspectionsService,
-    private inspectionChecklistRunSrv: InspectionChecklistRunService,
+    private savedChecklistSrv: SavedChecklistService,
+    private inspectionRuntimeSrv: InspectionRuntimeService,
     private inspectionChecklistSrv: InspectionChecklistService,
-    private savedChecklistSrv: SavedChecklistService
+    private inspectionChecklistRunSrv: InspectionChecklistRunService,
   ) { }
 }

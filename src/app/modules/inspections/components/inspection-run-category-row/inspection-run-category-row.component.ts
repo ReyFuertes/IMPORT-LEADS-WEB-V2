@@ -172,7 +172,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
 
   /* NOTE: move this to a utility or abstraction class */
   private cnsFileObj(files: FormData): any {
-    return Object.values(this.images) && this.images.map(ci => {
+    return this.images && Object.values(this.images) && this.images?.map(ci => {
       if (ci.file)
         files.append('files', ci.file, ci.filename);
       return { id: ci.id, filename: ci.filename, size: ci.size, mimetype: ci.mimetype }

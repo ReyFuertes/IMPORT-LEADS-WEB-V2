@@ -1,4 +1,4 @@
-import { AddEditState, ISimpleItem } from '../../../../shared/generics/generic.model';
+import { ISimpleItem } from '../../../../shared/generics/generic.model';
 import { InspectionCommentDialogComponent } from '../../../dialogs/components/inspection-comment/inspection-comment-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, Input, SimpleChanges, OnChanges, ChangeDetectorRef } from '@angular/core';
@@ -6,7 +6,7 @@ import { IInsChecklistTerm, IInspectionChecklistImage, IInspectionRun, IInspecti
 import * as _ from 'lodash';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { select, Store } from '@ngrx/store';
-import { IChecklist, IContractTerm } from 'src/app/modules/contracts/contract.model';
+import { IContractTerm } from 'src/app/modules/contracts/contract.model';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { takeUntil, tap } from 'rxjs/operators';
 import { clearInsChecklistImageAction, deleteInsChecklistAction, getInsChecklistAction, saveInsChecklisImageAction, saveInsChecklistAction, saveInsChecklistImageFilesAction, updateInsChecklistAction } from '../../store/actions/inspection-checklist.action';
@@ -84,41 +84,40 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
 
     if (option.label !== 'Ok') {
       const dialogRef = this.dialog.open(InspectionCommentDialogComponent, {});
-      dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
-        .subscribe((result) => {
-          if (result) {
-            this.row.checklist_item.verification = option.value;
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          this.row.checklist_item.verification = option.value;
 
-            /* save verification and comments */
-            const payload = {
-              verification: this.row?.checklist_item?.verification,
-              comment: result.comments,
-              inspection_checklist_run: { id: this.checklistRunId },
-              contract_term: { id: item.id },
-              contract_category: { id: this.source.contract_category.id },
-              saved_checklist: { id: this.source?.saved_checklist?.id },
-              contract_product: { id: this.source.contract_product.id }
-            }
-
-            this.store.dispatch(saveInsChecklistAction({ payload }));
-
-            this.saveAndUpdateImage();
-          } else {
-            this.row = Object.assign({}, this.row, {
-              checklist_item: {
-                verification: null
-              }
-            });
-            setTimeout(() => {
-              this.row = Object.assign({}, this.row, {
-                checklist_item: Object.assign({}, item.checklist_item, {
-                  verification: prevSelection?.checklist_item?.verification
-                })
-              });
-            });
+          /* save verification and comments */
+          const payload = {
+            verification: this.row?.checklist_item?.verification,
+            comment: result.comments,
+            inspection_checklist_run: { id: this.checklistRunId },
+            contract_term: { id: item.id },
+            contract_category: { id: this.source.contract_category.id },
+            saved_checklist: { id: this.source?.saved_checklist?.id },
+            contract_product: { id: this.source.contract_product.id }
           }
-          this.cdRef.detectChanges();
-        });
+
+          this.store.dispatch(saveInsChecklistAction({ payload }));
+
+          this.saveAndUpdateImage();
+        } else {
+          this.row = Object.assign({}, this.row, {
+            checklist_item: {
+              verification: null
+            }
+          });
+          setTimeout(() => {
+            this.row = Object.assign({}, this.row, {
+              checklist_item: Object.assign({}, item.checklist_item, {
+                verification: prevSelection?.checklist_item?.verification
+              })
+            });
+          });
+        }
+        this.cdRef.detectChanges();
+      });
     } else {
       const dialogRef = this.dialog.open(ConfirmationComponent, { width: '410px', data: { action: 2 } });
       dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))

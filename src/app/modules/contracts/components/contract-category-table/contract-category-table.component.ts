@@ -213,7 +213,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
     setTimeout(() => {
       this.selectedRow = null;
       this.selectedCol = null;
-      debugger
+
       /* reload categories */
       this.store.dispatch(loadContractCategoryAction({ id: this.contractCategory.contract.id }))
     }, 1000);

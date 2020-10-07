@@ -1,14 +1,13 @@
 import { AppState } from './../../../../store/app.reducer';
 import { Store, select } from '@ngrx/store';
 import { ISimpleItem } from './../../../../shared/generics/generic.model';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { BriefDialogComponent } from './../../../dialogs/components/brief/brief-dialog.component';
 import { AQLDialogComponent } from './../../../dialogs/components/aql/aql-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, Output, EventEmitter, ViewChild, AfterViewInit, ElementRef, Input } from '@angular/core';
-import { fromEvent, Observable } from 'rxjs';
-import { map, debounceTime, takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { ISavedChecklistItem } from '../../contract.model';
 import { getAllSavedChecklistSelector } from '../../store/selectors/saved-checklist.selector';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';

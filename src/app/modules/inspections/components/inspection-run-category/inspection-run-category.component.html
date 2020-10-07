@@ -4,12 +4,14 @@
       <h4>{{ source?.category }}</h4>
     </div>
     <table>
+      <tr>
+        <th fxFlex="220px">Term Name</th>
+        <th fxFlex>Term Description</th>
+        <th fxFlex="250px"></th>
+      </tr>
+
       <ng-container *ngFor="let row of source?.terms; let i = index">
-        <il-inspection-run-category-row 
-        [source]="source"
-        [checklistRunId]="item?.id" 
-        [contractProductId]="contractProductId" 
-        [row]="row"></il-inspection-run-category-row>
+        <il-inspection-run-category-row [source]="source" [checklistRunId]="item?.id" [contractProductId]="contractProductId" [row]="row"></il-inspection-run-category-row>
       </ng-container>
     </table>
   </div>

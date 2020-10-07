@@ -5,6 +5,7 @@
   min-width: 112px;
   height: 35px !important;
   line-height: 32px;
+  border-radius: 2px;
   width: fit-content !important;
   &:disabled {
     cursor: not-allowed;
@@ -67,7 +68,7 @@
   &.purple {
     background-color: $color-purple;
     color: $color-white;
-    border-radius: 0;
+    border-radius: 2px;
     height: 32px;
     line-height: 25px;
     padding: 0 10px;

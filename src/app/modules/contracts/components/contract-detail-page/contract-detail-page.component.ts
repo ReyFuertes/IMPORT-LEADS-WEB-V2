@@ -71,7 +71,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     });
     this.formChecklist = this.fb.group({
       assignedTo: [null, Validators.required],
-      desiredRunDate: [new Date()]
+      desiredRunDate: [new Date(), Validators.required]
     });
 
     const at = JSON.parse(localStorage.getItem('at')) || null;
@@ -192,7 +192,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   }
 
   public onSaveChecklist(): void {
-    const checklist_items = this.checklistEntities.map((c: IContractChecklistItem) => {
+    const checklistItems = this.checklistEntities?.map((c: IContractChecklistItem) => {
       return {
         contract_category: c.contract_category,
         contract_contract: c.contract_contract,
@@ -206,7 +206,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       checklist_name: `cl-${new Date().getTime()}`,
       assigned_to: this.formChecklist.get('assignedTo').value,
       desired_run_date: this.formChecklist.get('desiredRunDate').value,
-      checklist_items,
+      checklist_items: checklistItems,
       checklist_contract: { id: this.id },
       user: { id: this.formChecklist.get('assignedTo').value }
     }

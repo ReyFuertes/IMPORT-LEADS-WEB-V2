@@ -228,6 +228,10 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
     this.router.navigateByUrl('/dashboard/inspections');
   }
 
+  public get hasSelectedProduct(): boolean {
+    return this.contractProductId ? true : false;
+  }
+
   ngAfterViewInit(): void {
     this.cdRef.detectChanges();
   }

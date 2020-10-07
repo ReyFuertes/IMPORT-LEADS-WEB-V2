@@ -62,6 +62,12 @@
     </div>
   </div>
   <div>
-    <il-inspection-run-category [item]="inspectionRun"></il-inspection-run-category>
+    <il-inspection-run-category *ngIf="hasSelectedProduct; else selectedAProduct" [item]="inspectionRun"></il-inspection-run-category>
   </div>
 </div>
+
+<ng-template #selectedAProduct>
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <h3>Select a Product</h3>
+  </div>
+</ng-template>

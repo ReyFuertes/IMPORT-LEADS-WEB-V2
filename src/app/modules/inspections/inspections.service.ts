@@ -1,8 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { BaseService } from 'src/app/services/base.service';
 import { Injectable } from '@angular/core';
-import { IActiveInspection, IInspectionRun, IInspectionChecklist, IInspectionRuntime } from './inspections.models';
+import { IActiveInspection, IInspectionRun, IInspectionChecklist, IInspectionRuntime, IInspectionBarReport } from './inspections.models';
 
+@Injectable({ providedIn: 'root' })
+export class InspectionReportService extends BaseService<IInspectionBarReport> {
+  constructor(http: HttpClient) {
+    super(http, 'inspection-report');
+  }
+}
 @Injectable({ providedIn: 'root' })
 export class InspectionsService extends BaseService<IActiveInspection> {
   constructor(http: HttpClient) {
@@ -27,7 +33,6 @@ export class InspectionChecklistService extends BaseService<IInspectionChecklist
     super(http, 'inspection-checklist-comment');
   }
 }
-
 @Injectable({ providedIn: 'root' })
 export class InspectionChecklistImageService extends BaseService<IInspectionChecklist | IInspectionRun> {
   constructor(http: HttpClient) {

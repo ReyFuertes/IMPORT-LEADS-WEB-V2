@@ -41,7 +41,7 @@ import { InspectionActivePanelComponent } from './components/inspection-active-p
 import { InspectionFinishedPanelComponent } from './components/inspection-finished-panel/inspection-finished-panel.component';
 import { SavedChecklistService } from '../contracts/services/saved-checklist';
 import { MatRadioModule } from '@angular/material/radio';
-import { InspectionChecklistService, InspectionChecklistRunService } from './inspections.service';
+import { InspectionChecklistService, InspectionChecklistRunService, InspectionReportService } from './inspections.service';
 import { InspectionRunResolver } from './inspection-run.resolver';
 import { InspectionRunCategoryComponent } from './components/inspection-run-category/inspection-run-category.component';
 import { InspectionRunCategoryRowComponent } from './components/inspection-run-category-row/inspection-run-category-row.component';
@@ -49,6 +49,7 @@ import { reducers } from './store/reducers';
 import { InspectionChecklistEffect } from './store/effects/inspection-checklist.effect';
 import { ChartModule } from 'primeng/chart';
 import { NavigateGuard } from 'src/app/services/navigate.guard';
+import { InspectionReportEffect } from './store/effects/inspection-report.effect';
 
 const routes: Routes = [{
   path: '',
@@ -108,7 +109,8 @@ const primeNgModules = [];
     StoreModule.forFeature('inspectionModule', reducers),
     EffectsModule.forFeature([
       InspectionEffect,
-      InspectionChecklistEffect
+      InspectionChecklistEffect,
+      InspectionReportEffect
     ])
   ],
   exports: [],
@@ -136,7 +138,8 @@ const primeNgModules = [];
     InspectionChecklistRunService,
     InspectionChecklistService,
     InspectionRunResolver,
-    NavigateGuard
+    NavigateGuard,
+    InspectionReportService
   ],
 })
 export class InspectionModule { }

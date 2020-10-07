@@ -88,7 +88,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
         .subscribe((result) => {
           if (result) {
             this.row.checklist_item.verification = option.value;
-            
+
             /* save verification and comments */
             const payload = {
               verification: this.row?.checklist_item?.verification,
@@ -99,7 +99,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
               saved_checklist: { id: this.source?.saved_checklist?.id },
               contract_product: { id: this.source.contract_product.id }
             }
-            
+
             this.store.dispatch(saveInsChecklistAction({ payload }));
 
             this.saveAndUpdateImage();

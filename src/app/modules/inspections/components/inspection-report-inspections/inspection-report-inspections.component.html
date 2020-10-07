@@ -3,16 +3,42 @@
     <div fxLayout="column" fxLayoutGap="20px">
       <div class="detail" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
         <mat-list fxLayout="row">
-          <mat-list-item *ngFor="let header of inspectionHeader;" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
-            <h5>{{header.title}}</h5>
-            <h2>{{header.value}}</h2>
+          <mat-list-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+            <h5>Total items checked</h5>
+            <h2>{{ barChartSummary?.itemCount}}</h2>
+          </mat-list-item>
+          <mat-list-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+            <h5>Total inspection time</h5>
+            <h2>{{barChartSummary?.totalRuntime}}</h2>
+          </mat-list-item>
+          <mat-list-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+            <h5>Average duration per item</h5>
+            <h2></h2>
+          </mat-list-item>
+          <mat-list-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+            <h5>Start date</h5>
+            <h2>{{ barChartSummary?.runStart }}</h2>
+          </mat-list-item>
+          <mat-list-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+            <h5>End date</h5>
+            <h2>{{ barChartSummary?.runEnd }}</h2>
           </mat-list-item>
         </mat-list>
       </div>
     </div>
+
+    <!-- public inspectionHeader: any[] = [
+    { title: 'Total items checked', value: '82' },
+    { title: 'Total inspection time', value: '29:43:34' },
+    { title: 'Average duration per item', value: '00:05:30' },
+    { title: 'Start date', value: '06.10.2019' },
+    { title: 'End date', value: '28.10.2019' }
+  ]; -->
+
+
     <div class="chart-container">
       <div class="chart-container-inner">
-        <p-chart type="bar" [options]="insChartOptions" [data]="insChartData"></p-chart>
+        <p-chart type="bar" [options]="insChartOptions" [data]="barChartData"></p-chart>
       </div>
     </div>
 

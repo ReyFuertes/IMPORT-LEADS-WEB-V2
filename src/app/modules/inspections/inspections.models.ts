@@ -4,6 +4,22 @@ import { IContractProduct, IContractTerm, IContractCategory, ISavedChecklist } f
 import { IVenue } from '../venues/venues.models';
 import { IProduct } from '../products/products.model';
 
+export interface IInspectionBarReport {
+  inspections?: {
+    id?: string;
+    runStart?: string,
+    runTime?: {
+      hours?: any,
+      minute?: any,
+      seconds?: any,
+      time?: any,
+    };
+  }[];
+  itemCount?: number;
+  totalRuntime?: number;
+  runStart?: string;
+  runEnd?: string;
+}
 export interface IInspectionChecklistImage {
   id?: string;
   image?: any;

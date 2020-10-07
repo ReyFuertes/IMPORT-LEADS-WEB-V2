@@ -154,7 +154,6 @@ export class InspectionReportInspectionComponent implements OnInit {
         let data: any[] = [];
 
         res?.inspections.forEach(_ => {
-          debugger
           labels.push(_.runStart);
           data.push(_.runTime.time);
         });
@@ -175,16 +174,6 @@ export class InspectionReportInspectionComponent implements OnInit {
             data
           }]
         }
-
-        // {
-        //   labels: [1],
-        //   datasets: [{
-        //     backgroundColor: CHARTBGCOLOR,
-        //     borderColor: CHARTBORDERCOLOR,
-        //     borderWidth: 1,
-        //     data: [65, 59, 80, 81, 56, 55, 40]
-        //   }]
-        // }
       }
     })
   }

@@ -121,7 +121,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
             notification: { error: true, message: 'Inspection run is stopped, Redirecting you to report page.' }
           }));
 
-          setTimeout(() => this.router.navigateByUrl(`/dashboard/inspections/${this.inspectionRun?.id}/report`), 3000);
+          setTimeout(() => this.router.navigateByUrl(`/dashboard/inspections/${this.savedChecklistId}/report`), 3000);
         }
       });
   }

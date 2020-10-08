@@ -17,8 +17,15 @@ export class NavigateGuard extends GenericDestroyPageComponent implements CanDea
   canDeactivate(component: InspectionRunPageComponent): Observable<boolean> | boolean {
     let isPaused: boolean;
     this.store.pipe(select(getIsPausedSelector)).subscribe(stat => isPaused = stat);
-
+    
+    let isPauseOrRun: any;
+    try {
+      isPauseOrRun = component?.$pauseOrRun();
+    } catch (error) {
+      isPauseOrRun = true;
+    }
+  
     /* if the checklist run is paused then do not display the confirmation run/stop dialog */
-    return isPaused ? true : component.$pauseOrRun();
+    return isPaused ? true : isPauseOrRun;
   }
 }

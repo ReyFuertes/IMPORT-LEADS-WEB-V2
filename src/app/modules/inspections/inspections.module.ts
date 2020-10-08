@@ -56,7 +56,8 @@ const routes: Routes = [{
   component: InspectionsContainerComponent,
   children: [{
     path: '',
-    component: InspectionPageComponent
+    component: InspectionPageComponent,
+    canDeactivate: [NavigateGuard]
   }, {
     path: ':id/run',
     component: InspectionRunPageComponent,

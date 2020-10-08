@@ -29,7 +29,17 @@ export enum InspectionActionTypes {
   deleteInspectionAction = '[Inspection Checklist] delete inspection',
   deleteInspectionSuccessAction = '[Inspection Checklist] delete inspection (success)',
   setPauseInspectionStatusAction = '[Inspection Checklist] set pause status inspection',
+  loadInspectionDetailAction = '[Inspection Checklist] load inspection detail',
+  loadInspectionDetailSuccessAction = '[Inspection Checklist] load inspection detail (success)',
 }
+export const loadInspectionDetailAction = createAction(
+  InspectionActionTypes.loadInspectionDetailAction,
+  props<{ params: string }>()
+);
+export const loadInspectionDetailSuccessAction = createAction(
+  InspectionActionTypes.loadInspectionDetailSuccessAction,
+  props<{ response: IActiveInspection[] }>()
+);
 export const setPauseInspectionStatusAction = createAction(
   InspectionActionTypes.setPauseInspectionStatusAction,
   props<{ status: boolean }>()

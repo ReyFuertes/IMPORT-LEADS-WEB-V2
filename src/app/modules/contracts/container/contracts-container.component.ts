@@ -19,6 +19,6 @@ export class ContractsContainerComponent extends GenericContainer implements OnI
     this.store.dispatch(loadContractsAction(null));
     this.store.dispatch(loadProductsAction());
     this.store.dispatch(loadTags());
-    this.store.dispatch(loadSavedChecklistAction())
+    this.store.dispatch(loadSavedChecklistAction({}))
   }
 }

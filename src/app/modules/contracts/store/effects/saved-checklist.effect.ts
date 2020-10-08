@@ -20,8 +20,8 @@ export class SavedChecklistEffect {
   ));
   loadSavedChecklistAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadSavedChecklistAction),
-    mergeMap(() => {
-      return this.savedChecklistSrv.getAll()
+    mergeMap(({params}) => {
+      return this.savedChecklistSrv.getAll(params)
         .pipe(
           map((items: ISavedChecklistItem[]) => {
             return loadSavedChecklistSuccessAction({ items });

@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { AppState } from 'src/app/store/app.reducer';
+import { IActiveInspection } from '../../inspections.models';
+import { getInspectionDetailSelector } from '../../store/selectors/inspection.selector';
 
 @Component({
   selector: 'il-inspection-report-inspector',
@@ -7,7 +12,11 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class InspectorReportInspectorComponent implements OnInit {
-  constructor() { }
+  public $detail: Observable<IActiveInspection>;
+
+  constructor(private store: Store<AppState>) {
+    this.$detail = this.store.pipe(select(getInspectionDetailSelector));
+  }
 
   ngOnInit() { }
 }

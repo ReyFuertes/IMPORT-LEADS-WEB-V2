@@ -2,6 +2,10 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { InspectionModuleState } from '../reducers';
 
 export const selectContractModuleState = createFeatureSelector<InspectionModuleState>('inspectionModule');
+export const getInspectionDetailSelector = createSelector(
+  selectContractModuleState,
+  state => state?.inspection?.detail
+);
 export const getIsPausedSelector = createSelector(
   selectContractModuleState,
   state => state?.inspection?.isPaused
@@ -15,8 +19,7 @@ export const getInspectionRunFilterByProductIdSelector = (id: string) => createS
   state => {
     const items = state?.inspection?.runInspection?.checklist?.items.filter(i => i.contract_product.id === id);
     const checklist = Object.assign({}, state?.inspection?.runInspection?.checklist, { items })
-    const ret = Object.assign({}, state?.inspection?.runInspection, { checklist });
-    return ret;
+    return Object.assign({}, state?.inspection?.runInspection, { checklist });
   }
 );
 export const getInspectionRunSelector = createSelector(

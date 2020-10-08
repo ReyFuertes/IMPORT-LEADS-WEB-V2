@@ -11,7 +11,6 @@ import { runInspectionAction, clearLoadAction, deleteInspectionAction } from '..
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
 import { takeUntil } from 'rxjs/operators';
-import { inspectionBarReportAction } from '../../store/actions/inspection-report.action';
 
 @Component({
   selector: 'il-inspection-active-panel',

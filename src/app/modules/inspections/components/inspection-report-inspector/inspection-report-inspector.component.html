@@ -4,19 +4,19 @@
       <div class="detail" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
         <div fxFlex="15" fxLayout="column">
           <span>Сontact Person</span>
-          <span>Tammy Li</span>
+          <span>{{ ($detail | async)?.user?.username }}</span>
         </div>
         <div fxFlex="15" fxLayout="column">
           <span>Phone Number</span>
-          <span>+86 10 0000 0000</span>
+          <span>{{ ($detail | async)?.venue?.phone }}</span>
         </div>
         <div fxFlex="15" fxLayout="column">
           <span>Venue</span>
-          <span>Venue Name</span>
+          <span>{{ ($detail | async)?.venue?.name }}</span>
         </div>
         <div fxFlex fxLayout="column">
           <span>Address</span>
-          <span>Haizhu Qu, Guangzhou Shi, Guangdong Sheng China </span>
+          <span>{{ ($detail | async)?.venue?.location }}</span>
         </div>
       </div>
     </div>

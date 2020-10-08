@@ -6,9 +6,11 @@ import { Color, Label } from 'ng2-charts';
 import { Observable } from 'rxjs';
 import { CHARTBGCOLOR, CHARTBORDERCOLOR } from 'src/app/shared/constants/chart';
 import { AppState } from 'src/app/store/app.reducer';
-import { IInspectionBarReport } from '../../inspections.models';
+import { IActiveInspection, IInspectionBarReport } from '../../inspections.models';
 import { inspectionBarReportAction } from '../../store/actions/inspection-report.action';
 import { getInspectionbarReportSelector } from '../../store/selectors/inspection-report.selector';
+import { loadInspectionDetailAction } from '../../store/actions/inspection.action';
+import { getInspectionDetailSelector } from '../../store/selectors/inspection.selector';
 
 export interface Inspection {
   inspector: string;
@@ -146,6 +148,7 @@ export class InspectionReportInspectionComponent implements OnInit {
     this.id = this.route.snapshot.paramMap.get('id') || null;
     if (this.id) {
       this.store.dispatch(inspectionBarReportAction({ id: this.id }));
+      this.store.dispatch(loadInspectionDetailAction({ params: `?saved_checklist_id=${this.id}` }));
     }
 
     this.store.pipe(select(getInspectionbarReportSelector)).subscribe((res: IInspectionBarReport) => {

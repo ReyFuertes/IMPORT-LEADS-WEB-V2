@@ -34,7 +34,6 @@ export class InspectionPageComponent extends GenericDestroyPageComponent impleme
     label: '',
     value: '5'
   }];
-
   public finishedCols: ISimpleItem[] = [{
     label: 'Contract Name',
     value: '40'
@@ -68,7 +67,7 @@ export class InspectionPageComponent extends GenericDestroyPageComponent impleme
         if (res) this.activeInspections = res
       })).subscribe();
 
-    this.store.dispatch(loadSavedChecklistAction());
+    this.store.dispatch(loadSavedChecklistAction({}));
   }
 
   ngAfterViewInit(): void {

@@ -20,7 +20,7 @@ h2 {
 }
 :host ::ng-deep {
   .mat-expansion-panel-body {
-    padding: 24px 0 0 0 !important;
+    padding: 0 !important;
     background-color: $color-white !important;
   }
   .mat-list {

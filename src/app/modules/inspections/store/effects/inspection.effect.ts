@@ -1,5 +1,5 @@
 import { IActiveInspection, IInspectionChecklist, IInspectionRun, IInspectionRuntime, RunStatusType } from './../../inspections.models';
-import { loadActiveInspectionSuccessAction, runInspectionAction, runInspectionSuccessAction, createInspectionChecklistAction, createInspectionChecklistSuccessAction, loadInspectionRunAction, loadInspectionRunSuccessAction, runNextInspectionAction, runNextInspectionSuccessAction, runPrevInspectionAction, runPrevInspectionSuccessAction, changeInspectionRuntimeStatusAction, changeInspectionRuntimeStatusSuccessAction, deleteAndNavigateToAction, deleteAndNavigateToSuccessAction, copyInspectionAction, copyInspectionSuccessAction, navigateToInspectionAction, navigateToInspectionSuccessAction, navigateToFailed, deleteInspectionAction, deleteInspectionSuccessAction } from '../actions/inspection.action';
+import { loadActiveInspectionSuccessAction, runInspectionAction, runInspectionSuccessAction, createInspectionChecklistAction, createInspectionChecklistSuccessAction, loadInspectionRunAction, loadInspectionRunSuccessAction, runNextInspectionAction, runNextInspectionSuccessAction, runPrevInspectionAction, runPrevInspectionSuccessAction, changeInspectionRuntimeStatusAction, changeInspectionRuntimeStatusSuccessAction, deleteAndNavigateToAction, deleteAndNavigateToSuccessAction, copyInspectionAction, copyInspectionSuccessAction, navigateToInspectionAction, navigateToInspectionSuccessAction, navigateToFailed, deleteInspectionAction, deleteInspectionSuccessAction, loadInspectionDetailAction, loadInspectionDetailSuccessAction } from '../actions/inspection.action';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators';
@@ -136,8 +136,8 @@ export class InspectionEffect {
   ));
   loadSavedChecklistAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadSavedChecklistAction),
-    mergeMap(() => {
-      return this.inspectionSrv.getAll()
+    mergeMap(({ params }) => {
+      return this.inspectionSrv.getAll(params)
         .pipe(
           map((response: IActiveInspection[]) => {
             return loadActiveInspectionSuccessAction({ response });
@@ -145,13 +145,23 @@ export class InspectionEffect {
         )
     })
   ))
-
+  loadInspectionDetailAction$ = createEffect(() => this.actions$.pipe(
+    ofType(loadInspectionDetailAction),
+    mergeMap(({ params }) => {
+      return this.inspectionSrv.getAll(params)
+        .pipe(
+          map((response: IActiveInspection[]) => {
+            return loadInspectionDetailSuccessAction({ response });
+          })
+        )
+    })
+  ))
   deleteInspectionAction$ = createEffect(() => this.actions$.pipe(
     ofType(deleteInspectionAction),
     mergeMap(({ id }) => {
       return this.savedChecklistSrv.delete(id)
         .pipe(
-          tap(() => this.store.dispatch(loadSavedChecklistAction())),
+          tap(() => this.store.dispatch(loadSavedChecklistAction({}))),
           map((response: IActiveInspection[]) => {
             return deleteInspectionSuccessAction({ response });
           })

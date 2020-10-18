@@ -1,44 +1,45 @@
-<div>
+<div *ngIf="productData">
   <il-expandable-panel title="Products" [expanded]="true">
     <div fxLayout="column" fxLayoutGap="20px">
       <div class="detail" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
         <mat-list fxLayout>
-          <mat-list-item *ngFor="let header of productHeader;" fxFlex>
-             <h5>{{header.title}}</h5>
-             <h2>{{header.value}}</h2>
+          <mat-list-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+            <h5>Total items:</h5>
+            <h2>{{productData?.totalItems}}</h2>
+          </mat-list-item>
+          <mat-list-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+            <h5>Failed Items:</h5>
+            <h2>{{productData?.totalFailedTermsCount}}</h2>
+          </mat-list-item>
+          <mat-list-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+            <h5>Pass Items:</h5>
+            <h2>{{productData?.totalPassedTermsCount}}</h2>
           </mat-list-item>
         </mat-list>
       </div>
     </div>
     <div class="chart-container">
       <div class="chart-container-inner">
-        <canvas baseChart  
-          [datasets]="barChartData"
-          [labels]="barChartLabels"
-          [options]="barChartOptions"
-          [colors]="barChartColors"
-          [legend]="barChartLegend"
-          [chartType]="barChartType">
+        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType">
         </canvas>
       </div>
     </div>
     <table mat-table [dataSource]="dataSource">
-    
       <ng-container matColumnDef="product">
         <th mat-header-cell *matHeaderCellDef> Product </th>
-        <td mat-cell *matCellDef="let items"> {{items?.product}} </td>
+        <td mat-cell *matCellDef="let items"> {{items?.product?.product_name}} </td>
       </ng-container>
-    
+
       <ng-container matColumnDef="failed">
         <th mat-header-cell *matHeaderCellDef> Failed </th>
-        <td mat-cell *matCellDef="let items"> {{items?.failed}} </td>
+        <td mat-cell *matCellDef="let items"> {{items?.failedTermsCount}} </td>
       </ng-container>
-    
+
       <ng-container matColumnDef="passed">
         <th mat-header-cell *matHeaderCellDef> Passed </th>
-        <td mat-cell *matCellDef="let items"> {{items?.passed}} </td>
+        <td mat-cell *matCellDef="let items"> {{items?.passedTermsCount}} </td>
       </ng-container>
-    
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>

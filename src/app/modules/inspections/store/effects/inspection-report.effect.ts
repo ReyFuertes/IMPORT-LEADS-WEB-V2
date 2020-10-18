@@ -6,14 +6,25 @@ import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { AppState } from 'src/app/store/app.reducer';
 import { IInspectionBarReport } from '../../inspections.models';
 import { InspectionReportService } from '../../inspections.service';
-import { inspectionBarReportAction, inspectionBarReportSuccessAction } from '../actions/inspection-report.action';
+import { inspectionBarReportAction, inspectionBarReportSuccessAction, inspectionProductReportAction, inspectionProductReportSuccessAction } from '../actions/inspection-report.action';
 
 @Injectable()
 export class InspectionReportEffect {
+  inspectionProductReportAction$ = createEffect(() => this.actions$.pipe(
+    ofType(inspectionProductReportAction),
+    switchMap(({ id }) => {
+      return this.inspectionReportSrv.post({ id }, 'products').pipe(
+        map((response: IInspectionBarReport) => {
+          return inspectionProductReportSuccessAction({ response });
+        })
+      )
+    })
+  ));
+
   inspectionBarReportAction$ = createEffect(() => this.actions$.pipe(
     ofType(inspectionBarReportAction),
     switchMap(({ id }) => {
-      return this.inspectionReportService.getById(id).pipe(
+      return this.inspectionReportSrv.getById(id).pipe(
         map((response: IInspectionBarReport) => {
           return inspectionBarReportSuccessAction({ response });
         })
@@ -25,6 +36,6 @@ export class InspectionReportEffect {
     private router: Router,
     private actions$: Actions,
     private store: Store<AppState>,
-    private inspectionReportService: InspectionReportService,
+    private inspectionReportSrv: InspectionReportService,
   ) { }
 }

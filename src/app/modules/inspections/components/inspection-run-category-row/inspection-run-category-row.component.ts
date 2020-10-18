@@ -138,20 +138,18 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
     const dialogRef = this.dialog.open(InspectionCommentDialogComponent, {
       data: { state: ModalStateType.edit, id }
     });
-    dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
-      .subscribe(result => {
-        if (result) {
-          /* update comment */
-          this.store.dispatch(updateInsChecklistAction({
-            payload: {
-              id: result?.id,
-              comment: result?.comments
-            }
-          }));
-
-          this.saveAndUpdateImage();
-        }
-      })
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        /* update comment */
+        this.store.dispatch(updateInsChecklistAction({
+          payload: {
+            id: result?.id,
+            comment: result?.comments
+          }
+        }));
+        this.saveAndUpdateImage();
+      }
+    })
   }
 
   private saveAndUpdateImage(): void {

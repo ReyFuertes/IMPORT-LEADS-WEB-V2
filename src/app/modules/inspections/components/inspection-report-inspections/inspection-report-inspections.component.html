@@ -1,15 +1,15 @@
 <div>
-  <il-expandable-panel title="Inspections" [expanded]="true">
+  <il-expandable-panel title="Inspections" [expanded]="false">
     <div fxLayout="column" fxLayoutGap="20px">
       <div class="detail" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
         <mat-list fxLayout="row">
           <mat-list-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
             <h5>Total items checked</h5>
-            <h2>{{ barChartSummary?.itemCount}}</h2>
+            <h2>{{ barChartSummary?.totalItemsCheck}}</h2>
           </mat-list-item>
           <mat-list-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
             <h5>Total inspection time</h5>
-            <h2>{{barChartSummary?.totalRuntime}}</h2>
+            <h2>{{barChartSummary?.totalTimeInspection}}</h2>
           </mat-list-item>
           <mat-list-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
             <h5>Average duration per item</h5>
@@ -17,11 +17,11 @@
           </mat-list-item>
           <mat-list-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
             <h5>Start date</h5>
-            <h2>{{ barChartSummary?.runStart }}</h2>
+            <h2>{{ barChartSummary?.runStartdate }}</h2>
           </mat-list-item>
           <mat-list-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
             <h5>End date</h5>
-            <h2>{{ barChartSummary?.runEnd }}</h2>
+            <h2>{{ barChartSummary?.runEnddate }}</h2>
           </mat-list-item>
         </mat-list>
       </div>

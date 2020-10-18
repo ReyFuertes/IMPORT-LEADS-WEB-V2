@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Menu } from './../../../../shared/generics/generic.model';
 import { IActiveInspection } from './../../inspections.models';
 import { environment } from './../../../../../environments/environment';
-import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectorRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectorRef, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
 import { runInspectionAction, clearLoadAction, deleteInspectionAction } from '../../store/actions/inspection.action';
 import { MatDialog } from '@angular/material/dialog';

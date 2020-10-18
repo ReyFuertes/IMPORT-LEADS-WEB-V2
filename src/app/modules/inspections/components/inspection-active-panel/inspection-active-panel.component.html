@@ -1,12 +1,12 @@
 <div class="col-header" fxLayoutAlign="center center" fxLayoutGap="10px">
   <div *ngFor="let col of colsHeader" [fxFlex]="col?.value">{{ col?.label }}</div>
 </div>
-<div class="il-draggable-expansion">
+<div *ngIf="activeInspections" class="il-draggable-expansion">
   <mat-accordion cdkDropList (cdkDropListDropped)="drop($event)">
     <mat-expansion-panel (click)="expandPnl(pnl, $event, i)" cdkDrag (cdkDragStarted)="dragStarted(true)" #pnl="matExpansionPanel" *ngFor="let item of activeInspections; let i = index" hideToggle="true">
 
       <mat-expansion-panel-header (keydown.Space)="$event.stopImmediatePropagation()" (keydown.Enter)="$event.stopImmediatePropagation()" (click)="onClickPnl(pnl, $event, i)" (mouseover)="mouseover(i)" (mouseleave)="mouseout()">
-        <div *ngIf="activeInspections" class="pnl-header" fxLayout="row" fxLayoutGap="10px">
+        <div class="pnl-header" fxLayout="row" fxLayoutGap="10px">
           <img cdkDragHandle [src]="svgPath + 'drag-icon.svg'" />
           <div fxFlex="35" class="contact-title" [matTooltip]="item?.title" fxLayoutAlign="start center">
             <span>{{item?.checklist_contract?.contract_name}}</span>

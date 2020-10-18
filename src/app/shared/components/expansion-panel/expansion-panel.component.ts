@@ -10,11 +10,12 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 
 export class ExpansionPanelComponent implements OnInit {
   public svgPath: string = environment.svgPath;
-  @Input()
-  public panels: Array<{ title: string, description: string }>;
+  @Input() public panels: Array<{ title: string, description: string }>;
+
   public selectedPnl: number | null;
   public hoveredPnl: number | null;
   public isEventDialog: boolean = false;
+  
   constructor() { }
 
   ngOnInit() { }

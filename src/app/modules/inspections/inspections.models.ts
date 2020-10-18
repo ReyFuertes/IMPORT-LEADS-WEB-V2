@@ -3,22 +3,36 @@ import { IUser } from '../user-management/user-mgmt.model';
 import { IContractProduct, IContractTerm, IContractCategory, ISavedChecklist } from '../contracts/contract.model';
 import { IVenue } from '../venues/venues.models';
 import { IProduct } from '../products/products.model';
-
+export interface IInspectionProductReport {
+  totalFailedTermsCount?: number;
+  totalPassedTermsCount?: number;
+  totalItems?: number,
+  products: Array<{
+    contract_product: {
+      id?: string,
+      saved_checklist: {
+        id?: string,
+      }
+    },
+    product: {
+      id?: string,
+      product_name?: string,
+    },
+    failedTermsCount?: number
+    passedTermsCount?: number
+  }>
+}
 export interface IInspectionBarReport {
   inspections?: {
     id?: string;
-    runStart?: string,
-    runTime?: {
-      hours?: any,
-      minute?: any,
-      seconds?: any,
-      time?: any,
-    };
+    itemCount?: number,
+    runTime: { hours: number, minutes: number, seconds: number, time: string }
+    totalRuntime?: string;
   }[];
-  itemCount?: number;
-  totalRuntime?: number;
-  runStart?: string;
-  runEnd?: string;
+  totalItemsCheck?: number,
+  totalTimeInspection?: string;
+  runStartdate?: string;
+  runEnddate?: string;
 }
 export interface IInspectionChecklistImage {
   id?: string;

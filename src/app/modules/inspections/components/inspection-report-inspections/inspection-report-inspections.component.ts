@@ -72,6 +72,7 @@ export class InspectionReportInspectionComponent implements OnInit {
     animation: {
       duration: 2000,
     },
+    
   };
   public barChartData: any;
 
@@ -151,21 +152,22 @@ export class InspectionReportInspectionComponent implements OnInit {
       this.store.dispatch(loadInspectionDetailAction({ params: `?saved_checklist_id=${this.id}` }));
     }
 
+    /* get bar chart reports */
     this.store.pipe(select(getInspectionbarReportSelector)).subscribe((res: IInspectionBarReport) => {
       if (res) {
         const labels: string[] = [];
         let data: any[] = [];
 
         res?.inspections.forEach(_ => {
-          labels.push(_.runStart);
-          data.push(_.runTime.time);
+          labels.push(_.totalRuntime);
+          data.push(_.itemCount);
         });
 
         this.barChartSummary = {
-          itemCount: res?.itemCount,
-          totalRuntime: res?.totalRuntime,
-          runStart: res?.runStart,
-          runEnd: res?.runEnd
+          totalItemsCheck: res?.totalItemsCheck,
+          totalTimeInspection: res?.totalTimeInspection,
+          runStartdate: res?.runStartdate,
+          runEnddate: res?.runEnddate,
         }
 
         this.barChartData = {

@@ -5,10 +5,11 @@
   padding: 0px 20px;
 }
 .chart-container-inner {
-  height: 650px;
+  height: 300px;
 }
 h2 {
   line-height: 32px;
+  color: $color-black-2;
 }
 :host ::ng-deep {
   .mat-expansion-panel-body {

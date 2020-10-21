@@ -1,5 +1,5 @@
 <div>
-  <il-expandable-panel title="Inspections" [expanded]="false">
+  <il-expandable-panel title="Inspections" [expanded]="true">
     <div fxLayout="column" fxLayoutGap="20px">
       <div class="detail" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
         <mat-list fxLayout="row">
@@ -7,7 +7,7 @@
             <h5>Total items checked</h5>
             <h2>{{ barChartSummary?.totalItemsCheck}}</h2>
           </mat-list-item>
-          <mat-list-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+          <mat-list-item fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="5px">
             <h5>Total inspection time</h5>
             <h2>{{barChartSummary?.totalTimeInspection}}</h2>
           </mat-list-item>
@@ -27,9 +27,9 @@
       </div>
     </div>
 
-    <div class="chart-container">
+    <div *ngIf="barChartOption" class="chart-container">
       <div class="chart-container-inner">
-        <p-chart type="bar" [options]="insChartOptions" [data]="barChartData"></p-chart>
+        <div echarts [ngStyle]="{'min-height': '289px'}" [options]="barChartOption"></div>
       </div>
     </div>
 
@@ -37,27 +37,27 @@
 
       <ng-container matColumnDef="inspector">
         <th mat-header-cell *matHeaderCellDef> Inspector </th>
-        <td mat-cell *matCellDef="let items"> {{items?.inspector}} </td>
+        <td mat-cell *matCellDef="let items"> {{items?.inspector?.username}} </td>
       </ng-container>
 
       <ng-container matColumnDef="date">
         <th mat-header-cell *matHeaderCellDef> Date </th>
-        <td mat-cell *matCellDef="let items"> {{items?.date}} </td>
+        <td mat-cell *matCellDef="let items"> {{items?.runStart | date: 'dd/MM/yyyy'}} </td>
       </ng-container>
 
       <ng-container matColumnDef="duration">
         <th mat-header-cell *matHeaderCellDef> Duration </th>
-        <td mat-cell *matCellDef="let items"> {{items?.duration}} </td>
+        <td mat-cell *matCellDef="let items"> {{items?.totalRuntime}} </td>
       </ng-container>
 
       <ng-container matColumnDef="item">
         <th mat-header-cell *matHeaderCellDef> Items </th>
-        <td mat-cell *matCellDef="let items"> {{items?.items}} </td>
+        <td mat-cell *matCellDef="let items"> {{items?.itemCount}} </td>
       </ng-container>
 
       <ng-container matColumnDef="average">
         <th mat-header-cell *matHeaderCellDef> Average duration per item </th>
-        <td mat-cell *matCellDef="let items"> {{items?.average}} </td>
+        <td mat-cell *matCellDef="let items">  </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

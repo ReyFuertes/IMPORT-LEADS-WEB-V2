@@ -21,6 +21,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { AccessService } from './services/api.service';
 import { UserMgmtEffects } from './modules/user-management/store/user-mgmt.effects';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 const materialModules = [
   MatProgressSpinnerModule,
@@ -47,6 +48,9 @@ const primengModules = [
     EffectsModule.forRoot([VenuesEffects, InitAppEffect, UserMgmtEffects]),
     AppRoutingModule,
     BrowserAnimationsModule,
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts')
+    })
   ],
   providers: [
     AuthGuard,

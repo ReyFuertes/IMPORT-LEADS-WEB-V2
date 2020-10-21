@@ -12,8 +12,7 @@ export class InspectionPanelDetailComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() {  }
 
   public get getProducts(): any {
     return this.detail.products.map(ci => {

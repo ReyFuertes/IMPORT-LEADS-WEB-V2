@@ -42,7 +42,7 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-    <tr mat-row *matRowDef="let item; columns: columnsToDisplay;" class="tbl-el-row" [ngClass]="{'expanded-row': isNoExpand(i)}" (click)="onExpand(item, $event)">
+    <tr mat-row *matRowDef="let item; columns: columnsToDisplay;" class="tbl-el-row" (click)="onExpand(item, $event)">
     </tr>
     <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
   </table>

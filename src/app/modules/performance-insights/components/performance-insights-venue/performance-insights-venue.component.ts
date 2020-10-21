@@ -11,12 +11,11 @@ import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
 })
 export class PerformanceInsightsVenueComponent extends GenericRowComponent implements OnInit {
   public svgPath: string = environment.svgPath;
-  @Input()
-  public items: InsightVenue[];
-  @Input()
-  public colsHeader: Array<{ label: string, width?: any, icon?: string }>;
   public dragStart: boolean = false;
 
+  @Input() public items: InsightVenue[];
+  @Input() public colsHeader: Array<{ label: string, width?: any, icon?: string }>;
+ 
   constructor() {
     super();
   }

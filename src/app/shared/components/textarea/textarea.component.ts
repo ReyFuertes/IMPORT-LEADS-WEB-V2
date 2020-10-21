@@ -15,6 +15,8 @@ export class TextareaComponent implements OnInit {
   @Input() public isFloatLabel: boolean = false;
   @Input() public noResize: boolean = false;
   @Input() public hasBorder: boolean = false;
+  @Input() public value: any;
+  
   constructor() { }
 
   ngOnInit() { }

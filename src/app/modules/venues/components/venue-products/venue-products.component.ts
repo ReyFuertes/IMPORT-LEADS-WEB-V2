@@ -22,22 +22,20 @@ import * as _ from 'lodash';
 export class VenueProductsComponent extends GenericRowComponent implements OnInit {
   public svgPath: string = environment.svgPath;
   public imgPath: string = environment.imgPath;
-  public imageApiPath: string = environment.apiImagePath
-  @Input()
-  public items: IVenue[];
+  public imageApiPath: string = environment.apiImagePath;
   public hoveredIndex: number | null = null;
   public selectedIndex: number | null = null;
-  @Input()
-  public colsHeader: Array<{ label: string, width?: any }>;
   public rates = new Array(5);
-  @Input()
-  public isProduct: boolean;
-  @Output()
-  public valueEmitter = new EventEmitter<IVenue>();
   public selectedItem: IVenue;
   public selectedId: string;
   public dragStart: boolean = false;
   public base64Image: any;
+  
+  @Input() public items: IVenue[];
+  @Input() public colsHeader: Array<{ label: string, width?: any }>;
+  @Input() public isProduct: boolean;
+
+  @Output() public valueEmitter = new EventEmitter<IVenue>();
 
   public drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.items, event.previousIndex, event.currentIndex);
@@ -103,7 +101,7 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
     this.dragStart = event;
   }
 
-  public onRemoveProduct(item: IvenueProduct): void {
+  public onRemoveProduct(item: any): void {
     const dialogRef = this.dialog.open(ConfirmationComponent, {
       width: '410px',
       data: {

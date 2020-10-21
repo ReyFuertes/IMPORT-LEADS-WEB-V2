@@ -3,7 +3,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import * as _ from 'lodash';
+import { Directive } from '@angular/core';
 
+@Directive()
 export abstract class BaseService<T> {
   protected baseUrl: string;
 

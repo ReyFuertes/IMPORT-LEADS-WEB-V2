@@ -22,13 +22,17 @@ export interface IInspectionProductReport {
     passedTermsCount?: number
   }>
 }
+export interface IInspectionReportItem {
+  id?: string;
+  itemCount?: number,
+  runTime?: { hours: number, minutes: number, seconds: number, time: string }
+  totalRuntime?: string;
+  inspector?: { id: string, username: string; }
+  runEnd?: string;
+  runStart?: string;
+}
 export interface IInspectionBarReport {
-  inspections?: {
-    id?: string;
-    itemCount?: number,
-    runTime: { hours: number, minutes: number, seconds: number, time: string }
-    totalRuntime?: string;
-  }[];
+  inspections?: IInspectionReportItem[];
   totalItemsCheck?: number,
   totalTimeInspection?: string;
   runStartdate?: string;

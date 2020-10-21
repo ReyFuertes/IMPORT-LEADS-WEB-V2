@@ -45,7 +45,7 @@
           <span *ngIf="isPaused">Resume run</span>
         </div>
       </button>
-      <button (click)="onStop(inspectionRun)" mat-flat-button class="il-button il-bg-red">
+      <button (click)="onStop()" mat-flat-button class="il-button il-bg-red">
         <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
           <img [src]="svgPath + 'stop-icon-white.svg'" />
           <span>Stop run</span>

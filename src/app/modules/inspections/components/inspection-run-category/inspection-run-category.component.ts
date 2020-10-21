@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'il-inspection-run-category',
-  templateUrl: './inspection-run-category.component.html',
+  templateUrl: 'inspection-run-category.component.html',
   styleUrls: ['./inspection-run-category.component.scss']
 })
 

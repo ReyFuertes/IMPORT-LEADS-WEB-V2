@@ -4,7 +4,7 @@ import { GenericDestroyPageComponent } from './generic-destroy-page';
 import { environment } from 'src/environments/environment';
 
 @Directive()
-export abstract class GenericControl<T> extends GenericDestroyPageComponent {
+export class GenericControl<T> extends GenericDestroyPageComponent {
   @Input() public placeholder: string;
   @Input() public options: Array<T>;
   @Input() public item: T;

@@ -1,5 +1,6 @@
-import { Output, EventEmitter, HostListener } from '@angular/core';
+import { Output, EventEmitter, HostListener, Directive } from '@angular/core';
 import { GenericDestroyPageComponent } from './generic-destroy-page';
+@Directive()
 export abstract class GenericRowComponent extends GenericDestroyPageComponent {
   public hoveredIndex: number | null = null;
   public selectedIndex: number | null = null;

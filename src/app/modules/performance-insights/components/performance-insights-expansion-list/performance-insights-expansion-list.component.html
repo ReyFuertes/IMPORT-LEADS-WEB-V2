@@ -1,7 +1,6 @@
 <div  *ngFor="let item of items; let i = index" fxLayout="row" fxLayoutGap="10px">
   <div class="product-list" [ngClass]="{'first': i == 0}" fxFlexOffset="15" fxFlex fxLayoutAlign="start center">
-    <il-pill [item]="item"
-      (removeEmitter)="onRemove($event)">
+    <il-pill [item]="item">
     </il-pill>
   </div>
 </div>

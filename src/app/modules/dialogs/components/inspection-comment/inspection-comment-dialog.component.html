@@ -10,9 +10,9 @@
       <il-textarea rows="5" [noResize]="true" [isFloatLabel]="false" [form]="form" controlName="comments" placeholder="Comment here..."></il-textarea>
       <il-upload-box (imageEmitter)="onImageChange($event)" fxFlex="30"></il-upload-box>
     </div>
-    <!-- inspection images -->
+    <!-- inspection images (cdkDropListDropped)="drop($event)"-->
     <div class="img-container" *ngIf="($cachedImages | async)?.length > 0">
-      <div cdkDropList (cdkDropListDropped)="drop($event)" fxLayout="row" class="image-list" cdkDropListOrientation="horizontal" fxLayoutAlign="start center">
+      <div cdkDropList  fxLayout="row" class="image-list" cdkDropListOrientation="horizontal" fxLayoutAlign="start center">
         <div class="drag-box" cdkDrag *ngFor="let cached of ($cachedImages | async)" [cdkDragData]="cached" fxLayoutAlign="center center">
           <div class="drag-placeholder" *cdkDragPlaceholder></div>
           <div [id]="cached?.id" fxLayout="column" fxLayoutAlign="center end">

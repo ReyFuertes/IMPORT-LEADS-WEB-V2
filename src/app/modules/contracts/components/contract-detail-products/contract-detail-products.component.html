@@ -15,13 +15,12 @@
         <!-- parent product -->
         <il-pill [state]="state" 
             [reset]="!inCheckListing" 
-            (preSelectEmitter)="preSelectChange({id: $event?.value, _id: $event?._id}, isChecklistProductSelected(item?.id), true)"
-            (deSelectEmitter)="deSelectChange({id: $event?.value, _id: $event?._id}, isChecklistProductSelected(item?.id))" 
-            (stateEmitter)="removeSelection()" 
+            (preSelectEmitter)="preSelectChange({id: $event?.value, _id: $event?._id}, isChecklistProductSelected(item?.id))"
+            (deSelectEmitter)="deSelectChange({id: $event?.value, _id: $event?._id})" 
             (click)="onEdit(item)" 
             [ngClass]="{sel: (isChecklistProductSelected(item?.id) || isProductSelected(item?.id)), 
               highlighted: hasChecklist(item?.id)}" 
-            [enabled]="!inCheckListing || (inCheckListing && item?.sub_products && !item?.sub_products.length > 0)" 
+            [enabled]="!inCheckListing || (inCheckListing && item?.sub_products)" 
             [item]="fmtToSimpleItem(item)" 
             [enableHighlight]="true" 
             (removeEmitter)="onRemoveProduct(item)" 
@@ -29,12 +28,12 @@
             [hasRemoveIcon]="!inCheckListing">
         </il-pill>
 
-        <!-- child product -->
+        <!-- child product (stateEmitter)="removeSelection()" -->
         <il-pill *ngFor="let sub of item?.sub_products; let i = index" size="small" 
           (preSelectEmitter)="preSelectChange({id: $event?.value, _id: $event?._id}, 
-          isChecklistProductSelected(sub?.id), false)" 
-          (deSelectEmitter)="deSelectChange({id: $event?.value, _id: $event?._id}, isChecklistProductSelected(sub?.id))"
-          (stateEmitter)="removeSelection()" 
+          isChecklistProductSelected(sub?.id))" 
+          (deSelectEmitter)="deSelectChange({id: $event?.value, _id: $event?._id})"
+          
           (click)="onEdit(sub)" 
           [reset]="!inCheckListing" 
           [ngClass]="{sel: (isChecklistProductSelected(sub?.id) 

@@ -1,7 +1,7 @@
-<div class="notification" [ngClass]="{'success': ($notify | async)?.success,
+<!-- <div class="notification" [ngClass]="{'success': ($notify | async)?.success,
 'error': ($notify | async)?.error, 'info': ($notify | async)?.info, 'warning': ($notify | async)?.warning }">
   <p>{{($notify | async)?.message}}</p>
-</div>
+</div> -->
 
 <p-blockUI [blocked]="(loaderSrv?.isLoading | async) && ($isLoggedIn | async)">
   <div fxFlexFill fxLayout="row" fxLayoutAlign="center center">

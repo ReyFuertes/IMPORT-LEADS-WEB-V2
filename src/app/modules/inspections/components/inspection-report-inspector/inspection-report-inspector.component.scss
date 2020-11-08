@@ -11,3 +11,8 @@
     }
   }
 }
+:host ::ng-deep {
+  .mat-expansion-panel-header {
+    height: 45px !important;
+  }
+}

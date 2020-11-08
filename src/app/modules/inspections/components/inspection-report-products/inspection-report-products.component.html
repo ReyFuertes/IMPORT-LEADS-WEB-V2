@@ -20,8 +20,7 @@
     </div>
     <div class="chart-container">
       <div class="chart-container-inner">
-        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType">
-        </canvas>
+        <div echarts [ngStyle]="{'min-height': '250px'}" [options]="barChartOption"></div>
       </div>
     </div>
     <table mat-table [dataSource]="dataSource">

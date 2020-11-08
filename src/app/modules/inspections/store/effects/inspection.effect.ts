@@ -9,7 +9,6 @@ import { InspectionsService, InspectionChecklistRunService, InspectionChecklistS
 import { Router } from '@angular/router';
 import { AppState } from '../../../contracts/store/reducers';
 import { appNotification } from 'src/app/store/actions/notification.action';
-import { loginFailedAction } from 'src/app/modules/auth/store/auth.action';
 import { of } from 'rxjs';
 import { SavedChecklistService } from 'src/app/modules/contracts/services/saved-checklist';
 

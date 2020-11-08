@@ -2,14 +2,18 @@
 .chart-container{
   overflow-x: auto;
   padding: 0px 20px;
+  height: 250px;
 }
 .chart-container-inner {
-  height: 220px;
+  height: 250px;
 }
 h2 {
   line-height: 32px;
 }
 :host ::ng-deep {
+  .mat-expansion-panel-header {
+    height: 45px !important;
+  }
   .mat-list-item-content {
     width: 100%;
     h5 {
@@ -23,7 +27,7 @@ h2 {
   .mat-list {
     width: 100%;
     background: $color-white-1;
-    padding: 25px 5px;
+    padding: 10px 5px;
     
     .mat-list-item {
       height: 65px;
@@ -38,7 +42,7 @@ h2 {
   }
   .mat-table {
     width: 100%;
-    margin-top: 20px;
+    margin-top: 0 !important;
     .mat-header-cell {
       font-weight: bold !important;
       background: $color-white-1;

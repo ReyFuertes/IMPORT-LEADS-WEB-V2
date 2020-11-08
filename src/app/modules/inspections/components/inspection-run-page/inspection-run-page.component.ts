@@ -115,12 +115,6 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       .subscribe(result => {
         if (result) {
           this.triggerStop();
-
-          /* if run is stop the redirect it run report for results */
-          this.store.dispatch(appNotification({
-            notification: { error: true, message: 'Inspection run is stopped, Redirecting you to report page.' }
-          }));
-
           setTimeout(() => this.router.navigateByUrl(`/dashboard/inspections/${this.savedChecklistId}/report`), 3000);
         }
       });

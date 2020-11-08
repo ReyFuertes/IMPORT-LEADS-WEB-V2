@@ -9,7 +9,7 @@ export const getUploadImageStateSelector = createSelector(
 );
 export const getAllContractsSelector = createSelector(
   selectContractModuleState,
-  fromContracts.getAllContracts
+  state => Object.values(state.contract.entities)
 );
 export const getAllContractProductsSelector = createSelector(
   selectContractModuleState,

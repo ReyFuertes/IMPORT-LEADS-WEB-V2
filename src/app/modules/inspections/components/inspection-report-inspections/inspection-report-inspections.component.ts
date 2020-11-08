@@ -30,15 +30,7 @@ export interface Inspection {
 })
 
 export class InspectionReportInspectionComponent implements OnInit, AfterViewInit {
-  public insChartOptions = {
-    legend: {
-      display: false
-    },
-    animation: {
-      duration: 2000,
-    },
 
-  };
   public barChartData: any;
 
   public barChartLegend = false;

@@ -19,6 +19,9 @@ h2 {
   color: $color-green;
 }
 :host ::ng-deep {
+  .mat-expansion-panel-header {
+    height: 45px !important;
+  }
   .mat-expansion-panel-body {
     padding: 0 !important;
     background-color: $color-white !important;

@@ -45,14 +45,6 @@ export const updateContractSuccess = createAction(
   ContractActionTypes.updateContractSuccess,
   props<{ updated: IContract }>()
 );
-export const loadContractsAction = createAction(
-  ContractActionTypes.LoadContracts,
-  props<{ param }>()
-);
-export const loadContractSuccessAction = createAction(
-  ContractActionTypes.LoadContractsSuccess,
-  props<{ items: IContract[] }>()
-);
 export const addContractAction = createAction(
   ContractActionTypes.addContractAction,
   props<{ item: IContract }>()
@@ -79,4 +71,12 @@ export const ReOrderImagesAction = createAction(
 );
 export const clearCachedImagesAction = createAction(
   ContractActionTypes.ClearCachedImages
+);
+export const loadContractsAction = createAction(
+  ContractActionTypes.LoadContracts,
+  props<{ param: any }>()
+);
+export const loadContractSuccessAction = createAction(
+  ContractActionTypes.LoadContractsSuccess,
+  props<{ items: IContract[] }>()
 );

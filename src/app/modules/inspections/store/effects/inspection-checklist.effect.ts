@@ -48,10 +48,6 @@ export class InspectionChecklistEffect {
           if (response && response?.inspection_checklist_run) {
             this.store.dispatch(loadInspectionRunAction({ id: response?.inspection_checklist_run?.id }));
           };
-
-          this.store.dispatch(appNotification({
-            notification: { success: true, message: 'Successfully updated a comment' }
-          }))
         }),
         map((response: IInspectionChecklist) => {
           return updateInsChecklistSuccessAction({ response });
@@ -62,11 +58,6 @@ export class InspectionChecklistEffect {
   deleteInsChecklistAction$ = createEffect(() => this.actions$.pipe(
     ofType(deleteInsChecklistAction),
     switchMap(({ id }) => this.insChecklistSrv.delete(id)),
-    tap(() => {
-      this.store.dispatch(appNotification({
-        notification: { success: true, message: 'You cant need to selecting a product' }
-      }))
-    })
   ), { dispatch: false })
 
   getInsChecklistAction$ = createEffect(() => this.actions$.pipe(
@@ -88,10 +79,6 @@ export class InspectionChecklistEffect {
           if (response && response?.inspection_checklist_run) {
             this.store.dispatch(loadInspectionRunAction({ id: response?.inspection_checklist_run?.id }));
           };
-
-          this.store.dispatch(appNotification({
-            notification: { success: true, message: 'Successfully added a comment' }
-          }))
         }),
         map((response: IInspectionChecklist) => {
           return saveInsChecklistSuccessAction({ response });
@@ -102,7 +89,6 @@ export class InspectionChecklistEffect {
 
   constructor(
     private actions$: Actions,
-    private router: Router,
     private store: Store<AppState>,
     private uploadSrv: UploadService,
     private insChecklistSrv: InspectionChecklistService,

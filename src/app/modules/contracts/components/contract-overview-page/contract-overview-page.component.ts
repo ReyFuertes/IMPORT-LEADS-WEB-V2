@@ -1,7 +1,7 @@
 import { ContractModuleState } from './../../store/reducers/index';
 import { ContractsState } from './../../store/reducers/contract.reducer';
 import { getAllContractsSelector } from './../../store/selectors/contracts.selector';
-import { clearCachedImagesAction } from './../../store/actions/contracts.action';
+import { clearCachedImagesAction, loadContractsAction } from './../../store/actions/contracts.action';
 import { AddEditState } from 'src/app/shared/generics/generic.model';
 import { tap, delay, take, debounceTime, takeUntil } from 'rxjs/operators'
 import { AppState, reducers } from './../../../../store/app.reducer';
@@ -9,10 +9,11 @@ import { IContract } from './../../contract.model';
 import { ContractAddDialogComponent } from 'src/app/modules/dialogs/components/contracts-add/contract-add-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from './../../../../../environments/environment';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Store, select } from '@ngrx/store';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
+import { sortByAsc, sortByDesc } from 'src/app/shared/util/sort';
 
 @Component({
   selector: 'il-contract-overview-page',
@@ -23,6 +24,14 @@ import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-des
 export class ContractOverviewPageComponent extends GenericDestroyPageComponent implements OnInit {
   public svgPath: string = environment.svgPath;
   public contracts: IContract[] = [];
+
+  @Input() public sortOptions = [{
+    label: 'Sort by Name',
+    value: 'contract_name'
+  }, {
+    label: 'Sort by Date',
+    value: 'created_at'
+  }];
 
   public dragStart: boolean = false;
   public drop(event: CdkDragDrop<string[]>) {
@@ -35,11 +44,24 @@ export class ContractOverviewPageComponent extends GenericDestroyPageComponent i
 
     this.store.pipe(select(getAllContractsSelector),
       takeUntil(this.$unsubscribe),
-      tap(res => this.contracts = res))
-      .subscribe();
+      tap(res => {
+        this.contracts = res
+      })).subscribe();
   }
 
   ngOnInit() { }
+
+  public handleSortChanges(event: any): void {
+    let orderBy: string;
+    const localAgreementSortBy = JSON.parse(localStorage.getItem('agrmntSortBy')) || null;
+    orderBy = localAgreementSortBy || 'asc';
+
+    if (localAgreementSortBy === 'asc') orderBy = 'desc'
+    else orderBy = 'asc';
+
+    localStorage.setItem('agrmntSortBy', JSON.stringify(orderBy));
+    this.store.dispatch(loadContractsAction({ param: `?orderby=[${event?.value},${orderBy}]` }))
+  }
 
   public get hasRecords(): boolean {
     return this.contracts && Object.keys(this.contracts).length > 0;

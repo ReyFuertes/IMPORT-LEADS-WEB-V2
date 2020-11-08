@@ -13,7 +13,7 @@ export interface ContractsState extends EntityState<IContract> {
   isImageReady: boolean
 }
 export const adapter: EntityAdapter<IContract> = createEntityAdapter<IContract>({
-  sortComparer: (a, b) => sortByDesc(a, b, 'created_at')
+  // sortComparer: (a, b) => sortByDesc(a, b, 'created_at')
 });
 export const initialState: ContractsState = adapter.getInitialState({
   item: null,
@@ -36,7 +36,7 @@ const contractsReducer = createReducer(
     return ({ ...adapter.removeAll(state) });
   }),
   on(loadContractSuccessAction, (state, action) => {
-    return ({ ...adapter.addAll(action.items, state) })
+    return ({ ...adapter.setAll(action.items, state) })
   }),
   on(updateContractSuccess, (state, action) => {
     return adapter.updateOne({ id: action.updated.id, changes: action.updated }, state)
@@ -55,10 +55,6 @@ export function ContractsReducer(state: ContractsState, action: Action) {
   return contractsReducer(state, action);
 }
 export const getCachedImages = (state: ContractModuleState) => state.contract.cachedImages;
-export const getAllContracts = (state: ContractModuleState) => {
-  const contracts: IContract[] = state && state.contract.entities ? Object.values(state.contract.entities) : null;
-  return contracts && contracts.sort((a: IContract, b: IContract) => sortByDesc(a, b, 'created_at'));
-};
 export const getAllContractProducts = (state: ContractModuleState) => {
   const contractProducts: IContractProduct[] = state && state.contractProduct.entities ? Object.values(state.contractProduct.entities) : null;
   return contractProducts; // && products.sort((a: IContractProduct, b: IContractProduct) => sortByDesc(a, b));

@@ -5,13 +5,16 @@
   padding: 0px 20px;
 }
 .chart-container-inner {
-  height: 300px;
+  height: 250px;
 }
 h2 {
   line-height: 32px;
   color: $color-black-2;
 }
 :host ::ng-deep {
+  .mat-expansion-panel-header {
+    height: 45px !important;
+  }
   .mat-expansion-panel-body {
     padding: 0 !important;
     background-color: $color-white !important;
@@ -19,7 +22,7 @@ h2 {
   .mat-list {
     width: 100%;
     background: $color-white-1;
-    padding: 25px 5px;
+    padding: 10px 5px;
     
     .mat-list-item {
       height: 65px;
@@ -38,8 +41,7 @@ h2 {
   }
   .mat-table {
     width: 100%;
-    margin-top: 20px;
-
+    margin-top: 0 !important;
     .mat-header-cell {
       background: $color-white-1;
     }

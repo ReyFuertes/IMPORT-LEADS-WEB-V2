@@ -1,5 +1,5 @@
 import { environment } from '../../../../environments/environment';
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'il-sort',
@@ -9,18 +9,15 @@ import { Component, OnInit, EventEmitter } from '@angular/core';
 
 export class SortComponent implements OnInit {
   public svgPath: string = environment.svgPath;
-  public sortEmitter = new EventEmitter<number>();
-  public options: Array<{ label: string, value: number }> = [
-    {
-      label: 'Sort by ID',
-      value: 1
-    },
-    {
-      label: 'Sort by Date',
-      value: 2
-    }
-  ];
+  
+  @Output() public sortEmitter = new EventEmitter<any>();
+  @Input() public options: Array<{ label: string, value: any }> = [];
+
   constructor() { }
 
   ngOnInit() { }
+
+  public onClick(option: any): void {
+    this.sortEmitter.emit(option);
+  }
 }

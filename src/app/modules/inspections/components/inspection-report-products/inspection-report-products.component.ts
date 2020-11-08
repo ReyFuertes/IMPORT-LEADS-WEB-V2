@@ -51,41 +51,13 @@ export class InspectionReportProductsComponent implements OnInit {
     { title: 'Pass Items', value: '46' }
   ];
 
-  public barChartOptions: ChartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    cutoutPercentage: 85,
-    scales: {
-      yAxes: [{
-        ticks: {
-          beginAtZero: true,
-          stepSize: 10
-        }
-      }],
-      xAxes: [{
-        gridLines: {
-          display: false
-        }
-      }],
-    }
-  };
-  public barChartLabels: Label[] = [];
-  public barChartType: ChartType = 'bar';
-  public barChartLegend = true;
-  public barChartPlugins = [];
-
-  public barChartData: ChartDataSets[] = [];
-
-  public barChartColors: Color[] = [
-    { backgroundColor: '#c4e3c8' },
-    { backgroundColor: '#b23535' },
-  ];
 
   public displayedColumns: string[] = ['product', 'failed', 'passed'];
   public dataSource: any;
 
   public id: string;
   public productData: IInspectionProductReport;
+  public barChartOption: any;
 
   constructor(private store: Store<AppState>, private route: ActivatedRoute) {
     this.id = this.route.snapshot.paramMap.get('id') || null;
@@ -102,22 +74,74 @@ export class InspectionReportProductsComponent implements OnInit {
           this.productData = res;
           this.dataSource = res?.products;
 
-          const failedData = res?.products.map(p => p.failedTermsCount);
-          const passedData = res?.products.map(p => p.passedTermsCount);
+          const labels: string[] = [];
+          let data: any[] = [];
+          let _series: any[] = [];
+          let count: number = 1;
+          let failedTermsCount: any[] = [];
+          let passedTermsCount: any[] = [];
 
-          this.barChartLabels = res?.products.map(p => {
-            return 'Passed Item Failed Item';
+          res?.products.forEach(_ => {
+            labels.push(`Time: ${_.product?.product_name}`);
+
+            failedTermsCount.push({
+              value: _.failedTermsCount,
+              itemStyle: { color: '#3273dd' }
+            });
+            passedTermsCount.push({
+              value: _.passedTermsCount,
+              itemStyle: { color: '#1b3e76' }
+            });
           });
 
-          this.barChartData.push({
-            data: failedData,
-            categoryPercentage: 0.3,
-            label: 'Passed Items'
+          _series = [{
+            name: 'Passed Terms',
+            type: 'bar',
+            data: passedTermsCount,
+            animationDelay: (idx) => idx * 10,
+            itemStyle: {
+              barBorderRadius: 6
+            },
+            barMaxWidth: 10
           }, {
-            data: passedData,
-            categoryPercentage: 0.3,
-            label: 'Failed Items'
-          })
+            name: 'Failed',
+            type: 'bar',
+            data: failedTermsCount,
+            animationDelay: (idx) => idx * 10,
+            itemStyle: {
+              barBorderRadius: 6
+            },
+            barMaxWidth: 10
+          }];
+
+          console.log(_series)
+
+          this.dataSource = res?.products;
+
+          this.barChartOption = {
+            tooltip: {
+              position: 'top',
+              trigger: 'axis',
+              axisPointer: {
+                type: 'none'
+              },
+            },
+            xAxis: {
+              axisLine: { show: false },
+              data: labels,
+              silent: false,
+              splitLine: { show: false },
+            },
+            yAxis: {
+              axisTick: { show: false },
+              splitNumber: 4,
+              axisLine: { show: false },
+            },
+            series: _series,
+            animationEasing: 'elasticOut',
+            animationDelayUpdate: (idx) => idx * 5
+          };
+
 
         }
       });

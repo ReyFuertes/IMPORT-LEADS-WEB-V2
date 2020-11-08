@@ -7,7 +7,6 @@ export enum CategoryActionTypes {
   updateCategoryAction = '[Category] Update',
   updateCategorySuccess = '[Category] Update (success)',
 }
-
 export const updateCategoryAction = createAction(
   CategoryActionTypes.updateCategoryAction,
   props<{ payload: ICategory }>()

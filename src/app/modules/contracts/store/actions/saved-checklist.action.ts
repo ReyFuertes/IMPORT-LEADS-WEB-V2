@@ -19,7 +19,7 @@ export const getSavedChecklistByIdSuccessAction = createAction(
 );
 export const loadSavedChecklistAction = createAction(
   SavedChecklistActionTypes.loadSavedChecklistAction,
-  props<{ params?: string }>()
+  props<{ param?: string }>()
 );
 export const loadSavedChecklistSuccessAction = createAction(
   SavedChecklistActionTypes.loadSavedChecklistSuccessAction,

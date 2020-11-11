@@ -2,7 +2,7 @@
   <p>{{($notify | async)?.message}}</p>
 </div>
 
-<p-blockUI [blocked]="(loaderSrv?.isLoading | async) && ($isLoggedIn | async)">
+<p-blockUI [blocked]="(loaderSrv?.isLoading | async)">
   <div fxFlexFill fxLayout="row" fxLayoutAlign="center center">
     <img [src]="svgPath + 'loader.svg'" />
   </div>
@@ -10,7 +10,7 @@
 
 <div fxFlexFill>
   <div class="contents" fxFlex>
-    <il-topnav *ngIf="$isLoggedIn | async"></il-topnav>
+    <il-topnav *ngIf="isLoggedIn && !hideTopNav"></il-topnav>
     <div class="router-outlet">
       <router-outlet></router-outlet>
     </div>

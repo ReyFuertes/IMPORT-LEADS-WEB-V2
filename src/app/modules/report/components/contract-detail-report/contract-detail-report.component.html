@@ -1,0 +1,57 @@
+<div *ngIf="($contract | async) as contract" class="contract-detail-report-container">
+  <div fxLayout="row">
+    <h1>{{ contract?.contract_name }}</h1>
+  </div>
+  <mat-card>
+    <div fxLayout="column">
+      <div class="card-row">
+        <div fxFlex fxLayout="column" fxLayoutGap="20px">
+          <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+            <div class="img-box">
+              <img [src]="svgPath + 'doc-icon-blue.svg'" />
+            </div>
+            <h2>Contract</h2>
+          </div>
+          <!-- contract details -->
+          <div fxLayout="row">
+            <div fxFlex="40" class="detail-container" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="40px">
+              <div>
+                <div>Company</div>
+                <div>{{ contract?.venue?.name }}</div>
+              </div>
+              <div>
+                <div>Responsible Person</div>
+                <div>{{ contract?.responsible_person || 'None' }}</div>
+              </div>
+              <div>
+                <div>Upload Date</div>
+                <div>{{ contract?.created_at | date: 'dd/MM/yyyy'}}</div>
+              </div>
+            </div>
+            <!-- contract images -->
+          </div>
+        </div>
+      </div>
+      <!-- contract products -->
+      <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="5px" class="card-row">
+        <ng-container *ngFor="let item of ($contractProducts | async)">
+          <!-- parent product -->
+          <div class="pill-container fade-in">
+            <div class="il-pill" fxLayoutGap="5px">
+              <div>{{ item?.product_name }}</div>
+            </div>
+          </div>
+
+          <!-- child product -->
+          <div fxLayout="row" fxLayoutAlign="start center sub-products" fxLayoutGap="10px">
+            <ng-container *ngFor="let sub of item?.sub_products">
+              <div class="il-pill small" fxLayoutGap="5px">
+                <div>{{ sub?.product_name }}</div>
+              </div>
+            </ng-container>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </mat-card>
+</div>

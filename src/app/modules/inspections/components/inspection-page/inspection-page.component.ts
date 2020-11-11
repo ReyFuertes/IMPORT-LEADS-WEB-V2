@@ -3,7 +3,7 @@ import { getActiveInspectionsSelector } from './../../store/selectors/inspection
 import { AppState } from './../../../contracts/store/reducers/index';
 import { Store, select } from '@ngrx/store';
 import { IActiveInspection } from './../../inspections.models';
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { getAllSavedChecklistSelector } from 'src/app/modules/contracts/store/selectors/saved-checklist.selector';
 import { ISavedChecklistItem } from 'src/app/modules/contracts/contract.model';
 import { takeUntil, tap } from 'rxjs/operators';
@@ -18,6 +18,13 @@ import { loadSavedChecklistAction } from 'src/app/modules/contracts/store/action
 })
 
 export class InspectionPageComponent extends GenericDestroyPageComponent implements OnInit, AfterViewInit {
+  public sortOptions = [{
+    label: 'Sort by Name',
+    value: 'contract_name'
+  }, {
+    label: 'Sort by Date',
+    value: 'created_at'
+  }];
   public activeCols: ISimpleItem[] = [{
     label: 'Contract Name',
     value: '35'
@@ -68,6 +75,18 @@ export class InspectionPageComponent extends GenericDestroyPageComponent impleme
           this.activeInspections = res;
         }
       });
+  }
+
+  public handleSortChanges(event: any): void {
+    let orderBy: string;
+    const localAgreementSortBy = JSON.parse(localStorage.getItem('agrmntSortBy')) || null;
+    orderBy = localAgreementSortBy || 'asc';
+
+    if (localAgreementSortBy === 'asc') orderBy = 'desc'
+    else orderBy = 'asc';
+
+    localStorage.setItem('agrmntSortBy', JSON.stringify(orderBy));
+    this.store.dispatch(loadSavedChecklistAction({ param: `?orderby=[${event?.value},${orderBy}]` }))
   }
 
   ngAfterViewInit(): void {

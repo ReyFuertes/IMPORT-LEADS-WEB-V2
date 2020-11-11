@@ -135,8 +135,8 @@ export class InspectionEffect {
   ));
   loadSavedChecklistAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadSavedChecklistAction),
-    mergeMap(({ params }) => {
-      return this.inspectionSrv.getAll(params)
+    mergeMap(({ param }) => {
+      return this.inspectionSrv.getAll(param)
         .pipe(
           map((response: IActiveInspection[]) => {
             return loadActiveInspectionSuccessAction({ response });

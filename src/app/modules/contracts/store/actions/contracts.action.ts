@@ -74,7 +74,7 @@ export const clearCachedImagesAction = createAction(
 );
 export const loadContractsAction = createAction(
   ContractActionTypes.LoadContracts,
-  props<{ param: any }>()
+  props<{ param?: any }>()
 );
 export const loadContractSuccessAction = createAction(
   ContractActionTypes.LoadContractsSuccess,

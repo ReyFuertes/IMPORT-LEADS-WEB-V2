@@ -128,7 +128,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   ngOnDestroy() { }
 
   ngOnInit() {
-    this.$contractProducts = this.store.pipe(select(getAllContractProductsSelector), takeUntil(this.$unsubscribe));
+    this.$contractProducts = this.store.pipe(select(getAllContractProductsSelector));
 
     /* product suggestions */
     this.$products = this.store.pipe(select(getProductsSelector), takeUntil(this.$unsubscribe));

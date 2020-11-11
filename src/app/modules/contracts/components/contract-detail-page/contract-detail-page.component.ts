@@ -76,8 +76,6 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
 
     const at = JSON.parse(localStorage.getItem('at')) || null;
     if (at && at.user) this.user = at.user;
-
-
   }
 
   ngOnInit() {
@@ -147,6 +145,10 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
         this.checklistEntities = Object.values(res.entities) || [];
 
       })).subscribe();
+  }
+
+  public onReport(): void {
+    this.router.navigateByUrl(`/report/${this.id}/agreement`);
   }
 
   public onToggleTerm(term: IContractCategoryTerm): void {

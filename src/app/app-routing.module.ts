@@ -20,7 +20,8 @@ const routes: Routes = [
       { path: 'products', loadChildren: './modules/products/products.module#ProductsModule' },
       { path: 'user-management', loadChildren: './modules/user-management/user-management.module#UserManagementModule' },
     ]
-  }
+  },
+  { path: 'report', loadChildren: './modules/report/report.module#ReportModule' },
 ];
 
 @NgModule({

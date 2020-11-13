@@ -6,10 +6,13 @@
   }
 }
 .sub-products > div {
-  margin-right: 10px;
+  margin-right: 5px;
 }
 .il-pill {
   @include il-pill;
+}
+.il-pill.small {
+  margin-left: 0 !important;
 }
 .detail-container {
   margin-bottom: 0;
@@ -31,5 +34,82 @@
   > div:first-child {
     margin-right: 40px;
     margin-left: 5%;
+  }
+}
+.category-title {
+  flex-direction: row;
+  box-sizing: border-box;
+  display: flex;
+  place-content: center;
+  align-items: center;
+  background-color: $color-white;
+  padding: 10px;
+  margin-bottom: 20px;
+  box-shadow: $box-shadow;
+
+  > img:nth-of-type(1) {
+    cursor: move;
+  }
+
+  > img:nth-of-type(2) {
+    cursor: pointer;
+  }
+}
+.tab-title {
+  position: fixed;
+}
+.tab-header {
+  border-bottom: 40px solid $color-white;
+  border-left: 25px solid transparent;
+  border-right: 25px solid transparent;
+  width: fit-content;
+  max-height: 20px;
+  text-align: center;
+  padding-left: 20px;
+  padding-right: 20px;
+  > div {
+    position: relative;
+    top: 12px;
+    height: 20px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+}
+.save-icon {
+  padding-left: 15px;
+  cursor: pointer;
+}
+.il-tab {
+  @include il-tab;
+}
+mat-icon {
+  color: $color-gray-2;
+  cursor: pointer;
+}
+:host ::ng-deep {
+  .mat-tab-body-wrapper {
+    margin-bottom: 20px;
+  }
+  td.mat-cell {
+    &:first-child {
+      width: 300px;
+      .text-edit,
+      .text-display {
+        padding-top: 15px;
+        padding-bottom: 15px;
+      }
+    }
+    &:nth-child(2) {
+      padding-top: 13px;
+      > div > div {
+        &:nth-child(2) {
+          position: relative;
+          top: -3px;
+        }
+      }
+    }
+  }
+  .mat-tab-label {
+    display: none;
   }
 }

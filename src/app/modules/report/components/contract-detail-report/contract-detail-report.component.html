@@ -1,4 +1,4 @@
-<div *ngIf="($contract | async) as contract" class="contract-detail-report-container">
+<div *ngIf="($contract | async) as contract" class="contract-detail-report-container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px">
   <div fxLayout="row">
     <h1>{{ contract?.contract_name }}</h1>
   </div>
@@ -36,14 +36,12 @@
       <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="5px" class="card-row">
         <ng-container *ngFor="let item of ($contractProducts | async)">
           <!-- parent product -->
-          <div class="pill-container fade-in">
-            <div class="il-pill" fxLayoutGap="5px">
-              <div>{{ item?.product_name }}</div>
-            </div>
+          <div class="il-pill" fxLayoutGap="5px">
+            <div>{{ item?.product_name }}</div>
           </div>
 
           <!-- child product -->
-          <div fxLayout="row" fxLayoutAlign="start center sub-products" fxLayoutGap="10px">
+          <div fxLayout="row" fxLayoutAlign="start center sub-products" fxLayoutGap="5px">
             <ng-container *ngFor="let sub of item?.sub_products">
               <div class="il-pill small" fxLayoutGap="5px">
                 <div>{{ sub?.product_name }}</div>
@@ -54,4 +52,44 @@
       </div>
     </div>
   </mat-card>
+
+  <!-- category -->
+  <div fxLayout="column">
+    <div *ngFor="let contractCategory of ($contractCategories | async)">
+      <div fxLayout="row" fxLayoutGap="5px">
+        <div class="tab-header">
+          <div fxLayoutAlign="center center">
+            <span>{{ contractCategory?.category?.category_name }}</span>
+          </div>
+        </div>
+      </div>
+
+      <mat-tab-group class="il-tab">
+        <mat-tab class="tab-1">
+          <ng-template matTabContent>
+            <div class="category-table">
+              <table mat-table [dataSource]="contractCategory?.terms">
+                <!-- rows and columns -->
+                <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay; let i = index">
+                  <th mat-header-cell *matHeaderCellDef> {{ fmtCol(column) }}</th>
+                  <td mat-cell *matCellDef="let element">
+
+                    <div fxLayout="row" fxLayoutAlign="center start">
+                      <div class="text-display" fxFlex fxLayoutAlign="start center">
+                        <div [innerHTML]="element[column]"></div>
+                      </div>
+                    </div>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+                <tr mat-row *matRowDef="let row; let element; columns: columnsToDisplay;">
+                </tr>
+              </table>
+            </div>
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
 </div>

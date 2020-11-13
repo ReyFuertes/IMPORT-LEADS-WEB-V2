@@ -68,6 +68,6 @@ export function ContractCategoryReducer(state: ContractCategoryState, action: Ac
   return reducer(state, action);
 }
 export const getContractCategory = (state: ContractModuleState) => {
-  const contracts: IContractCategory[] = state && state.contractCategory.entities ? Object.values(state.contractCategory.entities) : null;
-  return contracts && contracts.sort((a: IContractCategory, b: IContractCategory) => sortByDesc(a, b, 'created_at'));
+  const contracts: IContractCategory[] = state && state?.contractCategory?.entities ? Object.values(state?.contractCategory.entities) : null;
+  return contracts && contracts?.sort((a: IContractCategory, b: IContractCategory) => sortByDesc(a, b, 'created_at'));
 };

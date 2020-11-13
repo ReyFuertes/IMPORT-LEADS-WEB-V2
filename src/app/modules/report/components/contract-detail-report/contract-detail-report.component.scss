@@ -59,18 +59,17 @@
   position: fixed;
 }
 .tab-header {
-  border-bottom: 40px solid $color-white;
-  border-left: 25px solid transparent;
-  border-right: 25px solid transparent;
+  border-top: thin $color-gray-2 solid;
+  border-left: thin $color-gray-2 solid;
+  border-right: thin $color-gray-2 solid;
+  background-color: $color-white;
   width: fit-content;
-  max-height: 20px;
   text-align: center;
   padding-left: 20px;
   padding-right: 20px;
   > div {
     position: relative;
-    top: 12px;
-    height: 20px;
+    height: 40px;
     font-size: 14px;
     font-weight: 500;
   }
@@ -87,6 +86,10 @@ mat-icon {
   cursor: pointer;
 }
 :host ::ng-deep {
+  .mat-table {
+    border-left: thin $color-gray-2 solid;
+    border-right: thin $color-gray-2 solid;
+  }
   .mat-tab-body-wrapper {
     margin-bottom: 20px;
   }

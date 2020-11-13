@@ -13,8 +13,8 @@ import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-des
 import { AppState } from 'src/app/store/app.reducer';
 import { environment } from 'src/environments/environment';
 import { getReportContractById } from '../../store/selectors/report.select';
-// import { jsPDF } from 'jspdf'
-// import html2canvas from 'html2canvas'; 
+import { jsPDF } from 'jspdf'
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'il-contract-detail-report',
@@ -54,6 +54,8 @@ export class ContractDetailReportComponent extends GenericDestroyPageComponent i
           }
         });
     }
+
+    this.print();
   }
 
   ngAfterViewInit(): void {
@@ -62,26 +64,29 @@ export class ContractDetailReportComponent extends GenericDestroyPageComponent i
       if (res && res.length > 0) {
         this.dataSource = new MatTableDataSource<any>(res?.terms);
       }
-    })
+    });
   }
 
   public print(): void {
-    var data = document.getElementById('content');  
-    // html2canvas(data).then(canvas => {  
-    //     // Few necessary setting options  
-    //     var imgWidth = 208;   
-    //     var pageHeight = 295;    
-    //     var imgHeight = canvas.height * imgWidth / canvas.width;  
-    //     var heightLeft = imgHeight;  
+    setTimeout(() => {
+      var data = document.querySelector('.contract-detail-report-container');
 
-    //     const contentDataURL = canvas.toDataURL('image/png')  
-    //     let pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF  
-    //     var position = 0;  
-    //     pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)  
-    //     pdf.save('MYPdf.pdf'); // Generated PDF   
-    // });  
+      html2canvas(data).then(canvas => {
+        // Few necessary setting options  
+        var imgWidth = 208;
+        var pageHeight = 295;
+        var imgHeight = canvas.height * imgWidth / canvas.width;
+        var heightLeft = imgHeight;
+
+        const contentDataURL = canvas.toDataURL('image/jpeg')
+        let pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF  
+        var position = 0;
+        pdf.addImage(contentDataURL, 'JPEG', 0, position, imgWidth, imgHeight)
+        pdf.save('MYPdf.pdf'); // Generated PDF   
+      });
+    }, 3000);
   }
-  
+
   public fmtCol(str: string): string {
     return str && str.replace(/_/g, ' ').toUpperCase();
   }

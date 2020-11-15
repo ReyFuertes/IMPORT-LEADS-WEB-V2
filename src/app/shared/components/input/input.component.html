@@ -3,7 +3,6 @@
     <input *ngIf="isNumberOnly" [InputMaxLength]="inputMaxLen" matInput [formControlName]="controlName" numbersOnly currencyFormatter [placeholder]="placeholder" autocomplete="off" [readonly]="isReadOnly">
 
     <input *ngIf="!isNumberOnly" [ngClass]="{'errors': hasError}" [InputMaxLength]="inputMaxLen" matInput [formControlName]="controlName" [placeholder]="placeholder" autocomplete="off" [type]="inputType" [readonly]="isReadOnly">
-
-    <div *ngIf="hasError" class="errors" [ngClass]="{'center': isCenter}">Invalid Field</div>
   </mat-form-field>
+  <!-- <div *ngIf="hasError" class="errors" [ngClass]="{'center': isCenter}">Invalid Field</div> -->
 </div>

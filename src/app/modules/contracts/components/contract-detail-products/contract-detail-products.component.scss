@@ -40,8 +40,10 @@
   margin-right: 0 !important;
 }
 :host ::ng-deep {
-  // .mat-form-field-appearance-legacy .mat-form-field-label {
-  //   font-size: 14px;
-  //   top: 23px !important;
-  // }
+  .mat-form-field-appearance-legacy .mat-form-field-underline {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+  }
+  .mat-form-field-appearance-legacy .mat-form-field-infix {
+    padding: .4375em 0 !important;
+  }
 }

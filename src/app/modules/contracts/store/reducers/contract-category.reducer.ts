@@ -61,7 +61,8 @@ const reducer = createReducer(
     return ({ ...adapter.addOne(action.created, state) })
   }),
   on(loadContractCategoryActionSuccess, (state, action) => {
-    return ({ ...adapter.addAll(action.items, state) })
+    
+    return ({ ...adapter.setAll(action.items, state) })
   })
 );
 export function ContractCategoryReducer(state: ContractCategoryState, action: Action) {

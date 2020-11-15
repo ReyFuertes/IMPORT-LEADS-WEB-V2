@@ -5,6 +5,9 @@
     margin-bottom: 10px;
   }
 }
+.header {
+  width: 100%;
+}
 .sub-products > div {
   margin-right: 5px;
 }
@@ -59,9 +62,9 @@
   position: fixed;
 }
 .tab-header {
-  border-top: thin $color-gray-2 solid;
-  border-left: thin $color-gray-2 solid;
-  border-right: thin $color-gray-2 solid;
+  border-top: thin $color-gray-3 solid;
+  border-left: thin $color-gray-3 solid;
+  border-right: thin $color-gray-3 solid;
   background-color: $color-white;
   width: fit-content;
   text-align: center;
@@ -86,9 +89,13 @@ mat-icon {
   cursor: pointer;
 }
 :host ::ng-deep {
+  .mat-card {
+    width: 100%;
+    border: thin $color-gray-3 solid;
+  }
   .mat-table {
-    border-left: thin $color-gray-2 solid;
-    border-right: thin $color-gray-2 solid;
+    border-left: thin $color-gray-3 solid;
+    border-right: thin $color-gray-3 solid;
   }
   .mat-tab-body-wrapper {
     margin-bottom: 20px;

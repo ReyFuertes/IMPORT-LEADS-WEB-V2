@@ -10,7 +10,7 @@ import { loadContractsAction } from '../../contracts/store/actions/contracts.act
 })
 export class ReportContainerComponent implements OnInit {
   constructor(private store: Store<AppState>) {
-    this.store.dispatch(loadContractsAction({}));
+    
   }
 
   ngOnInit(): void { }

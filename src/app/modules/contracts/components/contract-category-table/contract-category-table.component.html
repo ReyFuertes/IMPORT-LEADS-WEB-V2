@@ -8,7 +8,7 @@
         <!-- 1st and 2nd column -->
         <div *ngIf="i !== (columnsToDisplay.length - 1)" fxLayout="row" fxLayoutAlign="center start">
           <div class="text-display" fxFlex [ngClass]="{'hidden': !(selectedCol !== getColUuid(element, column))}" fxLayoutAlign="start center">
-            <div [innerHTML]="element[column]"></div>
+            <div [innerHTML]="sanitizeHtml(element[column])"></div>
           </div>
 
           <!-- edit term name -->

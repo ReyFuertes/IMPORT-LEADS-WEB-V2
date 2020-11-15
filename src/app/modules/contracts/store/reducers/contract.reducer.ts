@@ -36,7 +36,8 @@ const contractsReducer = createReducer(
     return ({ ...adapter.removeAll(state) });
   }),
   on(loadContractSuccessAction, (state, action) => {
-    return ({ ...adapter.setAll(action.items, state) })
+    
+    return ({ ...adapter.addAll(action.items, state) })
   }),
   on(updateContractSuccess, (state, action) => {
     return adapter.updateOne({ id: action.updated.id, changes: action.updated }, state)

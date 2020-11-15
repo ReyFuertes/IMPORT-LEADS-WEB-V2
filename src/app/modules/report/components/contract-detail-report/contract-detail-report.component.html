@@ -1,7 +1,16 @@
 <div id="content" *ngIf="($contract | async) as contract" class="contract-detail-report-container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px">
-  <div fxLayout="row">
-    <h1>{{ contract?.contract_name }}</h1>
+  <div class="header" fxLayout="row" fxLayoutAlign="start center">
+    <div fxFlex>
+      <h1>{{ contract?.contract_name }}</h1>
+    </div>
+    <div *ngIf="!isPrinting" fxFlex="200px" fxLayoutAlign="end center">
+      <button mat-flat-button class="il-button default large" routerLink="/dashboard/contracts/{{id}}/detail">Cancel</button>
+      <button (click)="onDownload()" mat-flat-button class="il-button primary large" fxLayoutGap="5px">
+        <span>Download as PDF</span>
+      </button>
+    </div>
   </div>
+  <!-- contract details -->
   <mat-card>
     <div fxLayout="column">
       <div class="card-row">
@@ -54,7 +63,7 @@
   </mat-card>
 
   <!-- category -->
-  <div fxLayout="column">
+  <div class="category-container" fxLayout="column" fxLayoutGap="40px">
     <div *ngFor="let contractCategory of ($contractCategories | async)">
       <div fxLayout="row" fxLayoutGap="5px">
         <div class="tab-header">
@@ -76,7 +85,7 @@
 
                     <div fxLayout="row" fxLayoutAlign="center start">
                       <div class="text-display" fxFlex fxLayoutAlign="start center">
-                        <div [innerHTML]="element[column]"></div>
+                        <div [innerHTML]="sanitizeHtml(element[column])"></div>
                       </div>
                     </div>
                   </td>

@@ -32,10 +32,11 @@
   font-size: 12px;
   font-weight: 500;
   color: $color-primary;
-  min-width: 70px;
+  height: auto;
   cursor: pointer;
   img {
     min-width: 15px;
+    width: 15px;
   }
   .delete {
     color: $color-red;

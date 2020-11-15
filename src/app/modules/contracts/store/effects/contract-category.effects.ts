@@ -22,6 +22,7 @@ export class ContractCategoryEffect {
     ofType(loadContractCategoryAction),
     mergeMap(({ id }) => this.contractCategorySrv.getAll(`${id}/contract`).pipe(
       map((items: any[]) => {
+        
         return loadContractCategoryActionSuccess({ items });
       })
     ))

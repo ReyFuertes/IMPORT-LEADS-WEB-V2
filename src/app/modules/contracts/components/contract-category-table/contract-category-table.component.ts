@@ -22,6 +22,7 @@ import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
 import { getSelectedTermsSelector, getchecklistProductsSelector, getChecklistSelector } from '../../store/selectors/contract-checklist.selector';
 import { appNotification } from 'src/app/store/actions/notification.action';
 import { addItemToChecklistTermsAction } from '../../store/actions/contract-checklist.action';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'il-contract-category-table',
@@ -60,7 +61,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   @Input() public contractCategory: IContractCategory;
   @Output() public categoryTermEmitter = new EventEmitter<any>();
 
-  constructor(private store: Store<AppState>, private dialog: MatDialog, private fb: FormBuilder) {
+  constructor(private sanitizer: DomSanitizer, private store: Store<AppState>, private dialog: MatDialog, private fb: FormBuilder) {
     super();
     this.form = this.fb.group({
       id: [null],
@@ -77,18 +78,6 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       })).subscribe();
   }
 
-  public isTermChecked(item: string): boolean {
-    return this.checklistTerms
-      && this.checklistTerms.filter(ct => {
-        return ct.term_id === item;
-      }).shift()
-      ? true : false;
-  }
-
-  public get isDisabled(): boolean {
-    return this.checkListProducts && this.checkListProducts.length === 0;
-  }
-
   public onToggleTerms(term: IContractTerm, checked: boolean): void {
     if (this.checkListProducts && this.checkListProducts.length === 0) {
       this.store.dispatch(appNotification({
@@ -102,24 +91,6 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       category_id: this.contractCategory.id,
       checked
     });
-  }
-
-  public mouseOver = (event: any, col: string) => this.selectedRow = `${event.id}${col}`;
-
-  public mouseOut = () => this.selectedRow = null;
-
-  public onTagUpdate(event: any, element: IContractTerm): void {
-    if (event) {
-      this.store.dispatch(updateContractTermAction({
-        payload: {
-          ...{
-            id: element.id,
-            term_name: element.term_name,
-            term_description: element.term_description
-          }, contract_tag: { id: event }
-        }
-      }));
-    };
   }
 
   public onEdit(element: any, col: string): void {
@@ -194,7 +165,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
         if (result) {
           const payload = {
             ...result,
-            contractCategory: { id: this.contractCategory.id }
+            contract_category: { id: this.contractCategory.id }
           }
           this.store.dispatch(addContractTermAction({ payload }));
           /* this is a bad solution, but due to time development i just needs this */
@@ -221,6 +192,10 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
 
   public removeEmptyChar(str: string): string {
     return str && str.replace(/ /g, '');
+  }
+
+  public sanitizeHtml(html: any): any {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
   }
 
   public getDefaultTerm(str: string, prop: string, collapsed: boolean): string {
@@ -268,5 +243,35 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
 
     if (changes && changes.contractCategory && changes.contractCategory.currentValue)
       this.dataSource = new MatTableDataSource<any>(changes.contractCategory.currentValue.terms);
+  }
+
+  public mouseOver = (event: any, col: string) => this.selectedRow = `${event.id}${col}`;
+
+  public mouseOut = () => this.selectedRow = null;
+
+  public onTagUpdate(event: any, element: IContractTerm): void {
+    if (event) {
+      this.store.dispatch(updateContractTermAction({
+        payload: {
+          ...{
+            id: element.id,
+            term_name: element.term_name,
+            term_description: element.term_description
+          }, contract_tag: { id: event }
+        }
+      }));
+    };
+  }
+
+  public isTermChecked(item: string): boolean {
+    return this.checklistTerms
+      && this.checklistTerms.filter(ct => {
+        return ct.term_id === item;
+      }).shift()
+      ? true : false;
+  }
+
+  public get isDisabled(): boolean {
+    return this.checkListProducts && this.checkListProducts.length === 0;
   }
 }

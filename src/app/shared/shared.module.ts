@@ -68,6 +68,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { RadioGroupComponent } from './components/radio-group/radio-group.component';
 import { MatRadioModule } from '@angular/material/radio';
+import { SafePipe } from './pipes/html';
 
 const materialModules = [
   MatListModule,
@@ -157,6 +158,6 @@ const directives = [
   ],
   exports: [...sharedComponents, ...directives],
   declarations: [...sharedComponents, ...directives, customCurrencyPipe],
-  providers: [customCurrencyPipe],
+  providers: [customCurrencyPipe, SafePipe],
 })
 export class SharedModule { }

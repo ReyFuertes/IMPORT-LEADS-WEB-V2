@@ -10,7 +10,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { ContractDetailReportComponent } from './components/contract-detail-report/contract-detail-report.component';
 import { ContractsEffect } from '../contracts/store/effects/contracts.effects';
-import { reducers } from './store/reducers';
+import { reducers } from '../../modules/contracts/store/reducers';
 import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
@@ -29,11 +29,12 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ConfirmationService } from 'primeng/api';
 import { SidebarModule } from 'primeng/sidebar';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ContractProductsEffect } from '../contracts/store/effects/contract-products.effects';
+import { SafePipe } from 'src/app/shared/pipes/html';
+import { ContractCategoryEffect } from '../contracts/store/effects/contract-category.effects';
 
 const primeNgModules = [
   SidebarModule,
@@ -88,13 +89,14 @@ const routes: Routes = [
     ...primeNgModules,
     ...materialModules,
     RouterModule.forChild(routes),
-    StoreModule.forFeature('reportModule', reducers),
+    StoreModule.forFeature('contractsModule', reducers),
     EffectsModule.forFeature([
       ContractsEffect,
-      ContractProductsEffect
+      ContractProductsEffect,
+      ContractCategoryEffect
     ])
   ],
   exports: [],
-  providers: [],
+  providers: [SafePipe],
 })
 export class ReportModule { }

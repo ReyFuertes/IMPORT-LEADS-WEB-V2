@@ -88,6 +88,9 @@ img.close {
     cursor: default !important;
   }
 }
+.ui-inputtext:enabled:focus:not(.ui-state-error) {
+  box-shadow: none !important;
+}
 .mat-form-field-appearance-legacy .mat-form-field-underline {
   background-color: rgba(0,0,0,.1);
 }

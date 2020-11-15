@@ -4,7 +4,7 @@
   font-size: 14px;
   position: absolute;
   color: $color-gray-1;
-  top: 9px;
+  // top: 9px;
 }
 ::ng-deep {
   .cdk-overlay-pane {
@@ -20,6 +20,9 @@
   }
 }
 :host ::ng-deep {
+  .mat-form-field-appearance-legacy .mat-form-field-infix {
+    padding: 0 !important;
+  }
   .mat-form-field-label {
     font-size: 14px;
   }

@@ -5,7 +5,7 @@
     </div>
     <div *ngIf="!isPrinting" fxFlex="200px" fxLayoutAlign="end center">
       <button mat-flat-button class="il-button default large" routerLink="/dashboard/contracts/{{id}}/detail">Cancel</button>
-      <button (click)="onDownload()" mat-flat-button class="il-button primary large" fxLayoutGap="5px">
+      <button (click)="onExport()" mat-flat-button class="il-button primary large" fxLayoutGap="5px">
         <span>Download as PDF</span>
       </button>
     </div>
@@ -41,64 +41,34 @@
           </div>
         </div>
       </div>
-      <!-- contract products -->
-      <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="5px" class="card-row">
-        <ng-container *ngFor="let item of ($contractProducts | async)">
-          <!-- parent product -->
-          <div class="il-pill" fxLayoutGap="5px">
-            <div>{{ item?.product_name }}</div>
-          </div>
-
-          <!-- child product -->
-          <div fxLayout="row" fxLayoutAlign="start center sub-products" fxLayoutGap="5px">
-            <ng-container *ngFor="let sub of item?.sub_products">
-              <div class="il-pill small" fxLayoutGap="5px">
-                <div>{{ sub?.product_name }}</div>
-              </div>
-            </ng-container>
-          </div>
-        </ng-container>
-      </div>
     </div>
   </mat-card>
 
   <!-- category -->
-  <div class="category-container" fxLayout="column" fxLayoutGap="40px">
-    <div *ngFor="let contractCategory of ($contractCategories | async)">
-      <div fxLayout="row" fxLayoutGap="5px">
-        <div class="tab-header">
-          <div fxLayoutAlign="center center">
-            <span>{{ contractCategory?.category?.category_name }}</span>
-          </div>
+  <div class="category-container" fxLayout="column" fxLayoutGap="20px">
+    <div class="category-item" *ngFor="let contractCategory of ($contractCategories | async)">
+      <div class="tab-header" fxLayout="row" fxLayoutGap="5px">
+        <div fxLayoutAlign="center center">
+          <span>{{ contractCategory?.category?.category_name }}</span>
         </div>
       </div>
+      <table mat-table [dataSource]="contractCategory?.terms">
+        <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay; let i = index">
+          <th mat-header-cell *matHeaderCellDef> {{ fmtCol(column) }}</th>
+          <td mat-cell *matCellDef="let element">
 
-      <mat-tab-group class="il-tab">
-        <mat-tab class="tab-1">
-          <ng-template matTabContent>
-            <div class="category-table">
-              <table mat-table [dataSource]="contractCategory?.terms">
-                <!-- rows and columns -->
-                <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay; let i = index">
-                  <th mat-header-cell *matHeaderCellDef> {{ fmtCol(column) }}</th>
-                  <td mat-cell *matCellDef="let element">
-
-                    <div fxLayout="row" fxLayoutAlign="center start">
-                      <div class="text-display" fxFlex fxLayoutAlign="start center">
-                        <div [innerHTML]="sanitizeHtml(element[column])"></div>
-                      </div>
-                    </div>
-                  </td>
-                </ng-container>
-
-                <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-                <tr mat-row *matRowDef="let row; let element; columns: columnsToDisplay;">
-                </tr>
-              </table>
+            <div fxLayout="row" fxLayoutAlign="center start">
+              <div class="text-display" fxFlex fxLayoutAlign="start center">
+                <div [innerHTML]="sanitizeHtml(element[column])"></div>
+              </div>
             </div>
-          </ng-template>
-        </mat-tab>
-      </mat-tab-group>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let row; let element; columns: columnsToDisplay;">
+        </tr>
+      </table>
     </div>
   </div>
 </div>

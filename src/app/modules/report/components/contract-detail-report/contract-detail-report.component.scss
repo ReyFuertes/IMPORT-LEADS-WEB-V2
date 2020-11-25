@@ -89,6 +89,10 @@ mat-icon {
   cursor: pointer;
 }
 :host ::ng-deep {
+  .card-row {
+    border: none !important;
+    padding: 20px;
+  }
   .mat-card {
     width: 100%;
     border: thin $color-gray-3 solid;
@@ -103,6 +107,7 @@ mat-icon {
   td.mat-cell {
     &:first-child {
       width: 300px;
+      vertical-align: top;
       .text-edit,
       .text-display {
         padding-top: 15px;
@@ -111,6 +116,7 @@ mat-icon {
     }
     &:nth-child(2) {
       padding-top: 13px;
+      vertical-align: top;
       > div > div {
         &:nth-child(2) {
           position: relative;
@@ -121,5 +127,29 @@ mat-icon {
   }
   .mat-tab-label {
     display: none;
+  }
+}
+/* print css */
+.mat-card {
+  border: thin $color-gray-3 solid !important;
+  width: 100% !important;
+}
+.card-row {
+  border: none !important;
+}
+tr { 
+  border-left: thin $color-gray-3 solid;
+  border-right: thin $color-gray-3 solid;
+  th {
+    border-top: thin $color-gray-3 solid;
+    border-bottom: none !important;
+    &:first-child {
+      width: 250px;
+    }
+  }
+  td {
+    border-top: thin $color-gray-3 solid;
+    padding: 10px;
+    vertical-align: top;
   }
 }

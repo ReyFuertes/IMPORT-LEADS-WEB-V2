@@ -17,6 +17,7 @@ import html2canvas from 'html2canvas';
 import { DomSanitizer } from '@angular/platform-browser';
 import { loadContractsAction } from 'src/app/modules/contracts/store/actions/contracts.action';
 import { getReportContractById } from '../../store/selectors/report.selector';
+import * as html2pdf from 'html2pdf.js'
 
 @Component({
   selector: 'il-contract-detail-report',
@@ -65,48 +66,60 @@ export class ContractDetailReportComponent extends GenericDestroyPageComponent i
     });
   }
 
-  public onDownload(): void {
+  public onExport(): void {
     this.isPrinting = true;
-    setTimeout(() => {
-      var data = document.querySelector('.contract-detail-report-container');
+    var element = document.querySelector('.contract-detail-report-container');
+    var opt = {
+      margin: 0.3,
+      filename: 'myfile.pdf',
+      image: { type: 'jpeg', quality: 1 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' },
+      pagebreak: {
+        mode: 'avoid-all',
+        after: ['table'],
+        avoid: ['tab-header', 'thead', 'th', 'tr', 'td', '.mat-row', 'img']
+      }
+    };
 
-      html2canvas(data).then(canvas => {
-        // Few necessary setting options  
-        var imgWidth = 208;
-        var imgHeight = canvas.height * imgWidth / canvas.width;
-
-        // const contentDataURL = canvas.toDataURL('image/jpeg')
-        // let pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF  
-        // var position = 0;
-        // pdf.addImage(contentDataURL, 'JPEG', 0, position, imgWidth, imgHeight)
-        // pdf.save('MYPdf.pdf'); // Generated PDF   
-
-        const imgData = canvas.toDataURL('image/png')
-
-        var doc = new jsPDF('p', 'mm', "a4");
-        var position = 0;
-
-        var imgWidth = 210;
-        var pageHeight = 320;
-        var imgHeight = canvas.height * imgWidth / canvas.width;
-        var heightLeft = imgHeight;
-
-        doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight + 30);
-        heightLeft -= pageHeight;
-
-        while (heightLeft >= 0) {
-          position = heightLeft - imgHeight;
-          doc.addPage();
-          doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight + 70);
-          heightLeft -= pageHeight;
-        }
-   
-        doc.save('MYPdf.pdf'); // Generated PDF 
-
-        this.isPrinting = false;
-      });
-    });
+    html2pdf().set(opt).from(element).save();
   }
+
+  // public onDownload(): void {
+  //   this.isPrinting = true;
+  //   setTimeout(() => {
+  //     var data = document.querySelector('.contract-detail-report-container');
+
+  //     html2canvas(data).then(canvas => {
+  //       var imgWidth = 208;
+  //       var imgHeight = canvas.height * imgWidth / canvas.width;
+
+  //       const imgData = canvas.toDataURL('image/png')
+
+  //       var doc = new jsPDF('p', 'mm', "a4");
+  //       var position = 0;
+
+  //       var imgWidth = 210;
+  //       var pageHeight = 320;
+  //       var imgHeight = canvas.height * imgWidth / canvas.width;
+  //       var heightLeft = imgHeight;
+
+  //       doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight + 30);
+  //       heightLeft -= pageHeight;
+
+  //       while (heightLeft >= 0) {
+  //         position = heightLeft - imgHeight;
+  //         doc.addPage();
+  //         doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight + 70);
+  //         heightLeft -= pageHeight;
+  //       }
+
+  //       doc.save('MYPdf.pdf'); // Generated PDF 
+
+  //       this.isPrinting = false;
+  //     });
+  //   });
+  // }
 
   public fmtCol(str: string): string {
     return str && str.replace(/_/g, ' ').toUpperCase();

@@ -126,7 +126,8 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
           this.store.dispatch(loadContractCategoryAction({ id: c.id }));
 
           this.form.patchValue(c);
-          this.contractImages = c.images.sort((a, b) => sortByAsc(a, b, 'position'));
+          
+          this.contractImages = Object.assign([], c.images.slice(0, 4))//.sort((a, b) => sortByAsc(a, b, 'position'));
         }
       });
     }
@@ -282,7 +283,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   }
 
   public get getContractImages(): IProductImage[] {
-    return this.contractImages.slice(0, 4);
+    return this.contractImages;
   }
 
   public getBg = (url: string): string => `url(${url})`;
@@ -327,7 +328,9 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       .subscribe();
   }
 
-  public trackByField = (i: number, field: IProductImage) => field.position = i;
+  public trackByField = (i: number, field: any) => {
+    return field.position = i;
+  };
 
   public dropImages(event: CdkDragDrop<any[]>) {
     moveItemInArray(this.contractImages, event.previousIndex, event.currentIndex);

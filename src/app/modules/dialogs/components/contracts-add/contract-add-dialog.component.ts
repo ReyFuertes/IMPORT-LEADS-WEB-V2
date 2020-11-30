@@ -17,6 +17,7 @@ import { addContractAction, uploadContractImagesAction, cacheImagesAction, updat
 import { v4 as uuid } from 'uuid';
 import { ActivatedRoute } from '@angular/router';
 import { convertBlobToBase64 } from 'src/app/shared/util/convert-to-blob';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'il-contract-add-dialog',
@@ -76,7 +77,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
     this.form.controls['delivery_date'].patchValue(delivery_date);
     this.form.controls['details'].patchValue(details);
     this.form.controls['images'].patchValue(images);
-    
+
     this.store.dispatch(cacheImagesAction({ images: Object.assign([], images) }));
   }
   ngOnInit() {
@@ -111,7 +112,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
     return Object.values(this.cachedImages) && this.cachedImages.map(ci => {
       if (ci.file)
         files.append('files', ci.file, ci.filename);
-      return { id: ci.id, filename: ci.filename, size: ci.size, mimetype: ci.mimetype }
+      return { id: ci.id, filename: ci.filename, size: ci.size, mimetype: ci.mimetype, dataImage: ci.image }
     }) || null;
   }
 
@@ -121,7 +122,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
 
     item.venue = { id: value, name: label };
     item.images = this.cnsFileObj(files);
-
+    debugger
     if (this.state === AddEditState.Add) {
       const locaUser = JSON.parse(localStorage.getItem('at')) || null;
       if (locaUser) {
@@ -145,10 +146,11 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
   public drop = (event: CdkDragDrop<any[]>) => moveItemInArray(this.cachedImages || this.form.get('images').value, event.previousIndex, event.currentIndex);
 
   public onRemoveCachedImage(image: IProductImage): void {
-    const index: number = this.cachedImages.indexOf(image);
-    if (index !== -1) {
-      this.cachedImages.splice(index, 1);
-      this.store.dispatch(cacheImagesAction({ images: this.cachedImages }));
+    let images = Object.assign([], this.cachedImages);
+    let match = images?.filter(i => i.id === image.id)?.shift();
+    if (match) {
+      _.remove(images, { id: image.id });
+      this.store.dispatch(cacheImagesAction({ images }));
     }
   }
   /* when you drop an image this gets executed */
@@ -168,7 +170,8 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
             mimetype: event.type
           }
         }))
-      .subscribe((result) => this.store
-        .dispatch(cacheImagesAction({ images: this.cachedImages.concat([result]) })));
+      .subscribe((result) => {
+        this.store.dispatch(cacheImagesAction({ images: this.cachedImages.concat([result]) }))
+      });
   }
 }

@@ -48,7 +48,6 @@ export class ContractDetailReportComponent extends GenericDestroyPageComponent i
       this.$contract = this.store.pipe(select(getReportContractById(this.id)));
       this.$contract.subscribe(c => {
         if (c) {
-
           this.store.dispatch(loadContractCategoryAction({ id: c.id }));
         }
       });
@@ -60,7 +59,6 @@ export class ContractDetailReportComponent extends GenericDestroyPageComponent i
     this.$contractCategories = this.store.pipe(select(getContractCategorySelector));
     this.$contractCategories.pipe(debounceTime(1000)).subscribe((res: any) => {
       if (res && res.length > 0) {
-
         this.dataSource = new MatTableDataSource<any>(res?.terms);
       }
     });
@@ -71,7 +69,7 @@ export class ContractDetailReportComponent extends GenericDestroyPageComponent i
     var element = document.querySelector('.contract-detail-report-container');
     var opt = {
       margin: 0.3,
-      filename: 'myfile.pdf',
+      filename: `contract-detail-${new Date().getTime()}`,
       image: { type: 'jpeg', quality: 1 },
       html2canvas: { scale: 2 },
       jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' },
@@ -81,45 +79,12 @@ export class ContractDetailReportComponent extends GenericDestroyPageComponent i
         avoid: ['tab-header', 'thead', 'th', 'tr', 'td', '.mat-row', 'img']
       }
     };
-
     html2pdf().set(opt).from(element).save();
+
+    setTimeout(() => {
+      this.isPrinting = false;
+    }, 2000);
   }
-
-  // public onDownload(): void {
-  //   this.isPrinting = true;
-  //   setTimeout(() => {
-  //     var data = document.querySelector('.contract-detail-report-container');
-
-  //     html2canvas(data).then(canvas => {
-  //       var imgWidth = 208;
-  //       var imgHeight = canvas.height * imgWidth / canvas.width;
-
-  //       const imgData = canvas.toDataURL('image/png')
-
-  //       var doc = new jsPDF('p', 'mm', "a4");
-  //       var position = 0;
-
-  //       var imgWidth = 210;
-  //       var pageHeight = 320;
-  //       var imgHeight = canvas.height * imgWidth / canvas.width;
-  //       var heightLeft = imgHeight;
-
-  //       doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight + 30);
-  //       heightLeft -= pageHeight;
-
-  //       while (heightLeft >= 0) {
-  //         position = heightLeft - imgHeight;
-  //         doc.addPage();
-  //         doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight + 70);
-  //         heightLeft -= pageHeight;
-  //       }
-
-  //       doc.save('MYPdf.pdf'); // Generated PDF 
-
-  //       this.isPrinting = false;
-  //     });
-  //   });
-  // }
 
   public fmtCol(str: string): string {
     return str && str.replace(/_/g, ' ').toUpperCase();

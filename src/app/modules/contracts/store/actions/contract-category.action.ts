@@ -11,7 +11,27 @@ export enum CategoryActionTypes {
   deleteContractCategoryAction = '[Contract Category] Delete',
   deleteContractCategoryActionSuccess = '[Contract Category] Delete (success)',
   selTermsForChecklistAction = '[Contract Category] select terms',
+  moveUpContractCategoryAction = '[Contract Category] move up',
+  moveUpContractCategoryActionSuccess = '[Contract Category] move up (success)',
+  moveDownContractCategoryAction = '[Contract Category] move down',
+  moveDownContractCategoryActionSuccess = '[Contract Category] move down (success)',
 }
+export const moveDownContractCategoryAction = createAction(
+  CategoryActionTypes.moveDownContractCategoryAction,
+  props<{ payload: IContractCategory }>()
+);
+export const moveDownContractCategoryActionSuccess = createAction(
+  CategoryActionTypes.moveDownContractCategoryActionSuccess,
+  props<{ response: any }>()
+);
+export const moveUpContractCategoryAction = createAction(
+  CategoryActionTypes.moveUpContractCategoryAction,
+  props<{ payload: IContractCategory }>()
+);
+export const moveUpContractCategoryActionSuccess = createAction(
+  CategoryActionTypes.moveUpContractCategoryActionSuccess,
+  props<{ response: any }>()
+);
 export const selTermsForChecklistAction = createAction(
   CategoryActionTypes.selTermsForChecklistAction,
   props<{ term: IContractTerm }>()

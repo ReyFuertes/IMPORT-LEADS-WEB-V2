@@ -1,5 +1,5 @@
 import { addContractTermAction, deleteContractTermAction, updateContractTermAction } from './../../store/actions/contract-term.actions';
-import { loadContractCategoryAction, selTermsForChecklistAction } from './../../store/actions/contract-category.action';
+import { loadContractCategoryAction, moveDownContractCategoryAction, moveUpContractCategoryAction, selTermsForChecklistAction } from './../../store/actions/contract-category.action';
 import { MatTableDataSource } from '@angular/material/table';
 import { IContractTerm, IContractCategoryTerm, IContractChecklistItem, IContractProduct, IContractTermProduct } from './../../contract.model';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
@@ -114,6 +114,22 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
 
   ngAfterViewInit(): void {
     this.dataSource = new MatTableDataSource<any>(this.contractCategory.terms);
+  }
+
+  public onCategoryMoveDown(): void {
+    this.store.dispatch(moveDownContractCategoryAction({ payload: this.contractCategory }));
+
+    setTimeout(() => {
+      this.store.dispatch(loadContractCategoryAction({ id: this.contractCategory.contract.id }));
+    }, 3000);
+  }
+
+  public onCategoryMoveUp(): void {
+    this.store.dispatch(moveUpContractCategoryAction({ payload: this.contractCategory }));
+
+    setTimeout(() => {
+      this.store.dispatch(loadContractCategoryAction({ id: this.contractCategory.contract.id }));
+    }, 3000);
   }
 
   public getColUuid = (element: any, col: string) => `${element.id}${col}`;

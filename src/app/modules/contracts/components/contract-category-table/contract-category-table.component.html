@@ -53,6 +53,8 @@
     <div [ngClass]="{'hidden': actionState, 'disabled': inCheckListing}" fxFlex fxLayoutAlign="center center" fxLayoutGap="15px">
       <img matTooltip="Show Menu Actions" (click)="actionState = !actionState" [src]="svgPath + 'add-icon-gray.svg'" />
       <img *ngIf="contractCategory" matTooltip="Delete Category" (click)="onDelete(contractCategory?.id)" [src]="svgPath + 'delete-icon-gray.svg'" />
+      <img matTooltip="Move up" (click)="onCategoryMoveUp()" [src]="svgPath + 'arrow_up.svg'" />
+      <img matTooltip="Move down" (click)="onCategoryMoveDown()" [src]="svgPath + 'arrow_down.svg'" />
     </div>
     <div fxFlex [ngClass]="{'hidden': !actionState}" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="15px">
       <div matTooltip="Add a term" (click)="createTerm()" fxLayoutAlign="start center" fxLayoutGap="5px">

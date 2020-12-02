@@ -83,7 +83,7 @@ export class ContractDetailReportComponent extends GenericDestroyPageComponent i
 
     setTimeout(() => {
       this.isPrinting = false;
-    }, 2000);
+    }, 5000);
   }
 
   public fmtCol(str: string): string {

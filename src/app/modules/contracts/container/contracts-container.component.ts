@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { loadProductsAction } from '../../products/store/products.actions';
 import { loadSavedChecklistAction } from '../store/actions/saved-checklist.action';
+import { loadAllContractCategoryAction } from '../store/actions/contract-category.action';
 
 @Component({
   selector: 'il-contracts-container',
@@ -19,6 +20,7 @@ export class ContractsContainerComponent extends GenericContainer implements OnI
     this.store.dispatch(loadContractsAction(null));
     this.store.dispatch(loadProductsAction());
     this.store.dispatch(loadTags());
-    this.store.dispatch(loadSavedChecklistAction({}))
+    this.store.dispatch(loadSavedChecklistAction({}));
+    this.store.dispatch(loadAllContractCategoryAction());
   }
 }

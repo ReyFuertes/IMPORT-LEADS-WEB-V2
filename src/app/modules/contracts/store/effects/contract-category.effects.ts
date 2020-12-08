@@ -1,6 +1,6 @@
 import { AppState } from 'src/app/store/app.reducer';
 import { Store } from '@ngrx/store';
-import { addContractCategoryAction, addContractCategoryActionSuccess, loadContractCategoryAction, loadContractCategoryActionSuccess, deleteContractCategoryActionSuccess, deleteContractCategoryAction, updateContractCategoryAction, updateContractCategoryActionSuccess, moveUpContractCategoryAction, moveUpContractCategoryActionSuccess, moveDownContractCategoryActionSuccess, moveDownContractCategoryAction } from './../actions/contract-category.action';
+import { addContractCategoryAction, addContractCategoryActionSuccess, loadContractCategoryAction, loadContractCategoryActionSuccess, deleteContractCategoryActionSuccess, deleteContractCategoryAction, updateContractCategoryAction, updateContractCategoryActionSuccess, moveUpContractCategoryAction, moveUpContractCategoryActionSuccess, moveDownContractCategoryActionSuccess, moveDownContractCategoryAction, loadAllContractCategoryAction, loadAllContractCategoryActionSuccess, addMultipleContractCategoryAction, addMultipleContractCategoryActionSuccess } from './../actions/contract-category.action';
 import { ContractCategoryService } from './../../services/contract-category.service';
 import { IContractCategory } from './../../contract.model';
 import { Injectable } from '@angular/core';
@@ -10,6 +10,25 @@ import { appNotification } from 'src/app/store/actions/notification.action';
 
 @Injectable()
 export class ContractCategoryEffect {
+  addMultipleContractCategoryAction$ = createEffect(() => this.actions$.pipe(
+    ofType(addMultipleContractCategoryAction),
+    mergeMap(({ payload }) => this.contractCategorySrv.post(payload, 'multiple')
+      .pipe(
+        map((created: any[]) => {
+          return addMultipleContractCategoryActionSuccess({ created });
+        })
+      ))
+  ));
+
+  loadAllContractCategoryAction$ = createEffect(() => this.actions$.pipe(
+    ofType(loadAllContractCategoryAction),
+    mergeMap(() => this.contractCategorySrv.getAll().pipe(
+      map((response: any) => {
+        return loadAllContractCategoryActionSuccess({ response });
+      })
+    ))
+  ));
+
   moveDownContractCategoryAction$ = createEffect(() => this.actions$.pipe(
     ofType(moveDownContractCategoryAction),
     mergeMap(({ payload }) => this.contractCategorySrv.post(payload, 'down').pipe(
@@ -40,7 +59,6 @@ export class ContractCategoryEffect {
     ofType(loadContractCategoryAction),
     mergeMap(({ id }) => this.contractCategorySrv.getAll(`${id}/contract`).pipe(
       map((items: any[]) => {
-
         return loadContractCategoryActionSuccess({ items });
       })
     ))

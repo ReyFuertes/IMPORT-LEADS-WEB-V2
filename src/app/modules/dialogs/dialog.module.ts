@@ -29,6 +29,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { PauseOrRunDialogComponent } from './components/pause-run/pause-run.component';
+import { ContractCategoryImportComponent } from './components/contract-category-import/contract-category-import.component';
+import { TableModule } from 'primeng/table';
 
 const dialogComponents = [
   ContractAddDialogComponent,
@@ -49,7 +51,8 @@ const dialogComponents = [
   ConfirmationComponent,
   ProductAddDialogComponent,
   ContractCategoryTermDialogComponent,
-  PauseOrRunDialogComponent
+  PauseOrRunDialogComponent,
+  ContractCategoryImportComponent
 ];
 
 const materialModules = [
@@ -59,7 +62,8 @@ const materialModules = [
   MatCheckboxModule,
   DragDropModule,
   MatDividerModule,
-  ScrollingModule
+  ScrollingModule,
+  TableModule
 ];
 
 @NgModule({

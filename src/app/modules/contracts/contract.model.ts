@@ -2,6 +2,16 @@ import { ITag } from './../tags/tags.model';
 import { IProduct } from './../products/products.model';
 import { IUser } from '../user-management/user-mgmt.model';
 
+export interface IContractCategoryReponse {
+  category?: { id: string, category_name: string }
+  category_id?: string,
+  contract: { id: string, contract_name: string }
+  created_at?: string,
+  id?: string,
+  position: 3
+  terms: [{ id?: string, term_name?: string, }]
+  updated_at?: string,
+}
 export enum ProductStatusType {
   Override = 1,
   Apply = 2
@@ -86,10 +96,10 @@ export interface IContractProduct extends ICoreModel {
   cost?: string;
   created_at?: string;
   parent_id?: string;
-  product?: { 
+  product?: {
     id?: string;
     product_name?: string;
-    pos?: string; 
+    pos?: string;
     created_at?: string;
     updated_at?: string;
   },

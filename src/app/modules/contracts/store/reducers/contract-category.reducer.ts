@@ -1,23 +1,28 @@
 import { updateContractTermSuccess } from './../actions/contract-term.actions';
 import { sortByDesc } from 'src/app/shared/util/sort';
 import { ContractModuleState } from './index';
-import { addContractCategoryActionSuccess, loadContractCategoryActionSuccess, deleteContractCategoryActionSuccess, selTermsForChecklistAction } from './../actions/contract-category.action';
-import { IContractCategory, IContractTerm } from './../../contract.model';
+import { addContractCategoryActionSuccess, loadContractCategoryActionSuccess, deleteContractCategoryActionSuccess, selTermsForChecklistAction, loadAllContractCategoryActionSuccess } from './../actions/contract-category.action';
+import { IContractCategory, IContractCategoryReponse, IContractTerm } from './../../contract.model';
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import * as _ from 'lodash';
 import { updateCategorysSuccess } from '../actions/category.action';
 
 export interface ContractCategoryState extends EntityState<IContractCategory> {
-  selTermsForChecklist?: IContractTerm[];
+  selTermsForChecklist: IContractTerm[];
+  contractCategories: IContractCategoryReponse[]
 }
 export const adapter: EntityAdapter<IContractCategory> = createEntityAdapter<IContractCategory>({});
 export const initialState: ContractCategoryState = adapter.getInitialState({
-  selTermsForChecklist: null
+  selTermsForChecklist: null,
+  contractCategories: null
 });
 
 const reducer = createReducer(
   initialState,
+  on(loadAllContractCategoryActionSuccess, (state, action) => {
+    return Object.assign({}, state, { contractCategories: action.response });
+  }),
   on(updateCategorysSuccess, (state, action) => {
     let entities = Object.values(state.entities);
     entities.forEach(item => {
@@ -61,14 +66,13 @@ const reducer = createReducer(
     return ({ ...adapter.addOne(action.created, state) })
   }),
   on(loadContractCategoryActionSuccess, (state, action) => {
-    
     return ({ ...adapter.setAll(action.items, state) })
   })
 );
 export function ContractCategoryReducer(state: ContractCategoryState, action: Action) {
   return reducer(state, action);
 }
-export const getContractCategory = (state: ContractModuleState) => {
-  const contracts: IContractCategory[] = state && state?.contractCategory?.entities ? Object.values(state?.contractCategory.entities) : null;
-  return contracts && contracts?.sort((a: IContractCategory, b: IContractCategory) => sortByDesc(a, b, 'created_at'));
-};
+// export const getContractCategory = (state: ContractModuleState) => {
+//   const contracts: IContractCategory[] = state && state?.contractCategory?.entities ? Object.values(state?.contractCategory.entities) : null;
+//   return contracts && contracts?.sort((a: IContractCategory, b: IContractCategory) => sortByDesc(a, b, 'created_at'));
+// };

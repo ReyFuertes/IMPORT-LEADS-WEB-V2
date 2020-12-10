@@ -29,7 +29,6 @@ export class LoginComponent implements OnInit {
       username: ['tammyli@cilchina.com', Validators.compose([Validators.required])],
       password: ['p@55w0rd', Validators.required]
     });
-    localStorage.clear();
   }
 
   ngOnInit() {

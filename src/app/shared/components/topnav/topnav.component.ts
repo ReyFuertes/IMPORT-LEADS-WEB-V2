@@ -72,36 +72,3 @@ export class TopNavComponent implements OnInit {
     this.store.dispatch(logoutAction());
   }
 }
-
-// this.toolbarMenu = [
-//   {
-//     label: 'AGREEMENTS',
-//     route: '/dashboard/contracts',
-//     children: [
-//       {
-//         label: 'TEMPLATES',
-//         route: '/dashboard/templates',
-//       },
-//       {
-//         label: 'TAGS',
-//         route: '/dashboard/tags',
-//       }
-//     ]
-//   },
-//   {
-//     label: 'ASSESMENTS',
-//     route: '/dashboard/inspections',
-//   },
-//   {
-//     label: 'DATA',
-//     route: '/dashboard/performance-insights',
-//   },
-//   {
-//     label: 'VENUES',
-//     route: '/dashboard/venues',
-//   },
-//   {
-//     label: 'PRODUCTS',
-//     route: '/dashboard/products',
-//   }
-// ];

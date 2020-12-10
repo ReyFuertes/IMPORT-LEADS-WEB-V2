@@ -29,8 +29,8 @@ export const getAllRolesSelector = createSelector(
 export const getAccessSelector = createSelector(
   selectedState,
   state => state
-    && state.access
-    && state.access.map(a => {
+    && state?.access
+    && state?.access.map(a => {
       const children = state.access.filter(c => {
         return c.parent && c.parent.id === a.id;
       }) || null;
@@ -46,17 +46,17 @@ export const getAccessSelector = createSelector(
 );
 export const getIsLoginFailedSelector = createSelector(
   selectedState,
-  state => state.isLoginFailed
+  state => state?.isLoginFailed
 );
 export const getIsLoggingInSelector = createSelector(
   selectedState,
-  state => state.isLoggingIn
+  state => state?.isLoggingIn
 );
 export const getIsLoggedInSelector = createSelector(
   selectedState,
-  state => state.isLoggedIn
+  state => state?.isLoggedIn
 );
 export const getAuthTokenSelector = createSelector(
   selectedState,
-  state => state.token
+  state => state?.token
 );

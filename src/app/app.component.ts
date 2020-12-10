@@ -45,18 +45,11 @@ export class AppComponent extends GenericDestroyPageComponent implements OnInit,
     //this.store.subscribe(res => console.log(res))
     this.$notify = this.store.pipe(select(getSuccessSelector), delay(100));
 
-    /* remove notification 2 seconds */
-    // this.$notify.pipe(debounceTime(2000)).subscribe((res) => {
-    //   if (res) this.store.dispatch(removeNotification());
-
-    //   this.cdRef.detectChanges();
-    // });
-
     /* check if user islogin then show the topnav */
     this.store.pipe(select(getIsLoggedInSelector),
       takeUntil(this.$unsubscribe))
       .subscribe(res => {
-        if (res) this.isLoggedIn = res;
+        this.isLoggedIn = res;
       })
   }
 

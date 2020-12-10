@@ -73,11 +73,13 @@ export class InitAppEffect {
             this.store.dispatch(loadAccessAction());
             this.store.dispatch(loadAllRolesAction());
             this.store.dispatch(loadAllUsersAction());
-
+            
             const at = JSON.parse(localStorage.getItem('at')) || null;
-            if (at && at.user) {
+            if (at && at?.user) {
               this.store.dispatch(getUserAccessAction({ id: at.user.id }));
               this.store.dispatch(getUserRoleAction({ id: at.user.id }));
+
+              this.router.navigateByUrl('/dashboard/contracts');
             }
           }
         }),

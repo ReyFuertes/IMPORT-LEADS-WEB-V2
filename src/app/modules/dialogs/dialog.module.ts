@@ -29,8 +29,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { PauseOrRunDialogComponent } from './components/pause-run/pause-run.component';
-import { ContractCategoryImportComponent } from './components/contract-category-import/contract-category-import.component';
+import { ContractCategoryImportDialogComponent } from './components/contract-category-import/contract-category-import.component';
 import { TableModule } from 'primeng/table';
+import { ContractImportTemplateComponent } from './components/contract-import-template/contract-import-template.component';
 
 const dialogComponents = [
   ContractAddDialogComponent,
@@ -52,7 +53,8 @@ const dialogComponents = [
   ProductAddDialogComponent,
   ContractCategoryTermDialogComponent,
   PauseOrRunDialogComponent,
-  ContractCategoryImportComponent
+  ContractImportTemplateComponent,
+  ContractCategoryImportDialogComponent
 ];
 
 const materialModules = [

@@ -13,39 +13,22 @@ import { environment } from 'src/environments/environment';
   templateUrl: './contract-category-import.component.html',
   styleUrls: ['./contract-category-import.component.scss']
 })
-export class ContractCategoryImportComponent extends GenericDestroyPageComponent implements OnInit {
+export class ContractCategoryImportDialogComponent extends GenericDestroyPageComponent implements OnInit {
   public svgPath: string = environment.svgPath;
   public imgPath: string = environment.imgPath;
 
-  public contractCategories: any[] = [];
-  public selectedCategories: any;
+  public savedContracts: any[] = [];
+  public selectedContract: any;
 
-  constructor(private store: Store<AppState>, public dialogRef: MatDialogRef<ContractCategoryImportComponent>,
+  constructor(private store: Store<AppState>, public dialogRef: MatDialogRef<ContractCategoryImportDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,) {
     super();
   }
 
   ngOnInit(): void {
-    this.store.pipe(select(getAllContractCategoriesSelector),
-      takeUntil(this.$unsubscribe))
-      .subscribe((res: IContractCategoryReponse[]) => {
-        this.contractCategories = res.map(c => {
-          return {
-            id: c.id,
-            category: {
-              id: c.category.id,
-              category_name: c.category.category_name,
-            },
-            contract: {
-              id: c.contract.id,
-              contract_name: c.contract.contract_name
-            }
-          }
-        })
-      })
+ 
   }
 
   public onImport(): void {
-    this.dialogRef.close(this.selectedCategories)
   }
 }

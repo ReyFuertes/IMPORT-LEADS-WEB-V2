@@ -1,6 +1,7 @@
 export enum AddEditState {
   'Add' = 1,
-  'Edit' = 2
+  'Edit' = 2,
+  'Import' = 3
 }
 export interface AddEditDialogState {
   id?: string;

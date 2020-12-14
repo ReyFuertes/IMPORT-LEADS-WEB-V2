@@ -33,6 +33,9 @@ export class ConfirmationComponent {
   }, {
     label: 'Copy',
     message: 'Are you sure to create a copies the current inspection run?'
+  }, {
+    label: 'Save Template',
+    message: 'Are you sure you want to save this contract as template?'
   }];
 
   constructor(public dialogRef: MatDialogRef<ConfirmationComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {

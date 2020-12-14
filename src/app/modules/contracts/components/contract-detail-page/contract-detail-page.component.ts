@@ -27,7 +27,8 @@ import * as _ from 'lodash';
 import { getChecklistSelector } from '../../store/selectors/contract-checklist.selector';
 import { saveChecklistAction } from '../../store/actions/saved-checklist.action';
 import { IUser } from 'src/app/modules/user-management/user-mgmt.model';
-import { ContractCategoryImportComponent } from 'src/app/modules/dialogs/components/contract-category-import/contract-category-import.component';
+import { ContractCategoryImportDialogComponent } from 'src/app/modules/dialogs/components/contract-category-import/contract-category-import.component';
+import { saveContractTemplateAction } from '../../store/actions/contract-template.action';
 
 @Component({
   selector: 'il-contract-detail-page',
@@ -105,12 +106,18 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     },
     {
       id: 5,
+      label: 'Import template',
+      icon: 'import.svg',
+      action: this.importContractTemplate
+    },
+    {
+      id: 6,
       label: 'Create Category',
       icon: 'save-icon-blue.svg',
       action: this.onCreateCategory
     },
     {
-      id: 6,
+      id: 7,
       label: 'Import Category',
       icon: 'save-icon-blue.svg',
       action: this.onImportCategory
@@ -282,7 +289,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   }
 
   public onImportCategory = (): void => {
-    const dialogRef = this.dialog.open(ContractCategoryImportComponent, {
+    const dialogRef = this.dialog.open(ContractCategoryImportDialogComponent, {
       height: '455px',
       width: '700px'
     });
@@ -307,18 +314,6 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
         }, 3000);
       }
     });
-  }
-
-  public get isChecklistValid(): boolean {
-    return this.formChecklist.valid && this.checklistEntities.length > 0;
-  }
-
-  public get hasImgs(): boolean {
-    return this.contractImages && this.contractImages.length > 0;
-  }
-
-  public get getContractImages(): IProductImage[] {
-    return this.contractImages;
   }
 
   public getBg = (url: string): string => `url(${url})`;
@@ -352,6 +347,18 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       .subscribe();
   }
 
+  public importContractTemplate = (): void => {
+    const dialogRef = this.dialog.open(ContractCategoryImportDialogComponent, {
+      width: '600px',
+      data: { state: AddEditState.Import }
+    });
+    dialogRef.afterClosed().subscribe(res => {
+      if (res) {
+
+      }
+    });
+  }
+
   public saveContractAsTemplate = (): void => {
     const dialogRef = this.dialog.open(ContractTemplateDialogComponent, {
       data: {
@@ -359,8 +366,16 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
         state: AddEditState.Edit
       }
     });
-    dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
-      .subscribe();
+    dialogRef.afterClosed().subscribe(res => {
+      if (res) {
+        const payload = {
+          title: res.title,
+          description: res.description,
+          contract: { id: this.form.get('id').value }
+        }
+        this.store.dispatch(saveContractTemplateAction({ payload }));
+      }
+    });
   }
 
   public trackByField = (i: number, field: any) => {
@@ -388,5 +403,17 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
 
   public handleRemoveProductSpecs(id: string) {
     this.contractCategories = this.contractCategories.filter(cc => cc.id !== id);
+  }
+
+  public get isChecklistValid(): boolean {
+    return this.formChecklist.valid && this.checklistEntities.length > 0;
+  }
+
+  public get hasImgs(): boolean {
+    return this.contractImages && this.contractImages.length > 0;
+  }
+
+  public get getContractImages(): IProductImage[] {
+    return this.contractImages;
   }
 }

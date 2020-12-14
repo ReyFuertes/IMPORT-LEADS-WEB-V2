@@ -13,6 +13,9 @@
   .content,
   .header > div {
     width: 100%;
+    &:first-child {
+      height: 40px;
+    }
   }
   il-input,
   il-textarea {

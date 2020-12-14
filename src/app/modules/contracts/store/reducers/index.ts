@@ -9,6 +9,7 @@ import * as fromChecklist from '../reducers/contract-checklist.reducer';
 import * as fromInspection from '../../../inspections/store/reducers/inspection.reducer';
 import * as fromSavedChecklistItem from '../../store/reducers/saved-checklist-item.reducer';
 import * as fromSavedChecklist from '../../store/reducers/saved-checklist.reducer';
+import { ContractTemplateReducer, ContractTemplateState } from './contract-template.reducer';
 
 export interface ContractModuleState {
   contract: fromContract.ContractsState;
@@ -18,7 +19,8 @@ export interface ContractModuleState {
   checkList: fromChecklist.ContractChecklistState,
   inspection: fromInspection.InspectionState,
   savedChecklistItem: fromSavedChecklistItem.SavedChecklistItemState,
-  SavedChecklist: fromSavedChecklist.SavedChecklistState
+  SavedChecklist: fromSavedChecklist.SavedChecklistState,
+  contractTemplate: ContractTemplateState
 }
 
 export const reducers: ActionReducerMap<ContractModuleState> = {
@@ -29,7 +31,8 @@ export const reducers: ActionReducerMap<ContractModuleState> = {
   checkList: fromChecklist.ContractChecklistReducer,
   inspection: fromInspection.InspectionReducer,
   savedChecklistItem: fromSavedChecklistItem.SavedChecklistItemReducer,
-  SavedChecklist: fromSavedChecklist.SavedChecklistReducer
+  SavedChecklist: fromSavedChecklist.SavedChecklistReducer,
+  contractTemplate: ContractTemplateReducer
 };
 
 export interface AppState extends fromRoot.AppState {

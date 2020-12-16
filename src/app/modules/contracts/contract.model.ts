@@ -2,6 +2,12 @@ import { ITag } from './../tags/tags.model';
 import { IProduct } from './../products/products.model';
 import { IUser } from '../user-management/user-mgmt.model';
 
+export interface IContractTemplate {
+  id?: string;
+  title?: string;
+  description?: string;
+  contract?: IContract;
+}
 export interface IContractTemplatePayload {
   id?: string;
   title?: string;

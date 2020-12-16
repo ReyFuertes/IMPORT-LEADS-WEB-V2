@@ -8,21 +8,21 @@
     </div>
   </div>
   <div class="content">
-    <p-table [value]="savedContracts" [(selection)]="selectedContract" dataKey="id">
+    <p-table [value]="contractTemplates" [(selection)]="selectedContractTemplate" dataKey="id">
       <ng-template pTemplate="header">
         <tr>
-          <th style="width: 3rem">
-            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-          </th>
-          <th>Contract Name</th>
+          <th style="width: 3rem"></th>
+          <th>Name</th>
+          <th>Description</th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-contract>
+      <ng-template pTemplate="body" let-contractTemplate>
         <tr>
           <td>
-            <p-tableCheckbox [value]="contract"></p-tableCheckbox>
+            <p-tableRadioButton [value]="contractTemplate"></p-tableRadioButton>
           </td>
-          <td>Test Contract</td>
+          <td>{{ contractTemplate?.title }}</td>
+          <td>{{ contractTemplate?.description }}</td>
         </tr>
       </ng-template>
     </p-table>

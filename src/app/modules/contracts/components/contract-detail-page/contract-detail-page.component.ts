@@ -354,7 +354,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     });
     dialogRef.afterClosed().subscribe(res => {
       if (res) {
-
+        debugger
       }
     });
   }

@@ -10,7 +10,7 @@
         </div>
         </div>
       </div>
-      <img *ngIf="!inCheckListing" matTooltip="Update Category Name" class="save-icon" (click)="UpdateCategoryName(contractCategory?.category)" [src]="svgPath + 'save-icon-blue.svg'" />
+      <img *ngIf="!inCheckListing" matTooltip="Update Category Name" class="save-icon" (click)="saveCategoryAsTemplate(contractCategory?.category)" [src]="svgPath + 'save-icon-blue.svg'" />
     </div>
     <mat-tab-group class="il-tab">
       <mat-tab class="tab-1">

@@ -69,6 +69,7 @@ import { SavedChecklistService } from './services/saved-checklist';
 import { SavedChecklistEffect } from './store/effects/saved-checklist.effect';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ContractTemplateEffect } from './store/effects/contract-template.effect';
+import { CategoryTemplateEffect } from './store/effects/category-template.effect';
 
 const routes: Routes = [
   {
@@ -142,7 +143,8 @@ const materialModules = [
       InspectionEffect,
       SavedChecklistItemEffect,
       SavedChecklistEffect,
-      ContractTemplateEffect
+      ContractTemplateEffect,
+      CategoryTemplateEffect
     ])
   ],
   exports: [],

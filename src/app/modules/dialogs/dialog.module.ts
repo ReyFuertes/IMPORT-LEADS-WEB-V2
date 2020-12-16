@@ -32,6 +32,7 @@ import { PauseOrRunDialogComponent } from './components/pause-run/pause-run.comp
 import { ContractCategoryImportDialogComponent } from './components/contract-category-import/contract-category-import.component';
 import { TableModule } from 'primeng/table';
 import { ContractImportTemplateComponent } from './components/contract-import-template/contract-import-template.component';
+import { CategoryTemplateDialogComponent } from './components/category-template/category-template-dialog.component';
 
 const dialogComponents = [
   ContractAddDialogComponent,
@@ -54,7 +55,8 @@ const dialogComponents = [
   ContractCategoryTermDialogComponent,
   PauseOrRunDialogComponent,
   ContractImportTemplateComponent,
-  ContractCategoryImportDialogComponent
+  ContractCategoryImportDialogComponent,
+  CategoryTemplateDialogComponent
 ];
 
 const materialModules = [

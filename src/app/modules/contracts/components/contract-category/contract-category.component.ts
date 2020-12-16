@@ -13,6 +13,9 @@ import { IContractCategory } from '../../contract.model';
 import { updateCategoryAction } from '../../store/actions/category.action';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
 import { takeUntil } from 'rxjs/operators';
+import { CategoryTemplateDialogComponent } from 'src/app/modules/dialogs/components/category-template/category-template-dialog.component';
+import { saveContractTemplateAction } from '../../store/actions/contract-template.action';
+import { saveCategoryTemplateAction } from '../../store/actions/Category-template.action';
 
 @Component({
   selector: 'il-contract-category',
@@ -61,17 +64,34 @@ export class ContractCategoryComponent extends GenericRowComponent implements On
       });
   }
 
+  public saveCategoryAsTemplate(category: any): void {
+    const dialogRef = this.dialog.open(CategoryTemplateDialogComponent, {
+      data: { category }
+    });
+    dialogRef.afterClosed().subscribe(res => {
+      if (res) {
+        const payload = {
+          title: res.title,
+          description: res.description,
+          contract: { id: this.contractCategory?.contract?.id },
+          category: { id: this.contractCategory.category?.id }
+        }
+        this.store.dispatch(saveCategoryTemplateAction({ payload }));
+      }
+    });
+  }
+
   public UpdateCategoryName(category: ICategory): void {
     const dialogRef = this.dialog.open(ContractCategoryDialogComponent, {
       data: { category }
     });
-    dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
-      .subscribe(payload => {
-        if (payload) {
-          this.store.dispatch(updateCategoryAction({ payload }));
-          /* just refresh all contract categories, may not be idea but temporary solution */
-          this.store.dispatch(loadContractCategoryAction({ id: this.contractCategory.contract.id }))
-        }
-      });
+    dialogRef.afterClosed().subscribe(payload => {
+      if (payload) {
+        this.store.dispatch(updateCategoryAction({ payload }));
+
+        /* just refresh all contract categories, may not be idea but temporary solution */
+        this.store.dispatch(loadContractCategoryAction({ id: this.contractCategory.contract.id }))
+      }
+    });
   }
 }

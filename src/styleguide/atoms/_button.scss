@@ -45,8 +45,8 @@
   }
   &.primary {
     @include btn;
-    background-color: $color-primary;
-    color: $color-white;
+    background-color: $color-primary !important;
+    color: $color-white !important;
   }
   &.danger {
     @include btn;

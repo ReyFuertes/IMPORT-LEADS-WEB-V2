@@ -29,6 +29,7 @@ import { saveChecklistAction } from '../../store/actions/saved-checklist.action'
 import { IUser } from 'src/app/modules/user-management/user-mgmt.model';
 import { ContractCategoryImportDialogComponent } from 'src/app/modules/dialogs/components/contract-category-import/contract-category-import.component';
 import { saveContractTemplateAction } from '../../store/actions/contract-template.action';
+import { ContractImportTemplateDialogComponent } from 'src/app/modules/dialogs/components/contract-import-template/contract-import-template.component';
 
 @Component({
   selector: 'il-contract-detail-page',
@@ -106,7 +107,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     },
     {
       id: 5,
-      label: 'Import template',
+      label: 'Import Contract',
       icon: 'import.svg',
       action: this.importContractTemplate
     },
@@ -348,13 +349,13 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   }
 
   public importContractTemplate = (): void => {
-    const dialogRef = this.dialog.open(ContractCategoryImportDialogComponent, {
+    const dialogRef = this.dialog.open(ContractImportTemplateDialogComponent, {
       width: '600px',
       data: { state: AddEditState.Import }
     });
     dialogRef.afterClosed().subscribe(res => {
       if (res) {
-        debugger
+        
       }
     });
   }

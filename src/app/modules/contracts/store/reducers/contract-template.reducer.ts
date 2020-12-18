@@ -14,6 +14,7 @@ export const initialState: ContractTemplateState = adapter.getInitialState({
 const reducer = createReducer(
   initialState,
   on(loadContractTemplatesSuccessAction, (state, action) => {
+    
     return ({ ...adapter.setAll(action.response, state) })
   })
 );

@@ -122,7 +122,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
 
     item.venue = { id: value, name: label };
     item.images = this.cnsFileObj(files);
-    debugger
+    
     if (this.state === AddEditState.Add) {
       const locaUser = JSON.parse(localStorage.getItem('at')) || null;
       if (locaUser) {

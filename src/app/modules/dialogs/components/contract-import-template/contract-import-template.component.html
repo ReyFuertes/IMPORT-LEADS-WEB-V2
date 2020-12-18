@@ -4,27 +4,25 @@
       <img class="close" (click)="dialogRef.close(false)" [src]="svgPath + 'close-icon-big-gray.svg'" />
     </div>
     <div fxLayoutAlign="center center">
-      <h2>Import Category</h2>
+      <h2>Import Contract Template</h2>
     </div>
   </div>
   <div class="content">
-    <p-table [value]="contractCategories" [(selection)]="selectedCategories" dataKey="id">
+    <p-table [value]="contractTemplates" [(selection)]="selectedContractTemplate" dataKey="id">
       <ng-template pTemplate="header">
         <tr>
-          <th style="width: 3rem">
-            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-          </th>
-          <th>Category Name</th>
+          <th style="width: 3rem"></th>
+          <th>Template Name</th>
           <th>Contract Name</th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-contractCategory>
+      <ng-template pTemplate="body" let-contractTemplate>
         <tr>
           <td>
-            <p-tableCheckbox [value]="contractCategory"></p-tableCheckbox>
+            <p-tableRadioButton [value]="contractTemplate"></p-tableRadioButton>
           </td>
-          <td>{{contractCategory?.category?.category_name}}</td>
-          <td>{{contractCategory?.contract?.contract_name}}</td>
+          <td>{{contractTemplate?.title}}</td>
+          <td>{{contractTemplate?.contract?.contract_name}}</td>
         </tr>
       </ng-template>
     </p-table>

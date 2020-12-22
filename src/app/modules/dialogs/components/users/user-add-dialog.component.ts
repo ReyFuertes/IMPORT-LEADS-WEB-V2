@@ -35,12 +35,12 @@ export class UserAddDialogComponent extends GenericDestroyPageComponent implemen
         firstname: [null, Validators.required],
         lastname: [null, Validators.required],
       }),
-      access: [null, Validators.required],
-      role: [null, Validators.required],
+      user_access: [null, Validators.required],
+      user_role: [null, Validators.required],
     });
 
-    this.form && this.form.get('role').valueChanges.pipe(take(1)).subscribe(res => {
-      if (res) this.form.controls['role'].setErrors(null);
+    this.form.get('user_role').valueChanges.pipe(take(1)).subscribe(res => {
+      if (res) this.form.controls['user_role'].setErrors(null);
     })
 
     this.$access = this.store.pipe(select(getAccessSelector));

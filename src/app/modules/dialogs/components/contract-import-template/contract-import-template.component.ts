@@ -30,10 +30,7 @@ export class ContractImportTemplateDialogComponent extends GenericDestroyPageCom
     this.store.pipe(select(getContractTemplatesSelector),
       takeUntil(this.$unsubscribe))
       .subscribe(res => {
-        if (res) {
-          this.contractTemplates = res;
-          console.log(res)
-        }
+        if (res) this.contractTemplates = res;
       })
   }
 

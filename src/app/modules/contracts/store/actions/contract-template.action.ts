@@ -5,8 +5,18 @@ export enum ContractTemplateActionTypes {
   saveContractTemplateAction = '[Contract Template] save contract template',
   saveContractTemplateSuccessAction = '[Contract Template] save contract template (success)',
   loadContractTemplatesAction = '[Contract Template] load contract template',
-  loadContractTemplatesSuccessAction = '[Contract Template] load contract template (success)'
+  loadContractTemplatesSuccessAction = '[Contract Template] load contract template (success)',
+  importContractTemplateAction = '[Contract Template] import contract template',
+  importContractTemplateSuccessAction = '[Contract Template] import contract template (success)',
 }
+export const importContractTemplateAction = createAction(
+  ContractTemplateActionTypes.importContractTemplateAction,
+  props<{ payload: any }>()
+);
+export const importContractTemplateSuccessAction = createAction(
+  ContractTemplateActionTypes.importContractTemplateSuccessAction,
+  props<{ response: any }>()
+);
 export const loadContractTemplatesAction = createAction(
   ContractTemplateActionTypes.loadContractTemplatesAction
 );

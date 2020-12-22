@@ -5,7 +5,7 @@ import { ContractCategoryService } from './../../services/contract-category.serv
 import { IContractCategory } from './../../contract.model';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, mergeMap, tap } from 'rxjs/operators';
+import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { appNotification } from 'src/app/store/actions/notification.action';
 
 @Injectable()
@@ -31,7 +31,10 @@ export class ContractCategoryEffect {
 
   moveDownContractCategoryAction$ = createEffect(() => this.actions$.pipe(
     ofType(moveDownContractCategoryAction),
-    mergeMap(({ payload }) => this.contractCategorySrv.post(payload, 'down').pipe(
+    switchMap(({ payload }) => this.contractCategorySrv.post(payload, 'down').pipe(
+      tap(() => {
+        this.store.dispatch(loadContractCategoryAction({ id: payload.contract.id }));
+      }),
       map((response: any) => {
         return moveDownContractCategoryActionSuccess({ response });
       })
@@ -40,7 +43,10 @@ export class ContractCategoryEffect {
 
   moveUpContractCategoryAction$ = createEffect(() => this.actions$.pipe(
     ofType(moveUpContractCategoryAction),
-    mergeMap(({ payload }) => this.contractCategorySrv.post(payload, 'up').pipe(
+    switchMap(({ payload }) => this.contractCategorySrv.post(payload, 'up').pipe(
+      tap(() => {
+        this.store.dispatch(loadContractCategoryAction({ id: payload.contract.id }));
+      }),
       map((response: any) => {
         return moveUpContractCategoryActionSuccess({ response });
       })

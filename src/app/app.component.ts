@@ -35,14 +35,17 @@ export class AppComponent extends GenericDestroyPageComponent implements OnInit,
       .pipe(takeUntil(this.$unsubscribe),
         filter(e => e instanceof NavigationEnd))
       .subscribe((e: NavigationEnd) => {
-        if (e.urlAfterRedirects.includes('report')) {
+        const hasInspections = e.urlAfterRedirects.includes('inpections');
+        const hasReport = e.urlAfterRedirects.includes('report');
+        if (hasInspections && hasReport) {
+          debugger
           this.hideTopNav = true;
         } else {
           this.hideTopNav = false;
         }
       });
 
-    this.store.subscribe(res => console.log(res))
+    //this.store.subscribe(res => console.log(res))
     this.$notify = this.store.pipe(select(getSuccessSelector), delay(100));
 
     /* check if user islogin then show the topnav */

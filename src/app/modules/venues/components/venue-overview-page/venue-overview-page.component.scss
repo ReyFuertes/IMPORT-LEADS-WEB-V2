@@ -6,7 +6,7 @@
 }
 .il-bg-blue {
   @include il-bg-blue;
-  background: $color-gray-2;
+  background: $color-white;
   color: $color-black-2;
   width: 120px;
 }
@@ -29,6 +29,8 @@
   }
   .mat-button-toggle-group-appearance-standard {
     border: none !important;
+    background-color: $color-white !important;
+    background: $color-white !important;
   }
   .mat-button-toggle-checked {
     background: $color-primary !important;
@@ -36,5 +38,10 @@
   }
   .mat-button-toggle-group {
     margin-left: 30px;
+    .mat-button-toggle {
+      &:first-child {
+        border-radius: 0 2px 2px 0;
+      }
+    }
   }
 }

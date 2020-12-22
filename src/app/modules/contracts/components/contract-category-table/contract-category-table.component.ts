@@ -1,5 +1,5 @@
 import { addContractTermAction, deleteContractTermAction, updateContractTermAction } from './../../store/actions/contract-term.actions';
-import { loadContractCategoryAction, moveDownContractCategoryAction, moveUpContractCategoryAction, selTermsForChecklistAction } from './../../store/actions/contract-category.action';
+import { loadAllContractCategoryAction, loadContractCategoryAction, moveDownContractCategoryAction, moveUpContractCategoryAction, selTermsForChecklistAction } from './../../store/actions/contract-category.action';
 import { MatTableDataSource } from '@angular/material/table';
 import { IContractTerm, IContractCategoryTerm, IContractChecklistItem, IContractProduct, IContractTermProduct } from './../../contract.model';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
@@ -23,6 +23,10 @@ import { getSelectedTermsSelector, getchecklistProductsSelector, getChecklistSel
 import { appNotification } from 'src/app/store/actions/notification.action';
 import { addItemToChecklistTermsAction } from '../../store/actions/contract-checklist.action';
 import { DomSanitizer } from '@angular/platform-browser';
+import { loadContractsAction } from '../../store/actions/contracts.action';
+import { loadProductsAction } from 'src/app/modules/products/store/products.actions';
+import { loadTags } from 'src/app/modules/tags/store/actions/tags.actions';
+import { loadSavedChecklistAction } from '../../store/actions/saved-checklist.action';
 
 @Component({
   selector: 'il-contract-category-table',
@@ -118,18 +122,10 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
 
   public onCategoryMoveDown(): void {
     this.store.dispatch(moveDownContractCategoryAction({ payload: this.contractCategory }));
-
-    setTimeout(() => {
-      this.store.dispatch(loadContractCategoryAction({ id: this.contractCategory.contract.id }));
-    }, 3000);
   }
 
   public onCategoryMoveUp(): void {
     this.store.dispatch(moveUpContractCategoryAction({ payload: this.contractCategory }));
-
-    setTimeout(() => {
-      this.store.dispatch(loadContractCategoryAction({ id: this.contractCategory.contract.id }));
-    }, 3000);
   }
 
   public getColUuid = (element: any, col: string) => `${element.id}${col}`;
@@ -169,14 +165,13 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   private reloadContractCategory = () =>
     setTimeout(() => {
       this.store.dispatch(loadContractCategoryAction({ id: this.contractCategory.contract.id }))
-    }, 100);
+    }, 1000);
 
   public createTerm(): void {
     const dialogRef = this.dialog.open(ContractCategoryTermDialogComponent, {
       height: '180px'
     });
     dialogRef.afterClosed()
-      .pipe(takeUntil(this.$unsubscribe))
       .subscribe((result: IContractTerm) => {
         if (result) {
           const payload = {
@@ -184,7 +179,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
             contract_category: { id: this.contractCategory.id }
           }
           this.store.dispatch(addContractTermAction({ payload }));
-          /* this is a bad solution, but due to time development i just needs this */
+      
           this.reloadContractCategory();
         }
       });

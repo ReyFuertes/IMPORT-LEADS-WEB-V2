@@ -28,7 +28,7 @@ import { getChecklistSelector } from '../../store/selectors/contract-checklist.s
 import { saveChecklistAction } from '../../store/actions/saved-checklist.action';
 import { IUser } from 'src/app/modules/user-management/user-mgmt.model';
 import { ContractCategoryImportDialogComponent } from 'src/app/modules/dialogs/components/contract-category-import/contract-category-import.component';
-import { saveContractTemplateAction } from '../../store/actions/contract-template.action';
+import { importContractTemplateAction, saveContractTemplateAction } from '../../store/actions/contract-template.action';
 import { ContractImportTemplateDialogComponent } from 'src/app/modules/dialogs/components/contract-import-template/contract-import-template.component';
 
 @Component({
@@ -128,23 +128,26 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       document.querySelector('.inner-container').scrollTop = (document.documentElement.scrollTop);
     });
 
-    this.id = this.route.snapshot.paramMap.get('id') || null;
+    this.id = this.route?.snapshot?.paramMap?.get('id') || null;
     if (this.id) {
-      /* load contract products also.. */
+      /* load contract products */
       this.store.dispatch(loadContractProducts({ id: this.id }));
 
       this.$contract = this.store.pipe(select(getContractById(this.id)));
+
       /* passed the contract images to a variable array so we can drag and drop */
-      this.$contract && this.$contract.subscribe(c => {
-        if (c) {
-          /* get category by contract id */
-          this.store.dispatch(loadContractCategoryAction({ id: c.id }));
+      this.$contract?.pipe(takeUntil(this.$unsubscribe))
+        .subscribe(c => {
+          if (c) {
 
-          this.form.patchValue(c);
+            /* get category by contract id */
+            this.store.dispatch(loadContractCategoryAction({ id: c.id }));
 
-          this.contractImages = Object.assign([], c.images.slice(0, 4))//.sort((a, b) => sortByAsc(a, b, 'position'));
-        }
-      });
+            this.form.patchValue(c);
+
+            this.contractImages = Object.assign([], c.images.slice(0, 4))//.sort((a, b) => sortByAsc(a, b, 'position'));
+          }
+        });
     }
 
     this.store.pipe(select(getContractCategorySelector),
@@ -353,9 +356,13 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       width: '600px',
       data: { state: AddEditState.Import }
     });
-    dialogRef.afterClosed().subscribe(res => {
-      if (res) {
-        
+    dialogRef.afterClosed().subscribe(_payload => {
+      if (_payload) {
+        let payload = {
+          ..._payload,
+          current_contract: this.form.value
+        }
+        this.store.dispatch(importContractTemplateAction({ payload }));
       }
     });
   }

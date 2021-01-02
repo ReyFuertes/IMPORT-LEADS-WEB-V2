@@ -60,6 +60,9 @@
   }
 }
 ::ng-deep {
+  .il-pill {
+    margin-bottom: 0 !important;
+  }
   .cdk-drag-preview {
     border-radius: 0 !important;
     @extend .il-draggable-expansion;

@@ -22,11 +22,11 @@ export class VenueOverviewPageComponent extends GenericDestroyPageComponent impl
   public colProducts: Array<{ label: string, width?: any }> = [
     {
       label: 'Venue name',
-      width: 22.5
+      width: 30.2
     },
     {
       label: 'Location',
-      width: 15
+      width: 18
     },
     {
       label: 'Related products',
@@ -44,12 +44,13 @@ export class VenueOverviewPageComponent extends GenericDestroyPageComponent impl
       label: 'Avg. pass/fail',
       width: '100px'
     },
-    {
-      label: 'Rating',
-      width: '100px'
-    },
+    // {
+    //   label: 'Rating',
+    //   width: '100px'
+    // },
     {
       label: '',
+      width: '60px'
     }
   ];
   public colAddress: Array<{ label: string, width?: any }> = [

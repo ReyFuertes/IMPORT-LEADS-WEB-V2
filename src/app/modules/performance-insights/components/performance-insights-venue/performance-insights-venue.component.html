@@ -39,14 +39,12 @@
     </div>
     <div class="il-draggable-expansion">
       <mat-accordion cdkDropList (cdkDropListDropped)="drop($event)" [multi]="true">
-        <mat-expansion-panel #pnl cdkDrag #pnl="matExpansionPanel" *ngFor="let item of items; let i = index"
-          hideToggle="true" [expanded]="true">
-
+        <mat-expansion-panel #pnl cdkDrag #pnl="matExpansionPanel" *ngFor="let item of items; let i = index" hideToggle="true" [expanded]="true">
           <mat-expansion-panel-header (click)="onClickPnl(pnl, $event, i)" (mouseover)="mouseover(i)" (mouseleave)="mouseout()">
-            <div class="pnl-header" fxLayout="row" fxLayoutGap="10px">
+            <div class="pnl-header" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
               <img cdkDragHandle [src]="svgPath + 'drag-icon.svg'" />
               <div fxFlex="14" fxLayoutAlign="start center">
-                <span>{{item.venue}}</span>
+                <span>{{item.venue | uppercase }}</span>
               </div>
               <div fxFlex="30" fxLayoutAlign="start center">
                 <il-pill [item]="item.product">

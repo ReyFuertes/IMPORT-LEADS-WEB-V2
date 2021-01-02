@@ -5,6 +5,7 @@
   height: 48px;
   padding-left: 20px;
   padding-right: 10px;
+  padding-top: 10px;
 }
 .product-list.first {
   border-top: 1px solid $color-gray-3;
@@ -12,7 +13,6 @@
 :host ::ng-deep {
   .il-pill {
     margin-right: 5px;
-    margin-bottom: 0px;
     cursor: default;
   }
 }

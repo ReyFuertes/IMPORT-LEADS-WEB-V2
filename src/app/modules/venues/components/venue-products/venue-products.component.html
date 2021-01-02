@@ -13,7 +13,7 @@
             <img matTooltip="Change image" (click)="uploader.click()" cdkDragHandle [src]="item?.image ? imageApiPath + item?.image?.filename : imgPath + 'no-image-40x40x.png'" />
             <input #uploader hidden name="file" type="file" (change)="uploadImage($event, item)" />
           </div>
-          <div fxFlex="20" fxLayoutAlign="start center">
+          <div fxFlex="28" fxLayoutAlign="start center">
             <span *ngIf="selectedIndex !== i">{{item?.name}}</span>
             <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
               <input matInput (input)="onEdit(item, 'name', $event?.target.value)" (click)="$event.stopPropagation()" [value]="item?.name">
@@ -41,11 +41,11 @@
           <div fxFlex="100px" fxLayoutAlign="center center">
             <span>{{item?.avg_pass_fail}}%</span>
           </div>
-          <div fxFlex="100px" fxLayoutAlign="start center">
+          <!-- <div fxFlex="100px" fxLayoutAlign="start center">
             <span>
               <il-star-rating [rating]="item?.rating"></il-star-rating>
             </span>
-          </div>
+          </div> -->
         </div>
 
         <div fxFlex="100px" class="pnl-actions" fxLayoutAlign="end center">

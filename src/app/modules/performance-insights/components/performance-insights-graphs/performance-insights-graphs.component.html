@@ -81,12 +81,12 @@
     </div>
   </div>
   <div class="product-venue">
-    <div fxLayout="row" fxLayoutGap="8px">
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
       <il-pill *ngFor="let item of items; let i = index" [item]="item">
       </il-pill>
-      <span fxLayoutAlign="end center">
+      <div fxLayoutAlign="end center">
         <mat-icon>add</mat-icon> Add a product or venue
-      </span>
+      </div>
     </div>
   </div>
 </mat-card>

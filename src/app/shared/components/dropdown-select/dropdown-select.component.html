@@ -1,5 +1,5 @@
 <div *ngIf="form" [formGroup]="form">
-  <mat-form-field appendTo="ui-sidebar" [floatLabel]="isFloatLabel == true ? '' : 'never'">
+  <mat-form-field appendTo="ui-sidebar" [ngClass]="{'has-border': hasBorder}" [floatLabel]="isFloatLabel == true ? '' : 'never'">
     <mat-label>{{ placeholder }}</mat-label>
     <mat-select [formControlName]="controlName">
       <mat-option *ngFor="let option of options" [value]="option?.value">

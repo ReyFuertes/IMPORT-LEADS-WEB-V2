@@ -5,9 +5,10 @@ import { Store, select } from '@ngrx/store';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { loginAction, isLoggingInAction } from '../../store/auth.action';
 import { getIsLoggingInSelector, getIsLoginFailedSelector } from 'src/app/store/selectors/app.selector';
+import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 
 @Component({
   selector: 'il-login',
@@ -23,11 +24,16 @@ export class LoginComponent implements OnInit {
   public $isLoginFailed: Observable<boolean>;
   public hasError: boolean = false;
   public failedMsg: string;
+  public $companies: Observable<ISimpleItem[]> = of([{
+    label: 'Test Company 1',
+    value: '1'
+  }]);
 
   constructor(private store: Store<AppState>, private fb: FormBuilder) {
     this.form = this.fb.group({
       username: ['tammyli@cilchina.com', Validators.compose([Validators.required])],
-      password: ['p@55w0rd', Validators.required]
+      password: ['p@55w0rd', Validators.required],
+      company: ['1', Validators.required],
     });
   }
 

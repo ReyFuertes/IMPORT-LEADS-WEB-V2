@@ -12,6 +12,7 @@
           <div class="venue-img" fxLayoutAlign="start center">
             <img matTooltip="Change image" (click)="uploader.click()" cdkDragHandle [src]="item?.image ? imageApiPath + item?.image?.filename : imgPath + 'no-image-40x40x.png'" />
             <input #uploader hidden name="file" type="file" (change)="uploadImage($event, item)" />
+            
           </div>
           <div fxFlex="28" fxLayoutAlign="start center">
             <span *ngIf="selectedIndex !== i">{{item?.name}}</span>

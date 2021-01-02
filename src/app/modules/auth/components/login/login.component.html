@@ -6,6 +6,11 @@
 
         <div class="content" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="5px">
           <div fxLayout="column">
+            <label>Company</label>
+            <il-dropdown-select fxFlex hasBorder="true" placeHolder="Select Company" [form]="form" controlName="company" [options]="$companies | async">
+            </il-dropdown-select>
+          </div>
+          <div fxLayout="column">
             <label>Email</label>
             <il-input fxFlex="50" [form]="form" hasBorder="true" isFloatLabel="true" controlName="username" placeholder="Enter Username or Email"></il-input>
           </div>

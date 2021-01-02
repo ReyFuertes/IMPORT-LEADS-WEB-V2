@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { getAccessSelector, getUserAccessSelector } from 'src/app/store/selectors/app.selector';
 import { ISimpleItem } from '../../generics/generic.model';
 import { map } from 'rxjs/operators';
+import { sortByAsc, sortByDesc } from '../../util/sort';
 
 @Component({
   selector: 'il-topnav',
@@ -48,8 +49,10 @@ export class TopNavComponent implements OnInit {
           /* filter the children menus */
           parentMenuMatches?.forEach(parent => {
             const children = parent.children.filter(c => this.accessMenus.includes(c.access_name)
-            && c.access_name !== 'TEMPLATES'); //do not include the templates for now
-            parent.children = children;
+                && c.access_name !== 'TEMPLATES'); //do not include the templates for now
+            parent.children = children.sort((a, b) => sortByAsc(a, b, 'position'));
+
+            console.log(parent.children)
           });
 
           return parentMenuMatches;

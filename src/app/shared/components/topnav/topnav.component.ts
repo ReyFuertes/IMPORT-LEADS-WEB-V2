@@ -40,14 +40,15 @@ export class TopNavComponent implements OnInit {
 
         this.$menus = this.store.pipe(select(getAccessSelector), map(m => {
           /* filter the parent menus */
-          let parentMenuMatches = m && m.filter(
+          let parentMenuMatches = m?.filter(
             m => !m.parent
               && !this.excludedMenus.includes(m.label)
               && this.accessMenus.includes(m.label)
           );
           /* filter the children menus */
-          parentMenuMatches && parentMenuMatches.forEach(parent => {
-            const children = parent.children.filter(c => this.accessMenus.includes(c.access_name));
+          parentMenuMatches?.forEach(parent => {
+            const children = parent.children.filter(c => this.accessMenus.includes(c.access_name)
+            && c.access_name !== 'TEMPLATES'); //do not include the templates for now
             parent.children = children;
           });
 

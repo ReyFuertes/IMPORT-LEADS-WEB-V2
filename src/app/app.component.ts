@@ -37,8 +37,8 @@ export class AppComponent extends GenericDestroyPageComponent implements OnInit,
       .subscribe((e: NavigationEnd) => {
         const hasAgreements = e.urlAfterRedirects.includes('agreement');
         const hasReport = e.urlAfterRedirects.includes('report');
+        
         if (hasAgreements && hasReport) {
-          debugger
           this.hideTopNav = true;
         } else {
           this.hideTopNav = false;

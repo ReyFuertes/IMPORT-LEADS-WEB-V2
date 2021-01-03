@@ -162,6 +162,10 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       });
   }
 
+  public hasNoSelection(el: any): any {
+    return !el?.contract_tag?.id;
+  }
+
   private reloadContractCategory = () =>
     setTimeout(() => {
       this.store.dispatch(loadContractCategoryAction({ id: this.contractCategory.contract.id }))

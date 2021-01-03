@@ -49,6 +49,10 @@ table {
   margin-bottom: 20px;
 }
 :host ::ng-deep {
+  .mat-select {
+    position: relative;
+    top: -9px;
+  }
   p {
     padding-top: 0 !important;
     margin-top: 0 !important;

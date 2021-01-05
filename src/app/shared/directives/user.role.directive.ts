@@ -16,7 +16,7 @@ export enum Roles {
   selector: '[appHasRole]'
 })
 export class HasRoleDirective extends GenericDestroyPageComponent implements OnInit {
-  @Input() public appHasRole: string;
+  @Input() public appHasRole: string | string[];
 
   public isVisible = false;
   public roles = Roles;
@@ -30,21 +30,35 @@ export class HasRoleDirective extends GenericDestroyPageComponent implements OnI
     this.store.pipe(select(getUserRolesSelector),
       takeUntil(this.$unsubscribe)
     ).subscribe(roles => {
-      
+    
       // If he doesn't have any roles, we clear the viewContainerRef
       if (!roles) {
         this.viewContainerRef.clear();
       }
       if (roles) {
-        
-        if (roles.includes(this.roles[this.appHasRole])) {
-          if (!this.isVisible) {
-            this.isVisible = true;
-            this.viewContainerRef.createEmbeddedView(this.templateRef);
-          }
+        if(this.appHasRole instanceof Array){ /* if role is multiple array */
+          this.appHasRole?.forEach(r => {
+            if (roles.includes(this.roles[r])) {
+              if (!this.isVisible) {
+                this.isVisible = true;
+                this.viewContainerRef.createEmbeddedView(this.templateRef);
+                return;
+              }
+            } else {
+              this.isVisible = false;
+              this.viewContainerRef.clear();
+            }
+          });
         } else {
-          this.isVisible = false;
-          this.viewContainerRef.clear();
+          if (roles.includes(this.roles[this.appHasRole])) {
+            if (!this.isVisible) {
+              this.isVisible = true;
+              this.viewContainerRef.createEmbeddedView(this.templateRef);
+            }
+          } else {
+            this.isVisible = false;
+            this.viewContainerRef.clear();
+          }
         }
       }
     });

@@ -20,12 +20,12 @@ export class InputComponent extends GenericControl<ISimpleItem> implements OnCha
   @Input() public isCenter: boolean = false;
   @Input() public hasBorder: boolean = false;
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor(private cdref: ChangeDetectorRef) {
     super();
   }
 
   ngAfterViewInit() {
-    this.cdr.detectChanges();
+    this.cdref.detectChanges();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

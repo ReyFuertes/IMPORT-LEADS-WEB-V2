@@ -114,8 +114,6 @@ export class InspectionReportProductsComponent implements OnInit {
             barMaxWidth: 10
           }];
 
-          console.log(_series)
-
           this.dataSource = res?.products;
 
           this.barChartOption = {

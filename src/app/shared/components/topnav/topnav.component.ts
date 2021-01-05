@@ -52,7 +52,6 @@ export class TopNavComponent implements OnInit {
                 && c.access_name !== 'TEMPLATES'); //do not include the templates for now
             parent.children = children.sort((a, b) => sortByAsc(a, b, 'position'));
 
-            console.log(parent.children)
           });
 
           return parentMenuMatches;

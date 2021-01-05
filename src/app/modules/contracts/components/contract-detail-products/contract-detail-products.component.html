@@ -71,7 +71,7 @@
                 </il-input-select>
                 <il-input fxFlex="15" [form]="sub_product" [isReadOnly]="isNavOpenAndEdit" [isNumberOnly]="true" [controlName]="'qty'" placeholder="Enter quantity"></il-input>
                 <il-input fxFlex="15" [form]="sub_product" [isReadOnly]="isNavOpenAndEdit" [isNumberOnly]="true" [controlName]="'cost'" placeholder="Enter unit cost"></il-input>
-                <div *appHasRole="'admin'" fxFlex="5" fxLayoutAlign="start center">
+                <div *appHasRole="hasAdminManagerRole" fxFlex="5" fxLayoutAlign="start center">
                   <img *ngIf="!inCheckListing" class="remove-icon" matTooltip="Remove" (click)="onRemoveSubProduct(sub_product?.value, i)" [src]="svgPath + 'delete-icon-red.svg'" />
                 </div>
               </div>

@@ -75,7 +75,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
           console.log(parseFloat(parentCost), parseFloat(childsCost));
 
           /* if the value of input is less than the value of sub products cost total, mark as invalid error */
-          if (parseFloat(childsCost) > parseFloat(parentCost)) {
+          if (parseFloat(childsCost) !== parseFloat(parentCost)) {
             this.form.controls['cost'].setErrors({ 'invalid': true });
           } else {
             if ((parseFloat(childsCost) !== parseFloat(parentCost)) && children.length > 0) {
@@ -86,11 +86,11 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
             }
           }
 
-          if (parseFloat(childsCost) > parseFloat(parentCost)) {
-            this.form.controls['cost'].setErrors({ 'invalid': true });
-          } else {
-            this.form.controls['cost'].setErrors(null);
-          }
+          // if (parseFloat(childsCost) > parseFloat(parentCost)) {
+          //   this.form.controls['cost'].setErrors({ 'invalid': true });
+          // } else {
+          //   this.form.controls['cost'].setErrors(null);
+          // }
 
           /* check if the sub product is edited then update the id */
           this.formSubProdsArr = this.form.get('sub_products') as FormArray;
@@ -127,7 +127,9 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       })).subscribe();
   }
 
-  ngOnDestroy() { }
+  public get hasAdminManagerRole(): any {
+    return ['admin', 'manager'];
+  }
 
   ngOnInit() {
     this.$contractProducts = this.store.pipe(select(getAllContractProductsSelector));
@@ -223,10 +225,10 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
   private addToChecklist(item: ICommonIdPayload, entities: IContractChecklistItem[]): void {
     this.store.dispatch(addItemToChecklistProductsAction({ item }));
-    
+
     /* get all the terms of selected source */
     if (this.checklistSource && this.checklistProducts.length === 1) {
-      
+
       entities && entities.forEach(item => {
         this.store.dispatch(addItemToChecklistTermsAction({
           term: {

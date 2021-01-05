@@ -67,7 +67,7 @@
           <div *ngFor="let sub_product of form.get('sub_products')?.controls;let i = index" fxLayout="column">
             <ng-container formArrayName="sub_products">
               <div fxFlex fxLayoutGap="20px" [formGroupName]="i" fxLayout="row" fxLayoutAlign="start center">
-                <il-input-select [form]="sub_product" [controlName]="'product_name'" [suggestions]="suggestions" fxFlex fxFlexOffset="20px" [isReadOnly]="inCheckListing || isNavOpenAndEdit">
+                <il-input-select class="sub-product-auto-comp" [form]="sub_product" [controlName]="'product_name'" [suggestions]="suggestions" fxFlex fxFlexOffset="20px" [isReadOnly]="inCheckListing || isNavOpenAndEdit">
                 </il-input-select>
                 <il-input fxFlex="15" [form]="sub_product" [isReadOnly]="isNavOpenAndEdit" [isNumberOnly]="true" [controlName]="'qty'" placeholder="Enter quantity"></il-input>
                 <il-input fxFlex="15" [form]="sub_product" [isReadOnly]="isNavOpenAndEdit" [isNumberOnly]="true" [controlName]="'cost'" placeholder="Enter unit cost"></il-input>

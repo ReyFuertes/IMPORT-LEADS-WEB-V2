@@ -69,14 +69,16 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       .pipe(takeUntil(this.$unsubscribe))
       .subscribe(children => {
         if (children) {
-          const childsCost = children.reduce((sum, current) => parseInt(sum) + parseInt(current.cost), 0) || 0;
+          const childsCost = children.reduce((sum, current) => parseFloat(sum) + parseFloat(current.cost), 0) || 0;
           const parentCost = this.form.get('cost').value;
 
+          console.log(parseFloat(parentCost), parseFloat(childsCost));
+
           /* if the value of input is less than the value of sub products cost total, mark as invalid error */
-          if (parseInt(childsCost) > parseInt(parentCost)) {
+          if (parseFloat(childsCost) > parseFloat(parentCost)) {
             this.form.controls['cost'].setErrors({ 'invalid': true });
           } else {
-            if ((parseInt(childsCost) !== parseInt(parentCost)) && children.length > 0) {
+            if ((parseFloat(childsCost) !== parseFloat(parentCost)) && children.length > 0) {
               this.isDisabled = true;
             } else {
               this.form.controls['cost'].setErrors(null);
@@ -84,7 +86,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
             }
           }
 
-          if (parseInt(childsCost) > parseInt(parentCost)) {
+          if (parseFloat(childsCost) > parseFloat(parentCost)) {
             this.form.controls['cost'].setErrors({ 'invalid': true });
           } else {
             this.form.controls['cost'].setErrors(null);
@@ -418,12 +420,13 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
     if (this.inCheckListing) return;
     /* assign selected item to form */
     const { _id, id, product_name, qty, cost, sub_products } = product;
-
+    debugger
     this.formSubProdsArr = null;
     this.initInputProduct = this.selectedProduct ? true : false;
 
     /* use contract product id here */
     this.form.controls['id'].patchValue(_id);
+
     /* we use an object for passing values to suggestion control */
     this.form.controls['product_name'].patchValue({ label: product_name, value: id });
     this.form.controls['qty'].patchValue(qty);

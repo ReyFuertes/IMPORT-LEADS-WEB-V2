@@ -21,6 +21,7 @@ export class GenericControl<T> extends GenericDestroyPageComponent {
   public get hasError(): boolean {
     return this.form
       && this.form?.get(this.controlName)?.errors
-      && this.form?.get(this.controlName)?.touched;
+      && this.form?.get(this.controlName)?.touched
+      || !this.form?.get(this.controlName)?.valid;
   }
 }

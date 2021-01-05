@@ -88,11 +88,12 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       icon: 'edit-icon-blue.svg',
       action: this.editContract
     },
-    {
-      id: 2,
-      label: 'Download',
-      icon: 'download-icon-blue.svg'
-    },
+    // {
+    //   id: 2,
+    //   label: 'Download',
+    //   icon: 'download-icon-blue.svg',
+    //   action: this.onDownload
+    // },
     {
       id: 3,
       label: 'Create or update checklist',
@@ -164,6 +165,10 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
         this.checklistEntities = Object.values(res.entities) || [];
 
       })).subscribe();
+  }
+
+  public onDownload(): void {
+
   }
 
   public onReport(): void {

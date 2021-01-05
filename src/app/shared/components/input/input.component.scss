@@ -11,6 +11,9 @@
   }
   @include il-input;
 }
+.errors {
+  color: $color-red !important;
+}
 :host ::ng-deep {
   .mat-form-field-required-marker {
     color: $color-red !important;

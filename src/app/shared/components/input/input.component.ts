@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControlName } from '@angular/forms';
 import { GenericControl } from '../../generics/generic-control';
 import { ISimpleItem } from '../../generics/generic.model';
@@ -9,7 +9,7 @@ import { ISimpleItem } from '../../generics/generic.model';
   styleUrls: ['./input.component.scss']
 })
 
-export class InputComponent extends GenericControl<ISimpleItem> implements OnInit, OnChanges {
+export class InputComponent extends GenericControl<ISimpleItem> implements OnChanges {
   @Input() public isFloatLabel: boolean = false;
   @Input() public isNumberOnly: boolean = false;
   @Input() public isRequired: boolean = false;
@@ -20,11 +20,13 @@ export class InputComponent extends GenericControl<ISimpleItem> implements OnIni
   @Input() public isCenter: boolean = false;
   @Input() public hasBorder: boolean = false;
 
-  constructor() {
+  constructor(private cdr: ChangeDetectorRef) {
     super();
   }
 
-  ngOnInit() { }
+  ngAfterViewInit() {
+    this.cdr.detectChanges();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes && changes?.isReadOnly && changes?.isReadOnly?.currentValue) {

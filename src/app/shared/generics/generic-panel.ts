@@ -5,10 +5,9 @@ export abstract class GenericRowComponent extends GenericDestroyPageComponent {
   public hoveredIndex: number | null = null;
   public selectedIndex: number | null = null;
   public modifiedValue: any;
-  @Output()
-  public modValueEmitter = new EventEmitter<any>();
-  @Output()
-  public deleteEmitter = new EventEmitter<any>();
+
+  @Output() public modValueEmitter = new EventEmitter<any>();
+  @Output() public deleteEmitter = new EventEmitter<any>();
 
   constructor() {
     super();

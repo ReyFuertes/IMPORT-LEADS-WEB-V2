@@ -7,7 +7,7 @@ import { IActiveInspection } from './../../inspections.models';
 import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectorRef, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
-import { runInspectionAction, clearLoadAction, deleteInspectionAction } from '../../store/actions/inspection.action';
+import { runInspectionAction, clearLoadAction, deleteInspectionAction, finishInspectionAction } from '../../store/actions/inspection.action';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
 import { takeUntil } from 'rxjs/operators';
@@ -52,7 +52,14 @@ export class InspectionActivePanelComponent extends GenericRowComponent implemen
           }
         });
     }
-  }];;
+  }, {
+    label: 'FINISH',
+    icon: 'done.svg',
+    action: (item) => {
+      if (item) 
+        this.store.dispatch(finishInspectionAction({ payload: { id: item.id } }))
+    }
+  }];
 
   @Input() public colsHeader: Array<{ label: string, width?: any }>;
   @Input() public activeInspections: IActiveInspection[];

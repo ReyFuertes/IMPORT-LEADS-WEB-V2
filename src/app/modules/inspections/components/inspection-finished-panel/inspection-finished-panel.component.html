@@ -1,44 +1,42 @@
 <div class="col-header" fxLayoutAlign="center center" fxLayoutGap="10px">
   <div *ngFor="let col of colsHeader" [fxFlex]="col?.value">{{ col?.label }}</div>
 </div>
-<div class="fade-in il-draggable-expansion">
+<div *ngIf="finishedInspections" class="il-draggable-expansion">
   <mat-accordion cdkDropList (cdkDropListDropped)="drop($event)">
-    <mat-expansion-panel (click)="expandPnl(pnl, $event, i)" cdkDrag (cdkDragStarted)="dragStarted(true)" #pnl="matExpansionPanel" *ngFor="let item of items; let i = index" hideToggle="true">
-
-      <mat-expansion-panel-header (keydown.Space)="$event.stopImmediatePropagation()"
-      (keydown.Enter)="$event.stopImmediatePropagation()" (click)="onClickPnl(pnl, $event, i)" (mouseover)="mouseover(i)" (mouseleave)="mouseout()">
-        <div class="pnl-header" fxLayout="row" fxlayoutGap="20px" fxLayoutGap="10px">
-          <div fxFlex="45" fxLayoutGap="8px">
-            <img cdkDragHandle [src]="svgPath + 'drag-icon.svg'" />
-            <div fxFlex class="contact-title" [matTooltip]="item?.title" fxLayoutAlign="start center">
-              <span>{{item?.title}}</span>
-            </div>
+    <mat-expansion-panel (click)="expandPnl(pnl, $event, i)" cdkDrag (cdkDragStarted)="dragStarted(true)" #pnl="matExpansionPanel" *ngFor="let item of finishedInspections; let i = index" hideToggle="true">
+      
+      <mat-expansion-panel-header (keydown.Space)="$event.stopImmediatePropagation()" (keydown.Enter)="$event.stopImmediatePropagation()" (click)="onClickPnl(pnl, $event, i)" (mouseover)="mouseover(i)" (mouseleave)="mouseout()">
+        <div class="pnl-header" fxLayout="row" fxLayoutGap="10px">
+          <img cdkDragHandle [src]="svgPath + 'drag-icon.svg'" />
+          <div fxFlex="35" class="contact-title" [matTooltip]="item?.title" fxLayoutAlign="start center">
+            <span>{{item?.checklist_contract?.contract_name}}</span>
           </div>
-          <div fxFlex="35" class="assigned-to" [matTooltip]="item?.assignedTo" fxLayoutAlign="start center" fxLayoutGap="10px">
+          <div fxFlex="35" class="assigned-to" [matTooltip]="item?.user?.username" fxLayoutAlign="start center" fxLayoutGap="10px">
             <div class="img-circle">
-              <img [src]="imgPath + 'profile.png'" />
+              <img *ngIf="item?.user?.image" [src]="apiImagePath + item?.user?.image" />
+              <img *ngIf="!item?.user?.image" [src]="imgPath + 'no-image.png'" />
             </div>
-            <span>{{item?.assignedTo}}</span>
+            <span>{{ item?.user?.username }}</span>
           </div>
-          <div fxFlex="10" [matTooltip]="item?.startDate" fxLayoutAlign="start center">
-            <span>{{item?.startDate}}</span>
+          <div fxFlex="20" [matTooltip]="item?.desired_run_date" fxLayoutAlign="start center">
+            <span>{{ item?.desired_run_date | date: 'MM/dd/yyyy' }}</span>
           </div>
-          <div fxFlex="10" [matTooltip]="item?.endDate" fxLayoutAlign="start center">
-            <span>{{item?.endDate}}</span>
+          <div fxFlex="10" fxLayoutAlign="start center">
+            <span>{{ item?.inspectionCount }}</span>
           </div>
-          <div fxFlex="10" [matTooltip]="item?.dateRun" fxLayoutAlign="start center">
-            <span>{{item?.dateRun}}</span>
-          </div>
-          <div fxFlex="5" [matTooltip]="item?.dateRun" fxLayoutAlign="start center">
-            <span>{{item?.totalAmount}}</span>
-          </div>
-          <div class="action-col" fxFlex="3" fxLayoutAlign="end center">
-            <il-popover-menu [menus]="menus" class="action-col" (click)="$event.stopPropagation();"></il-popover-menu>
+          <div class="action-col" fxFlex="5" fxLayoutAlign="end center">
+            <img [src]="svgPath + 'dots-icon-blue.svg'" [matMenuTriggerFor]="menu" />
+            <mat-menu #menu="matMenu">
+              <button *ngFor="let menu of menus; let last = last" (click)="menu?.action(item)" mat-menu-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                <img [ngClass]="{'w-18': last}" [src]="svgPath + menu?.icon" />
+                <span>{{ menu?.label }}</span>
+              </button>
+            </mat-menu>
           </div>
         </div>
       </mat-expansion-panel-header>
 
-      <il-inspection-panel-detail *ngIf="!isCategory"></il-inspection-panel-detail>
+      <il-inspection-panel-detail *ngIf="!isCategory" [detail]="item"></il-inspection-panel-detail>
     </mat-expansion-panel>
   </mat-accordion>
 </div>

@@ -10,6 +10,7 @@ import { takeUntil, tap } from 'rxjs/operators';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 import { loadSavedChecklistAction } from 'src/app/modules/contracts/store/actions/saved-checklist.action';
+import { loadFinishInspectionAction } from '../../store/actions/inspection.action';
 
 @Component({
   selector: 'il-inspection-page',
@@ -43,22 +44,19 @@ export class InspectionPageComponent extends GenericDestroyPageComponent impleme
   }];
   public finishedCols: ISimpleItem[] = [{
     label: 'Contract Name',
-    value: '40'
+    value: '35'
   }, {
     label: 'Assigned to',
-    value: '32'
+    value: '35'
   }, {
-    label: 'Start Date',
+    label: 'Configured Run Date',
+    value: '20'
+  }, {
+    label: 'Run Count',
     value: '10'
   }, {
-    label: 'End Date',
-    value: '10'
-  }, {
-    label: 'Run Date',
-    value: '10'
-  }, {
-    label: 'Total Amount',
-    value: '10'
+    label: '',
+    value: '5'
   }];
   public $savedChecklists: Observable<IActiveInspection[]>;
   public activeInspections: IActiveInspection[];
@@ -66,14 +64,13 @@ export class InspectionPageComponent extends GenericDestroyPageComponent impleme
   constructor(private cdRef: ChangeDetectorRef, private store: Store<AppState>) {
     super();
     this.store.dispatch(loadSavedChecklistAction({}));
+    this.store.dispatch(loadFinishInspectionAction());
   }
 
   ngOnInit() {
     this.store.pipe(select(getActiveInspectionsSelector),
       takeUntil(this.$unsubscribe)).subscribe((res) => {
-        if (res) {
-          this.activeInspections = res;
-        }
+        if (res) this.activeInspections = res;
       });
   }
 

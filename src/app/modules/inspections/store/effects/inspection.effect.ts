@@ -1,5 +1,5 @@
 import { IActiveInspection, IInspectionChecklist, IInspectionRun, IInspectionRuntime, RunStatusType } from './../../inspections.models';
-import { loadActiveInspectionSuccessAction, runInspectionAction, runInspectionSuccessAction, createInspectionChecklistAction, createInspectionChecklistSuccessAction, loadInspectionRunAction, loadInspectionRunSuccessAction, runNextInspectionAction, runNextInspectionSuccessAction, runPrevInspectionAction, runPrevInspectionSuccessAction, changeInspectionRuntimeStatusAction, changeInspectionRuntimeStatusSuccessAction, deleteAndNavigateToAction, deleteAndNavigateToSuccessAction, copyInspectionAction, copyInspectionSuccessAction, navigateToInspectionAction, navigateToInspectionSuccessAction, navigateToFailed, deleteInspectionAction, deleteInspectionSuccessAction, loadInspectionDetailAction, loadInspectionDetailSuccessAction } from '../actions/inspection.action';
+import { loadActiveInspectionSuccessAction, runInspectionAction, runInspectionSuccessAction, createInspectionChecklistAction, createInspectionChecklistSuccessAction, loadInspectionRunAction, loadInspectionRunSuccessAction, runNextInspectionAction, runNextInspectionSuccessAction, runPrevInspectionAction, runPrevInspectionSuccessAction, changeInspectionRuntimeStatusAction, changeInspectionRuntimeStatusSuccessAction, deleteAndNavigateToAction, deleteAndNavigateToSuccessAction, copyInspectionAction, copyInspectionSuccessAction, navigateToInspectionAction, navigateToInspectionSuccessAction, navigateToFailed, deleteInspectionAction, deleteInspectionSuccessAction, loadInspectionDetailAction, loadInspectionDetailSuccessAction, finishInspectionSuccessAction, finishInspectionAction, loadFinishInspectionAction, loadFinishInspectionSuccessAction } from '../actions/inspection.action';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators';
@@ -14,6 +14,34 @@ import { SavedChecklistService } from 'src/app/modules/contracts/services/saved-
 
 @Injectable()
 export class InspectionEffect {
+  loadFinishInspectionAction$ = createEffect(() => this.actions$.pipe(
+    ofType(loadFinishInspectionAction),
+    mergeMap(() => {
+      return this.inspectionSrv.getAll('finished').pipe(
+        map((response: IActiveInspection[]) => {
+          return loadFinishInspectionSuccessAction({ response });
+        })
+      )
+    })
+  ))
+
+  finishInspectionAction$ = createEffect(() => this.actions$.pipe(
+    ofType(finishInspectionAction),
+    switchMap(({ payload }) => {
+      return this.inspectionSrv.patch(payload, 'finish').pipe(
+        tap(() => {
+          setTimeout(() => {
+            this.store.dispatch(loadSavedChecklistAction({}));
+            this.store.dispatch(loadFinishInspectionAction());
+          }, 1500);
+        }),
+        map((response: any) => {
+          return finishInspectionSuccessAction({ response });
+        })
+      )
+    })
+  ));
+
   navigateToInspectionAction$ = createEffect(() => this.actions$.pipe(
     ofType(navigateToInspectionAction),
     mergeMap(({ saved_checklist_id, position }) => {

@@ -1,10 +1,10 @@
 import { IActiveInspection, IFinishedInspection, IInspectionRun, RunStatusType } from './../../inspections.models';
-import { loadActiveInspectionSuccessAction, loadInspectionRunSuccessAction, clearLoadAction, updateSourceTermAction, runInspectionSuccessAction, changeInspectionRuntimeStatusSuccessAction, setPauseInspectionStatusAction, loadInspectionDetailSuccessAction } from '../actions/inspection.action';
+import { loadActiveInspectionSuccessAction, loadInspectionRunSuccessAction, clearLoadAction, updateSourceTermAction, runInspectionSuccessAction, changeInspectionRuntimeStatusSuccessAction, setPauseInspectionStatusAction, loadInspectionDetailSuccessAction, loadFinishInspectionSuccessAction } from '../actions/inspection.action';
 import { createReducer, on, Action } from "@ngrx/store";
 export interface InspectionState {
   loaded?: boolean;
   activeInspection?: IActiveInspection[],
-  finishedInspection?: IFinishedInspection[],
+  finishedInspections?: IFinishedInspection[],
   runInspection?: IInspectionRun
   isPaused?: boolean,
   detail?: IActiveInspection;
@@ -12,7 +12,7 @@ export interface InspectionState {
 export const initialState: InspectionState = {
   loaded: null,
   activeInspection: null,
-  finishedInspection: null,
+  finishedInspections: null,
   runInspection: null,
   isPaused: null,
   detail: null
@@ -52,6 +52,9 @@ const reducer = createReducer(
   }),
   on(clearLoadAction, (state) => {
     return Object.assign({}, state, { loaded: null });
+  }),
+  on(loadFinishInspectionSuccessAction, (state, action) => {
+    return Object.assign({}, state, { finishedInspections: action.response });
   }),
   on(loadActiveInspectionSuccessAction, (state, action) => {
     return Object.assign({}, state, { activeInspection: action.response });

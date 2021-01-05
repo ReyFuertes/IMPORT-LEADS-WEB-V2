@@ -4,7 +4,7 @@
 <div *ngIf="activeInspections" class="il-draggable-expansion">
   <mat-accordion cdkDropList (cdkDropListDropped)="drop($event)">
     <mat-expansion-panel (click)="expandPnl(pnl, $event, i)" cdkDrag (cdkDragStarted)="dragStarted(true)" #pnl="matExpansionPanel" *ngFor="let item of activeInspections; let i = index" hideToggle="true">
-
+      
       <mat-expansion-panel-header (keydown.Space)="$event.stopImmediatePropagation()" (keydown.Enter)="$event.stopImmediatePropagation()" (click)="onClickPnl(pnl, $event, i)" (mouseover)="mouseover(i)" (mouseleave)="mouseout()">
         <div class="pnl-header" fxLayout="row" fxLayoutGap="10px">
           <img cdkDragHandle [src]="svgPath + 'drag-icon.svg'" />
@@ -27,8 +27,8 @@
           <div class="action-col" fxFlex="5" fxLayoutAlign="end center">
             <img [src]="svgPath + 'dots-icon-blue.svg'" [matMenuTriggerFor]="menu" />
             <mat-menu #menu="matMenu">
-              <button *ngFor="let menu of menus" (click)="menu?.action(item)" mat-menu-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-                <img [src]="svgPath + menu?.icon" />
+              <button *ngFor="let menu of menus; let last = last" (click)="menu?.action(item)" mat-menu-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                <img [ngClass]="{'w-18': last}" [src]="svgPath + menu?.icon" />
                 <span>{{ menu?.label }}</span>
               </button>
             </mat-menu>

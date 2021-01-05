@@ -51,7 +51,6 @@ import { ChartModule } from 'primeng/chart';
 import { NavigateGuard } from 'src/app/services/navigate.guard';
 import { InspectionReportEffect } from './store/effects/inspection-report.effect';
 import { NgxEchartsModule } from 'ngx-echarts';
-import * as echarts from 'echarts';
 
 const routes: Routes = [{
   path: '',

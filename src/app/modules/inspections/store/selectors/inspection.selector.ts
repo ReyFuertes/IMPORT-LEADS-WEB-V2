@@ -26,6 +26,10 @@ export const getInspectionRunSelector = createSelector(
   selectContractModuleState,
   state => state?.inspection?.runInspection
 );
+export const getFinishedInspectionsSelector = createSelector(
+  selectContractModuleState,
+  state => state?.inspection?.finishedInspections
+);
 export const getActiveInspectionsSelector = createSelector(
   selectContractModuleState,
   state => state?.inspection?.activeInspection

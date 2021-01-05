@@ -12,6 +12,5 @@ import { Store, select } from '@ngrx/store';
 export class InspectionsContainerComponent extends GenericContainer implements OnInit {
   constructor(private store: Store<AppState>) {
     super();
-    
   }
 }

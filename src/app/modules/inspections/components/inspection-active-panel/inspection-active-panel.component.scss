@@ -36,6 +36,9 @@
   @include il-draggable-expansion;
   box-shadow: $box-shadow;
 }
+.w-18 {
+  width: 18px !important;
+}
 :host ::ng-deep {
   .mat-expansion-panel-header {
     padding-right: 10px;

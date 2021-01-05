@@ -31,7 +31,26 @@ export enum InspectionActionTypes {
   setPauseInspectionStatusAction = '[Inspection Checklist] set pause status inspection',
   loadInspectionDetailAction = '[Inspection Checklist] load inspection detail',
   loadInspectionDetailSuccessAction = '[Inspection Checklist] load inspection detail (success)',
+  finishInspectionAction = '[Inspection] finish inspection',
+  finishInspectionSuccessAction = '[Inspection] finish inspection (success)',
+  loadFinishInspectionAction = '[Inspection] load finish inspections',
+  loadFinishInspectionSuccessAction = '[Inspection] load finish inspections (success)',
 }
+export const loadFinishInspectionAction = createAction(
+  InspectionActionTypes.loadFinishInspectionAction
+);
+export const loadFinishInspectionSuccessAction = createAction(
+  InspectionActionTypes.loadFinishInspectionSuccessAction,
+  props<{ response: IActiveInspection[] }>()
+);
+export const finishInspectionAction = createAction(
+  InspectionActionTypes.finishInspectionAction,
+  props<{ payload: { id: string } }>()
+);
+export const finishInspectionSuccessAction = createAction(
+  InspectionActionTypes.finishInspectionSuccessAction,
+  props<{ response: IActiveInspection }>()
+);
 export const loadInspectionDetailAction = createAction(
   InspectionActionTypes.loadInspectionDetailAction,
   props<{ params: string }>()

@@ -79,7 +79,7 @@ export class InitAppEffect {
               this.store.dispatch(getUserAccessAction({ id: at.user.id }));
               this.store.dispatch(getUserRoleAction({ id: at.user.id }));
 
-              this.router.navigateByUrl('/dashboard/contracts');
+              //this.router.navigateByUrl('/dashboard/contracts');
             }
           }
         }),

@@ -6,6 +6,9 @@
   animation-timing-function: ease-in;
   animation-duration: 0.5s;
 }
+.img-box {
+  background-size: contain !important;
+}
 @keyframes fadeInOpacity {
   0% {
     opacity: 0;

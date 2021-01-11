@@ -1,4 +1,4 @@
-import { getContractById, getCachedImages, getUploadImageStateSelector, isAddingOrUpdatingSelector } from './../../../contracts/store/selectors/contracts.selector';
+import { getContractById, getCachedImages, isAddingOrUpdatingSelector } from './../../../contracts/store/selectors/contracts.selector';
 import { getVenuesSelector } from './../../../venues/store/venues.selector';
 import { ISimpleItem } from './../../../../shared/generics/generic.model';
 import { take, map, takeUntil } from 'rxjs/operators';

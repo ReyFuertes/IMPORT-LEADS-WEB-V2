@@ -28,10 +28,6 @@ export abstract class BaseService<T> {
     });
   }
 
-  private setEntityParam(param: string): any {
-    return param ? ['/', param].join('') : '';
-  }
-
   private removeNullProps(obj: any): any {
     let ret: any;
     if (!Array.isArray(obj)) {

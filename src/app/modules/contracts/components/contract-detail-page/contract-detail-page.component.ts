@@ -15,7 +15,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IContract, IProductImage, IContractCategory, ICategory, IContractCategoryTerm, IContractChecklistItem, IContractProduct, ISavedChecklistPayload, ICommonIdPayload, IContractTermProduct } from './../../contract.model';
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from './../../../../../environments/environment';
-import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { ContractAddDialogComponent } from 'src/app/modules/dialogs/components/contracts-add-dialog/contract-add-dialog.component';
 import { ContractTemplateDialogComponent } from 'src/app/modules/dialogs/components/contract-template/contract-template-dialog.component';
 import { GenericPageDetailComponent } from 'src/app/shared/generics/generic-page-detail';
@@ -61,8 +61,8 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   @Output() public openNavChange = new EventEmitter<boolean>();
   @ViewChild('scrollPnl', { static: false }) public scrollPnl: any;
 
-  constructor(private router: Router, private store: Store<AppState>, private route: ActivatedRoute, public fb: FormBuilder, public dialog: MatDialog) {
-    super();
+  constructor(private router: Router, private store: Store<AppState>, private route: ActivatedRoute, public fb: FormBuilder, public dialog: MatDialog, cdRef: ChangeDetectorRef) {
+    super(cdRef);
     this.form = this.fb.group({
       id: [null],
       contract_name: [null],
@@ -88,12 +88,6 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       icon: 'edit-icon-blue.svg',
       action: this.editContract
     },
-    // {
-    //   id: 2,
-    //   label: 'Download',
-    //   icon: 'download-icon-blue.svg',
-    //   action: this.onDownload
-    // },
     {
       id: 3,
       label: 'Create or update checklist',

@@ -1,7 +1,7 @@
 import { addItemToChecklistTermsAction, clearAllSelectedTerms, removeItemFromChecklistProductsAction, clearChecklistProductsAction, addItemToChecklistItemsAction, processItemsToChecklistAction, removeTermFormChecklistAction, processItemsToChecklistEntitiesAction, removeItemFromEntitiesAction, clearChecklistSourceAction, clearEntitiesAction } from './../../store/actions/contract-checklist.action';
 import { sortByAsc } from 'src/app/shared/util/sort';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
-import { ReOrderImagesAction, deleteContractAction } from './../../store/actions/contracts.action';
+import { reOrderImagesAction, deleteContractAction } from './../../store/actions/contracts.action';
 import { tap, take, map, takeUntil, debounceTime } from 'rxjs/operators';
 import { getContractCategorySelector } from './../../store/selectors/contract-category.selector';
 import { addContractCategoryAction, addMultipleContractCategoryAction, loadContractCategoryAction } from './../../store/actions/contract-category.action';
@@ -16,7 +16,7 @@ import { IContract, IProductImage, IContractCategory, ICategory, IContractCatego
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
-import { ContractAddDialogComponent } from 'src/app/modules/dialogs/components/contracts-add/contract-add-dialog.component';
+import { ContractAddDialogComponent } from 'src/app/modules/dialogs/components/contracts-add-dialog/contract-add-dialog.component';
 import { ContractTemplateDialogComponent } from 'src/app/modules/dialogs/components/contract-template/contract-template-dialog.component';
 import { GenericPageDetailComponent } from 'src/app/shared/generics/generic-page-detail';
 import { Observable, fromEvent, of } from 'rxjs';
@@ -399,7 +399,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     moveItemInArray(this.contractImages, event.previousIndex, event.currentIndex);
 
     /* update reorder images */
-    setTimeout(() => this.store.dispatch(ReOrderImagesAction({ images: this.contractImages })), 200);
+    setTimeout(() => this.store.dispatch(reOrderImagesAction({ images: this.contractImages })), 200);
   }
 
   public dropSpecs(event: CdkDragDrop<any[]>) {

@@ -3,13 +3,13 @@ import { createAction, props } from '@ngrx/store';
 
 export enum ContractActionTypes {
   deleteContractAction = '[Contract] Delete',
-  deleteContractSuccess = '[Contract] Delete (success)',
-  LoadContracts = '[Contract] Load',
-  LoadContractsSuccess = '[Contract] Load (success)',
+  deleteContractSuccessAction = '[Contract] Delete (success)',
+  LoadContractsAction = '[Contract] Load',
+  LoadContractsSuccessAction = '[Contract] Load (success)',
   addContractAction = '[Contract] Add',
   addContractSuccessAction = '[Contract] Add (success)',
-  UploadImages = '[Contract] Upload Images',
-  UploadImagesSuccess = '[Contract] Upload Images (success)',
+  UploadImagesAction = '[Contract] Upload Images',
+  UploadImagesSuccessAction = '[Contract] Upload Images (success)',
   ReorderImages = '[Contract] Reorder Images',
   ClearCachedImages = '[Contract] Clear Cached Images',
   updateContractAction = '[Contract] Update',
@@ -33,8 +33,8 @@ export const deleteContractAction = createAction(
   ContractActionTypes.deleteContractAction,
   props<{ id: string }>()
 );
-export const deleteContractSuccess = createAction(
-  ContractActionTypes.deleteContractSuccess,
+export const deleteContractSuccessAction = createAction(
+  ContractActionTypes.deleteContractSuccessAction,
   props<{ deleted: IContract }>()
 );
 export const updateContractAction = createAction(
@@ -54,18 +54,18 @@ export const addContractSuccessAction = createAction(
   props<{ created: IContract }>()
 );
 export const uploadContractImagesAction = createAction(
-  ContractActionTypes.UploadImages,
+  ContractActionTypes.UploadImagesAction,
   props<{ files: any }>()
 );
 export const uploadContractImageSuccessAction = createAction(
-  ContractActionTypes.UploadImagesSuccess,
-  props<{ Image?: boolean }>()
+  ContractActionTypes.UploadImagesSuccessAction,
+  props<{ images?: any }>()
 );
 export const cacheImagesAction = createAction(
-  ContractActionTypes.UploadImagesSuccess,
+  ContractActionTypes.UploadImagesSuccessAction,
   props<{ images: IProductImage[] }>()
 );
-export const ReOrderImagesAction = createAction(
+export const reOrderImagesAction = createAction(
   ContractActionTypes.ReorderImages,
   props<{ images: IProductImage[] }>()
 );
@@ -73,10 +73,10 @@ export const clearCachedImagesAction = createAction(
   ContractActionTypes.ClearCachedImages
 );
 export const loadContractsAction = createAction(
-  ContractActionTypes.LoadContracts,
+  ContractActionTypes.LoadContractsAction,
   props<{ param?: any }>()
 );
 export const loadContractSuccessAction = createAction(
-  ContractActionTypes.LoadContractsSuccess,
+  ContractActionTypes.LoadContractsSuccessAction,
   props<{ items: IContract[] }>()
 );

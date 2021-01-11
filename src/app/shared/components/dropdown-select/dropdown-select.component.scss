@@ -10,14 +10,6 @@
   }
 }
 ::ng-deep {
-  .mat-select, .mat-select-trigger {
-    min-height: 35px;
-    max-height: 35px;
-    height: 35px;
-  }
-  .mat-select-value {
-    padding-top: 8px !important;
-  }
   .mat-form-field .mat-select.mat-select-invalid .mat-select-arrow {
     color: $color-black-2 !important;
   }

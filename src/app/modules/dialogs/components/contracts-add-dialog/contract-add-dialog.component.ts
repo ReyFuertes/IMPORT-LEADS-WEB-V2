@@ -1,4 +1,4 @@
-import { getContractById, getCachedImages } from './../../../contracts/store/selectors/contracts.selector';
+import { getContractById, getCachedImages, getUploadImageStateSelector, isAddingOrUpdatingSelector } from './../../../contracts/store/selectors/contracts.selector';
 import { getVenuesSelector } from './../../../venues/store/venues.selector';
 import { ISimpleItem } from './../../../../shared/generics/generic.model';
 import { take, map, takeUntil } from 'rxjs/operators';
@@ -69,7 +69,9 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
 
   private formToEntity(item: IContract): void {
     if (!item) return;
+
     const { id, contract_name, venue, start_date, delivery_date, details, images } = item;
+
     this.form.controls['id'].patchValue(id);
     this.form.controls['contract_name'].patchValue(contract_name);
     this.form.controls['venue'].patchValue(venue?.id);
@@ -122,20 +124,27 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
 
     item.venue = { id: value, name: label };
     item.images = this.cnsFileObj(files);
-    
+
+    this.store.dispatch(uploadContractImagesAction({ files }));
+
     if (this.state === AddEditState.Add) {
       const locaUser = JSON.parse(localStorage.getItem('at')) || null;
       if (locaUser) {
         item.user = locaUser.user
       }
-
       /* save/upload contract */
       this.store.dispatch(addContractAction({ item }));
     } else {
       this.store.dispatch(updateContractAction({ item }));
     }
-    this.store.dispatch(uploadContractImagesAction({ files }));
-    this.dialogRef.close(true);
+
+    this.store.pipe(select(isAddingOrUpdatingSelector),
+      takeUntil(this.$unsubscribe)).subscribe(res => {
+        if(!res) {
+          debugger
+          this.dialogRef.close(true);
+        }
+      });
   }
 
   public getBg(base64: string): string {
@@ -171,7 +180,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
           }
         }))
       .subscribe((result) => {
-        this.store.dispatch(cacheImagesAction({ images: this.cachedImages.concat([result]) }))
+        this.store.dispatch(cacheImagesAction({ images: this.cachedImages.concat([result]) }));
       });
   }
 }

@@ -3,6 +3,10 @@ import { createSelector, createFeatureSelector } from '@ngrx/store';
 import * as fromContracts from '../reducers/contract.reducer'
 
 export const selectContractModuleState = createFeatureSelector<ContractModuleState>('contractsModule');
+export const isAddingOrUpdatingSelector = createSelector(
+  selectContractModuleState,
+  state => state?.contract?.isAddingOrUpdating
+);
 export const getUploadImageStateSelector = createSelector(
   selectContractModuleState,
   state => state.contract.isImageReady

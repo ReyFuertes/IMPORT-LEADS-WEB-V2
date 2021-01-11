@@ -1,43 +1,50 @@
-import { addImageUploadState, removeImageUploadState } from './../actions/contracts.action';
+import { addImageUploadState, removeImageUploadState, uploadContractImageSuccessAction } from './../actions/contracts.action';
 import { ContractModuleState } from './index';
-import { loadContractsAction, loadContractSuccessAction, addContractSuccessAction, cacheImagesAction, clearCachedImagesAction, updateContractSuccess, deleteContractSuccess } from '../actions/contracts.action';
+import { loadContractsAction, loadContractSuccessAction, addContractSuccessAction, cacheImagesAction, clearCachedImagesAction, updateContractSuccess, deleteContractSuccessAction, addContractAction } from '../actions/contracts.action';
 import { IContract, IProductImage, IContractProduct } from './../../contract.model';
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
-import { sortByDesc } from 'src/app/shared/util/sort';
 
 export interface ContractsState extends EntityState<IContract> {
   item?: IContract,
   created?: boolean,
   cachedImages: IProductImage[],
-  isImageReady: boolean
+  isImageReady: boolean,
+  isAddingOrUpdating: boolean
 }
-export const adapter: EntityAdapter<IContract> = createEntityAdapter<IContract>({
-  // sortComparer: (a, b) => sortByDesc(a, b, 'created_at')
-});
+export const adapter: EntityAdapter<IContract> = createEntityAdapter<IContract>({});
+
 export const initialState: ContractsState = adapter.getInitialState({
   item: null,
   created: null,
   cachedImages: null,
-  isImageReady: null
+  isImageReady: null,
+  isAddingOrUpdating: null
 });
 const contractsReducer = createReducer(
   initialState,
-  on(removeImageUploadState, (state, action) => {
-    return Object.assign({}, state, { isImageReady: null })
+  /* we need to check if the contract is updating or adding, so that it will sync with the event actions */
+  on(addContractAction, (state) => { 
+    return Object.assign({}, state, { isAddingOrUpdating: true })
   }),
+  on(addContractSuccessAction, (state) => {
+    return Object.assign({}, state, { isAddingOrUpdating: false })
+  }),
+  
   on(addImageUploadState, (state, action) => {
-    return Object.assign({}, state, { isImageReady: action.isImageReady })
+    return Object.assign({}, state, { isImageReady: action.isImageReady, isAddingOrUpdating: true })
   }),
-  on(deleteContractSuccess, (state, action) => {
+  on(uploadContractImageSuccessAction, (state) => {
+    return Object.assign({}, state, { isAddingOrUpdating: false })
+  }),
+  on(deleteContractSuccessAction, (state, action) => {
     return ({ ...adapter.removeOne(action.deleted.id, state) })
   }),
   on(loadContractsAction, (state) => {
     return ({ ...adapter.removeAll(state) });
   }),
   on(loadContractSuccessAction, (state, action) => {
-    
-    return ({ ...adapter.addAll(action.items, state) })
+    return ({ ...adapter.setAll(action.items, state) })
   }),
   on(updateContractSuccess, (state, action) => {
     return adapter.updateOne({ id: action.updated.id, changes: action.updated }, state)

@@ -45,8 +45,9 @@ table {
   height: 20px;
   margin-top: 5px;
 }
-.btn-edit__actions {
+.btn-edit-actions {
   margin-bottom: 20px;
+  margin-left: 0;
 }
 :host ::ng-deep {
   p {
@@ -65,8 +66,12 @@ table {
       width: 300px;
       .text-edit,
       .text-display {
-        padding-top: 15px;
-        padding-bottom: 15px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        height: 47px;
+      }
+      .text-edit img {
+        width: 40px;
       }
     }
     &:nth-child(2) {

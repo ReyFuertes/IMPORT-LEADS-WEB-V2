@@ -1,4 +1,4 @@
-import { updateContractTermSuccess } from './../actions/contract-term.actions';
+import { updateContractTermSuccessAction } from './../actions/contract-term.actions';
 import { sortByDesc } from 'src/app/shared/util/sort';
 import { ContractModuleState } from './index';
 import { addContractCategoryActionSuccess, loadContractCategoryActionSuccess, deleteContractCategoryActionSuccess, selTermsForChecklistAction, loadAllContractCategoryActionSuccess } from './../actions/contract-category.action';
@@ -44,16 +44,17 @@ const reducer = createReducer(
     }
     return Object.assign({}, state, { selTermsForChecklist: terms });
   }),
-  on(updateContractTermSuccess, (state, action) => {
+  on(updateContractTermSuccessAction, (state, action) => {
     let entities = Object.values(state.entities);
     /* update the term detail on inline editing in category tab */
-    entities?.forEach(entity => {
-      entity && entity?.terms?.forEach(term => {
+    entities?.forEach(en => {
+      en?.terms?.forEach(term => {
         if (term?.id === action?.updated?.id) {
           term = Object.assign({}, term, {
             term_name: action?.updated?.term_name,
             term_description: action?.updated?.term_description
-          })
+          });
+          console.log('updated term', term)
         }
       });
     });

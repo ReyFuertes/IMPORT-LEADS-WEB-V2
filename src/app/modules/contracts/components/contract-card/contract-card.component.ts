@@ -1,4 +1,3 @@
-import { User } from './../../../users/users.models';
 import { IContract } from './../../contract.model';
 import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, Input, ChangeDetectorRef, AfterViewInit } from '@angular/core';

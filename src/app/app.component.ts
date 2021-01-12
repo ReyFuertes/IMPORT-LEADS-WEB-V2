@@ -45,7 +45,7 @@ export class AppComponent extends GenericDestroyPageComponent implements OnInit,
         }
       });
 
-    //this.store.subscribe(res => console.log(res))
+    this.store.subscribe(res => console.log(res))
     this.$notify = this.store.pipe(select(getSuccessSelector), delay(100));
 
     /* check if user islogin then show the topnav */

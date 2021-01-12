@@ -141,7 +141,6 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
     this.store.pipe(select(isAddingOrUpdatingSelector),
       takeUntil(this.$unsubscribe)).subscribe(res => {
         if(!res) {
-          debugger
           this.dialogRef.close(true);
         }
       });

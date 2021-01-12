@@ -422,7 +422,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
     if (this.inCheckListing) return;
     /* assign selected item to form */
     const { _id, id, product_name, qty, cost, sub_products } = product;
-    debugger
+ 
     this.formSubProdsArr = null;
     this.initInputProduct = this.selectedProduct ? true : false;
 

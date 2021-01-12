@@ -71,7 +71,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       id: [null],
       term_name: [null],
       term_description: [null],
-      contact_category: [null],
+      contract_category: [null],
     });
 
     this.store.pipe(select(getChecklistSelector)).pipe(
@@ -183,16 +183,16 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
             contract_category: { id: this.contractCategory.id }
           }
           this.store.dispatch(addContractTermAction({ payload }));
-      
-          this.reloadContractCategory();
         }
       });
   }
 
   public onSave(e: any): void {
     e.stopImmediatePropagation();
-
+    
     if (this.form.value) {
+      this.form.get('contract_category').patchValue({ id: this.contractCategory.id });
+
       this.store.dispatch(updateContractTermAction({ payload: this.form.value }));
     }
 

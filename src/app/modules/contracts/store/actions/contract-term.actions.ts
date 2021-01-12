@@ -4,13 +4,13 @@ import { createAction, props } from '@ngrx/store';
 
 export enum TermActionTypes {
   addContractTermAction = '[Contract Term] Add',
-  addContractTermSuccess = '[Contract Term] Add (success)',
+  addContractTermSuccessAction = '[Contract Term] Add (success)',
   loadContractTerm = '[Contract Term] Load]',
   loadContractTermSuccess = '[Contract Term] Load (success)',
   deleteContractTermAction = '[Contract Term] Delete',
   deleteContractTermSuccess = '[Contract Term] Delete (success)',
   updateContractTermAction = '[Contract Term] Update',
-  updateContractTermSuccess = '[Contract Term] Update (success)',
+  updateContractTermSuccessAction = '[Contract Term] Update (success)',
   saveTermImageDetailAction = '[Contract Term] Save Image',
   saveTermImageSuccess = '[Contract Term] Save Image (success)'
 }
@@ -26,8 +26,8 @@ export const updateContractTermAction = createAction(
   TermActionTypes.updateContractTermAction,
   props<{ payload: IContractTerm }>()
 );
-export const updateContractTermSuccess = createAction(
-  TermActionTypes.updateContractTermSuccess,
+export const updateContractTermSuccessAction = createAction(
+  TermActionTypes.updateContractTermSuccessAction,
   props<{ updated: IContractTerm }>()
 );
 export const deleteContractTermAction = createAction(
@@ -42,7 +42,7 @@ export const addContractTermAction = createAction(
   TermActionTypes.addContractTermAction,
   props<{ payload: IContractTerm }>()
 );
-export const addContractTermSuccess = createAction(
-  TermActionTypes.addContractTermSuccess,
+export const addContractTermSuccessAction = createAction(
+  TermActionTypes.addContractTermSuccessAction,
   props<{ created: IContractTerm }>()
 );

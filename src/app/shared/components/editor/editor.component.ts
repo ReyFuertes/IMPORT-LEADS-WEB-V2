@@ -66,13 +66,13 @@ export class EditorComponent extends GenericDestroyPageComponent implements OnIn
 
     /* collect all drop images in base64 results */
     convertBlobToBase64(this.quillFile)
-      .pipe(take(1),
+      .pipe(
         takeUntil(this.$unsubscribe),
         map(b64Result => {
           return { id: uuid(), base64: b64Result }
         }))
       .subscribe((data) => {
-        
+
         this.base64 = data?.base64;
         /* store the image details*/
         const imagePayload = {
@@ -85,6 +85,8 @@ export class EditorComponent extends GenericDestroyPageComponent implements OnIn
           }
         }
         this.store.dispatch(saveTermImageDetailAction(imagePayload));
+
+        this.getbase64Image();
       });
   }
 
@@ -100,22 +102,30 @@ export class EditorComponent extends GenericDestroyPageComponent implements OnIn
     super();
   }
 
-  ngOnInit() {
+  public getbase64Image(): void {
     this.store.pipe(select(getUploadImageStateSelector),
-      debounceTime(1000), takeUntil(this.$unsubscribe)).subscribe(res => {
+      takeUntil(this.$unsubscribe)).subscribe(res => {
         if (res && this.meQuillRef) {
-          
-          /* display to editor */
-          let range = this.meQuillRef.getSelection();
-          /* set a default with for image so it will not ruin the preview */
-          this.meQuillRef.clipboard.dangerouslyPasteHTML(range.index, `<img width="300px" src="${this.base64}" />`);
+ 
+          try {
+            /* display to editor */
+            let range = this.meQuillRef.getSelection();
+            /* set a default with for image so it will not ruin the preview */
+            this.meQuillRef.clipboard.dangerouslyPasteHTML(range.index, `<img width="300px" src="${this.base64}" />`);
 
-          /* update value to form */
-          this.form.get(this.controlName).patchValue((this.meQuillRef.root.innerHTML));
+            /* update value to form */
+            this.form.get(this.controlName).patchValue((this.meQuillRef.root.innerHTML));
 
-          this.store.dispatch(removeImageUploadState());
+            this.store.dispatch(removeImageUploadState());
+          } catch (error) {
+            console.log('Fails to paste image')
+          }
         }
       })
+  }
+
+  ngOnInit() {
+
   }
 
   public sanitizeHtml(html: any): any {

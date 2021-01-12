@@ -161,9 +161,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       })).subscribe();
   }
 
-  public onDownload(): void {
-
-  }
+  public onDownload(): void {}
 
   public onReport(): void {
     this.router.navigateByUrl(`/report/${this.id}/agreement`);
@@ -323,7 +321,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
 
   public createUpdateTemplate = (): void => {
     if (!this.contractCategories ||
-      (this.contractCategories && this.contractCategories.length === 0)) {
+      (this.contractCategories && this.contractCategories?.length === 0)) {
       alert('Please add a category and terms');
       return;
     }

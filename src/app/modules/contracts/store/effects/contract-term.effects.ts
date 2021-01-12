@@ -44,11 +44,6 @@ export class ContractTermEffect {
     switchMap(({ payload }) => this.contractTermService.post(payload)
       .pipe(
         map((created: IContractTerm) => {
-          /* reload contract category */
-          setTimeout(() => {
-            this.store.dispatch(loadContractCategoryAction({ id: payload?.contract_category?.id }))
-          }, 1000);
-
           return addContractTermSuccessAction({ created });
         })
       ))

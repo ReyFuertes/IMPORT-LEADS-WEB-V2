@@ -1,4 +1,4 @@
-import { updateContractTermSuccessAction } from './../actions/contract-term.actions';
+import { addContractTermSuccessAction, updateContractTermSuccessAction } from './../actions/contract-term.actions';
 import { sortByDesc } from 'src/app/shared/util/sort';
 import { ContractModuleState } from './index';
 import { addContractCategoryActionSuccess, loadContractCategoryActionSuccess, deleteContractCategoryActionSuccess, selTermsForChecklistAction, loadAllContractCategoryActionSuccess } from './../actions/contract-category.action';
@@ -7,6 +7,8 @@ import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import * as _ from 'lodash';
 import { updateCategorysSuccess } from '../actions/category.action';
+import { waitForDebugger } from 'inspector';
+import { updateContractTermTagSuccessAction } from '../actions/contract-term-tag.action';
 
 export interface ContractCategoryState extends EntityState<IContractCategory> {
   selTermsForChecklist: IContractTerm[];
@@ -44,21 +46,71 @@ const reducer = createReducer(
     }
     return Object.assign({}, state, { selTermsForChecklist: terms });
   }),
-  on(updateContractTermSuccessAction, (state, action) => {
-    let entities = Object.values(state.entities);
-    /* update the term detail on inline editing in category tab */
-    entities?.forEach(en => {
-      en?.terms?.forEach(term => {
-        if (term?.id === action?.updated?.id) {
-          term = Object.assign({}, term, {
-            term_name: action?.updated?.term_name,
-            term_description: action?.updated?.term_description
-          });
-          console.log('updated term', term)
-        }
-      });
+  on(updateContractTermTagSuccessAction, (state, action) => {
+    let _entities = Object.assign([], Object.values(state.entities));
+    
+    const match = _entities.find(t => t.terms.find(tg => tg.id === action.updated.id));
+    let updatedTerms = match?.terms?.map(term => {
+      if (term.id === action.updated.id) {
+        return action.updated;
+      }
+      return term;
     });
-    return state;
+    debugger
+    const entities = _entities.map(en => {
+      if(en.id === action.updated.id) {
+        return Object.assign({}, en, {
+          contract_tag: action.updated.contract_tag
+        });
+      }
+      return en;
+    });
+
+    return Object.assign({}, state, { entities });
+  }),
+  on(addContractTermSuccessAction, (state, action) => {
+    let _entities = Object.values(state.entities);
+
+    const entities = _entities?.map(en => {
+      if (en?.id === action?.created?.contract_category?.id) {
+        let terms = Object.assign([], en.terms);
+
+        terms.push({
+          id: action?.created?.id,
+          term_name: action?.created?.term_name,
+          term_description: action?.created?.term_description
+        });
+
+        en = Object.assign({}, en, {
+          terms: terms
+        });
+      }
+      return en;
+    });
+
+    return Object.assign({}, state, { entities });
+  }),
+  on(updateContractTermSuccessAction, (state, action) => {
+    let _entities = Object.assign([], Object.values(state.entities));
+    
+    const match = _entities.find(t => t.terms.find(tg => tg.id === action.updated.id));
+    let updatedTerms = match?.terms?.map(term => {
+      if (term.id === action.updated.id) {
+        return action.updated;
+      }
+      return term;
+    });
+    
+    const entities = _entities.map(en => {
+      if(en.id === action.updated.contract_category.id) {
+        return Object.assign({}, en, {
+          terms: updatedTerms
+        });
+      }
+      return en;
+    });
+
+    return Object.assign({}, state, { entities });
   }),
   on(deleteContractCategoryActionSuccess, (state, action) => {
     return ({ ...adapter.removeOne(action.deleted.id, state) })

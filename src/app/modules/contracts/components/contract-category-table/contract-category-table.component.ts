@@ -8,25 +8,21 @@ import { AppState } from '../../../../store/app.reducer';
 import { Store, select } from '@ngrx/store';
 import { ITag } from '../../../tags/tags.model';
 import { Observable } from 'rxjs';
-import { ContractCategoryTermDialogComponent } from '../../../dialogs/components/contract-category-term/contract-category-term-dialog.component';
+import { ContractCategoryTermDialogComponent } from '../../../dialogs/components/contract-category-term-dialog/contract-category-term-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ISimpleItem } from '../../../../shared/generics/generic.model';
 import { environment } from '../../../../../environments/environment';
 import { trigger, transition, style, state, animate } from '@angular/animations';
 import { Component, OnInit, Input, OnChanges, SimpleChanges, AfterViewInit, ViewEncapsulation, EventEmitter, Output } from '@angular/core';
-import { map, take, tap, takeUntil, debounceTime } from 'rxjs/operators';
+import { map, tap, takeUntil } from 'rxjs/operators';
 import { IContractCategory } from '../../contract.model';
 import { deleteContractCategoryAction } from '../../store/actions/contract-category.action';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
-import { getSelectedTermsSelector, getchecklistProductsSelector, getChecklistSelector } from '../../store/selectors/contract-checklist.selector';
+import { getChecklistSelector } from '../../store/selectors/contract-checklist.selector';
 import { appNotification } from 'src/app/store/actions/notification.action';
-import { addItemToChecklistTermsAction } from '../../store/actions/contract-checklist.action';
 import { DomSanitizer } from '@angular/platform-browser';
-import { loadContractsAction } from '../../store/actions/contracts.action';
-import { loadProductsAction } from 'src/app/modules/products/store/products.actions';
-import { loadTags } from 'src/app/modules/tags/store/actions/tags.actions';
-import { loadSavedChecklistAction } from '../../store/actions/saved-checklist.action';
+import { updateContractTermTagAction } from '../../store/actions/contract-term-tag.action';
 
 @Component({
   selector: 'il-contract-category-table',
@@ -199,9 +195,6 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
     setTimeout(() => {
       this.selectedRow = null;
       this.selectedCol = null;
-
-      /* reload categories */
-      this.store.dispatch(loadContractCategoryAction({ id: this.contractCategory.contract.id }))
     }, 1000);
   }
 
@@ -255,8 +248,8 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       if (!this.inCheckListing) {
       }
     }
-
-    if (changes && changes.contractCategory && changes.contractCategory.currentValue)
+    
+    if (changes?.contractCategory?.currentValue)
       this.dataSource = new MatTableDataSource<any>(changes.contractCategory.currentValue.terms);
   }
 
@@ -266,7 +259,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
 
   public onTagUpdate(event: any, element: IContractTerm): void {
     if (event) {
-      this.store.dispatch(updateContractTermAction({
+      this.store.dispatch(updateContractTermTagAction({
         payload: {
           ...{
             id: element.id,

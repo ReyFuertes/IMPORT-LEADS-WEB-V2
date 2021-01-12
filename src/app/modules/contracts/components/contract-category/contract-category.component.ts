@@ -14,7 +14,6 @@ import { updateCategoryAction } from '../../store/actions/category.action';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
 import { takeUntil } from 'rxjs/operators';
 import { CategoryTemplateDialogComponent } from 'src/app/modules/dialogs/components/category-template/category-template-dialog.component';
-import { saveContractTemplateAction } from '../../store/actions/contract-template.action';
 import { saveCategoryTemplateAction } from '../../store/actions/Category-template.action';
 
 @Component({

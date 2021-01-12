@@ -1,4 +1,4 @@
-import { ContractCategoryTermDialogComponent } from './components/contract-category-term/contract-category-term-dialog.component';
+import { ContractCategoryTermDialogComponent } from './components/contract-category-term-dialog/contract-category-term-dialog.component';
 import { ProductAddDialogComponent } from './components/products-add/products-add-dialog.component';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { ConfirmationComponent } from './components/confirmation/confirmation.component';

@@ -49,14 +49,6 @@ const reducer = createReducer(
   on(updateContractTermTagSuccessAction, (state, action) => {
     let _entities = Object.assign([], Object.values(state.entities));
     
-    const match = _entities.find(t => t.terms.find(tg => tg.id === action.updated.id));
-    let updatedTerms = match?.terms?.map(term => {
-      if (term.id === action.updated.id) {
-        return action.updated;
-      }
-      return term;
-    });
-    debugger
     const entities = _entities.map(en => {
       if(en.id === action.updated.id) {
         return Object.assign({}, en, {

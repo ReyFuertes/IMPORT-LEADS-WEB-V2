@@ -73,12 +73,6 @@ export class ContractCategoryEffect {
     ofType(addContractCategoryAction),
     mergeMap(({ payload }) => this.contractCategorySrv.post(payload)
       .pipe(
-        tap((created) => {
-          if (created)
-            this.store.dispatch(appNotification({
-              notification: { success: true, message: 'Category successfully Saved' }
-            }))
-        }),
         map((created: IContractCategory) => {
           return addContractCategoryActionSuccess({ created });
         })

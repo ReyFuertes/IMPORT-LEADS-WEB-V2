@@ -1,5 +1,5 @@
 import { addItemToChecklistTermsAction, clearAllSelectedTerms, removeItemFromChecklistProductsAction, clearChecklistProductsAction, addItemToChecklistItemsAction, processItemsToChecklistAction, removeTermFormChecklistAction, processItemsToChecklistEntitiesAction, removeItemFromEntitiesAction, clearChecklistSourceAction, clearEntitiesAction } from './../../store/actions/contract-checklist.action';
-import { sortByAsc } from 'src/app/shared/util/sort';
+import { sortByAsc, sortByDesc } from 'src/app/shared/util/sort';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { reOrderImagesAction, deleteContractAction } from './../../store/actions/contracts.action';
 import { tap, take, map, takeUntil, debounceTime } from 'rxjs/operators';
@@ -147,7 +147,9 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
 
     this.store.pipe(select(getContractCategorySelector),
       takeUntil(this.$unsubscribe),
-      tap(cc => this.contractCategories = cc)).subscribe();
+      tap(res => {
+        this.contractCategories = res;
+      })).subscribe();
 
     this.store.pipe(select(getChecklistSelector),
       takeUntil(this.$unsubscribe))
@@ -161,7 +163,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       })).subscribe();
   }
 
-  public onDownload(): void {}
+  public onDownload(): void { }
 
   public onReport(): void {
     this.router.navigateByUrl(`/report/${this.id}/agreement`);

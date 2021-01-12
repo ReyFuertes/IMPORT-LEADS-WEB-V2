@@ -24,5 +24,5 @@ export function CategoryReducer(state: CategoryState, action: Action) {
 }
 export const getCategory = (state: ContractModuleState) => {
   const contracts: ICategory[] = state && state.category.entities ? Object.values(state.category.entities) : null;
-  return contracts && contracts.sort((a: ICategory, b: ICategory) => sortByDesc(a, b, 'created_at'));
+  return contracts?.sort((a: ICategory, b: ICategory) => sortByDesc(a, b, 'created_at'));
 };

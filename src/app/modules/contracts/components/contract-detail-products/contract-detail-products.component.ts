@@ -414,7 +414,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       children: Object.assign([], this.fmtSubProducts(sub_products)),
       contract: { id: this.contract.id, contract_name: this.contract?.contract_name }
     }
-    debugger
+    
     return ret;
   }
 
@@ -503,6 +503,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       .pipe(takeUntil(this.$unsubscribe))
       .subscribe(result => {
         if (result) {
+          
           let toRemove: IContractProduct;
           this.$contractProducts
             .pipe(takeUntil(this.$unsubscribe))
@@ -515,7 +516,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
             })
           /* remote product from the database */
           if (toRemove)
-            this.store.dispatch(deleteContractProduct({ id: toRemove._id }));
+            this.store.dispatch(deleteContractProduct({ id: toRemove._id || toRemove.id }));
 
           this.onResetForm();
         }

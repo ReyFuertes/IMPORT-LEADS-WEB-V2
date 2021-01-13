@@ -13,7 +13,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Store, select } from '@ngrx/store';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
-import { sortByAsc, sortByDesc } from 'src/app/shared/util/sort';
 
 @Component({
   selector: 'il-contract-overview-page',

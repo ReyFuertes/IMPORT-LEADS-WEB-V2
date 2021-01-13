@@ -24,13 +24,10 @@ export class ContractProductsEffect {
     mergeMap(({ payload }) =>
       this.contractProductService.patch(payload)
         .pipe(
-          tap((updated) => {
-            if (updated)
-              this.store.dispatch(appNotification({
-                notification: { success: true, message: 'Product successfully Updated' }
-              }));
-          }),
           map((updated: any) => {
+            /* reload contract products */
+            this.store.dispatch(loadContractProducts({ id: payload?.contract?.id }));
+
             return updateContractProductsSuccess({ updated });
           })
         ))

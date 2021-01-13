@@ -5,7 +5,7 @@ import { getSelectedProductsSelector } from './../../store/selectors/contract-pr
 import { getProductsSelector } from './../../../products/store/products.selector';
 import { IProduct } from './../../../products/products.model';
 import { getAllContractProductsSelector } from './../../store/selectors/contracts.selector';
-import { addContractProducts, deleteContractProduct, updateContractProduct, selectProductAction, removeSelectedProductAction, clearPreSelectProducts } from './../../store/actions/contract-product.action';
+import { addContractProducts, deleteContractProduct, updateContractProduct, selectProductAction, removeSelectedProductAction, clearPreSelectProducts, loadContractProducts } from './../../store/actions/contract-product.action';
 import { AppState } from 'src/app/store/app.reducer';
 import { Store, select } from '@ngrx/store';
 import { PillStateType, IContract, IContractProduct, IContractChecklistItem, ICommonIdPayload, IContractTermProduct, ProductStatusType } from './../../contract.model';
@@ -19,6 +19,7 @@ import { take, takeUntil, tap, debounceTime } from 'rxjs/operators';
 import { Subject, Observable, pipe, of } from 'rxjs';
 import * as _ from 'lodash';
 import { GenericDetailPageComponent } from 'src/app/shared/generics/generic-detail-page';
+import { sortByDesc } from 'src/app/shared/util/sort';
 
 @Component({
   selector: 'il-contract-detail-products',
@@ -140,6 +141,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
         const child = p.map(p => {
           return { id: p.id, product_name: p.product_name }
         });
+
         /* get all suggestions */
         this.suggestions = child.map(cp => {
           const _parents = parent.filter(_p => _p.parent.id === cp.id)
@@ -370,14 +372,18 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
       /* reload checklist so it will be shown when checklisting */
       this.store.dispatch(loadActiveInspectionAction());
+
+
+      /* reload contract products */
+      this.store.dispatch(loadContractProducts({ id: this.contract?.id }));
     }
   }
 
   private getName(name: any): any {
     if (typeof (name) === 'object') {
-      return name.label && name.label.split('-')[0].trim() || '';
+      return name?.label && name?.label?.trim() || '';
     }
-    return name.trim() || '';
+    return name?.trim() || '';
   }
 
   private getId(obj: any): any {
@@ -402,7 +408,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
   private fmtPayload(formValue: IProduct): any {
     const { id, product_name, qty, cost, sub_products } = formValue;
-    
+
     const pid: string = this.getId(product_name);
     const ret = {
       parent: _.pickBy({
@@ -414,7 +420,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       children: Object.assign([], this.fmtSubProducts(sub_products)),
       contract: { id: this.contract.id, contract_name: this.contract?.contract_name }
     }
-    
+
     return ret;
   }
 
@@ -490,7 +496,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       qty: [this.form.get('qty').value, Validators.required],
       cost: [1, Validators.required]
     });
-    debugger
+
     this.formSubProdsArr.push(result);
   }
 
@@ -503,7 +509,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       .pipe(takeUntil(this.$unsubscribe))
       .subscribe(result => {
         if (result) {
-          
+
           let toRemove: IContractProduct;
           this.$contractProducts
             .pipe(takeUntil(this.$unsubscribe))
@@ -513,6 +519,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
               if (index > -1) {
                 p.splice(index, 1);
               }
+              p.sort((a, b) => sortByDesc(a, b, 'created_at'));
             })
           /* remote product from the database */
           if (toRemove)
@@ -542,22 +549,32 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
           this.$contractProducts
             .pipe(takeUntil(this.$unsubscribe))
             .subscribe(p => {
-              p && p.forEach(p => {
-                p.sub_products.forEach(sp => {
-                  if (sp.id === product.id) {
-                    const index = p.sub_products.indexOf(sp);
-                    if (index > -1) {
-                      p.sub_products.splice(index, 1);
-                      toRemove = sp;
-                    }
-                    return;
-                  }
-                });
-              });
+
+              let parent = Object.assign([], p.find(t => t.sub_products.find(tg => tg.id === product.id)));
+              const sub_products = parent.sub_products.map(sp => {
+                if (sp.id === product.id) {
+                  toRemove = sp;
+                  return;
+                }
+                return sp;
+              }).filter(i => Boolean(i));
+
+              const _p = Object.assign(parent, { sub_products });
+
+              const index = p.findIndex(p => p.id === _p.id);
+              if (index > -1) {
+                p.splice(index, 1);
+              }
+              p.push(_p);
+
+              p.sort((a, b) => sortByDesc(a, b, 'created_at'));
+
+              return;
             })
+
           /* remote sub product from the database */
           if (toRemove) {
-            this.store.dispatch(deleteContractProduct({ id: toRemove._id }));
+            this.store.dispatch(deleteContractProduct({ id: toRemove._id || toRemove.id }));
             this.onResetForm();
           }
         }

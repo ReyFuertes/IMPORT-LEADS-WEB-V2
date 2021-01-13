@@ -377,7 +377,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
     if (typeof (name) === 'object') {
       return name.label && name.label.split('-')[0].trim() || '';
     }
-    return name.split('-')[0].trim() || '';
+    return name.trim() || '';
   }
 
   private getId(obj: any): any {
@@ -402,9 +402,9 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
   private fmtPayload(formValue: IProduct): any {
     const { id, product_name, qty, cost, sub_products } = formValue;
-
+    
     const pid: string = this.getId(product_name);
-    return {
+    const ret = {
       parent: _.pickBy({
         _id: id,
         id: pid ? pid : id,
@@ -413,7 +413,9 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       }, _.identity),
       children: Object.assign([], this.fmtSubProducts(sub_products)),
       contract: { id: this.contract.id, contract_name: this.contract?.contract_name }
-    };
+    }
+    debugger
+    return ret;
   }
 
   public onEdit(product: IProduct): void {

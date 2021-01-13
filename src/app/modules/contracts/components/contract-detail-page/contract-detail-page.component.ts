@@ -296,19 +296,16 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       height: '455px',
       width: '700px'
     });
-    dialogRef.afterClosed().subscribe((payload: any[]) => {
-      if (payload && payload.length > 0) {
-        payload = payload.map(p => {
-          delete p.id;
-          delete p.contract;
-          return {
-            ...p,
-            contract: {
-              id: this.form.get('id').value,
-              contract_name: this.form.get('contract_name').value
-            }
-          };
-        });
+    dialogRef.afterClosed().subscribe((payload: any) => {
+      if (payload) {
+        payload = [{
+          ...payload,
+          contract: {
+            id: this.form.get('id').value,
+            contract_name: this.form.get('contract_name').value
+          }
+        }]
+
         this.store.dispatch(addMultipleContractCategoryAction({ payload }));
 
         /* reload all contract category */

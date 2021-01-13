@@ -29,13 +29,14 @@ export class InspectionEffect {
     ofType(finishInspectionAction),
     switchMap(({ payload }) => {
       return this.inspectionSrv.patch(payload, 'finish').pipe(
-        tap(() => {
+        map((response: any) => {
+
+          /* refresh active inspections */
           setTimeout(() => {
             this.store.dispatch(loadSavedChecklistAction({}));
             this.store.dispatch(loadFinishInspectionAction());
-          }, 1500);
-        }),
-        map((response: any) => {
+          });
+
           return finishInspectionSuccessAction({ response });
         })
       )

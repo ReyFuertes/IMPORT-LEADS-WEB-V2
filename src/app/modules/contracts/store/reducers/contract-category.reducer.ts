@@ -7,7 +7,6 @@ import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import * as _ from 'lodash';
 import { updateCategorysSuccess } from '../actions/category.action';
-import { waitForDebugger } from 'inspector';
 import { updateContractTermTagSuccessAction } from '../actions/contract-term-tag.action';
 
 export interface ContractCategoryState extends EntityState<IContractCategory> {
@@ -117,7 +116,3 @@ const reducer = createReducer(
 export function ContractCategoryReducer(state: ContractCategoryState, action: Action) {
   return reducer(state, action);
 }
-// export const getContractCategory = (state: ContractModuleState) => {
-//   const contracts: IContractCategory[] = state && state?.contractCategory?.entities ? Object.values(state?.contractCategory.entities) : null;
-//   return contracts && contracts?.sort((a: IContractCategory, b: IContractCategory) => sortByDesc(a, b, 'created_at'));
-// };

@@ -9,7 +9,7 @@
   width: fit-content !important;
   &:disabled {
     cursor: not-allowed;
-    opacity: 1;
+    opacity: 0.8 !important;
     background-color: $color-gray-3;
     color: $color-black-1;
     cursor: not-allowed;

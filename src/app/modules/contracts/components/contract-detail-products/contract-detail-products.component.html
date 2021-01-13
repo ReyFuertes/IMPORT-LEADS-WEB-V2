@@ -58,7 +58,7 @@
             <il-input-select fxFlex [form]="form" [controlName]="'product_name'" [suggestions]="suggestions" [isReadOnly]="inCheckListing || isNavOpenAndEdit"></il-input-select>
             <il-input fxFlex="15" [form]="form" [isReadOnly]="isNavOpenAndEdit" [isNumberOnly]="true" [controlName]="'qty'" placeholder="Enter quantity" [isReadOnly]="inCheckListing"></il-input>
             <il-input fxFlex="15" [form]="form" [isReadOnly]="isNavOpenAndEdit" [isNumberOnly]="true" [controlName]="'cost'" [showErrors]="hasSubProducts" placeholder="Enter unit cost"></il-input>
-            <div fxFlex="5"></div>
+            <!-- <div fxFlex="5"></div> -->
           </div>
         </ng-container>
 
@@ -82,14 +82,14 @@
 
       <div class="form-value" *ngIf="isAddState && !inCheckListing" fxFlex="180px" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
         <ng-container>
-          <button matTooltip="Save" *ngIf="!isEditProduct" mat-flat-button class="il-button primary" (click)="onAdd()">
-            <span>Save Product</span>
+          <button matTooltip="Save" [disabled]="!form.valid" *ngIf="!isEditProduct" mat-flat-button class="il-button primary" (click)="onAdd()">
+            <span>Save Product1</span>
           </button>
           <button matTooltip="Save" [disabled]="!form.valid" *ngIf="isEditProduct" mat-flat-button class="il-button primary" (click)="onSave()">
             <span>Update Product</span>
           </button>
           <div fxFlex="50px" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-            <mat-checkbox matTooltip="Remove Child Product" [checked]="hasSubProducts" [disabled]="!form.valid" (change)="onShowSubProduct()"></mat-checkbox>
+            <!-- <mat-checkbox matTooltip="Remove Child Product" [checked]="hasSubProducts" [disabled]="!form.valid" (change)="onShowSubProduct()"></mat-checkbox> -->
             <img *ngIf="form.valid" matTooltip="Add Child Product" (click)="onAddSubProduct()" class="add-icon" [src]="svgPath + 'add-icon-blue.svg'" />
           </div>
         </ng-container>

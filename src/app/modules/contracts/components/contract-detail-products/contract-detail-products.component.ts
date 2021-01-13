@@ -72,8 +72,6 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
           const childsCost = children.reduce((sum, current) => parseFloat(sum) + parseFloat(current.cost), 0) || 0;
           const parentCost = this.form.get('cost').value;
 
-          console.log(parseFloat(parentCost), parseFloat(childsCost));
-
           /* if the value of input is less than the value of sub products cost total, mark as invalid error */
           if (parseFloat(childsCost) !== parseFloat(parentCost)) {
             this.form.controls['cost'].setErrors({ 'invalid': true });
@@ -86,11 +84,11 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
             }
           }
 
-          // if (parseFloat(childsCost) > parseFloat(parentCost)) {
-          //   this.form.controls['cost'].setErrors({ 'invalid': true });
-          // } else {
-          //   this.form.controls['cost'].setErrors(null);
-          // }
+          if (parseFloat(childsCost) > parseFloat(parentCost)) {
+            this.form.controls['cost'].setErrors({ 'invalid': true });
+          } else {
+            this.form.controls['cost'].setErrors(null);
+          }
 
           /* check if the sub product is edited then update the id */
           this.formSubProdsArr = this.form.get('sub_products') as FormArray;
@@ -422,7 +420,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
     if (this.inCheckListing) return;
     /* assign selected item to form */
     const { _id, id, product_name, qty, cost, sub_products } = product;
- 
+
     this.formSubProdsArr = null;
     this.initInputProduct = this.selectedProduct ? true : false;
 
@@ -437,9 +435,11 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
     const subProducts = this.fmtSubProducts(sub_products);
     this.formSubProdsArr = this.form.get('sub_products') as FormArray;
+
     if (this.formSubProdsArr)
       this.formSubProdsArr.clear();
-    subProducts && subProducts.forEach(subItem => {
+
+    subProducts?.forEach(subItem => {
       const item = this.createSubItem({
         _id: subItem._id,
         id: subItem.id,
@@ -481,13 +481,14 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
   public onAddSubProduct(): void {
     this.formSubProdsArr = this.form.get('sub_products') as FormArray;
-    /* add empty placehold product */
-    const result = this.createSubItem({
-      product_name: '',
-      qty: this.form.get('qty').value,
-      cost: 1,
-    });
 
+    /* add placehold product */
+    const result = this.createSubItem({
+      product_name: ['', Validators.required],
+      qty: [this.form.get('qty').value, Validators.required],
+      cost: [1, Validators.required]
+    });
+    debugger
     this.formSubProdsArr.push(result);
   }
 

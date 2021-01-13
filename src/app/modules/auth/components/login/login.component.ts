@@ -9,6 +9,8 @@ import { Observable, of } from 'rxjs';
 import { loginAction, isLoggingInAction } from '../../store/auth.action';
 import { getIsLoggingInSelector, getIsLoginFailedSelector } from 'src/app/store/selectors/app.selector';
 import { ISimpleItem } from 'src/app/shared/generics/generic.model';
+import { textRegex } from 'src/app/shared/util/text';
+import { emailRegex } from 'src/app/shared/util/email';
 
 @Component({
   selector: 'il-login',
@@ -27,7 +29,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private store: Store<AppState>, private fb: FormBuilder) {
     this.form = this.fb.group({
-      username: ['tammyli@cilchina.com', Validators.compose([Validators.required])],
+      username: ['tammyli@cilchina.com', Validators.compose([Validators.required, Validators.pattern(emailRegex.email)])],
       password: ['p@55w0rd', Validators.required],
       // company: ['Test Company', Validators.required],
     });

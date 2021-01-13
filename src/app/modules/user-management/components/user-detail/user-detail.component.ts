@@ -13,6 +13,8 @@ import { tap, debounceTime, takeUntil } from 'rxjs/operators';
 import { IUser } from '../../user-mgmt.model';
 import { getUserByIdSelector } from '../../store/user-mgmt.selectors';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
+import { textRegex } from 'src/app/shared/util/text';
+import { emailRegex } from 'src/app/shared/util/email';
 
 @Component({
   selector: 'il-user-detail',
@@ -31,7 +33,7 @@ export class UserDetailComponent extends GenericDestroyPageComponent implements 
     super();
     this.form = this.fb.group({
       id: [null],
-      username: [null, Validators.required],
+      username: [null, Validators.compose([Validators.required, Validators.pattern(emailRegex.email)])],
       user_access: [null],
       user_role: [null],
       password: [null, Validators.required],

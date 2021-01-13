@@ -87,6 +87,13 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
     this.selectedItem = item;
   }
 
+  public onSpace(pnl: any, event: any): void {
+    console.log(event.target.value)
+    if (event.target.classList.contains('no-expand')) {
+      pnl.close();
+    }
+  }
+
   public onSave(): void {
     if (this.selectedItem) {
       this.store.dispatch(addVenueAction({ item: this.selectedItem }));
@@ -128,14 +135,14 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
 
   public onClickPnl(pnl: any, event: any, i: number, item: IVenue): void {
     if (item && item.related_products && item.related_products.length === 0) {
-      pnl.close();
+      //pnl.close();
     }
-
+    
     if (item)
       this.selectedItem = item;
 
     if (event.target.classList.contains('no-expand')) {
-      pnl.close();
+      //pnl.close();
     }
 
     if (event.target.classList.contains('delete')) {
@@ -152,17 +159,17 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
           }, 100);
         }
       });
-      pnl.close();
+      //pnl.close();
     }
 
     if (event.target.classList.contains('edit')) {
       this.selectedIndex = i;
-      pnl.close();
+      //pnl.close();
     }
 
     if (event.target.classList.contains('close')) {
       this.selectedIndex = null;
-      pnl.close();
+      //pnl.close();
     }
   }
 

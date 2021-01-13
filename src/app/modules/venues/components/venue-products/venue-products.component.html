@@ -2,17 +2,17 @@
   <div *ngFor="let col of colsHeader; let last = last" [fxFlex]="col?.width">{{ col?.label }}</div>
 </div>
 <div class="il-draggable-expansion">
-  <mat-accordion cdkDropList (cdkDropListDropped)="drop($event)">
-    <mat-expansion-panel #pnl cdkDrag (cdkDragStarted)="dragStarted(true)" #pnl="matExpansionPanel" *ngFor="let item of items; let i = index" hideToggle="true" [expanded]="false">
+  <div cdkDropList (cdkDropListDropped)="drop($event)">
+    <div class="row" #pnl cdkDrag (cdkDragStarted)="dragStarted(true)" *ngFor="let item of items; let i = index" hideToggle="true">
 
-      <mat-expansion-panel-header (keydown.Space)="$event.stopImmediatePropagation()" (keydown.Enter)="$event.stopImmediatePropagation()" (keydown.Enter)="$event.stopImmediatePropagation()" (click)="onClickPnl(pnl, $event, i, item)"
-        (mouseover)="mouseover(i)" (mouseleave)="mouseout()">
-        <div class="pnl-header" fxLayout="row" fxLayoutGap="10px">
+      <div (keydown.Space)="$event.stopPropagation()" (keydown.Enter)="$event.stopPropagation()" (click)="onClickPnl(pnl, $event, i, item)" (mouseover)="mouseover(i)" (mouseleave)="mouseout()">
+
+        <div fxFlex class="pnl-header" fxLayout="row" fxLayoutGap="10px">
           <img cdkDragHandle [src]="svgPath + 'drag-icon.svg'" />
-          <div class="venue-img" fxLayoutAlign="start center">
-            <img matTooltip="Change image" (click)="uploader.click()" cdkDragHandle [src]="item?.image ? imageApiPath + item?.image?.filename : imgPath + 'no-image-40x40x.png'" />
+          <div class="venue-img" matTooltip="Change Image" fxLayoutAlign="start center">
+            <img (click)="uploader.click()" cdkDragHandle [src]="item?.image ? imageApiPath + item?.image?.filename : imgPath + 'no-image-40x40x.png'" />
             <input #uploader hidden name="file" type="file" (change)="uploadImage($event, item)" />
-            
+
           </div>
           <div fxFlex="28" fxLayoutAlign="start center">
             <span *ngIf="selectedIndex !== i">{{item?.name}}</span>
@@ -60,11 +60,8 @@
             <img [src]="svgPath + 'save-icon-blue.svg'" class="no-expand" (click)="onSave()" matTooltip="Save">
           </div>
         </div>
-      </mat-expansion-panel-header>
-      <div>
-        <il-venue-expansion-list *ngIf="item?.related_products && item?.related_products.length > 0" [items]="item?.related_products"></il-venue-expansion-list>
       </div>
-    </mat-expansion-panel>
-  </mat-accordion>
+    </div>
+  </div>
 
 </div>

@@ -1,8 +1,18 @@
 @import "src/styleguide/shared";
-.venue-img img {
-  width: 40px;
-  height: 40px;
-  border-radius: 2px;
+.venue-img {
+  cursor: pointer;
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 2px;
+  }
+}
+.row {
+  border-bottom: thin $color-gray-3 solid;
+  background-color: $color-white;
+  > div {
+    padding-left: 10px;
+  }
 }
 .col-header {
   font-size: 12px;

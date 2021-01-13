@@ -8,8 +8,9 @@
   height: 250px;
 }
 h2 {
-  line-height: 32px;
   color: $color-black-2;
+  line-height: 26px;
+  font-size: 21px;
 }
 :host ::ng-deep {
   .mat-expansion-panel-header {

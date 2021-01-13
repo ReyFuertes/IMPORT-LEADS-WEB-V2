@@ -3,20 +3,20 @@
     <div class="content" fxLayout="column" fxLayoutGap="20px">
       <div class="detail" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
         <div fxFlex="15" fxLayout="column">
-          <span>Сontact Person</span>
-          <span>{{ ($detail | async)?.user?.username }}</span>
+          <div>Сontact Person</div>
+          <div>{{ ($detail | async)?.user?.username }}</div>
         </div>
         <div fxFlex="15" fxLayout="column">
-          <span>Phone Number</span>
-          <span>{{ ($detail | async)?.venue?.phone }}</span>
+          <div>Phone Number</div>
+          <div>{{ ($detail | async)?.venue?.phone }}</div>
         </div>
         <div fxFlex="15" fxLayout="column">
-          <span>Venue</span>
-          <span>{{ ($detail | async)?.venue?.name }}</span>
+          <div>Venue</div>
+          <div>{{ ($detail | async)?.venue?.name }}</div>
         </div>
         <div fxFlex fxLayout="column">
-          <span>Address</span>
-          <span>{{ ($detail | async)?.venue?.location }}</span>
+          <div>Address</div>
+          <div>{{ ($detail | async)?.venue?.location }}</div>
         </div>
       </div>
     </div>

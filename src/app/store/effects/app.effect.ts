@@ -1,10 +1,10 @@
 import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { tap, map, switchMap } from 'rxjs/operators';
+import { tap, map, switchMap, takeUntil, filter } from 'rxjs/operators';
 import { initAppAction, initAppSuccessAction, loadAccessAction, loadAccessSuccessAction, loadAllRolesAction, loadAllRolesSuccessAction, getUserAccessAction, getUserAccessSuccessAction, getUserRoleAction, getUserRoleSuccessAction } from '../actions/app.action';
 import { logoutAction, logoutSuccessAction } from 'src/app/modules/auth/store/auth.action';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { loadVenuesAction } from 'src/app/modules/venues/store/venues.action';
 import { IAccess } from 'src/app/models/user.model';
@@ -73,14 +73,14 @@ export class InitAppEffect {
             this.store.dispatch(loadAccessAction());
             this.store.dispatch(loadAllRolesAction());
             this.store.dispatch(loadAllUsersAction());
-            
+
             const at = JSON.parse(localStorage.getItem('at')) || null;
-            if (at && at?.user) {
+            const isLoggedIn = at?.user;
+            if (isLoggedIn) {
               this.store.dispatch(getUserAccessAction({ id: at.user.id }));
               this.store.dispatch(getUserRoleAction({ id: at.user.id }));
-
-              //this.router.navigateByUrl('/dashboard/contracts');
             }
+            this.isInloginpage(isLoggedIn);
           }
         }),
         map((accessToken: any) => {
@@ -92,6 +92,18 @@ export class InitAppEffect {
         })
       ))
   ));
+
+  public isInloginpage(isLoggedIn: boolean): void {
+    this.router.events
+      .pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe((e: NavigationEnd) => {
+        const inLoginPage = e.urlAfterRedirects.includes('login');
+
+        if (isLoggedIn && inLoginPage) {
+          this.router.navigateByUrl('/dashboard/contracts');
+        }
+      });
+  }
 
   constructor(private store: Store<AppState>, private actions$: Actions,
     private router: Router, private accessSrv: AccessService, private userAccessSrv: UserAccessService,

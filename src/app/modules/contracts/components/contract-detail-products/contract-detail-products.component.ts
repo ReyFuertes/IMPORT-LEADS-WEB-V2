@@ -372,10 +372,6 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
       /* reload checklist so it will be shown when checklisting */
       this.store.dispatch(loadActiveInspectionAction());
-
-
-      /* reload contract products */
-      this.store.dispatch(loadContractProducts({ id: this.contract?.id }));
     }
   }
 

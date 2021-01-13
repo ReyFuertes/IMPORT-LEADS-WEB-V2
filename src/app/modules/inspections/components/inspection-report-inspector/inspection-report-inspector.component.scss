@@ -1,6 +1,7 @@
 @import "src/styleguide/shared";
 .detail {
-  > div span {
+  > div > div {
+    height: 20px;
     &:first-child {
       font-size: 12px;
       font-weight: normal;

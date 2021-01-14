@@ -55,8 +55,17 @@ export class InspectionCommentDialogComponent extends GenericDestroyPageComponen
     this.$cachedImages.pipe(takeUntil(this.$unsubscribe),
       tap((res) => {
         if (res) {
-          this.cachedImages.push(...res);
+          res.forEach(img => {
+            const index: number = this.cachedImages.indexOf(img);
+            if (index !== -1) {
+              this.cachedImages.splice(index, 1);
+            } else {
+              this.cachedImages.push(img);
+            }
+          });
 
+          //this.cachedImages.push(...res);
+          
           this.form.get('images').patchValue(this.cachedImages);
         }
       })).subscribe();
@@ -80,7 +89,7 @@ export class InspectionCommentDialogComponent extends GenericDestroyPageComponen
         takeUntil(this.$unsubscribe),
         map(b64Result => {
           return {
-            id: uuid(),
+            //id: uuid(),
             image: b64Result,
             filename: `${uuid()}.${file.name.split('?')[0].split('.').pop()}`,
             file: file,
@@ -121,7 +130,7 @@ export class InspectionCommentDialogComponent extends GenericDestroyPageComponen
   }
 
   public get hasImgs(): boolean {
-    return this.cachedImages && this.cachedImages.length > 0;
+    return this.cachedImages?.length > 0;
   }
 
   public onRemoveCachedImage(image: IInspectionChecklistImage): void {

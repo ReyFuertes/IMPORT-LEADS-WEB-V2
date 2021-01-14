@@ -2,14 +2,14 @@ import { ISimpleItem } from '../../../../shared/generics/generic.model';
 import { InspectionCommentDialogComponent } from '../../../dialogs/components/inspection-comment/inspection-comment-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, Input, SimpleChanges, OnChanges, ChangeDetectorRef } from '@angular/core';
-import { IInsChecklistTerm, IInspectionChecklistImage, IInspectionRun, IInspectionRunItem, InspectionVeriType, RunStatusType } from '../../inspections.models';
+import { IInsChecklistTerm, IInspectionChecklistImage, IInspectionRunItem, InspectionVeriType, RunStatusType } from '../../inspections.models';
 import * as _ from 'lodash';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { select, Store } from '@ngrx/store';
 import { IContractTerm } from 'src/app/modules/contracts/contract.model';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
-import { takeUntil, tap } from 'rxjs/operators';
-import { clearInsChecklistImageAction, deleteInsChecklistAction, getInsChecklistAction, saveInsChecklisImageAction, saveInsChecklistAction, saveInsChecklistImageFilesAction, updateInsChecklistAction } from '../../store/actions/inspection-checklist.action';
+import { take, takeUntil, tap } from 'rxjs/operators';
+import { clearInsChecklistImageAction, deleteInsChecklistAction, saveInsChecklisImageAction, saveInsChecklistAction, saveInsChecklistImageFilesAction, updateInsChecklistAction } from '../../store/actions/inspection-checklist.action';
 import { ModalStateType } from 'src/app/models/generic.model';
 import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
 import { getInsChecklistImagesSelector } from '../../store/selectors/inspection-checklist.selector';
@@ -33,24 +33,12 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
   public runInspectionStatus: string;
 
   @Input() public checklistRunId: string;
-  @Input() source: IInspectionRunItem;
+  @Input() public source: IInspectionRunItem;
   @Input() public row: IInsChecklistTerm;
 
   constructor(private store: Store<AppState>, private cdRef: ChangeDetectorRef, public dialog: MatDialog) {
     super();
-    this.store.pipe(select(getInsChecklistImagesSelector),
-      takeUntil(this.$unsubscribe),
-      tap((res) => {
-        if (res) {
-          this.images = res?.map(r => {
-            return ({
-              ...r,
-              inspection_checklist_run: { id: this.checklistRunId },
-              contract_term: { id: this.row?.id }
-            })
-          })
-        }
-      })).subscribe();
+
   }
 
   ngOnInit() {
@@ -58,6 +46,19 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
       tap(res => {
         this.runInspectionStatus = res;
       })).subscribe();
+
+    this.store.pipe(select(getInsChecklistImagesSelector),
+      takeUntil(this.$unsubscribe)).subscribe((res) => {
+        if (res?.length > 0) {
+          this.images = res?.map(r => {
+            return ({
+              ...r,
+              inspection_checklist_run: { id: this.checklistRunId },
+              contract_term: { id: this.row?.id }
+            })
+          });
+        }
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -134,7 +135,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
     }
   }
 
-  public showComment = (id: string): void => {
+  public showComment(id: string): void {
     const dialogRef = this.dialog.open(InspectionCommentDialogComponent, {
       data: { state: ModalStateType.edit, id }
     });
@@ -147,29 +148,53 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
             comment: result?.comments
           }
         }));
+
+        /* if images is undefined then set what is being pre uploaded */
+        // this.images = result?.images?.map(i => {
+        //   return {
+        //     ...i,
+        //     inspection_checklist_run: { id: this.checklistRunId },
+        //     contract_term: { id: this.row?.id }
+        //   }
+        // });
+
         this.saveAndUpdateImage();
       }
     })
   }
 
   private saveAndUpdateImage(): void {
-    setTimeout(() => {
-      /* save images */
-      if (this.images && this.images.length > 0) {
-        this.store.dispatch(saveInsChecklisImageAction({ payload: this.images }));
-      }
-    });
+    /* save images */
+    this.store.pipe(select(getInsChecklistImagesSelector),
+      takeUntil(this.$unsubscribe),
+      take(1))
+      .subscribe((res) => {
+        if (res?.length > 0) {
+          this.images = res?.map(r => {
+            return ({
+              file: r?.file,
+              filename: r?.filename,
+              mimetype:r?.mimetype,
+              size: r?.size,
+              inspection_checklist_run: { id: this.checklistRunId },
+              contract_term: { id: this.row?.id }
+            })
+          });
+          
+          this.store.dispatch(saveInsChecklisImageAction({ payload: this.images }));
 
-    /* upload image */
-    let formData = new FormData();
-    this.cnsFileObj(formData);
+          /* upload image */
+          let formData = new FormData();
+          this.cnsFileObj(formData);
 
-    this.store.dispatch(saveInsChecklistImageFilesAction({ files: formData }));
+          this.store.dispatch(saveInsChecklistImageFilesAction({ files: formData }));
+        }
+      });
   }
 
   /* NOTE: move this to a utility or abstraction class */
   private cnsFileObj(files: FormData): any {
-    return this.images && Object.values(this.images) && this.images?.map(ci => {
+    return Object.values(this.images) && this.images?.map(ci => {
       if (ci.file)
         files.append('files', ci.file, ci.filename);
       return { id: ci.id, filename: ci.filename, size: ci.size, mimetype: ci.mimetype }

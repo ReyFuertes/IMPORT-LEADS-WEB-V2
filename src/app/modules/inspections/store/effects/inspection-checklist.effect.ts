@@ -1,14 +1,12 @@
 import { IInspectionChecklist, IInspectionChecklistImage, IInspectionRun } from './../../inspections.models';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { InspectionChecklistService, InspectionChecklistImageService } from '../../inspections.service';
-import { Router } from '@angular/router';
 import { AppState } from '../../../contracts/store/reducers';
 import { deleteInsChecklistAction, getInsChecklistAction, getInsChecklistSuccessAction, saveInsChecklisImageAction, saveInsChecklisImageSuccessAction, saveInsChecklistAction, saveInsChecklistSuccessAction, updateInsChecklistAction, updateInsChecklistSuccessAction, saveInsChecklistImageFilesAction, updateInsChecklistImageFilesSuccessAction, removeInsChecklistImageAction, clearInsChecklistImageAction } from '../../store/actions/inspection-checklist.action';
 import { loadInspectionRunAction } from '../actions/inspection.action';
-import { appNotification } from 'src/app/store/actions/notification.action';
 import { UploadService } from 'src/app/services/upload.service';
 
 @Injectable()
@@ -21,7 +19,7 @@ export class InspectionChecklistEffect {
 
   saveInsChecklistImageFilesAction$ = createEffect(() => this.actions$.pipe(
     ofType(saveInsChecklistImageFilesAction),
-    mergeMap(({ files }) => {
+    switchMap(({ files }) => {      
       return this.uploadSrv.upload(files, 'multiple').pipe(
         map((response: any) => {
           return updateInsChecklistImageFilesSuccessAction({ response });
@@ -31,10 +29,12 @@ export class InspectionChecklistEffect {
   ));
   saveInsChecklisImageAction$ = createEffect(() => this.actions$.pipe(
     ofType(saveInsChecklisImageAction),
-    mergeMap(({ payload }) => {
+    switchMap(({ payload }) => {
       return this.InsChecklistImageSrv.post(payload).pipe(
-        tap(() => this.store.dispatch(clearInsChecklistImageAction())),
         map((response: IInspectionChecklistImage[]) => {
+
+          this.store.dispatch(clearInsChecklistImageAction());
+
           return saveInsChecklisImageSuccessAction({ response });
         })
       )
@@ -42,14 +42,14 @@ export class InspectionChecklistEffect {
   ));
   updateInsChecklistAction$ = createEffect(() => this.actions$.pipe(
     ofType(updateInsChecklistAction),
-    mergeMap(({ payload }) => {
+    switchMap(({ payload }) => {
       return this.insChecklistSrv.patch(payload).pipe(
-        tap((response: IInspectionChecklist) => {
+        map((response: IInspectionChecklist) => {
+
           if (response && response?.inspection_checklist_run) {
             this.store.dispatch(loadInspectionRunAction({ id: response?.inspection_checklist_run?.id }));
           };
-        }),
-        map((response: IInspectionChecklist) => {
+          
           return updateInsChecklistSuccessAction({ response });
         })
       )
@@ -62,7 +62,7 @@ export class InspectionChecklistEffect {
 
   getInsChecklistAction$ = createEffect(() => this.actions$.pipe(
     ofType(getInsChecklistAction),
-    mergeMap(({ id }) => {
+    switchMap(({ id }) => {
       return this.insChecklistSrv.getById(id)
         .pipe(
           map((response: IInspectionChecklist) => {
@@ -73,7 +73,7 @@ export class InspectionChecklistEffect {
   ))
   saveInsChecklistAction$ = createEffect(() => this.actions$.pipe(
     ofType(saveInsChecklistAction),
-    mergeMap(({ payload }) => {
+    switchMap(({ payload }) => {
       return this.insChecklistSrv.post(payload).pipe(
         tap((response: IInspectionChecklist) => {
           if (response && response?.inspection_checklist_run) {

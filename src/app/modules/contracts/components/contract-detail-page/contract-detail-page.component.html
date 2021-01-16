@@ -28,15 +28,15 @@
           <!-- contract details -->
           <div fxLayout="row">
             <div fxFlex="60" class="detail-container" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="40px">
-              <div>
+              <div fxFlex>
                 <div>Company</div>
                 <div>{{ contract?.venue?.name }}</div>
               </div>
-              <div>
+              <div fxFlex="25">
                 <div>Responsible Person</div>
                 <div>{{ contract?.responsible_person || 'None' }}</div>
               </div>
-              <div>
+              <div fxFlex="15">
                 <div>Upload Date</div>
                 <div>{{ contract?.created_at | date: 'dd/MM/yyyy'}}</div>
               </div>

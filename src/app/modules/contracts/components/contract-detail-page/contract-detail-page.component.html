@@ -27,7 +27,7 @@
           </div>
           <!-- contract details -->
           <div fxLayout="row">
-            <div fxFlex="40" class="detail-container" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="40px">
+            <div fxFlex="60" class="detail-container" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="40px">
               <div>
                 <div>Company</div>
                 <div>{{ contract?.venue?.name }}</div>
@@ -42,7 +42,7 @@
               </div>
             </div>
             <!-- contract images -->
-            <div fxFlex="60">
+            <div fxFlex="40">
               <div *ngIf="hasImgs" class="cdk-virtual-scroll">
                 <div cdkDropList (cdkDropListDropped)="dropImages($event)" fxLayout="row" class="image-list" cdkDropListOrientation="horizontal" fxLayoutAlign="end center">
                   <div *ngFor="let image of contractImages" class="drag-box" cdkDrag [cdkDragDisabled]="showRightNav" [cdkDragData]="image" fxLayoutAlign="center center">

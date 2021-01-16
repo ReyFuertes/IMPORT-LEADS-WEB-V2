@@ -8,8 +8,10 @@ import { IUser } from 'src/app/modules/user-management/user-mgmt.model';
 import { Observable } from 'rxjs';
 import { getAccessSelector, getUserAccessSelector } from 'src/app/store/selectors/app.selector';
 import { ISimpleItem } from '../../generics/generic.model';
-import { map } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { sortByAsc, sortByDesc } from '../../util/sort';
+import { getUserProfileSelector } from 'src/app/modules/users/store/selectors/user-profile.selector';
+import { GenericDestroyPageComponent } from '../../generics/generic-destroy-page';
 
 @Component({
   selector: 'il-topnav',
@@ -17,7 +19,7 @@ import { sortByAsc, sortByDesc } from '../../util/sort';
   styleUrls: ['./topnav.component.scss']
 })
 
-export class TopNavComponent implements OnInit {
+export class TopNavComponent extends GenericDestroyPageComponent implements OnInit {
   public apilUrlPath: string = environment.apiImagePath;
   public svgPath: string = environment.svgPath;
   public imgPath: string = environment.imgPath;
@@ -31,7 +33,9 @@ export class TopNavComponent implements OnInit {
   public excludedMenus: string[] = ['CHAT', 'SETTINGS'];
   public accessMenus: string[] = [];
 
-  constructor(private store: Store<AppState>) { }
+  constructor(private store: Store<AppState>) {
+    super();
+  }
 
   ngOnInit() {
     this.store.pipe(select(getUserAccessSelector)).subscribe(res => {
@@ -48,8 +52,8 @@ export class TopNavComponent implements OnInit {
           );
           /* filter the children menus */
           parentMenuMatches?.forEach(parent => {
-            const children = parent.children.filter(c => this.accessMenus.includes(c.access_name)
-                && c.access_name !== 'TEMPLATES'); //do not include the templates for now
+            const children = parent?.children?.filter(c => this.accessMenus.includes(c.access_name)
+              && c.access_name !== 'TEMPLATES'); //do not include the templates for now
             parent.children = children.sort((a, b) => sortByAsc(a, b, 'position'));
 
           });
@@ -59,14 +63,23 @@ export class TopNavComponent implements OnInit {
       }
     })
 
-    const localUser = JSON.parse(localStorage.getItem('at')) || null;
-    if (localUser) {
-      this.user = localUser.user;
-    }
+    this.store.pipe(select(getUserProfileSelector), takeUntil(this.$unsubscribe))
+      .subscribe(res => {
+        const user = Object.assign({}, res, {
+          username: `${res?.firstname} ${res?.lastname}`
+        });
+
+        const localUser = JSON.parse(localStorage.getItem('at')) || null;
+        if (localUser) {
+          this.user = localUser.user;
+        }
+
+        this.user = user || localUser.user;
+      })
   }
 
   public get getProfilePic(): string {
-    return this.user && this.user.image
+    return this.user && this.user?.image
       ? this.apilUrlPath + this.user.image
       : this.imgPath + 'no-image.png';
   }

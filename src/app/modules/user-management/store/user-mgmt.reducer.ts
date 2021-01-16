@@ -24,7 +24,7 @@ const userMgmtReducer = createReducer(
     return Object.assign({}, state, { creatingUser: true });
   }),
   on(loadAllUsersSuccessAction, (state, action) => {
-    return ({ ...adapter.addAll(action.users, state) });
+    return ({ ...adapter.setAll(action.users, state) });
   }),
 );
 export function UserMgmtReducer(state: UserMgmtState, action: Action) {

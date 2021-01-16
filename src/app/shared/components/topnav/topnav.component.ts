@@ -38,30 +38,31 @@ export class TopNavComponent extends GenericDestroyPageComponent implements OnIn
   }
 
   ngOnInit() {
-    this.store.pipe(select(getUserAccessSelector)).subscribe(res => {
-      if (res) {
-        /* process user access menus */
-        this.accessMenus.push(...res);
+    this.store.pipe(select(getUserAccessSelector),
+      takeUntil(this.$unsubscribe)).subscribe(res => {
+        if (res) {
+          /* process user access menus */
+          this.accessMenus.push(...res);
 
-        this.$menus = this.store.pipe(select(getAccessSelector), map(m => {
-          /* filter the parent menus */
-          let parentMenuMatches = m?.filter(
-            m => !m.parent
-              && !this.excludedMenus.includes(m.label)
-              && this.accessMenus.includes(m.label)
-          );
-          /* filter the children menus */
-          parentMenuMatches?.forEach(parent => {
-            const children = parent?.children?.filter(c => this.accessMenus.includes(c.access_name)
-              && c.access_name !== 'TEMPLATES'); //do not include the templates for now
-            parent.children = children.sort((a, b) => sortByAsc(a, b, 'position'));
+          this.$menus = this.store.pipe(select(getAccessSelector), map(m => {
+            /* filter the parent menus */
+            let parentMenuMatches = m?.filter(
+              m => !m.parent
+                && !this.excludedMenus.includes(m.label)
+                && this.accessMenus.includes(m.label)
+            );
+            /* filter the children menus */
+            parentMenuMatches?.forEach(parent => {
+              const children = parent?.children?.filter(c => this.accessMenus.includes(c.access_name)
+                && c.access_name !== 'TEMPLATES'); //do not include the templates for now
+              parent.children = children.sort((a, b) => sortByAsc(a, b, 'position'));
 
-          });
+            });
 
-          return parentMenuMatches;
-        }));
-      }
-    })
+            return parentMenuMatches;
+          }));
+        }
+      })
 
     this.store.pipe(select(getUserProfileSelector), takeUntil(this.$unsubscribe))
       .subscribe(res => {

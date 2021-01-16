@@ -1,4 +1,14 @@
 @import "src/styleguide/shared";
+.col-table {
+  > div {
+    &:first-child {
+      height: 25px;
+    }
+    &:nth-child(2) {
+      height: 40px;
+    }
+  }
+}
 .contract-card {
   @include contract-card;
   animation-name: fadeInOpacity;

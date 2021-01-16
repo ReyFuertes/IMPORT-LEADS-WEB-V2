@@ -65,16 +65,21 @@ export class UserTableComponent extends GenericContainer implements AfterViewIni
   }
 
   private setData(data: any): void {
-    this.dataSource = new MatTableDataSource<any>(data);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    if(data?.length > 0) {
+      this.dataSource = new MatTableDataSource<any>(data);
+
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    }
   }
 
   ngAfterViewInit(): void {
     this.$users = this.store.pipe(select(getTableUsersSelector));
+
     this.$users.pipe(debounceTime(100), takeUntil(this.$unsubscribe),
       tap((res) => {
-        if (res && res.length > 0) {
+        const _res = res.filter(i => i !== undefined);
+        if (_res && _res.length > 0) {
           this.setData(res);
 
           this.cols = Object.keys(res[0])

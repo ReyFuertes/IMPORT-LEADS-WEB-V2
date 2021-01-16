@@ -5,18 +5,18 @@
       </div>
       <span class="row-text">{{ contract?.contract_name }}</span>
     </div>
-    <div class="col-table">
+    <div class="col-table" fxLayoutAlign="start start">
       <div>
-        <span class="col-text">Contract Date</span>
-        <span class="row-text">{{ contract?.start_date | date: 'dd/MM/yyyy' }}</span>
+        <div class="col-text">Contract Date</div>
+        <div class="row-text">{{ contract?.start_date | date: 'dd/MM/yyyy' }}</div>
       </div>
       <div>
-        <span class="col-text">Created by</span>
-        <span class="row-text">{{ contract?.user?.username  }}</span>
+        <div class="col-text">Created by</div>
+        <div class="row-text">{{ contract?.user?.username  }}</div>
       </div>
       <div>
-        <span class="col-text">Related Venue</span>
-        <span class="row-text">{{ contract?.venue?.name }}</span>
+        <div class="col-text">Related Venue</div>
+        <div class="row-text">{{ contract?.venue?.name }}</div>
       </div>
       <div fxFlex="5">
         <img class="ellipse" [matMenuTriggerFor]="menu" [src]="svgPath + 'dots-icon-blue.svg'" />

@@ -6,12 +6,23 @@ import * as _ from 'lodash';
 export const selectedState = (state: AppState) => state.userMgmt;
 export const getAllSimpleUsersSelector = createSelector(
   selectedState,
-  state => state && Object.values(state.entities).map(u => {
-    return {
-      label: `${u.user_profile.firstname} ${u.user_profile.lastname}`,
-      value: u.id
-    }
-  })
+  state => {
+    const ret = Object.values(state?.entities).map(u => {
+      let label: string = '';
+      if (u?.user_profile?.firstname && u?.user_profile?.firstname) {
+        label = `${u?.user_profile?.firstname} ${u?.user_profile?.lastname}`;
+      } else {
+        label = u?.username;
+      }
+      debugger
+      return {
+        label,
+        value: u.id
+      };
+    })
+    debugger
+    return ret;
+  }
 );
 export const getUserByIdSelector = (id: string) => createSelector(
   selectedState,
@@ -26,15 +37,14 @@ export const getTableUsersSelector = createSelector(
   state => {
     const fmtUsers = Object.values(state.entities) || [];
     const users = fmtUsers.map((u: IUserMgmt) => {
-      if (!u.user_profile) return;
-
+      //if (!u.user_profile) return;
       let ret: IUserTableData = Object.assign({}, {
-        ...u.user_profile,
+        ...u?.user_profile,
         ...u,
         _id: u.id,
-        name: u.user_profile.firstname + ' ' + u.user_profile.lastname
+        name: u?.user_profile?.firstname + ' ' + u?.user_profile?.lastname
       });
-      delete ret.user_profile;
+      delete ret?.user_profile;
       return ret;
     });
     return users;

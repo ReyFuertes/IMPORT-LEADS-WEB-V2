@@ -30,6 +30,9 @@ import { IUser } from 'src/app/modules/user-management/user-mgmt.model';
 import { ContractCategoryImportDialogComponent } from 'src/app/modules/dialogs/components/contract-category-import/contract-category-import.component';
 import { importContractTemplateAction, saveContractTemplateAction } from '../../store/actions/contract-template.action';
 import { ContractImportTemplateDialogComponent } from 'src/app/modules/dialogs/components/contract-import-template/contract-import-template.component';
+import { IVenue } from 'src/app/modules/venues/venues.models';
+import { getVenuesSelector } from 'src/app/modules/venues/store/venues.selector';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'il-contract-detail-page',
@@ -57,11 +60,13 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   public savedChecklistSourceId: string;
   public user: IUser;
   public checklistEntities: IContractChecklistItem[] = [];
-
+  public venues: IVenue[];
+  public apiImagePath: string = environment.apiImagePath;
+  
   @Output() public openNavChange = new EventEmitter<boolean>();
   @ViewChild('scrollPnl', { static: false }) public scrollPnl: any;
 
-  constructor(private router: Router, private store: Store<AppState>, private route: ActivatedRoute, public fb: FormBuilder, public dialog: MatDialog, cdRef: ChangeDetectorRef) {
+  constructor(private sanitizer: DomSanitizer, private router: Router, private store: Store<AppState>, private route: ActivatedRoute, public fb: FormBuilder, public dialog: MatDialog, cdRef: ChangeDetectorRef) {
     super(cdRef);
     this.form = this.fb.group({
       id: [null],
@@ -79,6 +84,17 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
 
     const at = JSON.parse(localStorage.getItem('at')) || null;
     if (at && at.user) this.user = at.user;
+
+    this.store.pipe(select(getVenuesSelector), takeUntil(this.$unsubscribe))
+      .subscribe(venues => {
+        this.venues = venues.map(vp => {
+          return {
+            id: vp.id,
+            name: vp.name,
+            image: vp.image
+          }
+        });
+      });
   }
 
   ngOnInit() {
@@ -161,6 +177,15 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
         this.checklistEntities = Object.values(res.entities) || [];
 
       })).subscribe();
+  }
+
+  public getVenueImage(contract: IContract): any {
+    const venue = this.venues?.filter(v => v.id === contract?.venue?.id)?.shift();
+    const imageName = venue?.image?.filename;
+
+    if (!imageName) return this.sanitizer.bypassSecurityTrustStyle(`url(${this.imgPath}no-image-32x32.png)`);
+
+    return this.sanitizer.bypassSecurityTrustStyle(`url(${this.apiImagePath}${imageName})`);
   }
 
   public onDownload(): void { }

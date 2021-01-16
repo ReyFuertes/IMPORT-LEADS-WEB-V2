@@ -6,6 +6,9 @@
     overflow: hidden;
   }
 }
+.img-box {
+  background-size: contain !important;
+}
 .detail-container {
   margin-bottom: 0;
   > div {

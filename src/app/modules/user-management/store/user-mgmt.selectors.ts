@@ -14,13 +14,11 @@ export const getAllSimpleUsersSelector = createSelector(
       } else {
         label = u?.username;
       }
-      debugger
       return {
         label,
         value: u.id
       };
     })
-    debugger
     return ret;
   }
 );

@@ -21,8 +21,7 @@
       <div class="card-row" [ngClass]="{'reduce-opacity': showRightNav == true}">
         <div fxFlex fxLayout="column" fxLayoutGap="20px">
           <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-            <div class="img-box">
-              <img [src]="svgPath + 'doc-icon-blue.svg'" />
+            <div class="img-box" [style.background-image]="getVenueImage(contract)">
             </div>
             <h2>Contract</h2>
           </div>

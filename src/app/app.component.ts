@@ -28,6 +28,7 @@ export class AppComponent extends GenericDestroyPageComponent implements OnInit,
     super();
 
     this.store.dispatch(initAppAction());
+
   }
 
   ngOnInit(): void {

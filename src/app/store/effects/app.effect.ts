@@ -14,6 +14,7 @@ import { RolesService, UserAccessService, UserRolesService } from 'src/app/modul
 import { IRole, IUserAccess } from 'src/app/modules/user-management/user-mgmt.model';
 import { loadSavedChecklistAction } from 'src/app/modules/contracts/store/actions/saved-checklist.action';
 import { loadAllUsersAction } from 'src/app/modules/user-management/store/user-mgmt.actions';
+import { loadUserProfileAction } from 'src/app/modules/users/store/actions/user-profile.actions';
 
 @Injectable()
 export class InitAppEffect {
@@ -79,6 +80,7 @@ export class InitAppEffect {
             if (isLoggedIn) {
               this.store.dispatch(getUserAccessAction({ id: at.user.id }));
               this.store.dispatch(getUserRoleAction({ id: at.user.id }));
+              this.store.dispatch(loadUserProfileAction({ id: at.user.id }));
             }
             this.isInloginpage(isLoggedIn);
           }

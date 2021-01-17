@@ -15,7 +15,7 @@ export class UsersContainerComponent extends GenericContainer implements OnInit 
   constructor(private store: Store<AppState>) {
     super();
     const at = JSON.parse(localStorage.getItem('at')) || null;
-    if (at && at.user) {
+    if (at?.user) {
       this.store.dispatch(loadUserProfileAction({ id: at.user.id }));
     }
   }

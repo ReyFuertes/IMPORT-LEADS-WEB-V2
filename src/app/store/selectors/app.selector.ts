@@ -3,21 +3,23 @@ import { AppState } from 'src/app/store/app.reducer';
 import { IRole } from 'src/app/modules/user-management/user-mgmt.model';
 
 export const selectedState = (state: AppState) => state.initApp;
+export const getAppUserProfileSelector = createSelector(
+  selectedState,
+  state => state?.detail
+);
 export const getUserRolesSelector = createSelector(
   selectedState,
-  state => {
-    return state && state.userRoles
-  }
+  state => state?.userRoles
 )
 export const getUserAccessSelector = createSelector(
   selectedState,
-  state => state && state.userAccess
+  state => state?.userAccess
 )
 export const getAllRolesSelector = createSelector(
   selectedState,
   state => {
-    const fmtRoles = state && state.roles;
-    const roles = fmtRoles && fmtRoles.map((u: IRole) => {
+    const fmtRoles = state?.roles;
+    const roles = fmtRoles?.map((u: IRole) => {
       return {
         label: u.role_name,
         value: String(u.id)
@@ -31,8 +33,8 @@ export const getAccessSelector = createSelector(
   state => state
     && state?.access
     && state?.access.map(a => {
-      const children = state.access.filter(c => {
-        return c.parent && c.parent.id === a.id;
+      const children = state?.access?.filter(c => {
+        return c.parent && c?.parent?.id === a.id;
       }) || null;
 
       return {

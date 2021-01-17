@@ -1,7 +1,6 @@
 import { createReducer, on, Action } from "@ngrx/store";
 import { IUserProfile } from '../../users.models';
 import { loadUserProfileSuccessAction } from '../actions/user-profile.actions';
-
 export interface UserProfileState {
   detail?: IUserProfile
 }
@@ -11,6 +10,7 @@ export const initialState: UserProfileState = {
 const userProfileReducer = createReducer(
   initialState,
   on(loadUserProfileSuccessAction, (state, action) => {
+    debugger
     return Object.assign({}, state, { detail: action.detail });
   }),
 );

@@ -3,6 +3,8 @@ import { initAppSuccessAction, loadAccessSuccessAction, loadAllRolesSuccessActio
 import { loginSuccessAction, logoutAction, logoutSuccessAction, isLoggingInAction, loginFailedAction } from 'src/app/modules/auth/store/auth.action';
 import { IAccess } from 'src/app/models/user.model';
 import { IRole, IUserAccess } from 'src/app/modules/user-management/user-mgmt.model';
+import { loadUserProfileSuccessAction } from "src/app/modules/users/store/actions/user-profile.actions";
+import { IUserProfile } from "src/app/modules/users/users.models";
 export interface InitAppState {
   token?: string,
   isLoggedIn?: boolean,
@@ -11,7 +13,8 @@ export interface InitAppState {
   access?: IAccess[],
   roles?: IRole[],
   userAccess?: string[],
-  userRoles?: string[]
+  userRoles?: string[],
+  detail?: IUserProfile
 }
 export const initialState: InitAppState = {
   token: null,
@@ -21,10 +24,14 @@ export const initialState: InitAppState = {
   access: null,
   roles: null,
   userAccess: null,
-  userRoles: null
+  userRoles: null,
+  detail: null
 };
 const initAppReducer = createReducer(
   initialState,
+  on(loadUserProfileSuccessAction, (state, action) => {
+    return Object.assign({}, state, { detail: action.detail });
+  }),
   on(getUserRoleSuccessAction, (state, action) => {
     return Object.assign({}, state, { userRoles: action.response });
   }),

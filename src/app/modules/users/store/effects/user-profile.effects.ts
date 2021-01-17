@@ -13,17 +13,12 @@ import { appNotification } from 'src/app/store/actions/notification.action';
 export class UserProfileEffects {
   updateProfileAction$ = createEffect(() => this.actions$.pipe(
     ofType(updateProfileAction),
-    mergeMap(({ payload }) => this.userProfileSrv.patch(payload).pipe(
-      tap((res) => {
-        const localUser = JSON.parse(localStorage.getItem('at') || null);
-        if (res) {
-          this.store.dispatch(loadUserProfileAction({ id: localUser.user.id }));
-          this.store.dispatch(appNotification({
-            notification: { success: true, message: 'Successfully updated' }
-          }));
-        }
-      }),
+    switchMap(({ payload }) => this.userProfileSrv.patch(payload).pipe(
       map((response: IUserProfile) => {
+        const localUser = JSON.parse(localStorage.getItem('at') || null);
+
+        this.store.dispatch(loadUserProfileAction({ id: localUser.user.id }));
+
         return updateProfileSuccessAction({ response });
       })
     ))
@@ -36,7 +31,7 @@ export class UserProfileEffects {
 
   loadUserProfileAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadUserProfileAction),
-    mergeMap(({ id }) => this.userProfileSrv.getById(id).pipe(
+    switchMap(({ id }) => this.userProfileSrv.getById(id).pipe(
       map((detail: IUserProfile) => {
         return loadUserProfileSuccessAction({ detail });
       })

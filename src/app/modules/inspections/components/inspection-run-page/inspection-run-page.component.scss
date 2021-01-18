@@ -55,3 +55,21 @@ h1 {
     position: relative;
   }
 }
+@media (min-width: 769px) {
+  .desk-nav-to {
+    display: block;
+  }
+  .ipad-nav-to, .ipad-delete-nav-to {
+    display: none;
+  }
+}
+@media (max-width: 768px) {
+  .desk-nav-to, .desk-delete-nav-to {
+    display: none;
+  }
+  .ipad-nav-to, .ipad-delete-nav-to {
+    width: 50px;
+    min-width: 50px;
+    max-width: 50px;
+  }
+}

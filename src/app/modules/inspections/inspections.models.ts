@@ -86,7 +86,7 @@ export interface IInspectionRun {
   checklist?: IInsChecklist;
   count?: number;
   run_status?: string;
-  inspection: IInspection;
+  inspection?: IInspection;
 }
 export interface IInspection {
   id?: string;

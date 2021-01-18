@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { IContractTerm } from 'src/app/modules/contracts/contract.model';
-import { IActiveInspection, IInspectionChecklist, IInspectionRun, IInspectionRuntime } from '../../inspections.models';
+import { IActiveInspection, IInspection, IInspectionChecklist, IInspectionRun, IInspectionRuntime } from '../../inspections.models';
 
 export enum InspectionActionTypes {
   loadActiveInspectionAction = '[Inspection Checklist] load active inspection',
@@ -85,7 +85,7 @@ export const navigateToInspectionSuccessAction = createAction(
 );
 export const copyInspectionAction = createAction(
   InspectionActionTypes.copyInspectionAction,
-  props<{ id: string, copyCount: number, contractProductId?: string }>()
+  props<{ id: string, copyCount: number, contractProductId?: string, inspection: IInspection }>()
 );
 export const copyInspectionSuccessAction = createAction(
   InspectionActionTypes.copyInspectionSuccessAction,
@@ -109,7 +109,7 @@ export const changeInspectionRuntimeStatusSuccessAction = createAction(
 );
 export const runPrevInspectionAction = createAction(
   InspectionActionTypes.runPrevInspectionAction,
-  props<{ payload: { id: string, saved_checklist_id: string } }>()
+  props<{ payload: { id: string, saved_checklist_id: string, inspection: IInspection } }>()
 );
 export const runPrevInspectionSuccessAction = createAction(
   InspectionActionTypes.runPrevInspectionSuccessAction,
@@ -117,7 +117,7 @@ export const runPrevInspectionSuccessAction = createAction(
 );
 export const runNextInspectionAction = createAction(
   InspectionActionTypes.runNextInspectionAction,
-  props<{ payload: { id: string, saved_checklist_id: string } }>()
+  props<{ payload: { id: string, saved_checklist_id: string, inspection: IInspection } }>()
 );
 export const runNextInspectionSuccessAction = createAction(
   InspectionActionTypes.runNextInspectionSuccessAction,

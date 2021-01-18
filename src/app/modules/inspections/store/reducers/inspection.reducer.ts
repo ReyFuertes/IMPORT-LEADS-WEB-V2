@@ -60,7 +60,7 @@ const reducer = createReducer(
     return Object.assign({}, state, { activeInspection: action.response });
   }),
   on(loadInspectionRunSuccessAction, (state, action) => {
-    return Object.assign({}, state, { runInspection: action.response, loaded: true });
+    return Object.assign({}, state, { runInspection: action.response });
   })
 );
 export function InspectionReducer(state: InspectionState, action: Action) {

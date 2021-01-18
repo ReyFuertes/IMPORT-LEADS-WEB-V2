@@ -2,7 +2,7 @@ import { IActiveInspection, IInspectionChecklist, IInspectionRun, IInspectionRun
 import { loadActiveInspectionSuccessAction, runInspectionAction, runInspectionSuccessAction, createInspectionChecklistAction, createInspectionChecklistSuccessAction, loadInspectionRunAction, loadInspectionRunSuccessAction, runNextInspectionAction, runNextInspectionSuccessAction, runPrevInspectionAction, runPrevInspectionSuccessAction, changeInspectionRuntimeStatusAction, changeInspectionRuntimeStatusSuccessAction, deleteAndNavigateToAction, deleteAndNavigateToSuccessAction, copyInspectionAction, copyInspectionSuccessAction, navigateToInspectionAction, navigateToInspectionSuccessAction, navigateToFailed, deleteInspectionAction, deleteInspectionSuccessAction, loadInspectionDetailAction, loadInspectionDetailSuccessAction, finishInspectionSuccessAction, finishInspectionAction, loadFinishInspectionAction, loadFinishInspectionSuccessAction } from '../actions/inspection.action';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { loadSavedChecklistAction } from '../../../contracts/store/actions/saved-checklist.action';
 import { InspectionsService, InspectionChecklistRunService, InspectionChecklistService, InspectionRuntimeService } from '../../inspections.service';
@@ -16,7 +16,7 @@ import { SavedChecklistService } from 'src/app/modules/contracts/services/saved-
 export class InspectionEffect {
   loadFinishInspectionAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadFinishInspectionAction),
-    mergeMap(() => {
+    switchMap(() => {
       return this.inspectionSrv.getAll('finished').pipe(
         map((response: IActiveInspection[]) => {
           return loadFinishInspectionSuccessAction({ response });
@@ -45,13 +45,13 @@ export class InspectionEffect {
 
   navigateToInspectionAction$ = createEffect(() => this.actions$.pipe(
     ofType(navigateToInspectionAction),
-    mergeMap(({ saved_checklist_id, position }) => {
+    switchMap(({ saved_checklist_id, position }) => {
       return this.inspectionChecklistRunSrv.post({ saved_checklist_id, position }, 'navigate-to').pipe(
-        tap(({ id }: any) => {
-          this.router.navigateByUrl(`dashboard/inspections/${id}/run`);
-          this.store.dispatch(loadInspectionRunAction({ id }));
-        }),
         map((response: any) => {
+
+          this.router.navigateByUrl(`dashboard/inspections/${response?.id}/run`);
+          this.store.dispatch(loadInspectionRunAction({ id: response?.id }));
+
           return navigateToInspectionSuccessAction({ response });
         }),
         catchError(() => {
@@ -64,13 +64,13 @@ export class InspectionEffect {
   ));
   copyInspectionAction$ = createEffect(() => this.actions$.pipe(
     ofType(copyInspectionAction),
-    mergeMap(({ id, copyCount, contractProductId }) => {
-      return this.inspectionChecklistRunSrv.post({ id, copyCount, contractProductId }, 'copy').pipe(
-        tap(({ id }: any) => {
-          this.router.navigateByUrl(`dashboard/inspections/${id}/run`);
-          this.store.dispatch(loadInspectionRunAction({ id }));
-        }),
+    switchMap((payload) => {
+      return this.inspectionChecklistRunSrv.post(payload, 'copy').pipe(
         map((response: any) => {
+
+          this.router.navigateByUrl(`dashboard/inspections/${response?.id}/run`);
+          this.store.dispatch(loadInspectionRunAction({ id: response?.id }));
+
           return copyInspectionSuccessAction({ response });
         })
       )
@@ -78,13 +78,13 @@ export class InspectionEffect {
   ));
   deleteAndNavigateToAction$ = createEffect(() => this.actions$.pipe(
     ofType(deleteAndNavigateToAction),
-    mergeMap(({ id }) => {
+    switchMap(({ id }) => {
       return this.inspectionChecklistRunSrv.post({ id }, 'remove-navigate-to').pipe(
-        tap(({ id }: any) => {
-          this.router.navigateByUrl(`dashboard/inspections/${id}/run`);
-          this.store.dispatch(loadInspectionRunAction({ id }));
-        }),
         map((response: any) => {
+
+          this.router.navigateByUrl(`dashboard/inspections/${response?.id}/run`);
+          this.store.dispatch(loadInspectionRunAction({ id: response?.id }));
+
           return deleteAndNavigateToSuccessAction({ response });
         })
       )
@@ -94,39 +94,48 @@ export class InspectionEffect {
     ofType(changeInspectionRuntimeStatusAction),
     switchMap(({ payload }) => {
       return this.inspectionRuntimeSrv.post(payload, 'status').pipe(
-        tap((response: IInspectionRuntime) => this.store.dispatch(loadInspectionRunAction({ id: response?.id }))),
-        map((response: any) => changeInspectionRuntimeStatusSuccessAction({ response }))
+        map((response: any) => {
+          this.store.dispatch(loadInspectionRunAction({ id: response?.id }))
+
+          return changeInspectionRuntimeStatusSuccessAction({ response });
+        })
       )
     })
   ));
   runPrevInspectionAction$ = createEffect(() => this.actions$.pipe(
     ofType(runPrevInspectionAction),
-    mergeMap(({ payload }) => {
+    switchMap(({ payload }) => {
       return this.inspectionChecklistRunSrv.post(payload, 'prev').pipe(
-        tap(({ id }: any) => {
-          if (id) this.router.navigateByUrl(`/dashboard/inspections/${id}/run`);
-        }),
-        tap(({ id }) => this.store.dispatch(loadInspectionRunAction({ id }))),
-        map((response: any) => runPrevInspectionSuccessAction({ response }))
+        map((response: any) => {
+          
+          this.router.navigateByUrl(`/dashboard/inspections/${response?.id}/run`);
+          this.store.dispatch(loadInspectionRunAction({ id: response?.id }));
+
+          return runPrevInspectionSuccessAction({ response });
+        })
       )
     })
   ));
   runNextInspectionAction$ = createEffect(() => this.actions$.pipe(
     ofType(runNextInspectionAction),
-    mergeMap(({ payload }) => {
+    switchMap(({ payload }) => {
+      
       return this.inspectionChecklistRunSrv.post(payload, 'next').pipe(
-        tap(({ id }: any) => {
-          if (id) this.router.navigateByUrl(`/dashboard/inspections/${id}/run`);
-        }),
-        tap(({ id }) => this.store.dispatch(loadInspectionRunAction({ id }))),
-        map((response: any) => runNextInspectionSuccessAction({ response }))
+        map((response: any) => {
+
+          this.router.navigateByUrl(`/dashboard/inspections/${response?.id}/run`);
+          this.store.dispatch(loadInspectionRunAction({ id: response?.id }))
+
+          return runNextInspectionSuccessAction({ response });
+        })
       )
     })
   ));
 
   loadInspectionRunAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadInspectionRunAction),
-    mergeMap(({ id }) => {
+    switchMap(({ id }) => {
+      
       return this.inspectionChecklistRunSrv.getById(id).pipe(
         map((response: IInspectionRun) => {
           return loadInspectionRunSuccessAction({ response });
@@ -136,14 +145,11 @@ export class InspectionEffect {
   ))
   createInspectionChecklistAction$ = createEffect(() => this.actions$.pipe(
     ofType(createInspectionChecklistAction),
-    mergeMap(({ payload }) => {
+    switchMap(({ payload }) => {
       return this.inspectionChecklistSrv.post(payload).pipe(
-        tap((response: IInspectionChecklist) => {
-          if (response) {
-            this.router.navigateByUrl(`/dashboard/inspections/${response?.inspection_checklist_run?.id}/run`);
-          }
-        }),
         map((response: IInspectionChecklist) => {
+          this.router.navigateByUrl(`/dashboard/inspections/${response?.inspection_checklist_run?.id}/run`);
+          
           return createInspectionChecklistSuccessAction({ response });
         })
       )
@@ -151,20 +157,21 @@ export class InspectionEffect {
   ));
   runInspectionAction$ = createEffect(() => this.actions$.pipe(
     ofType(runInspectionAction),
-    mergeMap(({ payload }) => {
+    switchMap(({ payload }) => {
       return this.inspectionChecklistRunSrv.post(payload).pipe(
-        tap(({ id }: any) => {
-          if (id)
-            this.router.navigateByUrl(`/dashboard/inspections/${id}/run`);
-        }),
-        tap(({ id }) => this.store.dispatch(loadInspectionRunAction({ id }))),
-        map((response: IActiveInspection[]) => runInspectionSuccessAction({ response }))
+        map((response: IActiveInspection) => {
+          
+          this.router.navigateByUrl(`/dashboard/inspections/${response?.id}/run`);
+          this.store.dispatch(loadInspectionRunAction({ id: response?.id }));
+
+          return runInspectionSuccessAction({ response });
+        })
       )
     })
   ));
   loadSavedChecklistAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadSavedChecklistAction),
-    mergeMap(({ param }) => {
+    switchMap(({ param }) => {
       return this.inspectionSrv.getAll(param)
         .pipe(
           map((response: IActiveInspection[]) => {
@@ -175,7 +182,7 @@ export class InspectionEffect {
   ))
   loadInspectionDetailAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadInspectionDetailAction),
-    mergeMap(({ params }) => {
+    switchMap(({ params }) => {
       return this.inspectionSrv.getAll(params)
         .pipe(
           map((response: IActiveInspection[]) => {
@@ -186,7 +193,7 @@ export class InspectionEffect {
   ))
   deleteInspectionAction$ = createEffect(() => this.actions$.pipe(
     ofType(deleteInspectionAction),
-    mergeMap(({ id }) => {
+    switchMap(({ id }) => {
       return this.savedChecklistSrv.delete(id)
         .pipe(
           tap(() => this.store.dispatch(loadSavedChecklistAction({}))),

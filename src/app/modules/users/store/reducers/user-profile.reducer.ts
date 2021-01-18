@@ -10,7 +10,6 @@ export const initialState: UserProfileState = {
 const userProfileReducer = createReducer(
   initialState,
   on(loadUserProfileSuccessAction, (state, action) => {
-    debugger
     return Object.assign({}, state, { detail: action.detail });
   }),
 );

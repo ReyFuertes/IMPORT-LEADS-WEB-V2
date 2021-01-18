@@ -1,4 +1,4 @@
-import { Router } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/core';
@@ -6,7 +6,7 @@ import { Observable, of } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { getInspectionRunFilterByProductIdSelector, getInspectionRunSelector, getInspectionRunStatusSelector } from '../../store/selectors/inspection.selector';
-import { runNextInspectionAction, runPrevInspectionAction, changeInspectionRuntimeStatusAction, deleteAndNavigateToAction, copyInspectionAction, navigateToInspectionAction, setPauseInspectionStatusAction } from '../../store/actions/inspection.action';
+import { runNextInspectionAction, runPrevInspectionAction, changeInspectionRuntimeStatusAction, deleteAndNavigateToAction, copyInspectionAction, navigateToInspectionAction, setPauseInspectionStatusAction, loadInspectionRunAction } from '../../store/actions/inspection.action';
 import { IInspectionRun, RunStatusType } from '../../inspections.models';
 import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 import * as _ from 'lodash';
@@ -35,13 +35,18 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   public contractProductId: string;
   public permitToNavigate: boolean = false;
 
-  constructor(private dialog: MatDialog, private store: Store<AppState>, private cdRef: ChangeDetectorRef, private router: Router, private fb: FormBuilder) {
+  constructor(route: ActivatedRoute, private dialog: MatDialog, private store: Store<AppState>, private cdRef: ChangeDetectorRef, private router: Router, private fb: FormBuilder) {
     super();
     this.form = this.fb.group({
       copyCount: [null],
       items: [null],
       position: [null]
     });
+
+    const id = route.snapshot.paramMap.get('id') || null;
+    if (id) {
+      this.store.dispatch(loadInspectionRunAction({ id }));
+    }
 
     this.store.pipe(select(getInspectionRunStatusSelector),
       tap((res: any) => {
@@ -130,12 +135,12 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
     this.permitToNavigate = true;
   }
 
-  public onResume(ins: IInspectionRun): void {
+  public onResume(inspectionRun: IInspectionRun): void {
     this.permitToNavigate = true;
 
     const payload = {
-      id: ins?.id,
-      saved_checklist: ins?.checklist,
+      id: inspectionRun?.id,
+      saved_checklist: inspectionRun?.checklist,
       run_status: null
     }
     this.store.dispatch(changeInspectionRuntimeStatusAction({ payload }));
@@ -146,16 +151,15 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       width: '410px',
       data: { action: 3 }
     });
-    dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
-      .subscribe(result => {
-        if (result) {
-          this.triggerPause();
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.triggerPause();
 
-          this.store.dispatch(appNotification({
-            notification: { success: true, message: 'Inspection run is paused' }
-          }));
-        }
-      });
+        this.store.dispatch(appNotification({
+          notification: { success: true, message: 'Inspection run is paused' }
+        }));
+      }
+    });
   }
 
   public triggerPause(): void {
@@ -176,13 +180,23 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
     this.contractProductId = event;
   }
 
-  public onPrev(ins: IInspectionRun): void {
+  public onPrev(inspectionRun: IInspectionRun): void {
     this.permitToNavigate = true;
 
-    this.store.dispatch(runPrevInspectionAction({ payload: { id: ins.id, saved_checklist_id: ins?.checklist?.id } }));
+    this.store.dispatch(runPrevInspectionAction({
+      payload: {
+        id: inspectionRun.id,
+        saved_checklist_id: inspectionRun?.checklist?.id,
+        inspection: this.inspectionRun?.inspection
+      }
+    }));
   }
 
-  public onNext(ins: IInspectionRun): void {
+  public get isProductSelected(): boolean {
+    return !this.contractProductId ? false : true;
+  }
+
+  public onNext(inspectionRun: IInspectionRun): void {
     this.permitToNavigate = true;
 
     if (this.form.get('copyCount').value) { /* create number of copies of the current inspection run */
@@ -193,19 +207,30 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
         .subscribe(result => {
           if (result) {
-            this.store.dispatch(copyInspectionAction({
-              id: ins.id,
+            const payload = {
+              id: inspectionRun.id,
               copyCount: Number(this.form.get('copyCount').value),
-              contractProductId: this.contractProductId
-            }));
-            this.form.get('copyCount').patchValue(null, { emitEvent: false });
+              contractProductId: this.contractProductId,
+              saved_checklist_id: inspectionRun?.checklist?.id,
+              inspection: this.inspectionRun?.inspection
+            };
+            
+            this.store.dispatch(copyInspectionAction(payload));
 
+            this.form.get('copyCount').patchValue(null, { emitEvent: false });
+            
             this.form.reset();
           }
         });
     } else {
       /* create only 1 copy when navigating next */
-      this.store.dispatch(runNextInspectionAction({ payload: { id: ins.id, saved_checklist_id: ins?.checklist?.id } }));
+      this.store.dispatch(runNextInspectionAction({
+        payload: {
+          id: inspectionRun.id,
+          saved_checklist_id: inspectionRun?.checklist?.id,
+          inspection: this.inspectionRun.inspection
+        }
+      }));
     }
   }
 

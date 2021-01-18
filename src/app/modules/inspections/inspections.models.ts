@@ -86,6 +86,12 @@ export interface IInspectionRun {
   checklist?: IInsChecklist;
   count?: number;
   run_status?: string;
+  inspection: IInspection;
+}
+export interface IInspection {
+  id?: string;
+  created_at?: string;
+  is_finished?: boolean
 }
 export enum RunStatusType {
   stop = '0',

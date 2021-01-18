@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { BaseService } from 'src/app/services/base.service';
 import { Injectable } from '@angular/core';
-import { IActiveInspection, IInspectionRun, IInspectionChecklist, IInspectionRuntime, IInspectionBarReport } from './inspections.models';
+import { IActiveInspection, IInspectionRun, IInspectionChecklist, IInspectionRuntime, IInspectionBarReport, IInspection } from './inspections.models';
 @Injectable({ providedIn: 'root' })
 export class InspectionReportService extends BaseService<IInspectionBarReport | { id }> {
   constructor(http: HttpClient) {
@@ -15,7 +15,7 @@ export class InspectionsService extends BaseService<IActiveInspection> {
   }
 }
 @Injectable({ providedIn: 'root' })
-export class InspectionChecklistRunService extends BaseService<IInspectionRun | { id: string, copyCount: number, contractProductId: string } | { saved_checklist_id: string, position: number }> {
+export class InspectionChecklistRunService extends BaseService<IInspectionRun | IInspectionRuntime | { id: string, copyCount: number, contractProductId?: string, saved_checklist_id?: string, inspection?: IInspection } | { saved_checklist_id: string, position: number } | { id: string }> {
   constructor(http: HttpClient) {
     super(http, 'inspection-checklist-run');
   }

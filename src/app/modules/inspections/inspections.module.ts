@@ -62,9 +62,6 @@ const routes: Routes = [{
   }, {
     path: ':id/run',
     component: InspectionRunPageComponent,
-    resolve: {
-      inspectionRun: InspectionRunResolver
-    },
     canDeactivate: [NavigateGuard]
   }, {
     path: ':id/report',

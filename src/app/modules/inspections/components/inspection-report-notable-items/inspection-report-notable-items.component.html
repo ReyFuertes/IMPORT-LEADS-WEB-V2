@@ -1,11 +1,13 @@
 <div>
-  <il-expandable-panel title="Notable Items" [expanded]="false">
+  <il-expandable-panel title="Notable Items" [expanded]="true">
     <div fxLayout="column" fxLayoutGap="20px">
       <div class="detail" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
         <mat-list fxLayout>
           <mat-list-item *ngFor="let header of notableHeader;" fxFlex>
-            <h5>{{header.title}}</h5>
-            <h2>{{header.value}}</h2>
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+              <h5>{{header.title}}</h5>
+              <h2>{{header.value}}</h2>
+            </div>
           </mat-list-item>
         </mat-list>
       </div>

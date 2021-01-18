@@ -1,4 +1,4 @@
-import { addProduct } from './../../store/products.actions';
+import { addProductAction } from './../../store/products.actions';
 import { take } from 'rxjs/operators';
 import { AddEditState } from './../../../../shared/generics/generic.model';
 import { ProductAddDialogComponent } from './../../../dialogs/components/products-add/products-add-dialog.component';
@@ -34,15 +34,13 @@ export class ProductsPageComponent implements OnInit, AfterViewInit {
     this.cdRef.detectChanges();
   }
 
-  public addProduct(): void {
+  public addProductAction(): void {
     const dialogRef = this.dialog.open(ProductAddDialogComponent, {
       data: { state: AddEditState.Add }
     });
-    dialogRef.afterClosed().pipe(take(1)).subscribe((item) => {
+    dialogRef.afterClosed().subscribe((item) => {
       if (item) {
-        setTimeout(() => {
-          this.store.dispatch(addProduct({ item }))
-        }, 2000);
+        this.store.dispatch(addProductAction({ item }))
       }
     });
   }

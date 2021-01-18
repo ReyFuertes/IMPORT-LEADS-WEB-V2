@@ -1,5 +1,5 @@
 import { ISimpleItem, AddEditState } from './../../../../shared/generics/generic.model';
-import { addProduct, deleteProduct, updateProduct } from './../../store/products.actions';
+import { addProductAction, deleteProductAction, updateProductAction } from './../../store/products.actions';
 import { AppState } from './../../../../store/app.reducer';
 import { Store } from '@ngrx/store';
 import { IProduct } from './../../products.model';
@@ -39,7 +39,7 @@ export class ProductListComponent extends GenericRowComponent implements OnInit,
   public onUpdate(event: any): void {
     const { parent, child } = event;
     const payload = Object.assign({}, child, { parent: { id: parent } });
-    this.store.dispatch(updateProduct({ item: payload }))
+    this.store.dispatch(updateProductAction({ item: payload }))
   }
 
   public get getDdItems(): ISimpleItem[] {
@@ -64,7 +64,7 @@ export class ProductListComponent extends GenericRowComponent implements OnInit,
   public onDelete(item: IProduct): void {
     const { id } = item;
     if (id)
-      this.store.dispatch(deleteProduct({ id }));
+      this.store.dispatch(deleteProductAction({ id }));
   }
 
   public onSave(item: any): void {
@@ -76,7 +76,7 @@ export class ProductListComponent extends GenericRowComponent implements OnInit,
         })
       }
       if (item)
-        this.store.dispatch(updateProduct({ item }));
+        this.store.dispatch(updateProductAction({ item }));
     }, 100);
   }
 

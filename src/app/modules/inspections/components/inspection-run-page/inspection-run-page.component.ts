@@ -177,6 +177,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
     else
       this.$inspectionRun = this.store.pipe(select(getInspectionRunSelector));
 
+    debugger
     this.contractProductId = event;
   }
 
@@ -214,11 +215,11 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
               saved_checklist_id: inspectionRun?.checklist?.id,
               inspection: this.inspectionRun?.inspection
             };
-            
+
             this.store.dispatch(copyInspectionAction(payload));
 
             this.form.get('copyCount').patchValue(null, { emitEvent: false });
-            
+
             this.form.reset();
           }
         });

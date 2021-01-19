@@ -17,7 +17,7 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './inspection-active-panel.component.html',
   styleUrls: ['./inspection-active-panel.component.scss']
 })
-export class InspectionActivePanelComponent extends GenericRowComponent implements OnInit, OnChanges, AfterViewInit {
+export class InspectionActivePanelComponent extends GenericRowComponent implements OnChanges, AfterViewInit {
   public apiImagePath: string = environment.apiImagePath;
   public svgPath: string = environment.svgPath;
   public imgPath: string = environment.imgPath;
@@ -75,9 +75,10 @@ export class InspectionActivePanelComponent extends GenericRowComponent implemen
     this.dragStart = false;
   }
 
-  ngOnInit() { }
-
   ngAfterViewInit(): void {
+    setTimeout(() => {
+      console.log(this.activeInspections)
+    }, 1000);
     this.cdRef.detectChanges();
   }
 

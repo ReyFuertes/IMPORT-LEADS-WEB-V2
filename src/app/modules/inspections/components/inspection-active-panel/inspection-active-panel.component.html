@@ -27,9 +27,9 @@
           <div class="action-col" fxFlex="5" fxLayoutAlign="end center">
             <img [src]="svgPath + 'dots-icon-blue.svg'" [matMenuTriggerFor]="menu" />
             <mat-menu #menu="matMenu">
-              <button *ngFor="let menu of menus; let last = last" (click)="menu?.action(item)" mat-menu-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+              <button *ngFor="let menu of menus; let last = last; let i = index" (click)="menu?.action(item)" mat-menu-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
                 <img [ngClass]="{'w-18': last}" [src]="svgPath + menu?.icon" />
-                <span>{{ menu?.label }}</span>
+                <span>{{ item?.is_paused && i === 0 ? 'RESUME' : menu?.label }}</span>
               </button>
             </mat-menu>
           </div>

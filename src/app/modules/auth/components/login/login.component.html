@@ -1,4 +1,4 @@
-<div [formGroup]="form" class="login__container" fxLayoutAlign="center center" fxFlexFill>
+<div [formGroup]="form" class="login-container" fxLayoutAlign="center center" fxFlexFill>
   <div fxLayout="column" fxLayoutGap="20px">
     <mat-card>
       <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="5px">
@@ -21,8 +21,10 @@
             <p-checkbox label="Remember Me"></p-checkbox>
           </div>
           <button [disabled]="!form.valid" (click)="onSubmit()" mat-flat-button class="il-button primary large" fxLayoutGap="5px">
-            <i *ngIf="($isLogging | async) && !($isLoginFailed | async)" class="pi pi-spin pi-spinner" style="font-size: 3em"></i>
-            <span>LOGIN</span>
+            <div class="btn-div" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
+              <i *ngIf="($isLogging | async) && !($isLoginFailed | async)" class="pi pi-spin pi-spinner" style="font-size: 2em"></i>
+              <div>LOGIN</div>
+            </div>
           </button>
         </div>
       </div>

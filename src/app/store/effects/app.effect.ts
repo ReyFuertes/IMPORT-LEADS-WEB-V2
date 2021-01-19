@@ -2,7 +2,7 @@ import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { tap, map, switchMap, takeUntil, filter } from 'rxjs/operators';
-import { initAppAction, initAppSuccessAction, loadAccessAction, loadAccessSuccessAction, loadAllRolesAction, loadAllRolesSuccessAction, getUserAccessAction, getUserAccessSuccessAction, getUserRoleAction, getUserRoleSuccessAction } from '../actions/app.action';
+import { initAppAction, initAppSuccessAction, loadAccessAction, loadAccessSuccessAction, loadAllRolesAction, loadAllRolesSuccessAction, getUserAccessAction, getUserAccessSuccessAction, getUserRoleAction, getUserRoleSuccessAction, loadAppUserProfileAction, loadAppUserProfileSuccessAction } from '../actions/app.action';
 import { logoutAction, logoutSuccessAction } from 'src/app/modules/auth/store/auth.action';
 import { NavigationEnd, Router } from '@angular/router';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
@@ -15,6 +15,8 @@ import { IRole, IUserAccess } from 'src/app/modules/user-management/user-mgmt.mo
 import { loadSavedChecklistAction } from 'src/app/modules/contracts/store/actions/saved-checklist.action';
 import { loadAllUsersAction } from 'src/app/modules/user-management/store/user-mgmt.actions';
 import { loadUserProfileAction } from 'src/app/modules/users/store/actions/user-profile.actions';
+import { UserProfileService } from 'src/app/modules/users/users.service';
+import { IUserProfile } from 'src/app/modules/users/users.models';
 
 @Injectable()
 export class InitAppEffect {
@@ -77,10 +79,11 @@ export class InitAppEffect {
 
             const at = JSON.parse(localStorage.getItem('at')) || null;
             const isLoggedIn = at?.user;
+  
             if (isLoggedIn) {
               this.store.dispatch(getUserAccessAction({ id: at.user.id }));
               this.store.dispatch(getUserRoleAction({ id: at.user.id }));
-              this.store.dispatch(loadUserProfileAction({ id: at.user.id }));
+              this.store.dispatch(loadAppUserProfileAction({ id: at.user.id }));
             }
             this.isInloginpage(isLoggedIn);
           }
@@ -93,6 +96,15 @@ export class InitAppEffect {
           return initAppSuccessAction({ token });
         })
       ))
+  ));
+
+  loadAppUserProfileAction$ = createEffect(() => this.actions$.pipe(
+    ofType(loadAppUserProfileAction),
+    switchMap(({ id }) => this.userProfileSrv.getById(id).pipe(
+      map((detail: IUserProfile) => {
+        return loadAppUserProfileSuccessAction({ detail });
+      })
+    ))
   ));
 
   public isInloginpage(isLoggedIn: boolean): void {
@@ -109,5 +121,5 @@ export class InitAppEffect {
 
   constructor(private store: Store<AppState>, private actions$: Actions,
     private router: Router, private accessSrv: AccessService, private userAccessSrv: UserAccessService,
-    private roleSrv: RolesService, private userRolesSrv: UserRolesService) { }
+    private roleSrv: RolesService, private userRolesSrv: UserRolesService, private userProfileSrv: UserProfileService) { }
 }

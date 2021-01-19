@@ -8,7 +8,7 @@ import { IUser } from 'src/app/modules/user-management/user-mgmt.model';
 import { Observable } from 'rxjs';
 import { getAccessSelector, getAppUserProfileSelector, getUserAccessSelector } from 'src/app/store/selectors/app.selector';
 import { ISimpleItem } from '../../generics/generic.model';
-import { map, takeUntil } from 'rxjs/operators';
+import { debounceTime, map, takeUntil } from 'rxjs/operators';
 import { sortByAsc, sortByDesc } from '../../util/sort';
 import { getUserProfileSelector } from 'src/app/modules/users/store/selectors/user-profile.selector';
 import { GenericDestroyPageComponent } from '../../generics/generic-destroy-page';
@@ -64,13 +64,14 @@ export class TopNavComponent extends GenericDestroyPageComponent implements OnIn
         }
       })
 
-    this.store.pipe(select(getAppUserProfileSelector), takeUntil(this.$unsubscribe))
+    this.store.pipe(select(getAppUserProfileSelector),
+      takeUntil(this.$unsubscribe))
       .subscribe(res => {
         if(res) {
           const user = Object.assign({}, res, {
             username: `${res?.firstname} ${res?.lastname}`
           });
-      
+          
           const localUser = JSON.parse(localStorage.getItem('at')) || null;
           if (localUser) {
             this.user = localUser.user;

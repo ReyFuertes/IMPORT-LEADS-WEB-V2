@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { appNotification } from 'src/app/store/actions/notification.action';
 import { loadVenuesAction } from '../../venues/store/venues.action';
-import { loadAccessAction, loadAllRolesAction, getUserAccessAction, getUserRoleAction } from 'src/app/store/actions/app.action';
+import { loadAccessAction, loadAllRolesAction, getUserAccessAction, getUserRoleAction, loadAppUserProfileAction } from 'src/app/store/actions/app.action';
 import { loadAllUsersAction } from '../../user-management/store/user-mgmt.actions';
 
 @Injectable()
@@ -34,9 +34,10 @@ export class AuthEffect {
             this.store.dispatch(loadAllUsersAction());
 
             const at = JSON.parse(localStorage.getItem('at')) || null;
-            if (at && at.user) {
+            if (at?.user) {
               this.store.dispatch(getUserAccessAction({ id: at.user.id }));
               this.store.dispatch(getUserRoleAction({ id: at.user.id }));
+              this.store.dispatch(loadAppUserProfileAction({ id: at.user.id }));
             }
           }
 

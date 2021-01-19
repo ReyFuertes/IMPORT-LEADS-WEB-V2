@@ -1,4 +1,7 @@
 @import "src/styleguide/shared";
+.btn-div {
+  height: 41px;
+}
 .logo {
   height: 50px;
   width: auto;
@@ -9,7 +12,7 @@ label {
   margin-bottom: 5px;
   color: $color-black-3;
 }
-.login__container {
+.login-container {
   h2 {
     margin-bottom: 20px;
   }

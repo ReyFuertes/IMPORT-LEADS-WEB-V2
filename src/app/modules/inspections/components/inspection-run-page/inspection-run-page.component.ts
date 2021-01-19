@@ -176,8 +176,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       this.$inspectionRun = this.store.pipe(select(getInspectionRunFilterByProductIdSelector(event)));
     else
       this.$inspectionRun = this.store.pipe(select(getInspectionRunSelector));
-
-    debugger
+    
     this.contractProductId = event;
   }
 

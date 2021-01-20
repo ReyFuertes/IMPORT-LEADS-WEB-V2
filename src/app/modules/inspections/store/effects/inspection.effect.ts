@@ -165,10 +165,17 @@ export class InspectionEffect {
           this.store.dispatch(loadInspectionRunAction({ id: response?.id }));
 
           return runInspectionSuccessAction({ response });
+        }),
+        catchError((error) => {
+          /* redirect back if error occurs */
+          this.router.navigateByUrl(`/dashboard/inspections`);
+
+          return of(error?.message);
         })
       )
     })
   ));
+
   loadSavedChecklistAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadSavedChecklistAction),
     switchMap(({ param }) => {

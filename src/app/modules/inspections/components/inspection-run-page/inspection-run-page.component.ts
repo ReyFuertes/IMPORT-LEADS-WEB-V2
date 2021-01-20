@@ -120,7 +120,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       .subscribe(result => {
         if (result) {
           this.triggerStop();
-          setTimeout(() => this.router.navigateByUrl(`/dashboard/inspections/${this.savedChecklistId}/report`), 3000);
+          setTimeout(() => this.router.navigateByUrl(`/dashboard/inspections/${this.savedChecklistId}/report`), 1000);
         }
       });
   }

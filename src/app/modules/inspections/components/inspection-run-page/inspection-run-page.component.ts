@@ -34,6 +34,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   public savedChecklistId: string
   public contractProductId: string;
   public permitToNavigate: boolean = false;
+  public isStopTriggered: boolean = false;
 
   constructor(route: ActivatedRoute, private dialog: MatDialog, private store: Store<AppState>, private cdRef: ChangeDetectorRef, private router: Router, private fb: FormBuilder) {
     super();
@@ -66,8 +67,9 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       this.savedChecklistId = res?.checklist.id;
       this.inspectionRun = res;
 
-      this.permitToNavigate = Number(res?.run_status) === Number(RunStatusType.pause);
-      
+
+      this.permitToNavigate = Number(res?.run_status) === Number(RunStatusType.pause) && !this.isStopTriggered;
+
       this.products = res?.checklist?.items.map(c => {
         return {
           label: c.contract_product.product.product_name,
@@ -122,6 +124,8 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       .subscribe(result => {
         if (result) {
           this.triggerStop();
+          this.permitToNavigate = true;
+          this.isStopTriggered = true; /* fail safe for for line 70 */
         }
       });
   }
@@ -133,7 +137,6 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       run_status: RunStatusType.stop
     }
     this.store.dispatch(changeInspectionRuntimeStatusAction({ payload }));
-    this.permitToNavigate = true;
   }
 
   public onResume(inspectionRun: IInspectionRun): void {
@@ -177,7 +180,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       this.$inspectionRun = this.store.pipe(select(getInspectionRunFilterByProductIdSelector(event)));
     else
       this.$inspectionRun = this.store.pipe(select(getInspectionRunSelector));
-    
+
     this.contractProductId = event;
   }
 

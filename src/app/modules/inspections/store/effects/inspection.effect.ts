@@ -96,7 +96,7 @@ export class InspectionEffect {
       return this.inspectionRuntimeSrv.post(payload, 'status').pipe(
         map((response: any) => {
           this.store.dispatch(loadInspectionRunAction({ id: response?.id }));
-          this.router.navigateByUrl(`/dashboard/inspections/${response?.saved_checklist_id}/report`)
+          this.router.navigateByUrl(`/dashboard/inspections/${response?.saved_checklist_id}/report`);
 
           return changeInspectionRuntimeStatusSuccessAction({ response });
         })

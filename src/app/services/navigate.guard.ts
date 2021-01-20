@@ -24,7 +24,7 @@ export class NavigateGuard extends GenericDestroyPageComponent implements CanDea
     } catch (error) {
       isPauseOrRun = true;
     }
-  
+    
     /* if the checklist run is paused then do not display the confirmation run/stop dialog */
     return isPaused ? true : isPauseOrRun;
   }

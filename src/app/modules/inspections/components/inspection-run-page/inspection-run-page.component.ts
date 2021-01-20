@@ -66,6 +66,8 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       this.savedChecklistId = res?.checklist.id;
       this.inspectionRun = res;
 
+      this.permitToNavigate = Number(res?.run_status) === Number(RunStatusType.pause);
+      
       this.products = res?.checklist?.items.map(c => {
         return {
           label: c.contract_product.product.product_name,
@@ -120,7 +122,6 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       .subscribe(result => {
         if (result) {
           this.triggerStop();
-          setTimeout(() => this.router.navigateByUrl(`/dashboard/inspections/${this.savedChecklistId}/report`), 1000);
         }
       });
   }

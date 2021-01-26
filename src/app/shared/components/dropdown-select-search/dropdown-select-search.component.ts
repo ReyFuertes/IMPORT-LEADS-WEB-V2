@@ -3,7 +3,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject, ReplaySubject } from 'rxjs';
 import { ISimpleItem } from '../../generics/generic.model';
 import { GenericControl } from '../../generics/generic-control';
-import { Component, OnInit, ChangeDetectorRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
 import { FormControl, FormBuilder } from '@angular/forms';
 
 @Component({
@@ -12,7 +12,7 @@ import { FormControl, FormBuilder } from '@angular/forms';
   styleUrls: ['./dropdown-select-search.component.scss']
 })
 
-export class DropdownSelectSearchComponent extends GenericControl<ISimpleItem> implements OnInit, AfterViewInit {
+export class DropdownSelectSearchComponent extends GenericControl<ISimpleItem> implements OnInit, AfterViewInit, OnChanges {
   public dataFilterForm = new FormControl();
   public $filteredData = new ReplaySubject<any>();
   private newList: ISimpleItem[];
@@ -34,6 +34,12 @@ export class DropdownSelectSearchComponent extends GenericControl<ISimpleItem> i
 
   ngAfterViewInit(): void {
     this.cdRef.detectChanges();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.selectedItem = changes?.selectedItem.currentValue;
+    
+    console.log(this.selectedItem)
   }
 
   private filterdata(): void {

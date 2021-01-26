@@ -47,24 +47,24 @@ export interface IInspectionChecklistImage {
   mimetype?: string;
   inspection_checklist_run?: { id: string };
 }
-export interface IInsChecklistTerm {
+export class InsChecklistTerm {
   id?: string;
-  checklist_item: {
-    id?: string;
-    verification?: string;
-    comment?: string;
-    created_at?: string;
-    updated_at?: string;
-  }
+  // verification?: string;
   term_description?: string;
   term_name?: string;
+  comment?: IInspectionChecklistComment;
+  // inspection_checklist_run?: { id: string };
+  // contract_term?: { id: string };
+  // contract_category?: { id: string };
+  // saved_checklist?: { id: string };
+  // contract_product?: { id: string };
 }
-export enum InspectionVeriType {
+export enum InspectionVerificationType {
   ok = 'ok',
   failed = 'failed',
   comment = 'comment'
 }
-export interface IInspectionChecklist {
+export interface IInspectionChecklistComment {
   id?: string;
   verification?: string;
   comment?: string;
@@ -74,19 +74,22 @@ export interface IInspectionChecklist {
   saved_checklist?: ISavedChecklist,
   contract_product?: IContractProduct
 }
-export interface IInsCheckItem {
-  id?: string;
-  verification?: string;
-  comment?: string;
-  created_at?: string;
-  updated_at?: string;
-}
+// export interface IInsCheckComment {
+//   id?: string;
+//   verification?: string;
+//   comment?: string;
+//   created_at?: string;
+//   updated_at?: string;
+// }
 export interface IInspectionRun {
   id?: string;
   checklist?: IInsChecklist;
   count?: number;
   run_status?: string;
   inspection?: IInspection;
+  contract_products?: any;
+  saved_checklist_items?: any;
+  inspection_checklist_product?: any;
 }
 export interface IInspection {
   id?: string;
@@ -94,9 +97,10 @@ export interface IInspection {
   is_finished?: boolean
 }
 export enum RunStatusType {
-  stop = '0',
+  running = '0',
   pause = '1',
-  resume = '2'
+  resume = '2',
+  stop = '3',
 }
 export interface IInspectionRuntime {
   id?: string;
@@ -116,7 +120,7 @@ export interface IInspectionRunItem {
   contract_product?: IContractProduct,
   contract_term?: IContractTerm,
   contract_category?: IContractCategory,
-  checklist_item?: IInsCheckItem,
+  checklist_item?: any,
   saved_checklist?: ISavedChecklist
 }
 export class IFinishedInspection { }

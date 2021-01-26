@@ -41,7 +41,7 @@ import { InspectionActivePanelComponent } from './components/inspection-active-p
 import { InspectionFinishedPanelComponent } from './components/inspection-finished-panel/inspection-finished-panel.component';
 import { SavedChecklistService } from '../contracts/services/saved-checklist';
 import { MatRadioModule } from '@angular/material/radio';
-import { InspectionChecklistService, InspectionChecklistRunService, InspectionReportService } from './inspections.service';
+import { InspectionChecklistCommentService, InspectionChecklistRunService, InspectionReportService } from './inspections.service';
 import { InspectionRunResolver } from './inspection-run.resolver';
 import { InspectionRunCategoryComponent } from './components/inspection-run-category/inspection-run-category.component';
 import { InspectionRunCategoryRowComponent } from './components/inspection-run-category-row/inspection-run-category-row.component';
@@ -138,7 +138,7 @@ const primeNgModules = [];
     ChecklistService,
     SavedChecklistService,
     InspectionChecklistRunService,
-    InspectionChecklistService,
+    InspectionChecklistCommentService,
     InspectionRunResolver,
     NavigateGuard,
     InspectionReportService

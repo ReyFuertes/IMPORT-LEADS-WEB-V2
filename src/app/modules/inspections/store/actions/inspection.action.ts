@@ -35,7 +35,17 @@ export enum InspectionActionTypes {
   finishInspectionSuccessAction = '[Inspection] finish inspection (success)',
   loadFinishInspectionAction = '[Inspection] load finish inspections',
   loadFinishInspectionSuccessAction = '[Inspection] load finish inspections (success)',
+  updateFirstInspectionRunProductAction = '[Inspection Run] update first run product',
+  updateFirstInspectionRunProductSuccessAction = '[Inspection Run] update first run product (success)',
 }
+export const updateFirstInspectionRunProductAction = createAction(
+  InspectionActionTypes.updateFirstInspectionRunProductAction,
+  props<{ payload: any }>()
+);
+export const updateFirstInspectionRunProductSuccessAction = createAction(
+  InspectionActionTypes.updateFirstInspectionRunProductSuccessAction,
+  props<{ response: any }>()
+);
 export const loadFinishInspectionAction = createAction(
   InspectionActionTypes.loadFinishInspectionAction
 );
@@ -117,7 +127,7 @@ export const runPrevInspectionSuccessAction = createAction(
 );
 export const runNextInspectionAction = createAction(
   InspectionActionTypes.runNextInspectionAction,
-  props<{ payload: { id: string, saved_checklist_id: string, inspection: IInspection } }>()
+  props<{ payload: { id: string, saved_checklist_id: string, inspection: IInspection, contractProductId: string } }>()
 );
 export const runNextInspectionSuccessAction = createAction(
   InspectionActionTypes.runNextInspectionSuccessAction,

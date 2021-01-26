@@ -1,4 +1,4 @@
-<div *ngIf="($inspectionRun | async) as inspectionRun" class="irp-container">
+<div *ngIf="inspectionRun" class="irp-container">
   <div class="title">
     <h1>
       <span>{{ inspectionRun?.checklist?.checklist_name | uppercase }} : </span>
@@ -49,14 +49,14 @@
           <img [src]="svgPath + 'arrow-right-icon-white.svg'" />
         </div>
       </button>
-      <button (click)="isPaused ? onResume(inspectionRun) : onPause()" mat-flat-button class="il-button il-bg-green">
+      <button [disabled]="!isProductSelected" (click)="isPaused ? onResume(inspectionRun) : onPause()" mat-flat-button class="il-button il-bg-green">
         <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
           <img [src]="svgPath + 'pause-icon-white.svg'" />
           <span *ngIf="!isPaused">Pause run</span>
           <span *ngIf="isPaused">Resume run</span>
         </div>
       </button>
-      <button (click)="onStop()" mat-flat-button class="il-button il-bg-red">
+      <button [disabled]="!isProductSelected" (click)="onStop()" mat-flat-button class="il-button il-bg-red">
         <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
           <img [src]="svgPath + 'stop-icon-white.svg'" />
           <span>Stop run</span>
@@ -69,11 +69,11 @@
     <il-input fxFlex="122px" [form]="form" isFloatLabel="true" [inputMaxLen]="10" controlName="copyCount" placeholder="Items checked for this run"></il-input>
 
     <div fxFlex fxLayoutAlign="end center">
-      <il-dropdown-select-search (valueEmitter)="handleValueEmitter($event)" placeholder="Select Product" [options]="products"></il-dropdown-select-search>
+      <il-dropdown-select-search [selectedItem]="selProduct" (valueEmitter)="onSelectProductChange($event)" placeholder="Select Product" [options]="products"></il-dropdown-select-search>
     </div>
   </div>
   <div>
-    <il-inspection-run-category *ngIf="hasSelectedProduct; else selectedAProduct" [item]="inspectionRun"></il-inspection-run-category>
+    <il-inspection-run-category *ngIf="inspectionRun" [inspectionRun]="inspectionRun"></il-inspection-run-category>
   </div>
 </div>
 

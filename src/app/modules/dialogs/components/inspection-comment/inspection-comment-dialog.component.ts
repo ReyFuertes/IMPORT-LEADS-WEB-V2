@@ -5,7 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ModalStateType } from 'src/app/models/generic.model';
 import { AppState } from 'src/app/store/app.reducer';
 import { select, Store } from '@ngrx/store';
-import { InspectionChecklistService } from 'src/app/modules/inspections/inspections.service';
+import { InspectionChecklistCommentService } from 'src/app/modules/inspections/inspections.service';
 import { debounceTime, map, take, takeUntil, tap } from 'rxjs/operators';
 import { IInspectionChecklistImage } from 'src/app/modules/inspections/inspections.models';
 import { convertBlobToBase64 } from 'src/app/shared/util/convert-to-blob';
@@ -30,7 +30,7 @@ export class InspectionCommentDialogComponent extends GenericDestroyPageComponen
   public files: File[] = [];
   public imgUrl: string = `${environment.apiUrl}contracts/image/`;
 
-  constructor(private cdRef: ChangeDetectorRef, private insChecklistSrv: InspectionChecklistService, private store: Store<AppState>, public fb: FormBuilder,
+  constructor(private cdRef: ChangeDetectorRef, private insChecklistSrv: InspectionChecklistCommentService, private store: Store<AppState>, public fb: FormBuilder,
     public dialogRef: MatDialogRef<InspectionCommentDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
     super();

@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { IContractTerm } from 'src/app/modules/contracts/contract.model';
-import { IActiveInspection, IInspectionChecklist, IInspectionChecklistImage, IInspectionRun } from '../../inspections.models';
+import { IActiveInspection, IInspectionChecklistComment, IInspectionChecklistImage, IInspectionRun } from '../../inspections.models';
 
 export enum InspectionActionTypes {
   saveInsChecklistAction = '[Inspection Checklist] save checklist',
@@ -10,8 +10,8 @@ export enum InspectionActionTypes {
   deleteInsChecklistAction = '[Inspection Checklist] delete checklist',
   addInsChecklistImageAction = '[Inspection Checklist] add checklist image',
   addInsChecklistImagesAction = '[Inspection Checklist] add multiple checklist images',
-  updateInsChecklistAction = '[Inspection Checklist] update checklist',
-  updateInsChecklistSuccessAction = '[Inspection Checklist] update checklist (success)',
+  updateInsChecklistCommentAction = '[Inspection Checklist] update checklist',
+  updateInsChecklistCommentSuccessAction = '[Inspection Checklist] update checklist (success)',
   saveInsChecklisImageAction = '[Inspection Checklist] save checklist image',
   saveInsChecklisImageSuccessAction = '[Inspection Checklist] save checklist image (success)',
   saveInsChecklistImageFilesAction = '[Inspection Checklist] upload checklist image',
@@ -43,13 +43,13 @@ export const saveInsChecklisImageSuccessAction = createAction(
   InspectionActionTypes.saveInsChecklisImageSuccessAction,
   props<{ response: IInspectionChecklistImage[] }>()
 );
-export const updateInsChecklistAction = createAction(
-  InspectionActionTypes.updateInsChecklistAction,
-  props<{ payload: IInspectionChecklist }>()
+export const updateInsChecklistCommentAction = createAction(
+  InspectionActionTypes.updateInsChecklistCommentAction,
+  props<{ payload: IInspectionChecklistComment }>()
 );
-export const updateInsChecklistSuccessAction = createAction(
-  InspectionActionTypes.updateInsChecklistSuccessAction,
-  props<{ response: IInspectionChecklist }>()
+export const updateInsChecklistCommentSuccessAction = createAction(
+  InspectionActionTypes.updateInsChecklistCommentSuccessAction,
+  props<{ response: IInspectionChecklistComment }>()
 );
 export const removeInsChecklistImageAction = createAction(
   InspectionActionTypes.removeInsChecklistImageAction,
@@ -73,13 +73,13 @@ export const getInsChecklistAction = createAction(
 );
 export const getInsChecklistSuccessAction = createAction(
   InspectionActionTypes.getInsChecklistSuccessAction,
-  props<{ response: IInspectionChecklist }>()
+  props<{ response: IInspectionChecklistComment }>()
 );
 export const saveInsChecklistAction = createAction(
   InspectionActionTypes.saveInsChecklistAction,
-  props<{ payload: IInspectionChecklist }>()
+  props<{ payload: any }>()
 );
 export const saveInsChecklistSuccessAction = createAction(
   InspectionActionTypes.saveInsChecklistSuccessAction,
-  props<{ response: IInspectionChecklist }>()
+  props<{ response: any }>()
 );

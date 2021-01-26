@@ -1,11 +1,11 @@
 import { IActiveInspection, IInspectionChecklist, IInspectionRun, IInspectionRuntime, RunStatusType } from './../../inspections.models';
-import { loadActiveInspectionSuccessAction, runInspectionAction, runInspectionSuccessAction, createInspectionChecklistAction, createInspectionChecklistSuccessAction, loadInspectionRunAction, loadInspectionRunSuccessAction, runNextInspectionAction, runNextInspectionSuccessAction, runPrevInspectionAction, runPrevInspectionSuccessAction, changeInspectionRuntimeStatusAction, changeInspectionRuntimeStatusSuccessAction, deleteAndNavigateToAction, deleteAndNavigateToSuccessAction, copyInspectionAction, copyInspectionSuccessAction, navigateToInspectionAction, navigateToInspectionSuccessAction, navigateToFailed, deleteInspectionAction, deleteInspectionSuccessAction, loadInspectionDetailAction, loadInspectionDetailSuccessAction, finishInspectionSuccessAction, finishInspectionAction, loadFinishInspectionAction, loadFinishInspectionSuccessAction } from '../actions/inspection.action';
+import { loadActiveInspectionSuccessAction, runInspectionAction, runInspectionSuccessAction, createInspectionChecklistAction, createInspectionChecklistSuccessAction, loadInspectionRunAction, loadInspectionRunSuccessAction, runNextInspectionAction, runNextInspectionSuccessAction, runPrevInspectionAction, runPrevInspectionSuccessAction, changeInspectionRuntimeStatusAction, changeInspectionRuntimeStatusSuccessAction, deleteAndNavigateToAction, deleteAndNavigateToSuccessAction, copyInspectionAction, copyInspectionSuccessAction, navigateToInspectionAction, navigateToInspectionSuccessAction, navigateToFailed, deleteInspectionAction, deleteInspectionSuccessAction, loadInspectionDetailAction, loadInspectionDetailSuccessAction, finishInspectionSuccessAction, finishInspectionAction, loadFinishInspectionAction, loadFinishInspectionSuccessAction, updateFirstInspectionRunProductAction, updateFirstInspectionRunProductSuccessAction } from '../actions/inspection.action';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { loadSavedChecklistAction } from '../../../contracts/store/actions/saved-checklist.action';
-import { InspectionsService, InspectionChecklistRunService, InspectionChecklistService, InspectionRuntimeService } from '../../inspections.service';
+import { InspectionsService, InspectionChecklistRunService, InspectionChecklistCommentService, InspectionRuntimeService } from '../../inspections.service';
 import { Router } from '@angular/router';
 import { AppState } from '../../../contracts/store/reducers';
 import { appNotification } from 'src/app/store/actions/notification.action';
@@ -14,6 +14,17 @@ import { SavedChecklistService } from 'src/app/modules/contracts/services/saved-
 
 @Injectable()
 export class InspectionEffect {
+  updateFirstInspectionRunProductAction$ = createEffect(() => this.actions$.pipe(
+    ofType(updateFirstInspectionRunProductAction),
+    switchMap(({ payload }) => {
+      return this.inspectionChecklistRunSrv.post(payload, 'update-first-run-item').pipe(
+        map((response: any) => {
+          return updateFirstInspectionRunProductSuccessAction({ response });
+        })
+      )
+    })
+  ))
+
   loadFinishInspectionAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadFinishInspectionAction),
     switchMap(() => {
@@ -219,7 +230,7 @@ export class InspectionEffect {
     private inspectionSrv: InspectionsService,
     private savedChecklistSrv: SavedChecklistService,
     private inspectionRuntimeSrv: InspectionRuntimeService,
-    private inspectionChecklistSrv: InspectionChecklistService,
+    private inspectionChecklistSrv: InspectionChecklistCommentService,
     private inspectionChecklistRunSrv: InspectionChecklistRunService,
   ) { }
 }

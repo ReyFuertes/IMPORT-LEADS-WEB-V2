@@ -17,8 +17,9 @@ export const getInspectionRunStatusSelector = createSelector(
 export const getInspectionRunFilterByProductIdSelector = (id: string) => createSelector(
   selectContractModuleState,
   state => {
-    const items = state?.inspection?.runInspection?.checklist?.items.filter(i => i.contract_product.id === id);
-    const checklist = Object.assign({}, state?.inspection?.runInspection?.checklist, { items })
+    const contract_product = state?.inspection?.runInspection?.saved_checklist_items?.find(i => i?.contract_product?.id === id);
+
+    const checklist = Object.assign({}, state?.inspection?.runInspection?.checklist, { contract_product })
     return Object.assign({}, state?.inspection?.runInspection, { checklist });
   }
 );

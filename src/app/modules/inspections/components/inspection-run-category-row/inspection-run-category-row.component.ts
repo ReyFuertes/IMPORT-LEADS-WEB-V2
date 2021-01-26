@@ -2,14 +2,14 @@ import { ISimpleItem } from '../../../../shared/generics/generic.model';
 import { InspectionCommentDialogComponent } from '../../../dialogs/components/inspection-comment/inspection-comment-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, Input, SimpleChanges, OnChanges, ChangeDetectorRef } from '@angular/core';
-import { IInsChecklistTerm, IInspectionChecklistImage, IInspectionRunItem, InspectionVeriType, RunStatusType } from '../../inspections.models';
+import { InsChecklistTerm, IInspectionChecklistImage, IInspectionRunItem, InspectionVerificationType, RunStatusType } from '../../inspections.models';
 import * as _ from 'lodash';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { select, Store } from '@ngrx/store';
 import { IContractTerm } from 'src/app/modules/contracts/contract.model';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { take, takeUntil, tap } from 'rxjs/operators';
-import { clearInsChecklistImageAction, deleteInsChecklistAction, saveInsChecklisImageAction, saveInsChecklistAction, saveInsChecklistImageFilesAction, updateInsChecklistAction } from '../../store/actions/inspection-checklist.action';
+import { clearInsChecklistImageAction, deleteInsChecklistAction, saveInsChecklisImageAction, saveInsChecklistAction, saveInsChecklistImageFilesAction, updateInsChecklistCommentAction } from '../../store/actions/inspection-checklist.action';
 import { ModalStateType } from 'src/app/models/generic.model';
 import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
 import { getInsChecklistImagesSelector } from '../../store/selectors/inspection-checklist.selector';
@@ -22,26 +22,28 @@ import { getInspectionRunStatusSelector } from '../../store/selectors/inspection
 })
 
 export class InspectionRunCategoryRowComponent extends GenericDestroyPageComponent implements OnInit, OnChanges {
+  @Input() public runId: string;
+  @Input() public source: IInspectionRunItem;
+  @Input() public row: InsChecklistTerm;
+
   public verifOptions: ISimpleItem[] = [
     { label: 'Ok', value: 'ok' },
     { label: 'Failed', value: 'failed' },
     { label: 'Comment', value: 'comment' }
   ];
-  public inspectionVeriType = InspectionVeriType;
+  public inspectionVeriType = InspectionVerificationType;
   public term: IContractTerm;
   public images: IInspectionChecklistImage[];
   public runInspectionStatus: string;
-
-  @Input() public checklistRunId: string;
-  @Input() public source: IInspectionRunItem;
-  @Input() public row: IInsChecklistTerm;
+  public rowUpdate: InsChecklistTerm;
 
   constructor(private store: Store<AppState>, private cdRef: ChangeDetectorRef, public dialog: MatDialog) {
     super();
-
   }
 
   ngOnInit() {
+    this.rowUpdate = Object.assign({}, this.row);
+
     this.store.pipe(select(getInspectionRunStatusSelector),
       tap(res => {
         this.runInspectionStatus = res;
@@ -53,7 +55,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
           this.images = res?.map(r => {
             return ({
               ...r,
-              inspection_checklist_run: { id: this.checklistRunId },
+              inspection_checklist_run: { id: this.runId },
               contract_term: { id: this.row?.id }
             })
           });
@@ -61,62 +63,50 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
       });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    this.runInspectionStatus = changes?.runInspectionStatus?.currentValue;
-  }
+  public handleSelOption(option: ISimpleItem, item: InsChecklistTerm): void {
 
-  public get isPaused(): boolean {
-    return this.runInspectionStatus == RunStatusType.pause;
-  }
-
-  public get getSelection(): any {
-    return this.row?.checklist_item?.verification || String(this.inspectionVeriType.ok);
-  }
-
-  public isVerified(verification: string): boolean {
-    return verification !== null && verification !== this.inspectionVeriType.ok
-  }
-
-  public handleSelOption(option: ISimpleItem, item: IInsChecklistTerm): void {
-    const prevSelection = Object.assign({}, item);
+    /* we need to trigger changes to an object so we can trigger an update */
+    this.rowUpdate = Object.assign({}, this.row, {
+      verification: option?.value,
+    });
 
     /* clear all the state images first */
     this.store.dispatch(clearInsChecklistImageAction());
 
-    if (option.label !== 'Ok') {
+    if (option.value === InspectionVerificationType.failed
+      || option.value === InspectionVerificationType.comment) {
       const dialogRef = this.dialog.open(InspectionCommentDialogComponent, {});
       dialogRef.afterClosed().subscribe((result) => {
         if (result) {
-          this.row.checklist_item.verification = option.value;
 
-          /* save verification and comments */
-          const payload = {
-            verification: this.row?.checklist_item?.verification,
-            comment: result.comments,
-            inspection_checklist_run: { id: this.checklistRunId },
-            contract_term: { id: item.id },
-            contract_category: { id: this.source.contract_category.id },
-            saved_checklist: { id: this.source?.saved_checklist?.id },
-            contract_product: { id: this.source.contract_product.id }
-          }
-
-          this.store.dispatch(saveInsChecklistAction({ payload }));
-
-          this.saveAndUpdateImage();
-        } else {
-          this.row = Object.assign({}, this.row, {
-            checklist_item: {
-              verification: null
+          /* update the ui selection */
+          this.rowUpdate = new InsChecklistTerm();
+          this.rowUpdate = Object.assign({}, this.row, {
+            comment: {
+              verification: option?.value
             }
           });
-          setTimeout(() => {
-            this.row = Object.assign({}, this.row, {
-              checklist_item: Object.assign({}, item.checklist_item, {
-                verification: prevSelection?.checklist_item?.verification
-              })
-            });
-          });
+
+          /* save verification and comments */
+          this.store.dispatch(saveInsChecklistAction({
+            payload: {
+              id: this.row?.comment?.id,
+              comment: result.comments,
+              verification: option.value,
+              inspection_checklist_run: { id: this.runId },
+              contract_term: { id: item.id },
+              contract_category: { id: this.source.contract_category.id },
+              saved_checklist: { id: this.source?.saved_checklist?.id },
+              contract_product: { id: this.source.contract_product.id }
+            }
+          }));
+
+          this.saveAndUpdateImage();
+
+        } else {
+          this.rowUpdate = Object.assign({}, this.row);
         }
+
         this.cdRef.detectChanges();
       });
     } else {
@@ -124,12 +114,22 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
       dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
         .subscribe(result => {
           if (result) {
-            this.store.dispatch(deleteInsChecklistAction({ id: item?.checklist_item?.id }));
-            this.row = Object.assign({}, this.row, {
-              checklist_item: Object.assign({}, item.checklist_item, {
+
+            this.rowUpdate = new InsChecklistTerm();
+            this.rowUpdate = Object.assign({}, this.row, {
+              comment: {
                 verification: option?.value
-              })
+              }
             });
+
+            this.store.dispatch(updateInsChecklistCommentAction({
+              payload: {
+                id: this.row?.comment?.id,
+                verification: InspectionVerificationType.ok
+              }
+            }));
+          } else {
+            this.rowUpdate = this.row;
           }
         });
     }
@@ -142,18 +142,18 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         /* update comment */
-        this.store.dispatch(updateInsChecklistAction({
+        this.store.dispatch(updateInsChecklistCommentAction({
           payload: {
             id: result?.id,
             comment: result?.comments
           }
         }));
-
+        debugger
         /* if images is undefined then set what is being pre uploaded */
         // this.images = result?.images?.map(i => {
         //   return {
         //     ...i,
-        //     inspection_checklist_run: { id: this.checklistRunId },
+        //     inspection_checklist_run: { id: this.runId },
         //     contract_term: { id: this.row?.id }
         //   }
         // });
@@ -174,13 +174,13 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
             return ({
               file: r?.file,
               filename: r?.filename,
-              mimetype:r?.mimetype,
+              mimetype: r?.mimetype,
               size: r?.size,
-              inspection_checklist_run: { id: this.checklistRunId },
+              inspection_checklist_run: { id: this.runId },
               contract_term: { id: this.row?.id }
             })
           });
-          
+          debugger
           this.store.dispatch(saveInsChecklisImageAction({ payload: this.images }));
 
           /* upload image */
@@ -199,5 +199,21 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
         files.append('files', ci.file, ci.filename);
       return { id: ci.id, filename: ci.filename, size: ci.size, mimetype: ci.mimetype }
     }) || null;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.runInspectionStatus = changes?.runInspectionStatus?.currentValue;
+  }
+
+  public get isPaused(): boolean {
+    return this.runInspectionStatus == RunStatusType.pause;
+  }
+
+  public get getSelection(): any {
+    return this.row?.comment?.verification || String(this.inspectionVeriType.ok);
+  }
+
+  public isVerified(verification: string): boolean {
+    return verification !== null && verification !== this.inspectionVeriType.ok
   }
 }

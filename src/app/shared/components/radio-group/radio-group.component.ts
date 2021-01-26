@@ -6,7 +6,7 @@ import { ISimpleItem } from '../../generics/generic.model';
   templateUrl: './radio-group.component.html',
   styleUrls: ['./radio-group.component.scss']
 })
-export class RadioGroupComponent implements OnInit, OnChanges {
+export class RadioGroupComponent implements OnChanges {
   @Input() public options: ISimpleItem[];
   @Input() public name: string;
   @Input() public selected: string;
@@ -15,10 +15,6 @@ export class RadioGroupComponent implements OnInit, OnChanges {
   @Output() public valueEmitter = new EventEmitter<any>();
 
   constructor() { }
-
-  ngOnInit(): void {
-
-  }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.selected = changes?.selected?.currentValue;

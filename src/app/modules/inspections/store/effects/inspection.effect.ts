@@ -1,4 +1,4 @@
-import { IActiveInspection, IInspectionChecklist, IInspectionRun, IInspectionRuntime, RunStatusType } from './../../inspections.models';
+import { IActiveInspection, IInspectionRun } from './../../inspections.models';
 import { loadActiveInspectionSuccessAction, runInspectionAction, runInspectionSuccessAction, createInspectionChecklistAction, createInspectionChecklistSuccessAction, loadInspectionRunAction, loadInspectionRunSuccessAction, runNextInspectionAction, runNextInspectionSuccessAction, runPrevInspectionAction, runPrevInspectionSuccessAction, changeInspectionRuntimeStatusAction, changeInspectionRuntimeStatusSuccessAction, deleteAndNavigateToAction, deleteAndNavigateToSuccessAction, copyInspectionAction, copyInspectionSuccessAction, navigateToInspectionAction, navigateToInspectionSuccessAction, navigateToFailed, deleteInspectionAction, deleteInspectionSuccessAction, loadInspectionDetailAction, loadInspectionDetailSuccessAction, finishInspectionSuccessAction, finishInspectionAction, loadFinishInspectionAction, loadFinishInspectionSuccessAction, updateFirstInspectionRunProductAction, updateFirstInspectionRunProductSuccessAction } from '../actions/inspection.action';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -11,6 +11,7 @@ import { AppState } from '../../../contracts/store/reducers';
 import { appNotification } from 'src/app/store/actions/notification.action';
 import { of } from 'rxjs';
 import { SavedChecklistService } from 'src/app/modules/contracts/services/saved-checklist';
+import { getInspectionChecklistProductAction, getInspectionChecklistProductSuccessAction } from '../actions/inspection-checklist.action';
 
 @Injectable()
 export class InspectionEffect {
@@ -119,7 +120,7 @@ export class InspectionEffect {
     switchMap(({ payload }) => {
       return this.inspectionChecklistRunSrv.post(payload, 'prev').pipe(
         map((response: any) => {
-          
+
           this.router.navigateByUrl(`/dashboard/inspections/${response?.id}/run`);
           this.store.dispatch(loadInspectionRunAction({ id: response?.id }));
 
@@ -131,7 +132,7 @@ export class InspectionEffect {
   runNextInspectionAction$ = createEffect(() => this.actions$.pipe(
     ofType(runNextInspectionAction),
     switchMap(({ payload }) => {
-      
+
       return this.inspectionChecklistRunSrv.post(payload, 'next').pipe(
         map((response: any) => {
 
@@ -143,11 +144,9 @@ export class InspectionEffect {
       )
     })
   ));
-
   loadInspectionRunAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadInspectionRunAction),
     switchMap(({ id }) => {
-      
       return this.inspectionChecklistRunSrv.getById(id).pipe(
         map((response: IInspectionRun) => {
           return loadInspectionRunSuccessAction({ response });
@@ -159,9 +158,9 @@ export class InspectionEffect {
     ofType(createInspectionChecklistAction),
     switchMap(({ payload }) => {
       return this.inspectionChecklistSrv.post(payload).pipe(
-        map((response: IInspectionChecklist) => {
+        map((response: any) => {
           this.router.navigateByUrl(`/dashboard/inspections/${response?.inspection_checklist_run?.id}/run`);
-          
+
           return createInspectionChecklistSuccessAction({ response });
         })
       )
@@ -172,7 +171,7 @@ export class InspectionEffect {
     switchMap(({ payload }) => {
       return this.inspectionChecklistRunSrv.post(payload).pipe(
         map((response: IActiveInspection) => {
-          
+
           this.router.navigateByUrl(`/dashboard/inspections/${response?.id}/run`);
           this.store.dispatch(loadInspectionRunAction({ id: response?.id }));
 
@@ -187,7 +186,6 @@ export class InspectionEffect {
       )
     })
   ));
-
   loadSavedChecklistAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadSavedChecklistAction),
     switchMap(({ param }) => {

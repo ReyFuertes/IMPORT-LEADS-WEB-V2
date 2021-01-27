@@ -22,7 +22,7 @@ export class DropdownSelectSearchComponent extends GenericControl<ISimpleItem> i
   }
 
   ngOnInit() {
-    if (this.options && this.options.length > 0) {
+    if (this.options?.length > 0) {
       this.newList = this.options.slice();
       this.$filteredData.next(this.newList);
     }
@@ -33,13 +33,15 @@ export class DropdownSelectSearchComponent extends GenericControl<ISimpleItem> i
   }
 
   ngAfterViewInit(): void {
-    this.cdRef.detectChanges();
+
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.selectedItem = changes?.selectedItem.currentValue;
-    
-    console.log(this.selectedItem)
+    console.log(this.selectedItem);
+    console.log(this.options);
+
+    if (changes?.selectedItem?.currentValue)
+      this.selectedItem = changes?.selectedItem?.currentValue;
   }
 
   private filterdata(): void {
@@ -53,7 +55,7 @@ export class DropdownSelectSearchComponent extends GenericControl<ISimpleItem> i
     }
 
     this.$filteredData.next(
-      this.newList.filter(data => data.label.toLowerCase().indexOf(search) > -1)
+      this.newList.filter(data => data?.label?.toLowerCase().indexOf(search) > -1)
     );
   }
 }

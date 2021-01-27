@@ -33,7 +33,6 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   public inspectionRunStatus: string;
   public runInspectionCount: number;
   public savedChecklistId: string
-  public contractProductId: string;
   public permitToNavigate: boolean = false;
   public isStopTriggered: boolean = false;
   public id: string;
@@ -65,47 +64,39 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   }
 
   ngOnInit() {
-    this.$inspectionRun = this.store.pipe(select(getInspectionRunSelector));
-    this.$inspectionRun.pipe(takeUntil(this.$unsubscribe)).subscribe((res: any) => {
-      if (res) {
-        const { checklist, count, inspection, saved_checklist_items } = res;
-  
-        this.runInspectionCount = count;
-        this.savedChecklistId = checklist.id;
-        this.inspectionRun = res;
-        
-        /* if the count is 1 then set for updating */
-        if (Number(this.inspectionRun?.count) === 1) {
-          this.storageSrv.set('i_init_first_id', this.id);
-        }
+    this.store.pipe(select(getInspectionRunSelector))
+      .pipe(takeUntil(this.$unsubscribe)).subscribe((res: any) => {
+        if (res) {
+          const { checklist, count, inspection_checklist_product, saved_checklist_items } = res;
+          
+          this.runInspectionCount = count;
+          this.savedChecklistId = checklist.id;
+          this.inspectionRun = res;
 
-        this.permitToNavigate = Number(res?.run_status) === Number(RunStatusType.pause) && !this.isStopTriggered;
-
-        this.products = saved_checklist_items?.map(sci => {
-          return {
-            label: sci.product?.product_name,
-            value: sci?.contract_product?.id,
-            _id: sci?.product?.id
+          /* if the count is 1 then set for updating */
+          if (Number(this.inspectionRun?.count) === 1) {
+            this.storageSrv.set('i_init_first_id', this.id);
           }
-        });
+          
+          this.permitToNavigate = Number(res?.run_status) === Number(RunStatusType.pause) && !this.isStopTriggered;
 
-        /* insert default value */
-        if (this.products?.length > 0) {
-          this.products?.unshift({ label: '', value: null });
-          this.products = _.uniqBy(this.products, 'value');
+          this.products = saved_checklist_items?.map(sci => {
+            return {
+              label: sci.product?.product_name,
+              value: sci?.contract_product?.id,
+              _id: sci?.product?.id
+            }
+          });
+
+          /* add default value */
+          if (this.products?.length > 0) {
+            this.products?.unshift({ label: '', value: null });
+            this.products = _.uniqBy(this.products, 'value');
+          }
+
+          this.selProduct = Object.assign({}, this.products.find(cp => cp.value === inspection_checklist_product?.contract_product?.id));
         }
-
-        this.selProduct = this.products.find(cp => cp.value === res?.inspection_checklist_product?.contract_product?.id);
-      }
-    });
-  }
-
-  public get isFirstRecord(): boolean {
-    return Number(this.runInspectionCount) === 1 ? true : false;
-  }
-
-  public get isPaused(): boolean {
-    return Number(this.inspectionRunStatus) === Number(RunStatusType.pause);
+      });
   }
 
   public navigateTo(): void {
@@ -195,20 +186,19 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   }
 
   public onSelectProductChange(event: any): void {
-    this.selProduct = this.products?.find(cp => cp.value === event);
+    this.selProduct = Object.assign({}, this.products?.find(cp => cp?.value === event));
 
     const firstRunId = this.storageSrv.get('i_init_first_id');
-    if (this.selProduct && firstRunId) {
+
+    if (this.selProduct) {
       this.store.dispatch(updateFirstInspectionRunProductAction({
         payload: {
-          id: this.selProduct?.value,
-          productId: this.selProduct?._id,
+          id: this.selProduct?.value || null,
+          product_id: this.selProduct?._id,
           inspection_checklist_run: { id: this.id }
         }
       }));
     }
-
-    this.contractProductId = event;
   }
 
   public onPrev(inspectionRun: IInspectionRun): void {
@@ -221,10 +211,6 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
         inspection: this.inspectionRun?.inspection
       }
     }));
-  }
-
-  public get isProductSelected(): boolean {
-    return !this.contractProductId ? false : true;
   }
 
   public onNext(inspectionRun: IInspectionRun): void {
@@ -241,7 +227,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
             const payload = {
               id: inspectionRun.id,
               copyCount: Number(this.form.get('copyCount').value),
-              contractProductId: this.contractProductId,
+              contractProductId: this.selProduct?.id,
               saved_checklist_id: inspectionRun?.checklist?.id,
               inspection: this.inspectionRun?.inspection
             };
@@ -249,7 +235,6 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
             this.store.dispatch(copyInspectionAction(payload));
 
             this.form.get('copyCount').patchValue(null, { emitEvent: false });
-
             this.form.reset();
           }
         });
@@ -281,11 +266,23 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
     this.router.navigateByUrl('/dashboard/inspections');
   }
 
+  public get checklistProductHasTerms(): boolean {
+    return this.inspectionRun?.inspection_checklist_product?.terms?.length > 0;
+  }
+
   public get hasSelectedProduct(): boolean {
     return this.selProduct ? true : false;
   }
 
   ngAfterViewInit(): void {
     this.cdRef.detectChanges();
+  }
+
+  public get isFirstRecord(): boolean {
+    return Number(this.runInspectionCount) === 1 ? true : false;
+  }
+
+  public get isPaused(): boolean {
+    return Number(this.inspectionRunStatus) === Number(RunStatusType.pause);
   }
 }

@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { IContractTerm } from 'src/app/modules/contracts/contract.model';
-import { IActiveInspection, IInspection, IInspectionChecklist, IInspectionRun, IInspectionRuntime } from '../../inspections.models';
+import { IActiveInspection, IInspection, IInspectionRun, IInspectionRuntime } from '../../inspections.models';
 
 export enum InspectionActionTypes {
   loadActiveInspectionAction = '[Inspection Checklist] load active inspection',
@@ -150,11 +150,11 @@ export const loadInspectionRunSuccessAction = createAction(
 );
 export const createInspectionChecklistAction = createAction(
   InspectionActionTypes.createInspectionChecklistAction,
-  props<{ payload: IInspectionChecklist }>()
+  props<{ payload: any }>()
 );
 export const createInspectionChecklistSuccessAction = createAction(
   InspectionActionTypes.createInspectionChecklistSuccessAction,
-  props<{ response: IInspectionChecklist }>()
+  props<{ response: any }>()
 );
 export const runInspectionAction = createAction(
   InspectionActionTypes.runInspectionAction,

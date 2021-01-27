@@ -74,7 +74,6 @@ export class InspectionReportInspectionComponent implements OnInit, AfterViewIni
 
 
     this.lineChartLabels = ['5:01', '5:05', '5:11', '6:13', '6:17', '6:22', '6:26'];
-    console.log(this.hours)
 
     /* load bar report */
     this.id = this.route.snapshot.paramMap.get('id') || null;

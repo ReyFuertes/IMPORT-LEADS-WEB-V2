@@ -118,7 +118,7 @@ export class EditorComponent extends GenericDestroyPageComponent implements OnIn
 
             this.store.dispatch(removeImageUploadState());
           } catch (error) {
-            console.log('Fails to paste image')
+            console.log(error?.message)
           }
         }
       })

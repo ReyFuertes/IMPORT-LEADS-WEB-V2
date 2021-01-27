@@ -88,7 +88,6 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
   }
 
   public onSpace(pnl: any, event: any): void {
-    console.log(event.target.value)
     if (event.target.classList.contains('no-expand')) {
       pnl.close();
     }

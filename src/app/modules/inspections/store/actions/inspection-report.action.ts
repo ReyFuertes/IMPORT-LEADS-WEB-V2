@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { IInspectionBarReport, IInspectionChecklist } from '../../inspections.models';
+import { IInspectionBarReport } from '../../inspections.models';
 
 export enum InspectionReportActionTypes {
   inspectionBarReportAction = '[Inspection Report] inspection bar report',

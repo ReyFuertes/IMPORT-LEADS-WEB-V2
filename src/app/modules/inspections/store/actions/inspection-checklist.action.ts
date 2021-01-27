@@ -1,10 +1,9 @@
 import { createAction, props } from '@ngrx/store';
-import { IContractTerm } from 'src/app/modules/contracts/contract.model';
-import { IActiveInspection, IInspectionChecklistComment, IInspectionChecklistImage, IInspectionRun } from '../../inspections.models';
+import { IInspectionChecklistComment, IInspectionChecklistImage } from '../../inspections.models';
 
 export enum InspectionActionTypes {
-  saveInsChecklistAction = '[Inspection Checklist] save checklist',
-  saveInsChecklistSuccessAction = '[Inspection Checklist] save checklist (success)',
+  saveInsChecklistCommentAction = '[Inspection Checklist] save checklist comment',
+  saveInsChecklistCommentSuccessAction = '[Inspection Checklist] save checklist comment(success)',
   getInsChecklistAction = '[Inspection Checklist] get checklist',
   getInsChecklistSuccessAction = '[Inspection Checklist] get checklist (success)',
   deleteInsChecklistAction = '[Inspection Checklist] delete checklist',
@@ -19,7 +18,17 @@ export enum InspectionActionTypes {
   removeInsChecklistImageAction = '[Inspection Checklist] remove checklist image',
   removeInsChecklistImageSuccessAction = '[Inspection Checklist] delete image checklist (success)',
   clearInsChecklistImageAction = '[Inspection Checklist] clear checklist image',
+  getInspectionChecklistProductAction = '[Inspection Checklist Product] get inspection checklist product',
+  getInspectionChecklistProductSuccessAction = '[Inspection Checklist Product] get inspection checklist product (success)',
 }
+export const getInspectionChecklistProductAction = createAction(
+  InspectionActionTypes.getInspectionChecklistProductAction,
+  props<{ payload: any }>()
+);
+export const getInspectionChecklistProductSuccessAction = createAction(
+  InspectionActionTypes.getInspectionChecklistProductSuccessAction,
+  props<{ response: any }>()
+);
 export const clearInsChecklistImageAction = createAction(
   InspectionActionTypes.clearInsChecklistImageAction
 );
@@ -75,11 +84,11 @@ export const getInsChecklistSuccessAction = createAction(
   InspectionActionTypes.getInsChecklistSuccessAction,
   props<{ response: IInspectionChecklistComment }>()
 );
-export const saveInsChecklistAction = createAction(
-  InspectionActionTypes.saveInsChecklistAction,
+export const saveInsChecklistCommentAction = createAction(
+  InspectionActionTypes.saveInsChecklistCommentAction,
   props<{ payload: any }>()
 );
-export const saveInsChecklistSuccessAction = createAction(
-  InspectionActionTypes.saveInsChecklistSuccessAction,
+export const saveInsChecklistCommentSuccessAction = createAction(
+  InspectionActionTypes.saveInsChecklistCommentSuccessAction,
   props<{ response: any }>()
 );

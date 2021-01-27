@@ -55,7 +55,5 @@ export class InspectionRunCategoryComponent implements OnInit, OnChanges {
       result[category].terms.push(...inspection_checklist_product?.terms);
       return result;
     }, {}));
-
-    console.log(this.dataSource)
   }
 }

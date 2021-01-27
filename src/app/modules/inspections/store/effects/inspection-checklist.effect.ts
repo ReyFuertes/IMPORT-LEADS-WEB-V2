@@ -1,16 +1,27 @@
-import { IInspectionChecklist, IInspectionChecklistImage, IInspectionRun } from './../../inspections.models';
+import { IInspectionChecklistImage, IInspectionRun } from './../../inspections.models';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import { InspectionChecklistCommentService, InspectionChecklistImageService } from '../../inspections.service';
+import { InspectionChecklistCommentService, InspectionChecklistImageService, InspectionChecklistRunService, InspectionRuntimeService } from '../../inspections.service';
 import { AppState } from '../../../contracts/store/reducers';
-import { deleteInsChecklistAction, getInsChecklistAction, getInsChecklistSuccessAction, saveInsChecklisImageAction, saveInsChecklisImageSuccessAction, saveInsChecklistAction, saveInsChecklistSuccessAction, updateInsChecklistCommentAction, updateInsChecklistCommentSuccessAction, saveInsChecklistImageFilesAction, updateInsChecklistImageFilesSuccessAction, removeInsChecklistImageAction, clearInsChecklistImageAction } from '../../store/actions/inspection-checklist.action';
+import { deleteInsChecklistAction, getInsChecklistAction, getInsChecklistSuccessAction, saveInsChecklisImageAction, saveInsChecklisImageSuccessAction, saveInsChecklistCommentAction, saveInsChecklistCommentSuccessAction, updateInsChecklistCommentAction, updateInsChecklistCommentSuccessAction, saveInsChecklistImageFilesAction, updateInsChecklistImageFilesSuccessAction, removeInsChecklistImageAction, clearInsChecklistImageAction, getInspectionChecklistProductAction, getInspectionChecklistProductSuccessAction } from '../../store/actions/inspection-checklist.action';
 import { loadInspectionRunAction } from '../actions/inspection.action';
 import { UploadService } from 'src/app/services/upload.service';
 
 @Injectable()
 export class InspectionChecklistEffect {
+  getInspectionChecklistProductAction$ = createEffect(() => this.actions$.pipe(
+    ofType(getInspectionChecklistProductAction),
+    switchMap(({ payload }) => {
+      return this.inspectionChecklistRunSrv.post(payload, 'inspection-checklist-products').pipe(
+        map((response: any) => {
+          return getInspectionChecklistProductSuccessAction({ response });
+        })
+      )
+    })
+  ));
+
   removeInsChecklistImageAction$ = createEffect(() => this.actions$.pipe(
     ofType(removeInsChecklistImageAction),
     switchMap(({ image }) =>
@@ -19,7 +30,7 @@ export class InspectionChecklistEffect {
 
   saveInsChecklistImageFilesAction$ = createEffect(() => this.actions$.pipe(
     ofType(saveInsChecklistImageFilesAction),
-    switchMap(({ files }) => {      
+    switchMap(({ files }) => {
       return this.uploadSrv.upload(files, 'multiple').pipe(
         map((response: any) => {
           return updateInsChecklistImageFilesSuccessAction({ response });
@@ -40,17 +51,16 @@ export class InspectionChecklistEffect {
       )
     })
   ));
-  
+
   updateInsChecklistCommentAction$ = createEffect(() => this.actions$.pipe(
     ofType(updateInsChecklistCommentAction),
     switchMap(({ payload }) => {
       return this.insChecklistCommentSrv.patch(payload).pipe(
-        map((response: IInspectionChecklist) => {
-
+        map((response: any) => {
           if (response && response?.inspection_checklist_run) {
             this.store.dispatch(loadInspectionRunAction({ id: response?.inspection_checklist_run?.id }));
           };
-          
+
           return updateInsChecklistCommentSuccessAction({ response });
         })
       )
@@ -67,24 +77,19 @@ export class InspectionChecklistEffect {
     switchMap(({ id }) => {
       return this.insChecklistCommentSrv.getById(id)
         .pipe(
-          map((response: IInspectionChecklist) => {
+          map((response: any) => {
             return getInsChecklistSuccessAction({ response });
           })
         )
     })
   ))
 
-  saveInsChecklistAction$ = createEffect(() => this.actions$.pipe(
-    ofType(saveInsChecklistAction),
+  saveInsChecklistCommentAction$ = createEffect(() => this.actions$.pipe(
+    ofType(saveInsChecklistCommentAction),
     switchMap(({ payload }) => {
       return this.insChecklistCommentSrv.post(payload).pipe(
-        tap((response: IInspectionChecklist) => {
-          if (response && response?.inspection_checklist_run) {
-            this.store.dispatch(loadInspectionRunAction({ id: response?.inspection_checklist_run?.id }));
-          };
-        }),
-        map((response: IInspectionChecklist) => {
-          return saveInsChecklistSuccessAction({ response });
+        map((response: any) => {
+          return saveInsChecklistCommentSuccessAction({ response });
         })
       )
     })
@@ -94,6 +99,7 @@ export class InspectionChecklistEffect {
     private actions$: Actions,
     private store: Store<AppState>,
     private uploadSrv: UploadService,
+    private inspectionChecklistRunSrv: InspectionChecklistRunService,
     private insChecklistCommentSrv: InspectionChecklistCommentService,
     private InsChecklistImageSrv: InspectionChecklistImageService
   ) { }

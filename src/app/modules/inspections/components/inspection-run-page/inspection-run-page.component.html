@@ -5,6 +5,8 @@
       <span>#{{ inspectionRun?.count }}</span>
     </h1>
   </div>
+
+  <!--- actions panel -->
   <div class="actions-panel" fxLayout="row" fxLayoutAlign="start center">
     <div fxFlex="40" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
       <!-- desktop button -->
@@ -43,20 +45,20 @@
           <span>Previous</span>
         </div>
       </button>
-      <button [disabled]="isPaused || !isProductSelected" (click)="onNext(inspectionRun)" class="il-button il-bg-blue" mat-flat-button>
+      <button [disabled]="isPaused || !selProduct" (click)="onNext(inspectionRun)" class="il-button il-bg-blue" mat-flat-button>
         <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="5px">
           <span>Next</span>
           <img [src]="svgPath + 'arrow-right-icon-white.svg'" />
         </div>
       </button>
-      <button [disabled]="!isProductSelected" (click)="isPaused ? onResume(inspectionRun) : onPause()" mat-flat-button class="il-button il-bg-green">
+      <button [disabled]="!selProduct" (click)="isPaused ? onResume(inspectionRun) : onPause()" mat-flat-button class="il-button il-bg-green">
         <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
           <img [src]="svgPath + 'pause-icon-white.svg'" />
           <span *ngIf="!isPaused">Pause run</span>
           <span *ngIf="isPaused">Resume run</span>
         </div>
       </button>
-      <button [disabled]="!isProductSelected" (click)="onStop()" mat-flat-button class="il-button il-bg-red">
+      <button [disabled]="!selProduct" (click)="onStop()" mat-flat-button class="il-button il-bg-red">
         <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
           <img [src]="svgPath + 'stop-icon-white.svg'" />
           <span>Stop run</span>
@@ -69,10 +71,10 @@
     <il-input fxFlex="122px" [form]="form" isFloatLabel="true" [inputMaxLen]="10" controlName="copyCount" placeholder="Items checked for this run"></il-input>
 
     <div fxFlex fxLayoutAlign="end center">
-      <il-dropdown-select-search [selectedItem]="selProduct" (valueEmitter)="onSelectProductChange($event)" placeholder="Select Product" [options]="products"></il-dropdown-select-search>
+      <il-dropdown-select-search [selectedItem]="selProduct?.value" (valueEmitter)="onSelectProductChange($event)" placeholder="Select Product" [options]="products"></il-dropdown-select-search>
     </div>
   </div>
-  <div>
+  <div *ngIf="checklistProductHasTerms; else selectedAProduct">
     <il-inspection-run-category *ngIf="inspectionRun" [inspectionRun]="inspectionRun"></il-inspection-run-category>
   </div>
 </div>

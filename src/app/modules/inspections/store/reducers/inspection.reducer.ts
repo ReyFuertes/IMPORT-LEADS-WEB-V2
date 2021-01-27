@@ -1,6 +1,7 @@
 import { IActiveInspection, IFinishedInspection, IInspectionRun, RunStatusType } from './../../inspections.models';
-import { loadActiveInspectionSuccessAction, loadInspectionRunSuccessAction, clearLoadAction, updateSourceTermAction, runInspectionSuccessAction, changeInspectionRuntimeStatusSuccessAction, setPauseInspectionStatusAction, loadInspectionDetailSuccessAction, loadFinishInspectionSuccessAction } from '../actions/inspection.action';
+import { loadActiveInspectionSuccessAction, loadInspectionRunSuccessAction, clearLoadAction, updateSourceTermAction, runInspectionSuccessAction, changeInspectionRuntimeStatusSuccessAction, setPauseInspectionStatusAction, loadInspectionDetailSuccessAction, loadFinishInspectionSuccessAction, updateFirstInspectionRunProductSuccessAction } from '../actions/inspection.action';
 import { createReducer, on, Action } from "@ngrx/store";
+import { getInspectionChecklistProductSuccessAction } from '../actions/inspection-checklist.action';
 export interface InspectionState {
   loaded?: boolean;
   activeInspection?: IActiveInspection[],
@@ -19,6 +20,14 @@ export const initialState: InspectionState = {
 };
 const reducer = createReducer(
   initialState,
+  on(updateFirstInspectionRunProductSuccessAction, (state, action) => {
+    const newState = Object.assign({}, state, {
+      runInspection: Object.assign({}, state?.runInspection, {
+        inspection_checklist_product: action.response
+      })
+    });
+    return Object.assign({}, newState);
+  }),
   on(loadInspectionDetailSuccessAction, (state, action) => {
     return Object.assign({}, state, { detail: action?.response[0] });
   }),

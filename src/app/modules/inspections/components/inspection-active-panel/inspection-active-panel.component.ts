@@ -76,9 +76,6 @@ export class InspectionActivePanelComponent extends GenericRowComponent implemen
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      console.log(this.activeInspections)
-    }, 1000);
     this.cdRef.detectChanges();
   }
 

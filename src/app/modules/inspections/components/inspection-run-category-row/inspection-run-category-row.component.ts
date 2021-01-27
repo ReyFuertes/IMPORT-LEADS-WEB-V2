@@ -9,7 +9,7 @@ import { select, Store } from '@ngrx/store';
 import { IContractTerm } from 'src/app/modules/contracts/contract.model';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { take, takeUntil, tap } from 'rxjs/operators';
-import { clearInsChecklistImageAction, deleteInsChecklistAction, saveInsChecklisImageAction, saveInsChecklistAction, saveInsChecklistImageFilesAction, updateInsChecklistCommentAction } from '../../store/actions/inspection-checklist.action';
+import { clearInsChecklistImageAction, deleteInsChecklistAction, saveInsChecklisImageAction, saveInsChecklistCommentAction, saveInsChecklistImageFilesAction, updateInsChecklistCommentAction } from '../../store/actions/inspection-checklist.action';
 import { ModalStateType } from 'src/app/models/generic.model';
 import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
 import { getInsChecklistImagesSelector } from '../../store/selectors/inspection-checklist.selector';
@@ -88,7 +88,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
           });
 
           /* save verification and comments */
-          this.store.dispatch(saveInsChecklistAction({
+          this.store.dispatch(saveInsChecklistCommentAction({
             payload: {
               id: this.row?.comment?.id,
               comment: result.comments,
@@ -111,8 +111,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
       });
     } else {
       const dialogRef = this.dialog.open(ConfirmationComponent, { width: '410px', data: { action: 2 } });
-      dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
-        .subscribe(result => {
+      dialogRef.afterClosed().subscribe(result => {
           if (result) {
 
             this.rowUpdate = new InsChecklistTerm();

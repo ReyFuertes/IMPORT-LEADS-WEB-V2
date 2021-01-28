@@ -36,6 +36,9 @@ export class ConfirmationComponent {
   }, {
     label: 'Save Template',
     message: 'Are you sure you want to save this contract as template?'
+  }, {
+    label: 'Select Product',
+    message: 'Select a product before going to the next record.'
   }];
 
   constructor(public dialogRef: MatDialogRef<ConfirmationComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -43,5 +46,10 @@ export class ConfirmationComponent {
 
   public get isColorPrimary(): boolean {
     return this.data?.action === 2 || this.data?.action === 3 || this.data?.action === 6;
+  }
+
+  public get isCloseOnly(): boolean {
+    console.log(this.data)
+    return this.data?.isCloseOnlyOption ? true : false;
   }
 }

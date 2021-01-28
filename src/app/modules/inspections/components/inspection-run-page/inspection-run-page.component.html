@@ -27,38 +27,38 @@
         </div>
       </mat-menu>
 
-      <button [disabled]="isPaused || isFirstRecord" (click)="onDeleteNavigateTo(inspectionRun)" class="il-button il-bordered-blue delete-current desk-delete-nav-to" mat-flat-button>
+      <button [disabled]="isBtnActionDisabled || isFirstRecord" (click)="onDeleteNavigateTo(inspectionRun)" class="il-button il-bordered-blue delete-current desk-delete-nav-to" mat-flat-button>
         <img [src]="svgPath + 'delete-icon-blue.svg'" />
         <span>Delete current and go back </span>
       </button>
 
       <!-- ipad button -->
-      <button [disabled]="isPaused || isFirstRecord" (click)="onDeleteNavigateTo(inspectionRun)" class="il-button il-bordered-blue delete-current ipad-delete-nav-to" mat-flat-button>
+      <button [disabled]="isBtnActionDisabled || isFirstRecord" (click)="onDeleteNavigateTo(inspectionRun)" class="il-button il-bordered-blue delete-current ipad-delete-nav-to" mat-flat-button>
         <img [src]="svgPath + 'delete-icon-blue.svg'" />
       </button>
     </div>
 
     <div fxFlex fxLayoutAlign="end center" fxLayoutGap="5px">
-      <button [disabled]="isPaused || isFirstRecord" (click)="onPrev(inspectionRun)" class="il-button il-bg-blue" mat-flat-button>
+      <button [disabled]="isBtnActionDisabled || isFirstRecord" (click)="onPrev(inspectionRun)" class="il-button il-bg-blue" mat-flat-button>
         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
           <img [src]="svgPath + 'arrow-left-icon-white.svg'" />
           <span>Previous</span>
         </div>
       </button>
-      <button [disabled]="isPaused || !selProduct" (click)="onNext(inspectionRun)" class="il-button il-bg-blue" mat-flat-button>
+      <button [disabled]="isBtnActionDisabled" (click)="onNext(inspectionRun)" class="il-button il-bg-blue" mat-flat-button>
         <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="5px">
           <span>Next</span>
           <img [src]="svgPath + 'arrow-right-icon-white.svg'" />
         </div>
       </button>
-      <button [disabled]="!selProduct" (click)="isPaused ? onResume(inspectionRun) : onPause()" mat-flat-button class="il-button il-bg-green">
+      <button (click)="isBtnActionDisabled ? onResume(inspectionRun) : onPause()" mat-flat-button class="il-button il-bg-green">
         <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
           <img [src]="svgPath + 'pause-icon-white.svg'" />
-          <span *ngIf="!isPaused">Pause run</span>
-          <span *ngIf="isPaused">Resume run</span>
+          <span *ngIf="!isBtnActionDisabled">Pause run</span>
+          <span *ngIf="isBtnActionDisabled">Resume run</span>
         </div>
       </button>
-      <button [disabled]="!selProduct" (click)="onStop()" mat-flat-button class="il-button il-bg-red">
+      <button (click)="onStop()" mat-flat-button class="il-button il-bg-red">
         <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
           <img [src]="svgPath + 'stop-icon-white.svg'" />
           <span>Stop run</span>

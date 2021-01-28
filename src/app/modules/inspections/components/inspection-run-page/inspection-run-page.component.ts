@@ -38,7 +38,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   public id: string;
   public selProduct: ISimpleItem;
 
-  constructor(private storageSrv: StorageService, route: ActivatedRoute, private dialog: MatDialog, private store: Store<AppState>, private cdRef: ChangeDetectorRef, private router: Router, private fb: FormBuilder) {
+  constructor(private storageSrv: StorageService, private route: ActivatedRoute, private dialog: MatDialog, private store: Store<AppState>, private cdRef: ChangeDetectorRef, private router: Router, private fb: FormBuilder) {
     super();
     this.form = this.fb.group({
       copyCount: [null],
@@ -46,7 +46,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       position: [null]
     });
 
-    this.id = route.snapshot.paramMap.get('id') || null;
+    this.id = this.route.snapshot.paramMap.get('id') || null;
     if (this.id) {
       this.store.dispatch(loadInspectionRunAction({ id: this.id }));
     }
@@ -167,11 +167,9 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.triggerPause();
+        this.permitToNavigate = true;
 
-        this.store.dispatch(appNotification({
-          notification: { success: true, message: 'Inspection run is paused' }
-        }));
+        this.triggerPause();
       }
     });
   }
@@ -188,14 +186,12 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   public onSelectProductChange(event: any): void {
     this.selProduct = Object.assign({}, this.products?.find(cp => cp?.value === event));
 
-    const firstRunId = this.storageSrv.get('i_init_first_id');
-
     if (this.selProduct) {
       this.store.dispatch(updateFirstInspectionRunProductAction({
         payload: {
           id: this.selProduct?.value || null,
           product_id: this.selProduct?._id,
-          inspection_checklist_run: { id: this.id }
+          inspection_checklist_run: { id: this.route.snapshot.paramMap.get('id') }
         }
       }));
     }

@@ -147,7 +147,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
             comment: result?.comments
           }
         }));
-        debugger
+
         /* if images is undefined then set what is being pre uploaded */
         // this.images = result?.images?.map(i => {
         //   return {
@@ -179,7 +179,6 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
               contract_term: { id: this.row?.id }
             })
           });
-          debugger
           this.store.dispatch(saveInsChecklisImageAction({ payload: this.images }));
 
           /* upload image */

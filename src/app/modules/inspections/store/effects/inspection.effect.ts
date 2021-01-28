@@ -1,4 +1,4 @@
-import { IActiveInspection, IInspectionRun } from './../../inspections.models';
+import { IActiveInspection, IInspectionRun, RunStatusType } from './../../inspections.models';
 import { loadActiveInspectionSuccessAction, runInspectionAction, runInspectionSuccessAction, createInspectionChecklistAction, createInspectionChecklistSuccessAction, loadInspectionRunAction, loadInspectionRunSuccessAction, runNextInspectionAction, runNextInspectionSuccessAction, runPrevInspectionAction, runPrevInspectionSuccessAction, changeInspectionRuntimeStatusAction, changeInspectionRuntimeStatusSuccessAction, deleteAndNavigateToAction, deleteAndNavigateToSuccessAction, copyInspectionAction, copyInspectionSuccessAction, navigateToInspectionAction, navigateToInspectionSuccessAction, navigateToFailed, deleteInspectionAction, deleteInspectionSuccessAction, loadInspectionDetailAction, loadInspectionDetailSuccessAction, finishInspectionSuccessAction, finishInspectionAction, loadFinishInspectionAction, loadFinishInspectionSuccessAction, updateFirstInspectionRunProductAction, updateFirstInspectionRunProductSuccessAction } from '../actions/inspection.action';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -108,7 +108,12 @@ export class InspectionEffect {
       return this.inspectionRuntimeSrv.post(payload, 'status').pipe(
         map((response: any) => {
           this.store.dispatch(loadInspectionRunAction({ id: response?.id }));
-          this.router.navigateByUrl(`/dashboard/inspections/${response?.saved_checklist_id}/report`);
+
+          let url = `/dashboard/inspections/${response?.saved_checklist_id}`
+          if(response?.run_status === RunStatusType.stop) {
+            url = `${url}/report`;
+          }
+          this.router.navigateByUrl(url);
 
           return changeInspectionRuntimeStatusSuccessAction({ response });
         })

@@ -37,9 +37,6 @@ export class DropdownSelectSearchComponent extends GenericControl<ISimpleItem> i
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(this.selectedItem);
-    console.log(this.options);
-
     if (changes?.selectedItem?.currentValue)
       this.selectedItem = changes?.selectedItem?.currentValue;
   }

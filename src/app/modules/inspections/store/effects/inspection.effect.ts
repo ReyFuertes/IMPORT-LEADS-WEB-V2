@@ -11,7 +11,6 @@ import { AppState } from '../../../contracts/store/reducers';
 import { appNotification } from 'src/app/store/actions/notification.action';
 import { of } from 'rxjs';
 import { SavedChecklistService } from 'src/app/modules/contracts/services/saved-checklist';
-import { getInspectionChecklistProductAction, getInspectionChecklistProductSuccessAction } from '../actions/inspection-checklist.action';
 
 @Injectable()
 export class InspectionEffect {

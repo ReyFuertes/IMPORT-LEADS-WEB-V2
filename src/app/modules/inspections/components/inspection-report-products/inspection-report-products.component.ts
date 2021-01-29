@@ -71,74 +71,74 @@ export class InspectionReportProductsComponent implements OnInit {
     this.store.pipe(select(getInspectionProductReportSelector))
       .subscribe(res => {
         if (res) {
-          this.productData = res;
-          this.dataSource = res?.products;
+          // this.productData = res;
+          // this.dataSource = res?.products;
 
-          const labels: string[] = [];
-          let data: any[] = [];
-          let _series: any[] = [];
-          let count: number = 1;
-          let failedTermsCount: any[] = [];
-          let passedTermsCount: any[] = [];
+          // const labels: string[] = [];
+          // let data: any[] = [];
+          // let _series: any[] = [];
+          // let count: number = 1;
+          // let failedTermsCount: any[] = [];
+          // let passedTermsCount: any[] = [];
 
-          res?.products.forEach(_ => {
-            labels.push(`Time: ${_.product?.product_name}`);
+          // res?.products.forEach(_ => {
+          //   labels.push(`Time: ${_.product?.product_name}`);
 
-            failedTermsCount.push({
-              value: _.failedTermsCount,
-              itemStyle: { color: '#3273dd' }
-            });
-            passedTermsCount.push({
-              value: _.passedTermsCount,
-              itemStyle: { color: '#1b3e76' }
-            });
-          });
+          //   failedTermsCount.push({
+          //     value: _.failedTermsCount,
+          //     itemStyle: { color: '#3273dd' }
+          //   });
+          //   passedTermsCount.push({
+          //     value: _.passedTermsCount,
+          //     itemStyle: { color: '#1b3e76' }
+          //   });
+          // });
 
-          _series = [{
-            name: 'Passed Terms',
-            type: 'bar',
-            data: passedTermsCount,
-            animationDelay: (idx) => idx * 10,
-            itemStyle: {
-              barBorderRadius: 6
-            },
-            barMaxWidth: 10
-          }, {
-            name: 'Failed',
-            type: 'bar',
-            data: failedTermsCount,
-            animationDelay: (idx) => idx * 10,
-            itemStyle: {
-              barBorderRadius: 6
-            },
-            barMaxWidth: 10
-          }];
+          // _series = [{
+          //   name: 'Passed Terms',
+          //   type: 'bar',
+          //   data: passedTermsCount,
+          //   animationDelay: (idx) => idx * 10,
+          //   itemStyle: {
+          //     barBorderRadius: 6
+          //   },
+          //   barMaxWidth: 10
+          // }, {
+          //   name: 'Failed',
+          //   type: 'bar',
+          //   data: failedTermsCount,
+          //   animationDelay: (idx) => idx * 10,
+          //   itemStyle: {
+          //     barBorderRadius: 6
+          //   },
+          //   barMaxWidth: 10
+          // }];
 
-          this.dataSource = res?.products;
+          // this.dataSource = res?.products;
 
-          this.barChartOption = {
-            tooltip: {
-              position: 'top',
-              trigger: 'axis',
-              axisPointer: {
-                type: 'none'
-              },
-            },
-            xAxis: {
-              axisLine: { show: false },
-              data: labels,
-              silent: false,
-              splitLine: { show: false },
-            },
-            yAxis: {
-              axisTick: { show: false },
-              splitNumber: 4,
-              axisLine: { show: false },
-            },
-            series: _series,
-            animationEasing: 'elasticOut',
-            animationDelayUpdate: (idx) => idx * 5
-          };
+          // this.barChartOption = {
+          //   tooltip: {
+          //     position: 'top',
+          //     trigger: 'axis',
+          //     axisPointer: {
+          //       type: 'none'
+          //     },
+          //   },
+          //   xAxis: {
+          //     axisLine: { show: false },
+          //     data: labels,
+          //     silent: false,
+          //     splitLine: { show: false },
+          //   },
+          //   yAxis: {
+          //     axisTick: { show: false },
+          //     splitNumber: 4,
+          //     axisLine: { show: false },
+          //   },
+          //   series: _series,
+          //   animationEasing: 'elasticOut',
+          //   animationDelayUpdate: (idx) => idx * 5
+          // };
 
 
         }

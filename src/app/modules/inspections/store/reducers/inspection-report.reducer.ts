@@ -3,20 +3,20 @@ import { IInspectionBarReport, IInspectionProductReport } from '../../inspection
 import { inspectionBarReportSuccessAction, inspectionProductReportSuccessAction } from '../actions/inspection-report.action';
 
 export interface InspectionReportState {
-  bar: IInspectionBarReport,
+  inspectionsLineReport: IInspectionBarReport,
   products: IInspectionProductReport
 }
 export const initialState: InspectionReportState = {
-  bar: null,
+  inspectionsLineReport: null,
   products: null
 };
 const reducer = createReducer(
   initialState,
-  on(inspectionProductReportSuccessAction, (state, action) => {
+  on(inspectionBarReportSuccessAction, (state, action) => {
     return Object.assign({}, state, { products: action.response });
   }),
-  on(inspectionBarReportSuccessAction, (state, action) => {
-    return Object.assign({}, state, { bar: action.response });
+  on(inspectionProductReportSuccessAction, (state, action) => {
+    return Object.assign({}, state, { inspectionsLineReport: action.response });
   }),
 );
 export function InspectionReportReducer(state: InspectionReportState, action: Action) {

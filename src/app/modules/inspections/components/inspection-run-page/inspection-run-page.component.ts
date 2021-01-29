@@ -298,4 +298,8 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   public get isBtnActionDisabled(): boolean {
     return Number(this.inspectionRunStatus) === Number(RunStatusType.pause);
   }
+
+  public get isNext(): boolean {
+    return Number(this.inspectionRunStatus) === Number(RunStatusType.pause) || !this.productId;
+  }
 }

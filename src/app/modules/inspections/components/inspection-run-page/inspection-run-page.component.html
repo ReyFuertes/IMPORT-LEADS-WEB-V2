@@ -45,7 +45,7 @@
           <span>Previous</span>
         </div>
       </button>
-      <button [disabled]="isBtnActionDisabled" (click)="onNext(inspectionRun)" class="il-button il-bg-blue" mat-flat-button>
+      <button [disabled]="isBtnActionDisabled || isNext" (click)="onNext(inspectionRun)" class="il-button il-bg-blue" mat-flat-button>
         <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="5px">
           <span>Next</span>
           <img [src]="svgPath + 'arrow-right-icon-white.svg'" />

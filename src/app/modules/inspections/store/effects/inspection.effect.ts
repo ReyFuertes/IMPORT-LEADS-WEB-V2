@@ -18,7 +18,7 @@ export class InspectionEffect {
   updateFirstInspectionRunProductAction$ = createEffect(() => this.actions$.pipe(
     ofType(updateFirstInspectionRunProductAction),
     switchMap(({ payload }) => {
-      return this.inspectionChecklistRunSrv.post(payload, 'update-first-run-item').pipe(
+      return this.inspectionChecklistRunSrv.post(payload, 'inspect-product').pipe(
         map((response: any) => {
           return updateFirstInspectionRunProductSuccessAction({ response });
         })

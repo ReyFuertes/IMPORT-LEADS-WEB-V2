@@ -1,15 +1,29 @@
 @import "src/styleguide/shared";
-.menu-box > div {
+
+.menu-box>div {
   cursor: pointer;
 }
+
 img {
   padding: 5px;
   cursor: pointer;
 }
+
 .active-link {
   background-color: $color-gray-3;
 }
+
 ::ng-deep {
+  .top-nav .mat-badge-medium.mat-badge-after .mat-badge-content {
+    right: -39px !important;
+    top: -13px !important;
+    width: 47px !important;
+    height: 18px;
+    font-size: 11px;
+    line-height: 18px;
+    border-radius: 2px !important;
+    font-weight: 100 !important;
+  }
   .sub-menu-item.mat-menu-item {
     width: 100%;
     font-size: 14px;

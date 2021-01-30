@@ -25,7 +25,7 @@ export class PerformanceInsightsGraphsComponent implements OnInit {
       }],
     }
   };
-  public lineChartPlugins: any;
+  public barChartPlugins: any;
   public barChartLabels: Label[] = [
     '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11',
     '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22',
@@ -188,11 +188,11 @@ export class PerformanceInsightsGraphsComponent implements OnInit {
   ];
 
   /* failure line chart */
-  public lineChartLabels: Label[] = [
+  public barChartLabels: Label[] = [
     '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11',
     '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22',
     '23', '24', '25', '26', '27', '28', '29', '30', '01' ];
-  public lineChartData: ChartDataSets[] = [
+  public barChartData: ChartDataSets[] = [
     {
       data: [
         15, 17, 19, 11, 12, 12, 13, 12, 14, 15, 15, 12, 18, 10, 10, 18, 16,
@@ -218,7 +218,7 @@ export class PerformanceInsightsGraphsComponent implements OnInit {
     }
   ];
 
-  public lineChartOptions: (ChartOptions & { annotation: any }) = {
+  public barChartOptions: (ChartOptions & { annotation: any }) = {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
@@ -244,7 +244,7 @@ export class PerformanceInsightsGraphsComponent implements OnInit {
     },
   };
 
-  public lineChartColors: Color[] = [
+  public barChartColors: Color[] = [
     {
       backgroundColor: 'rgba(120, 185, 240, 0.2)',
       borderColor: 'rgba(120, 185, 240, 1)',
@@ -264,8 +264,8 @@ export class PerformanceInsightsGraphsComponent implements OnInit {
       pointHoverBorderColor: 'rgba(246, 152, 150,0.8)'
     },
   ];
-  public lineChartLegend = false;
-  public lineChartType = 'line';
+  public barChartLegend = false;
+  public barChartType = 'line';
 
 
   public items: Array<{ label: string, value?: string}> = [

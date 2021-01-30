@@ -1,19 +1,14 @@
 import { AfterViewInit, ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
 import { Observable } from 'rxjs';
-import { CHARTBGCOLOR, CHARTBORDERCOLOR } from 'src/app/shared/constants/chart';
 import { AppState } from 'src/app/store/app.reducer';
-import { IActiveInspection, IInspectionBarReport, IInspectionReportItem } from '../../inspections.models';
+import { IInspectionBarReport, IInspectionReportItem } from '../../inspections.models';
 import { inspectionBarReportAction } from '../../store/actions/inspection-report.action';
 import { getInspectionsLineReportSelector } from '../../store/selectors/inspection-report.selector';
 import { loadInspectionDetailAction } from '../../store/actions/inspection.action';
-import { getInspectionDetailSelector } from '../../store/selectors/inspection.selector';
 import { isPlatformBrowser } from '@angular/common';
-import 'src/styleguide/echarts-theme.js';
-import { getInstanceByDom, connect } from 'echarts';
 import * as moment from 'moment';
 import { takeUntil } from 'rxjs/operators';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
@@ -33,18 +28,8 @@ export interface Inspection {
 })
 
 export class InspectionReportInspectionComponent extends GenericDestroyPageComponent implements OnInit, AfterViewInit {
-  public lineChartData: any[] = [{
+  public barChartData: any[] = [{
     label: "Inspections",
-    data: [
-      { x: new Date("2021-01-27T16:35"), y: 3 },
-      { x: new Date("2021-01-27T16:35"), y: 2 },
-      { x: new Date("2021-01-27T16:33"), y: 4 },
-      { x: new Date("2021-01-27T16:32"), y: 2 },
-      { x: new Date("2021-01-27T14:31"), y: 6 },
-      { x: new Date("2021-01-27T14:30"), y: 2 },
-      { x: new Date("2021-01-27T14:29"), y: 2 },
-      { x: new Date("2021-01-27T14:27"), y: 1 }
-    ],
     lineTension: 0,
     fillOpacity: 0.3,
     pointRadius: 5,
@@ -52,18 +37,23 @@ export class InspectionReportInspectionComponent extends GenericDestroyPageCompo
     pointColor: "rgba(151,187,205,1)",
     pointStrokeColor: "#fff",
     pointHighlightFill: "#fff",
-    pointHighlightStroke: "rgba(151,187,205,1)",
+    pointHighlightStroke: "rgba(151,187,205,1)"
   }];
-  public lineChartLabels: Label[];
-  public lineChartOptions = {
+  public barChartLabels: Label[];
+  public barChartOptions = {
     responsive: true,
     scales: {
       xAxes: [{
         type: "time",
+        ticks: {
+          suggestedMin: 0,
+          beginAtZero: true,
+          fontSize: 12,
+        },
         time: {
           format: "HH:mm",
           unit: "minute",
-          unitStepSize: 1,
+          unitStepSize: 2,
           displayFormats: {
             minute: "HH:mm",
             hour: "HH:mm",
@@ -73,8 +63,12 @@ export class InspectionReportInspectionComponent extends GenericDestroyPageCompo
         },
         scaleShowHorizontalLines: true,
         gridLines: {
-          tickMarkLength: 15
-        }
+          tickMarkLength: 15,
+          display: false,
+          drawBorder: false
+        },
+        barPercentage: 2.0,
+        categoryPercentage: 2.0,
       }],
       yAxes: [{
         ticks: {
@@ -83,22 +77,19 @@ export class InspectionReportInspectionComponent extends GenericDestroyPageCompo
       }]
     },
     maintainAspectRatio: false,
+
   };
-  public lineChartColors: Color[] = [{
+  public barChartColors: Color[] = [{
     borderColor: "#1b3e76",
-    backgroundColor: "rgba(50,115,221,0.3)"
+    backgroundColor: "rgba(50,115,221,1)"
   }];
-  public lineChartLegend = true;
-  public lineChartType = "line";
-  public lineChartPlugins = [];
+  public barChartLegend = true;
+  public barChartType = "bar";
+  public barChartPlugins = [];
 
-
-  public barChartData: any;
-  public barChartLegend = false;
   public displayedColumns: string[] = ['inspector', 'date', 'duration', 'item', 'average'];
-  public dataSource: IInspectionReportItem[];
+  public dataSource: any[];
   public id: string;
-  public $barChart: Observable<IInspectionBarReport[]>;
   public barChartSummary: IInspectionBarReport;
   public barChartOption: any;
   public isBrowser: boolean;
@@ -120,12 +111,32 @@ export class InspectionReportInspectionComponent extends GenericDestroyPageCompo
     this.store.pipe(select(getInspectionsLineReportSelector),
       takeUntil(this.$unsubscribe)).subscribe((res: IInspectionBarReport) => {
         if (res) {
-          console.log(res)
+          const bar_data = res?.bar_data?.map(r => {
+            return {
+              x: new Date(r?.date),
+              y: r?.count
+            }
+          });
+          this.barChartData[0].data = bar_data;
+          this.barChartSummary = res;
+          this.dataSource = res?.bar_data;
+          console.log(res?.bar_data)
         }
       });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    // moment.locale(this.locale); // optional - can remove if you are only dealing with one locale
+    // for (let hour = 0; hour < 24; hour++) {
+    //   this.hours.push(moment({ hour }).format("HH:mm"));
+    //   this.hours.push(
+    //     moment({
+    //       hour,
+    //       minute: 30
+    //     }).format("HH:mm")
+    //   );
+    // }
+  }
 
   ngAfterViewInit(): void {
 

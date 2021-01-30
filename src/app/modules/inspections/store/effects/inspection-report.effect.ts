@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { AppState } from 'src/app/store/app.reducer';
 import { IInspectionBarReport } from '../../inspections.models';
 import { InspectionReportService } from '../../inspections.service';
@@ -25,7 +25,7 @@ export class InspectionReportEffect {
     ofType(inspectionBarReportAction),
     switchMap(({ id }) => {
       return this.inspectionReportSrv.getById(id).pipe(
-        map((response: IInspectionBarReport) => {
+        map((response: any) => {
           return inspectionBarReportSuccessAction({ response });
         })
       )

@@ -1,5 +1,4 @@
 import { createAction, props } from '@ngrx/store';
-import { IInspectionBarReport } from '../../inspections.models';
 
 export enum InspectionReportActionTypes {
   inspectionBarReportAction = '[Inspection Report] inspection bar report',
@@ -21,5 +20,5 @@ export const inspectionBarReportAction = createAction(
 );
 export const inspectionBarReportSuccessAction = createAction(
   InspectionReportActionTypes.inspectionBarReportSuccessAction,
-  props<{ response: IInspectionBarReport }>()
+  props<{ response: any }>()
 );

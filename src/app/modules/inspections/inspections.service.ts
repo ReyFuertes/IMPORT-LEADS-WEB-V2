@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { BaseService } from 'src/app/services/base.service';
 import { Injectable } from '@angular/core';
-import { IActiveInspection, IInspectionRun, IInspectionRuntime, IInspectionBarReport, IInspection, IInspectionChecklistImage } from './inspections.models';
+import { IActiveInspection, IInspectionRun, IInspectionRuntime, IInspection, IInspectionChecklistImage, IInspectionBarReport } from './inspections.models';
 @Injectable({ providedIn: 'root' })
 export class InspectionReportService extends BaseService<IInspectionBarReport | { id }> {
   constructor(http: HttpClient) {

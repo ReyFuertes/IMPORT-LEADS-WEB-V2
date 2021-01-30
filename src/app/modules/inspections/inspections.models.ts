@@ -32,11 +32,12 @@ export interface IInspectionReportItem {
   runStart?: string;
 }
 export interface IInspectionBarReport {
-  inspections?: IInspectionReportItem[];
-  totalItemsCheck?: number,
-  totalTimeInspection?: string;
-  runStartdate?: string;
-  runEnddate?: string;
+  bar_data: Array<{ count: number, date: string; }>,
+  end_date?: string;
+  start_date?: string;
+  total_checked?: number;
+  inspection_time?: any;
+  average_duration_per_item?: any
 }
 export interface IInspectionChecklistImage {
   id?: string;

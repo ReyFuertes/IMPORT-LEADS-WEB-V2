@@ -44,6 +44,7 @@ export class InspectionReportInspectionComponent extends GenericDestroyPageCompo
     responsive: true,
     scales: {
       xAxes: [{
+        maxBarThickness: 20,
         type: "time",
         ticks: {
           suggestedMin: 0,

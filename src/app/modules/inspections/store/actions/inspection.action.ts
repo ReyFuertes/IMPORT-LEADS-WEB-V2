@@ -35,15 +35,15 @@ export enum InspectionActionTypes {
   finishInspectionSuccessAction = '[Inspection] finish inspection (success)',
   loadFinishInspectionAction = '[Inspection] load finish inspections',
   loadFinishInspectionSuccessAction = '[Inspection] load finish inspections (success)',
-  updateFirstInspectionRunProductAction = '[Inspection Run] update first run product',
-  updateFirstInspectionRunProductSuccessAction = '[Inspection Run] update first run product (success)',
+  inspectChecklistRunProductAction = '[Inspection Run] update first run product',
+  inspectChecklistRunProductSuccessAction = '[Inspection Run] update first run product (success)',
 }
-export const updateFirstInspectionRunProductAction = createAction(
-  InspectionActionTypes.updateFirstInspectionRunProductAction,
+export const inspectChecklistRunProductAction = createAction(
+  InspectionActionTypes.inspectChecklistRunProductAction,
   props<{ payload: any }>()
 );
-export const updateFirstInspectionRunProductSuccessAction = createAction(
-  InspectionActionTypes.updateFirstInspectionRunProductSuccessAction,
+export const inspectChecklistRunProductSuccessAction = createAction(
+  InspectionActionTypes.inspectChecklistRunProductSuccessAction,
   props<{ response: any }>()
 );
 export const loadFinishInspectionAction = createAction(

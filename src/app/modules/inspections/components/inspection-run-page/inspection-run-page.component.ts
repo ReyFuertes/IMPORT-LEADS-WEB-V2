@@ -6,7 +6,7 @@ import { Observable, of } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { getInspectionRunSelector, getInspectionRunStatusSelector } from '../../store/selectors/inspection.selector';
-import { runNextInspectionAction, runPrevInspectionAction, changeInspectionRuntimeStatusAction, deleteAndNavigateToAction, copyInspectionAction, navigateToInspectionAction, setPauseInspectionStatusAction, loadInspectionRunAction, updateFirstInspectionRunProductAction } from '../../store/actions/inspection.action';
+import { runNextInspectionAction, runPrevInspectionAction, changeInspectionRuntimeStatusAction, deleteAndNavigateToAction, copyInspectionAction, navigateToInspectionAction, setPauseInspectionStatusAction, loadInspectionRunAction, inspectChecklistRunProductAction } from '../../store/actions/inspection.action';
 import { IInspectionRun, RunStatusType } from '../../inspections.models';
 import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 import * as _ from 'lodash';
@@ -26,7 +26,6 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   public svgPath: string = environment.svgPath;
   public form: FormGroup;
   public formNavigateTo: FormGroup;
-  public $inspectionRun: Observable<IInspectionRun>;
   public inspectionRun: IInspectionRun;
   public products: ISimpleItem[] = [];
   public inspectionRunStatus: string;
@@ -72,11 +71,6 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
           this.runInspectionCount = count;
           this.savedChecklistId = checklist.id;
           this.inspectionRun = res;
-
-          /* if the count is 1 then set for updating */
-          if (Number(this.inspectionRun?.count) === 1) {
-            this.storageSrv.set('i_init_first_id', this.id);
-          }
 
           this.permitToNavigate = Number(res?.run_status) === Number(RunStatusType.pause) && !this.isStopTriggered;
 
@@ -187,16 +181,20 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
     if (!event) return;
 
     this.selProduct = Object.assign({}, this.products?.find(cp => cp?.value === event));
-
+    const contract_category = this.inspectionRun?.saved_checklist_items
+      ?.find(s => s?.contract_product?.id === event && s?.product?.id === this.selProduct?._id)
+      ?.contract_category;
+    
     if (this.selProduct) {
-      this.store.dispatch(updateFirstInspectionRunProductAction({
+      this.store.dispatch(inspectChecklistRunProductAction({
         payload: {
           id: this.selProduct?.value || null,
           product_id: this.selProduct?._id,
-          inspection_checklist_run: { id: this.route.snapshot.paramMap.get('id') }
+          inspection_checklist_run: { id: this.route.snapshot.paramMap.get('id') },
+          saved_checklist_id: this.inspectionRun?.checklist?.id,
+          contract_category_id: contract_category?.id
         }
       }));
-
       this.productId = this.selProduct?.value;
     }
   }
@@ -204,7 +202,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   public onPrev(inspectionRun: IInspectionRun): void {
     this.permitToNavigate = true;
     this.productId = null;
-    
+
     this.store.dispatch(runPrevInspectionAction({
       payload: {
         id: inspectionRun.id,

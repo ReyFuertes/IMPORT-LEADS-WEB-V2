@@ -1,5 +1,5 @@
 import { IActiveInspection, IFinishedInspection, IInspectionRun, RunStatusType } from './../../inspections.models';
-import { loadActiveInspectionSuccessAction, loadInspectionRunSuccessAction, clearLoadAction, updateSourceTermAction, runInspectionSuccessAction, changeInspectionRuntimeStatusSuccessAction, setPauseInspectionStatusAction, loadInspectionDetailSuccessAction, loadFinishInspectionSuccessAction, updateFirstInspectionRunProductSuccessAction } from '../actions/inspection.action';
+import { loadActiveInspectionSuccessAction, loadInspectionRunSuccessAction, clearLoadAction, updateSourceTermAction, runInspectionSuccessAction, changeInspectionRuntimeStatusSuccessAction, setPauseInspectionStatusAction, loadInspectionDetailSuccessAction, loadFinishInspectionSuccessAction, inspectChecklistRunProductSuccessAction } from '../actions/inspection.action';
 import { createReducer, on, Action } from "@ngrx/store";
 import { getInspectionChecklistProductSuccessAction } from '../actions/inspection-checklist.action';
 export interface InspectionState {
@@ -20,7 +20,7 @@ export const initialState: InspectionState = {
 };
 const reducer = createReducer(
   initialState,
-  on(updateFirstInspectionRunProductSuccessAction, (state, action) => {
+  on(inspectChecklistRunProductSuccessAction, (state, action) => {
     const newState = Object.assign({}, state, {
       runInspection: Object.assign({}, state?.runInspection, {
         inspection_checklist_product: action.response

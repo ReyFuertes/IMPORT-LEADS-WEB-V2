@@ -11,23 +11,22 @@ import { Observable } from 'rxjs';
 })
 
 export class InputSelectComponent implements OnInit {
-  @Input()
-  public suggestions: ISimpleItem[];
-  @Input()
-  public controlName: any;
-  @Input()
-  public form: FormGroup;
-  @Input()
-  public placeholder: string = 'Your product here..';
-  @Input()
-  public isReadOnly: boolean = false;
+  @Input() public suggestions: ISimpleItem[];
+  @Input() public controlName: any;
+  @Input() public form: FormGroup;
+  @Input() public placeholder: string = 'Your product here..';
+  @Input() public isReadOnly: boolean = false;
+
   public filtered: ISimpleItem[] | any[];
 
   constructor() { }
 
   ngOnInit() { }
 
-  public filter = (event) => this.filtered = this.filterArr(event.query, this.suggestions);
+  public filter(event) {
+    console.log(event)
+    return this.filtered = this.filterArr(event.query, this.suggestions)
+  };
 
   public filterArr(query, items: any[]): any[] {
     let filtered: any[] = [];

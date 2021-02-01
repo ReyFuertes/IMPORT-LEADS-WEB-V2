@@ -19,6 +19,11 @@
 .img-box {
   background-size: contain !important;
 }
+img.ellipse {
+  width: 30px !important;
+  object-fit: unset !important;
+  height: 30px;
+}
 @keyframes fadeInOpacity {
   0% {
     opacity: 0;

@@ -23,7 +23,7 @@ import { getInspectionRunStatusSelector } from '../../store/selectors/inspection
 
 export class InspectionRunCategoryRowComponent extends GenericDestroyPageComponent implements OnInit, OnChanges {
   @Input() public runId: string;
-  @Input() public source: IInspectionRunItem;
+  @Input() public source: any;
   @Input() public row: InsChecklistTerm;
 
   public verifOptions: ISimpleItem[] = [
@@ -88,18 +88,22 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
           });
 
           /* save verification and comments */
-          this.store.dispatch(saveInsChecklistCommentAction({
+          
+          const source = this.source.terms.find(s => s?.id === this.row?.id);
+          const payload = {
             payload: {
               id: this.row?.comment?.id,
               comment: result.comments,
               verification: option.value,
               inspection_checklist_run: { id: this.runId },
-              contract_term: { id: item.id },
-              contract_category: { id: this.source.contract_category.id },
-              saved_checklist: { id: this.source?.saved_checklist?.id },
-              contract_product: { id: this.source.contract_product.id }
+              contract_term: { id: source?.contract_term?.id },
+              contract_category: { id: source?.contract_category?.id },
+              saved_checklist: { id: source?.saved_checklist?.id },
+              contract_product: { id: source?.contract_product?.id }
             }
-          }));
+          }
+          
+          this.store.dispatch(saveInsChecklistCommentAction(payload));
 
           this.saveAndUpdateImage();
 
@@ -112,25 +116,25 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
     } else {
       const dialogRef = this.dialog.open(ConfirmationComponent, { width: '410px', data: { action: 2 } });
       dialogRef.afterClosed().subscribe(result => {
-          if (result) {
+        if (result) {
 
-            this.rowUpdate = new InsChecklistTerm();
-            this.rowUpdate = Object.assign({}, this.row, {
-              comment: {
-                verification: option?.value
-              }
-            });
+          this.rowUpdate = new InsChecklistTerm();
+          this.rowUpdate = Object.assign({}, this.row, {
+            comment: {
+              verification: option?.value
+            }
+          });
 
-            this.store.dispatch(updateInsChecklistCommentAction({
-              payload: {
-                id: this.row?.comment?.id,
-                verification: InspectionVerificationType.ok
-              }
-            }));
-          } else {
-            this.rowUpdate = this.row;
-          }
-        });
+          this.store.dispatch(updateInsChecklistCommentAction({
+            payload: {
+              id: this.row?.comment?.id,
+              verification: InspectionVerificationType.ok
+            }
+          }));
+        } else {
+          this.rowUpdate = this.row;
+        }
+      });
     }
   }
 

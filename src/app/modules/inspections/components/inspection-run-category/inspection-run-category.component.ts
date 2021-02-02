@@ -32,28 +32,23 @@ export class InspectionRunCategoryComponent implements OnInit, OnChanges {
 
   private processItem(): void {
     const { inspection_checklist_product } = this.inspectionRun;
-    
-    const source = [{
-      id: inspection_checklist_product?.contract_category?.id,
-      category: inspection_checklist_product?.category?.category_name,
-      saved_checklist: { id: this.inspectionRun?.checklist.id },
-      contract_product: inspection_checklist_product?.contract_product,
-      contract_category: inspection_checklist_product?.contract_category,
-    }];
 
-    
-    this.dataSource = source && Object.values(source?.reduce((result,
-      { id, saved_checklist, category, contract_category, contract_product }) => {
-      if (!result[category]) result[category] = { /* Create new group */
-        id,
-        saved_checklist,
-        category,
-        contract_product,
-        contract_category,
-        terms: []
-      };
-      result[category].terms.push(...inspection_checklist_product?.terms);
-      return result;
-    }, {}));
+    const grouped = _.groupBy(inspection_checklist_product?.terms, function (t) {
+      return t?.category?.category_name;
+    });
+
+    this.dataSource = Object.keys(grouped)?.map(g => {
+      const flattenArr = _.flatten(Object.values(grouped));
+      const terms = Object.values(flattenArr).filter(function(itm: any){
+        return g.indexOf(itm?.category?.category_name) > -1;
+      });
+ 
+      return {
+        category: {
+          category_name: g
+        },
+        terms
+      }
+    });
   }
 }

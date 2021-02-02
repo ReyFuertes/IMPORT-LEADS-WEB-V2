@@ -24,7 +24,6 @@ export class InputSelectComponent implements OnInit {
   ngOnInit() { }
 
   public filter(event) {
-    console.log(event)
     return this.filtered = this.filterArr(event.query, this.suggestions)
   };
 

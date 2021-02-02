@@ -1,7 +1,7 @@
 <tr fxLayout="row" fxLayoutGap="20px">
-  <td fxFlex="200px">{{row?.term_name}}</td>
+  <td fxFlex="200px">{{row?.contract_term?.term_name}}</td>
   <td fxFlex>
-    <div [innerHTML]="row?.term_description"></div>
+    <div [innerHTML]="row?.contract_term?.term_description"></div>
   </td>
   <td fxFlex="120px">
     <il-radio-group [disabled]="isPaused" [name]="row?.id" [selected]="rowUpdate?.comment?.verification" (valueEmitter)="handleSelOption($event, row)" [options]="verifOptions">

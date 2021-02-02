@@ -49,7 +49,6 @@ export class ConfirmationComponent {
   }
 
   public get isCloseOnly(): boolean {
-    console.log(this.data)
     return this.data?.isCloseOnlyOption ? true : false;
   }
 }

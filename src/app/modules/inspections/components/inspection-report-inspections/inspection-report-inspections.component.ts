@@ -46,7 +46,7 @@ export class InspectionReportInspectionComponent extends GenericDestroyPageCompo
         time: {
           format: "HH:mm",
           unit: "minute",
-          unitStepSize: 2,
+          unitStepSize: 0.5,
           displayFormats: {
             minute: "HH:mm",
             hour: "HH:mm",

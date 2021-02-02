@@ -181,9 +181,8 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
     if (!event) return;
 
     this.selProduct = Object.assign({}, this.products?.find(cp => cp?.value === event));
-    const contract_category = this.inspectionRun?.saved_checklist_items
-      ?.find(s => s?.contract_product?.id === event && s?.product?.id === this.selProduct?._id)
-      ?.contract_category;
+    const selItem = this.inspectionRun?.saved_checklist_items
+      ?.find(s => s?.contract_product?.id === event && s?.product?.id === this.selProduct?._id);
     
     if (this.selProduct) {
       this.store.dispatch(inspectChecklistRunProductAction({
@@ -192,7 +191,8 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
           product_id: this.selProduct?._id,
           inspection_checklist_run: { id: this.route.snapshot.paramMap.get('id') },
           saved_checklist_id: this.inspectionRun?.checklist?.id,
-          contract_category_id: contract_category?.id
+          contract_category_id: selItem?.id,
+          contract_term_id: selItem?.contract_term?.id
         }
       }));
       this.productId = this.selProduct?.value;

@@ -48,7 +48,8 @@ const reducer = createReducer(
   on(getSavedChecklistByIdSuccessAction, (state, action) => {
     const entities: ISavedChecklistResponse[] = action.response;
     let fmtEntities: ISavedChecklistItem[] = [];
-    entities && entities.forEach(entity => {
+    
+    entities?.forEach(entity => {
       fmtEntities.push(
         ...entity.checklist_items.map(i => {
           return {
@@ -158,7 +159,8 @@ const reducer = createReducer(
   }),
   on(addItemToChecklistProductsAction, (state, action) => {
     let checklistProducts: ICommonIdPayload[] = [];
-    let match = state.checklistProducts && state.checklistProducts.filter(cp => action.item.id === cp.id).shift();
+    let match = state?.checklistProducts?.filter(cp => action?.item?.id === cp.id).shift();
+    
     if (!match)
       checklistProducts.push(action.item);
     else /* we add remove here just to make sure we dont have redundant item */
@@ -166,7 +168,7 @@ const reducer = createReducer(
 
     if (state.checklistProducts)
       checklistProducts = checklistProducts.concat(state.checklistProducts);
-
+  
     return Object.assign({}, state, { checklistProducts });
   }),
   on(removeItemFromChecklistProductsAction, (state, action) => {
@@ -201,15 +203,15 @@ function processToItem(state: ContractChecklistState, bucket: boolean): IContrac
   const products = state.checklistProducts || [];
   const terms = state.checklistTerms || [];
   let checklistItems: IContractChecklistItem[] = [];
-
-  products.forEach(product => {
+  
+  products?.forEach(product => {
     terms.forEach(term => {
       const searchBucket = (bucket ? state.checklistItems : Object.values(state.entities)) || [];
       const match = searchBucket
         && searchBucket.length > 0
-        && searchBucket.filter(i => i.contract_term.id === term.term_id
-          && product.id === i.contract_product.product.id).shift();
-
+        && searchBucket.filter(i => i?.contract_term?.id === term?.term_id
+          && product.id === i?.contract_product?.product?.id).shift();
+      
       if (!match) {
         checklistItems.push({
           contract_contract: { id: term.contract_id },

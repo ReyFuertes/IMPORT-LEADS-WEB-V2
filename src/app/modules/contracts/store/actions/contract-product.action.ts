@@ -3,11 +3,11 @@ import { createAction, props } from '@ngrx/store';
 
 export enum ProductActionTypes {
   loadContractProduct = '[Contract Product] Load]',
-  loadContractProductSuccess = '[Contract Product] Load (success)',
+  loadContractProductSuccessAction = '[Contract Product] Load (success)',
   addContractProduct = '[Product] Add',
-  addContractProductsSuccess = '[Product] Add (success)',
-  updateContractProduct = '[Product] Update',
-  updateContractProductsSuccess = '[Product] Update (success)',
+  addContractProductsSuccessAction = '[Product] Add (success)',
+  updateContractProductAction = '[Product] Update',
+  updateContractProductsSuccessAction = '[Product] Update (success)',
   deleteContractProduct = '[Product] Delete',
   selectProductAction = '[Contract Product] select Product',
   clearPreSelectProducts = '[Contract Product] Clear PreSelect Products',
@@ -23,31 +23,31 @@ export const selectProductAction = createAction(
   ProductActionTypes.selectProductAction,
   props<{ item: IContractProduct }>()
 );
-export const updateContractProduct = createAction(
-  ProductActionTypes.updateContractProduct,
+export const updateContractProductAction = createAction(
+  ProductActionTypes.updateContractProductAction,
   props<{ payload: IContractProduct }>()
 );
-export const updateContractProductsSuccess = createAction(
-  ProductActionTypes.updateContractProductsSuccess,
+export const updateContractProductsSuccessAction = createAction(
+  ProductActionTypes.updateContractProductsSuccessAction,
   props<{ updated: IContractProduct }>()
 );
 export const deleteContractProduct = createAction(
   ProductActionTypes.deleteContractProduct,
   props<{ id: string }>()
 );
-export const addContractProducts = createAction(
+export const addContractProductsAction = createAction(
   ProductActionTypes.addContractProduct,
   props<{ payload: IContractProduct }>()
 );
-export const addContractProductsSuccess = createAction(
-  ProductActionTypes.addContractProductsSuccess,
+export const addContractProductsSuccessAction = createAction(
+  ProductActionTypes.addContractProductsSuccessAction,
   props<{ created: IContractProduct }>()
 );
-export const loadContractProducts = createAction(
+export const loadContractProductsAction = createAction(
   ProductActionTypes.loadContractProduct,
   props<{ id: string }>()
 );
-export const loadContractProductSuccess = createAction(
-  ProductActionTypes.loadContractProductSuccess,
+export const loadContractProductSuccessAction = createAction(
+  ProductActionTypes.loadContractProductSuccessAction,
   props<{ items: IContractProduct[] }>()
 );

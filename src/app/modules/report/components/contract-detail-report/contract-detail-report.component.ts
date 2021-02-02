@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { IContract, IContractCategory, IContractProduct, IContractTerm } from 'src/app/modules/contracts/contract.model';
 import { loadContractCategoryAction } from 'src/app/modules/contracts/store/actions/contract-category.action';
-import { loadContractProducts } from 'src/app/modules/contracts/store/actions/contract-product.action';
+import { loadContractProductsAction } from 'src/app/modules/contracts/store/actions/contract-product.action';
 import { getContractCategorySelector } from 'src/app/modules/contracts/store/selectors/contract-category.selector';
 import { getAllContractProductsSelector, getContractById } from 'src/app/modules/contracts/store/selectors/contracts.selector';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
@@ -43,7 +43,7 @@ export class ContractDetailReportComponent extends GenericDestroyPageComponent i
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id') || null;
     if (this.id) {
-      this.store.dispatch(loadContractProducts({ id: this.id }));
+      this.store.dispatch(loadContractProductsAction({ id: this.id }));
 
       this.$contract = this.store.pipe(select(getReportContractById(this.id)));
       this.$contract.subscribe(c => {

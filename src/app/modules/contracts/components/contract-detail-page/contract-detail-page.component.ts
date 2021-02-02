@@ -6,7 +6,7 @@ import { tap, take, map, takeUntil, debounceTime } from 'rxjs/operators';
 import { getContractCategorySelector } from './../../store/selectors/contract-category.selector';
 import { addContractCategoryAction, addMultipleContractCategoryAction, loadContractCategoryAction } from './../../store/actions/contract-category.action';
 import { ContractCategoryDialogComponent } from '../../../dialogs/components/contract-category/contract-category-dialog.component';
-import { loadContractProducts, clearPreSelectProducts } from './../../store/actions/contract-product.action';
+import { loadContractProductsAction, clearPreSelectProducts } from './../../store/actions/contract-product.action';
 import { getContractById } from './../../store/selectors/contracts.selector';
 import { User } from './../../../users/users.models';
 import { AppState } from './../../../../store/app.reducer';
@@ -62,7 +62,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   public checklistEntities: IContractChecklistItem[] = [];
   public venues: IVenue[];
   public apiImagePath: string = environment.apiImagePath;
-  
+
   @Output() public openNavChange = new EventEmitter<boolean>();
   @ViewChild('scrollPnl', { static: false }) public scrollPnl: any;
 
@@ -142,7 +142,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     this.id = this.route?.snapshot?.paramMap?.get('id') || null;
     if (this.id) {
       /* load contract products */
-      this.store.dispatch(loadContractProducts({ id: this.id }));
+      this.store.dispatch(loadContractProductsAction({ id: this.id }));
 
       this.$contract = this.store.pipe(select(getContractById(this.id)));
 
@@ -173,9 +173,9 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
         this.checklistItems = res.checklistItems || [];
         this.checkListProducts = res.checklistProducts || [];
         this.checklistTerms = res.checklistTerms || [];
-        this.savedChecklistSourceId = res.saveChecklistSource ? res.saveChecklistSource.id : null;
-        this.checklistEntities = Object.values(res.entities) || [];
-
+        this.savedChecklistSourceId = res?.saveChecklistSource?.id;
+        this.checklistEntities = Object.values(res?.entities) || [];
+   
       })).subscribe();
   }
 
@@ -239,13 +239,13 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   public onSaveChecklist(): void {
     const checklistItems = this.checklistEntities?.map((c: IContractChecklistItem) => {
       return {
-        contract_category: c.contract_category,
-        contract_contract: c.contract_contract,
-        contract_product: c.contract_product,
-        contract_term: c.contract_term
+        contract_category: { id: c?.contract_category?.id },
+        contract_contract: { id: c?.contract_contract?.id },
+        contract_product: { id: c?.contract_product?.id },
+        contract_term: { id: c?.contract_term?.id },
       }
     });
-
+    
     const payload: ISavedChecklistPayload = {
       id: this.savedChecklistSourceId,
       checklist_name: `cl-${new Date().getTime()}`,
@@ -258,15 +258,10 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
 
     if (payload) {
       this.store.dispatch(saveChecklistAction({ payload }));
-
-      /* clear checklist after saved */
+      
       setTimeout(() => {
         this.formChecklist.reset();
-        this.store.dispatch(clearChecklistProductsAction());
-        this.store.dispatch(clearChecklistSourceAction());
-        this.store.dispatch(clearAllSelectedTerms());
-        this.store.dispatch(clearEntitiesAction());
-      }, 3000);
+      }, 1000);
     }
   }
 

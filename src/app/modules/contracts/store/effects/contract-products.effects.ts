@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { IContractProduct } from './../../contract.model';
 import { mergeMap, map, tap, switchMap } from 'rxjs/operators';
 import { ContractProductService } from './../../services/contract-products.service';
-import { addContractProducts, addContractProductsSuccess, loadContractProducts, loadContractProductSuccess, deleteContractProduct, updateContractProductsSuccess, updateContractProduct } from './../actions/contract-product.action';
+import { addContractProductsAction, addContractProductsSuccessAction, loadContractProductsAction, loadContractProductSuccessAction, deleteContractProduct, updateContractProductsSuccessAction, updateContractProductAction, removeSelectedProductAction } from './../actions/contract-product.action';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { zip, of } from 'rxjs';
@@ -11,40 +11,37 @@ import { appNotification } from 'src/app/store/actions/notification.action';
 
 @Injectable()
 export class ContractProductsEffect {
-  loadContractProducts$ = createEffect(() => this.actions$.pipe(
-    ofType(loadContractProducts),
-    mergeMap(({ id }) => this.contractProductService.getAll(`${id}`).pipe(
+  loadContractProductsAction$ = createEffect(() => this.actions$.pipe(
+    ofType(loadContractProductsAction),
+    switchMap(({ id }) => this.contractProductService.getAll(`${id}`).pipe(
       map((items: IContractProduct[]) => {
-        return loadContractProductSuccess({ items });
+        return loadContractProductSuccessAction({ items });
       })
     ))
   ));
-  updateContractProduct$ = createEffect(() => this.actions$.pipe(
-    ofType(updateContractProduct),
-    mergeMap(({ payload }) =>
+  updateContractProductAction$ = createEffect(() => this.actions$.pipe(
+    ofType(updateContractProductAction),
+    switchMap(({ payload }) =>
       this.contractProductService.patch(payload)
         .pipe(
           map((updated: any) => {
             /* reload contract products */
-            this.store.dispatch(loadContractProducts({ id: payload?.contract?.id }));
+            this.store.dispatch(loadContractProductsAction({ id: payload?.contract?.id }));
 
-            return updateContractProductsSuccess({ updated });
+            return updateContractProductsSuccessAction({ updated });
           })
         ))
   ));
   addContractProduct$ = createEffect(() => this.actions$.pipe(
-    ofType(addContractProducts),
-    mergeMap(({ payload }) =>
+    ofType(addContractProductsAction),
+    switchMap(({ payload }) =>
       this.contractProductService.post(payload)
         .pipe(
-          tap(created => {
-            if (created)
-              this.store.dispatch(appNotification({
-                notification: { success: true, message: 'Product successfully Added' }
-              }));
-          }),
           map((created: any) => {
-            return addContractProductsSuccess({ created });
+
+            this.store.dispatch(removeSelectedProductAction());
+
+            return addContractProductsSuccessAction({ created });
           })
         ))
   ));

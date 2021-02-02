@@ -13,14 +13,6 @@ import * as moment from 'moment';
 import { takeUntil } from 'rxjs/operators';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 
-export interface Inspection {
-  inspector: string;
-  date: string;
-  duration: string;
-  items: number;
-  average: string;
-}
-
 @Component({
   selector: 'il-inspection-report-inspections',
   templateUrl: './inspection-report-inspections.component.html',

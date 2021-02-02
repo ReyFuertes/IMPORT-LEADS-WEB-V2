@@ -1,8 +1,8 @@
-import { loadContractProductSuccess, updateContractProductsSuccess, removeSelectedProductAction, selectProductAction } from './../actions/contract-product.action';
+import { loadContractProductSuccessAction, updateContractProductsSuccessAction, removeSelectedProductAction, selectProductAction } from './../actions/contract-product.action';
 import { IContractProduct } from './../../contract.model';
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
-import { addContractProductsSuccess } from '../actions/contract-product.action';
+import { addContractProductsSuccessAction } from '../actions/contract-product.action';
 import * as _ from 'lodash';
 
 export interface ContractProductsState extends EntityState<IContractProduct> {
@@ -26,13 +26,13 @@ const reducer = createReducer(
     }
     return Object.assign({}, state, { selectedProduct });
   }),
-  on(addContractProductsSuccess, (state, action) => {
+  on(addContractProductsSuccessAction, (state, action) => {
     return ({ ...adapter.addOne(action.created, state) })
   }),
-  on(updateContractProductsSuccess, (state, action) => {
+  on(updateContractProductsSuccessAction, (state, action) => {
     return ({ ...adapter.updateOne({ id: action.updated.id, changes: action.updated }, state) })
   }),
-  on(loadContractProductSuccess, (state, action) => {
+  on(loadContractProductSuccessAction, (state, action) => {
     return ({ ...adapter.addAll(action.items, state) })
   })
 );

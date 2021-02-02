@@ -5,7 +5,7 @@ import { getSelectedProductsSelector } from './../../store/selectors/contract-pr
 import { getProductsSelector } from './../../../products/store/products.selector';
 import { IProduct } from './../../../products/products.model';
 import { getAllContractProductsSelector } from './../../store/selectors/contracts.selector';
-import { addContractProducts, deleteContractProduct, updateContractProduct, selectProductAction, removeSelectedProductAction, clearPreSelectProducts, loadContractProducts } from './../../store/actions/contract-product.action';
+import { addContractProductsAction, deleteContractProduct, updateContractProductAction, selectProductAction, removeSelectedProductAction, clearPreSelectProducts, loadContractProductsAction } from './../../store/actions/contract-product.action';
 import { AppState } from 'src/app/store/app.reducer';
 import { Store, select } from '@ngrx/store';
 import { PillStateType, IContract, IContractProduct, IContractChecklistItem, ICommonIdPayload, IContractTermProduct, ProductStatusType } from './../../contract.model';
@@ -201,8 +201,8 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       }
 
       /* find by product id */
-      const entities = this.checklistEntities.filter(ci => ci.contract_product.product.id === item.id);
-
+      const entities = this.checklistEntities.filter(ci => ci?.contract_product?.product?.id === item.id);
+      
       /* perform apply and override here */
       if (this.checklistSource && this.checklistProducts.length >= 1) {
         const action = this.isProductHasChecklist(item.id)
@@ -225,7 +225,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
   private addToChecklist(item: ICommonIdPayload, entities: IContractChecklistItem[]): void {
     this.store.dispatch(addItemToChecklistProductsAction({ item }));
-
+    
     /* get all the terms of selected source */
     if (this.checklistSource && this.checklistProducts.length === 1) {
 
@@ -344,19 +344,17 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   }
 
   ngAfterViewInit() {
-    this.productPillsArr = this.contract.contract_products;
+    this.productPillsArr = this.contract?.contract_products;
     this.cdRef.detectChanges();
   }
 
   public onAdd(): void {
     if (this.form.value && this.initInputProduct) {
       let payload: IContractProduct = this.fmtPayload(this.form.value);
-
-      if (payload)
-        this.store.dispatch(addContractProducts({ payload }));
-
-      /* clear existing checklists */
-      this.store.dispatch(removeSelectedProductAction());
+ 
+      if (payload) {
+        this.store.dispatch(addContractProductsAction({ payload }));
+      }
 
       this.onResetForm();
     }
@@ -368,7 +366,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       this.isEditProduct = !this.isEditProduct;
       const payload = this.fmtPayload(this.form.value);
 
-      this.store.dispatch(updateContractProduct({ payload }));
+      this.store.dispatch(updateContractProductAction({ payload }));
 
       /* reload checklist so it will be shown when checklisting */
       this.store.dispatch(loadActiveInspectionAction());

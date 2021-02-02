@@ -41,6 +41,7 @@ export class PillComponent extends GenericControl<ISimpleItem> implements OnInit
     fromEvent(this.pill.nativeElement, 'dblclick')
       .subscribe((e: any) => {
         this.resetSelection();
+        
         this.deSelectEmitter.emit({
           label: e.target.innerText.trim(),
           value: e.currentTarget.id,

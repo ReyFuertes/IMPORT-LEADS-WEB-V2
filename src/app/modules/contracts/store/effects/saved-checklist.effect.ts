@@ -7,6 +7,7 @@ import { SavedChecklistService } from '../../services/saved-checklist';
 import { saveChecklistAction, saveChecklistSuccessAction, loadSavedChecklistAction, loadSavedChecklistSuccessAction, getSavedChecklistByIdAction, getSavedChecklistByIdSuccessAction } from '../actions/saved-checklist.action';
 import { ISavedChecklistItem, ISavedChecklistResponse } from '../../contract.model';
 import { appNotification } from 'src/app/store/actions/notification.action';
+import { clearAllSelectedTerms, clearChecklistProductsAction, clearChecklistSourceAction, clearEntitiesAction } from '../actions/contract-checklist.action';
 
 @Injectable()
 export class SavedChecklistEffect {
@@ -20,7 +21,7 @@ export class SavedChecklistEffect {
   ));
   loadSavedChecklistAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadSavedChecklistAction),
-    mergeMap(({param}) => {
+    mergeMap(({ param }) => {
       return this.savedChecklistSrv.getAll(param)
         .pipe(
           map((items: ISavedChecklistItem[]) => {
@@ -34,13 +35,13 @@ export class SavedChecklistEffect {
     mergeMap(({ payload }) => {
       return this.savedChecklistSrv.post(payload)
         .pipe(
-          tap(created => {
-            if (created)
-              this.store.dispatch(appNotification({
-                notification: { success: true, message: 'Checklist successfully Saved' }
-              }));
-          }),
           map((created: ISavedChecklistItem) => {
+            /* clear checklist after saved */
+            this.store.dispatch(clearChecklistProductsAction());
+            this.store.dispatch(clearChecklistSourceAction());
+            this.store.dispatch(clearAllSelectedTerms());
+            this.store.dispatch(clearEntitiesAction());
+
             return saveChecklistSuccessAction({ created });
           })
         )

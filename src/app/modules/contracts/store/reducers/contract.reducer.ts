@@ -64,7 +64,6 @@ export function ContractsReducer(state: ContractsState, action: Action) {
 }
 export const getCachedImages = (state: ContractModuleState) => state.contract.cachedImages;
 export const getAllContractProducts = (state: ContractModuleState) => {
-  const contractProducts: IContractProduct[] = state && state.contractProduct.entities ? Object.values(state.contractProduct.entities) : null;
-  return contractProducts; // && products.sort((a: IContractProduct, b: IContractProduct) => sortByDesc(a, b));
+  return Object.values(state?.contractProduct?.entities)
 };
 

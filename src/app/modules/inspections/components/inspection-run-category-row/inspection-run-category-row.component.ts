@@ -180,9 +180,10 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
               mimetype: r?.mimetype,
               size: r?.size,
               inspection_checklist_run: { id: this.runId },
-              contract_term: { id: this.row?.id }
+              contract_term: { id: this.row?.contract_term?.id }
             })
           });
+          
           this.store.dispatch(saveInsChecklisImageAction({ payload: this.images }));
 
           /* upload image */

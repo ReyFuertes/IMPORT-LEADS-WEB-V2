@@ -3,6 +3,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppState } from 'src/app/store/app.reducer';
 import { IActiveInspection } from '../../inspections.models';
+import { getInspectionInspectorSelector } from '../../store/selectors/inspection-report.selector';
 import { getInspectionDetailSelector } from '../../store/selectors/inspection.selector';
 
 @Component({
@@ -12,10 +13,10 @@ import { getInspectionDetailSelector } from '../../store/selectors/inspection.se
 })
 
 export class InspectorReportInspectorComponent implements OnInit {
-  public $detail: Observable<IActiveInspection>;
+  public $detail: Observable<any>;
 
   constructor(private store: Store<AppState>) {
-    this.$detail = this.store.pipe(select(getInspectionDetailSelector));
+    this.$detail = this.store.pipe(select(getInspectionInspectorSelector));
   }
 
   ngOnInit() { }

@@ -63,7 +63,7 @@ export const finishInspectionSuccessAction = createAction(
 );
 export const loadInspectionDetailAction = createAction(
   InspectionActionTypes.loadInspectionDetailAction,
-  props<{ params: string }>()
+  props<{ payload: string }>()
 );
 export const loadInspectionDetailSuccessAction = createAction(
   InspectionActionTypes.loadInspectionDetailSuccessAction,

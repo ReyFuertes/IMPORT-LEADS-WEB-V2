@@ -5,7 +5,17 @@ export enum InspectionReportActionTypes {
   inspectionBarReportSuccessAction = '[Inspection Report] inspection bar report (success)',
   inspectionProductReportAction = '[Inspection Report] inspection products report',
   inspectionProductReportSuccessAction = '[Inspection Report] inspection products report (success)',
+  getInspectorReportAction = '[Inspection Report] get inspector report',
+  getInspectorReportSuccessAction = '[Inspection Report] get inspector report (success)',
 }
+export const getInspectorReportAction = createAction(
+  InspectionReportActionTypes.getInspectorReportAction,
+  props<{ id: string }>()
+);
+export const getInspectorReportSuccessAction = createAction(
+  InspectionReportActionTypes.getInspectorReportSuccessAction,
+  props<{ response: any }>()
+);
 export const inspectionProductReportAction = createAction(
   InspectionReportActionTypes.inspectionProductReportAction,
   props<{ id: string }>()

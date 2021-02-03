@@ -47,7 +47,9 @@ export class InspectionFinishedPanelComponent extends GenericRowComponent implem
         label: 'REPORT',
         value: 'REPORT',
         icon: 'inspection-icon-black.svg',
-        action: this.onOpenReport
+        action: (item) => {
+          this.router.navigateByUrl(`/dashboard/inspections/${item?.id}/report`);
+        }
       },
       {
         label: 'DELETE',

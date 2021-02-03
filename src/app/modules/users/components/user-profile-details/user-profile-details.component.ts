@@ -80,7 +80,7 @@ export class UserProfileDetailsComponent extends GenericDestroyPageComponent imp
       setTimeout(() => {
         this.isContactEditMode = false;
         this.isComDetailEditMode = false;
-      }, 1500);
+      }, 500);
     }
   }
 

@@ -5,7 +5,7 @@ import { Color, Label } from 'ng2-charts';
 import { Observable } from 'rxjs';
 import { AppState } from 'src/app/store/app.reducer';
 import { IInspectionBarReport, IInspectionReportItem } from '../../inspections.models';
-import { inspectionBarReportAction } from '../../store/actions/inspection-report.action';
+import { getInspectorReportAction, inspectionBarReportAction } from '../../store/actions/inspection-report.action';
 import { getInspectionsLineReportSelector } from '../../store/selectors/inspection-report.selector';
 import { loadInspectionDetailAction } from '../../store/actions/inspection.action';
 import { isPlatformBrowser } from '@angular/common';
@@ -98,7 +98,8 @@ export class InspectionReportInspectionComponent extends GenericDestroyPageCompo
     this.id = this.route.snapshot.paramMap.get('id') || null;
     if (this.id) {
       this.store.dispatch(inspectionBarReportAction({ id: this.id }));
-      this.store.dispatch(loadInspectionDetailAction({ params: `?saved_checklist_id=${this.id}` }));
+      this.store.dispatch(loadInspectionDetailAction({ payload: `?saved_checklist_id=${this.id}` }));
+      this.store.dispatch(getInspectorReportAction({ id: this.id }))
     }
 
     this.store.pipe(select(getInspectionsLineReportSelector),
@@ -119,6 +120,7 @@ export class InspectionReportInspectionComponent extends GenericDestroyPageCompo
   }
 
   ngOnInit() {
+    
     // moment.locale(this.locale); // optional - can remove if you are only dealing with one locale
     // for (let hour = 0; hour < 24; hour++) {
     //   this.hours.push(moment({ hour }).format("HH:mm"));

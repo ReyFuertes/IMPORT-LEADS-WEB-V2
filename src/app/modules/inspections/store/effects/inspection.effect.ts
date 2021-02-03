@@ -205,10 +205,11 @@ export class InspectionEffect {
   ))
   loadInspectionDetailAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadInspectionDetailAction),
-    switchMap(({ params }) => {
-      return this.inspectionSrv.getAll(params)
+    switchMap(({ payload }) => {
+      return this.inspectionSrv.getAll(payload)
         .pipe(
           map((response: IActiveInspection[]) => {
+            debugger
             return loadInspectionDetailSuccessAction({ response });
           })
         )

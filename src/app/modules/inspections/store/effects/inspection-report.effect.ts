@@ -6,10 +6,21 @@ import { map, switchMap } from 'rxjs/operators';
 import { AppState } from 'src/app/store/app.reducer';
 import { IInspectionBarReport } from '../../inspections.models';
 import { InspectionReportService } from '../../inspections.service';
-import { inspectionBarReportAction, inspectionBarReportSuccessAction, inspectionProductReportAction, inspectionProductReportSuccessAction } from '../actions/inspection-report.action';
+import { getInspectorReportAction, getInspectorReportSuccessAction, inspectionBarReportAction, inspectionBarReportSuccessAction, inspectionProductReportAction, inspectionProductReportSuccessAction } from '../actions/inspection-report.action';
 
 @Injectable()
 export class InspectionReportEffect {
+  getInspectorReportAction$ = createEffect(() => this.actions$.pipe(
+    ofType(getInspectorReportAction),
+    switchMap(({ id }) => {
+      return this.inspectionReportSrv.getById(id, 'inspector').pipe(
+        map((response: any) => {
+          return getInspectorReportSuccessAction({ response });
+        })
+      )
+    })
+  ));
+
   inspectionProductReportAction$ = createEffect(() => this.actions$.pipe(
     ofType(inspectionProductReportAction),
     switchMap(({ id }) => {

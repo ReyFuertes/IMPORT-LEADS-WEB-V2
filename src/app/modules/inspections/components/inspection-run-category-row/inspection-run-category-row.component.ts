@@ -24,7 +24,7 @@ import { getInspectionRunStatusSelector } from '../../store/selectors/inspection
 export class InspectionRunCategoryRowComponent extends GenericDestroyPageComponent implements OnInit, OnChanges {
   @Input() public runId: string;
   @Input() public source: any;
-  @Input() public row: InsChecklistTerm;
+  @Input() public row: any;
 
   public verifOptions: ISimpleItem[] = [
     { label: 'Ok', value: 'ok' },

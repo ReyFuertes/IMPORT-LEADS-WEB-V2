@@ -1,4 +1,3 @@
-import { Product } from './../../../modules/inspections/components/inspection-report-products/inspection-report-products.component';
 import { ISimpleItem } from './../../generics/generic.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -70,7 +69,7 @@ export class DatatableComponent extends GenericRowComponent implements OnInit, A
     return ret;
   }
 
-  public ddUpdate = (parent: Product, child: Product): void =>
+  public ddUpdate = (parent: any, child: any): void =>
     this.ddUpdateEmitter.emit({ parent, child });
 
   ngOnInit(): void {

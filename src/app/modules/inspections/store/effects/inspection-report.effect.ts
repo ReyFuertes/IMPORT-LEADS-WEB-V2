@@ -6,7 +6,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { AppState } from 'src/app/store/app.reducer';
 import { IInspectionBarReport } from '../../inspections.models';
 import { InspectionReportService } from '../../inspections.service';
-import { getInspectorReportAction, getInspectorReportSuccessAction, inspectionBarReportAction, inspectionBarReportSuccessAction, inspectionProductReportAction, inspectionProductReportSuccessAction } from '../actions/inspection-report.action';
+import { getInspectorReportAction, getInspectorReportSuccessAction, inspectionBarChartReportAction, inspectionBarChartReportSuccessAction, inspectionProductsReportAction, inspectionProductsReportSuccessAction } from '../actions/inspection-report.action';
 
 @Injectable()
 export class InspectionReportEffect {
@@ -21,23 +21,23 @@ export class InspectionReportEffect {
     })
   ));
 
-  inspectionProductReportAction$ = createEffect(() => this.actions$.pipe(
-    ofType(inspectionProductReportAction),
+  inspectionProductsReportAction$ = createEffect(() => this.actions$.pipe(
+    ofType(inspectionProductsReportAction),
     switchMap(({ id }) => {
-      return this.inspectionReportSrv.post({ id }, 'products').pipe(
-        map((response: IInspectionBarReport) => {
-          return inspectionProductReportSuccessAction({ response });
+      return this.inspectionReportSrv.getById(id, 'products').pipe(
+        map((response: any) => {
+          return inspectionProductsReportSuccessAction({ response });
         })
       )
     })
   ));
 
-  inspectionBarReportAction$ = createEffect(() => this.actions$.pipe(
-    ofType(inspectionBarReportAction),
+  inspectionBarChartReportAction$ = createEffect(() => this.actions$.pipe(
+    ofType(inspectionBarChartReportAction),
     switchMap(({ id }) => {
-      return this.inspectionReportSrv.getById(id).pipe(
-        map((response: any) => {
-          return inspectionBarReportSuccessAction({ response });
+      return this.inspectionReportSrv.post({ id }, 'bar-chart').pipe(
+        map((response: IInspectionBarReport) => {
+          return inspectionBarChartReportSuccessAction({ response });
         })
       )
     })

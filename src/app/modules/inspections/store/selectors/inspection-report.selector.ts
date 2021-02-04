@@ -8,9 +8,9 @@ export const getInspectionInspectorSelector = createSelector(
 );
 export const getInspectionProductReportSelector = createSelector(
   selectContractModuleState,
-  state => state?.inspectionReport?.products
+  state => state?.inspectionReport?.productsReport
 );
 export const getInspectionsLineReportSelector = createSelector(
   selectContractModuleState,
-  state => state?.inspectionReport?.inspectionsLineReport
+  state => state?.inspectionReport?.inspectionsBarChartReport
 );

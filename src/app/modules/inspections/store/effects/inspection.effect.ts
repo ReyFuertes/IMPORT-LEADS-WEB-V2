@@ -209,7 +209,6 @@ export class InspectionEffect {
       return this.inspectionSrv.getAll(payload)
         .pipe(
           map((response: IActiveInspection[]) => {
-            debugger
             return loadInspectionDetailSuccessAction({ response });
           })
         )

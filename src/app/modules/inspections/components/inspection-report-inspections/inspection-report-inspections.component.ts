@@ -2,14 +2,12 @@ import { AfterViewInit, ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_I
 import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Color, Label } from 'ng2-charts';
-import { Observable } from 'rxjs';
 import { AppState } from 'src/app/store/app.reducer';
-import { IInspectionBarReport, IInspectionReportItem } from '../../inspections.models';
-import { getInspectorReportAction, inspectionBarReportAction } from '../../store/actions/inspection-report.action';
+import { IInspectionBarReport } from '../../inspections.models';
+import { inspectionBarChartReportAction } from '../../store/actions/inspection-report.action';
 import { getInspectionsLineReportSelector } from '../../store/selectors/inspection-report.selector';
 import { loadInspectionDetailAction } from '../../store/actions/inspection.action';
 import { isPlatformBrowser } from '@angular/common';
-import * as moment from 'moment';
 import { takeUntil } from 'rxjs/operators';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 
@@ -97,9 +95,8 @@ export class InspectionReportInspectionComponent extends GenericDestroyPageCompo
     /* load bar report */
     this.id = this.route.snapshot.paramMap.get('id') || null;
     if (this.id) {
-      this.store.dispatch(inspectionBarReportAction({ id: this.id }));
+      this.store.dispatch(inspectionBarChartReportAction({ id: this.id }));
       this.store.dispatch(loadInspectionDetailAction({ payload: `?saved_checklist_id=${this.id}` }));
-      this.store.dispatch(getInspectorReportAction({ id: this.id }))
     }
 
     this.store.pipe(select(getInspectionsLineReportSelector),

@@ -106,14 +106,20 @@ export class InspectionEffect {
     switchMap(({ payload }) => {
       return this.inspectionRuntimeSrv.post(payload, 'status').pipe(
         map((response: any) => {
-          this.store.dispatch(loadInspectionRunAction({ id: response?.id }));
-
-          let url = `dashboard/inspections/${response?.saved_checklist_id}`
-          if(response?.run_status === RunStatusType.stop) {
-            url = `${url}/report`;
+          let url: string;
+          if (!response) {
+            url = `dashboard/inspections`;
           } else {
-            url = `${url}/run`;
+            this.store.dispatch(loadInspectionRunAction({ id: response?.id }));
+
+            url = `dashboard/inspections/${response?.saved_checklist_id}`;
+            if (response?.run_status === RunStatusType.stop) {
+              url = `${url}/report`;
+            } else {
+              url = `${url}/run`;
+            }
           }
+
           this.router.navigateByUrl(url);
 
           return changeInspectionRuntimeStatusSuccessAction({ response });

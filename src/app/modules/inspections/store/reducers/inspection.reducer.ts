@@ -35,9 +35,9 @@ const reducer = createReducer(
     return Object.assign({}, state, { isPaused: action.status });
   }),
   on(changeInspectionRuntimeStatusSuccessAction, (state, action) => {
-    if (action.response.run_status == RunStatusType.pause) {
+    if (action?.response?.run_status == RunStatusType.pause) {
       return Object.assign({}, state, { isPaused: true });
-    } else if (action.response.run_status == RunStatusType.resume) {
+    } else if (action?.response?.run_status == RunStatusType.resume) {
       return Object.assign({}, state, { isPaused: null });
     } else {
       return Object.assign({}, state, { isPaused: null });

@@ -124,12 +124,9 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
     dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
       .subscribe(result => {
         if (result) {
-
           this.triggerStop();
           this.permitToNavigate = true;
           this.isStopTriggered = true; /* fail safe for for line 70 */
-
-          this.storageSrv.remove('i_init_first_id');
         }
       });
   }

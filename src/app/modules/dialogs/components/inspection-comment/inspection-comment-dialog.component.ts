@@ -115,7 +115,7 @@ export class InspectionCommentDialogComponent extends GenericDestroyPageComponen
             this.store.dispatch(clearInsChecklistImageAction());
 
             /* add all images to state when edit */
-            this.store.dispatch(addInsChecklistImagesAction({ images: images }))
+            this.store.dispatch(addInsChecklistImagesAction({ images }))
 
             this.form.get('id').patchValue(this.data?.id);
             this.form.get('comments').patchValue(comment);

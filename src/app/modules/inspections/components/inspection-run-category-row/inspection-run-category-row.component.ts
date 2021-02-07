@@ -86,7 +86,6 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
             }
           });
 
-          /* save verification and comments */
           const source = this.source?.terms?.find(s => s?.id === this.row?.id);
 
           const payload = {
@@ -181,6 +180,9 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
       takeUntil(this.$unsubscribe),
       take(1)).subscribe((res) => {
         if (res?.length > 0) {
+
+          const source = this.source?.terms?.find(s => s?.id === this.row?.id);
+
           this.images = res?.map(r => {
             return ({
               file: r?.file,
@@ -188,7 +190,8 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
               mimetype: r?.mimetype,
               size: r?.size,
               inspection_checklist_run: { id: this.row?.inspection_checklist_run?.id },
-              contract_term: { id: this.row?.contract_term?.id }
+              contract_term: { id: this.row?.contract_term?.id },
+              saved_checklist: { id: source?.saved_checklist?.id }
             })
           });
 

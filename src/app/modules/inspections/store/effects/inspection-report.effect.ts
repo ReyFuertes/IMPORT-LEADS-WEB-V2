@@ -6,10 +6,32 @@ import { map, switchMap } from 'rxjs/operators';
 import { AppState } from 'src/app/store/app.reducer';
 import { IInspectionBarReport } from '../../inspections.models';
 import { InspectionReportService } from '../../inspections.service';
-import { getInspectorReportAction, getInspectorReportSuccessAction, inspectionBarChartReportAction, inspectionBarChartReportSuccessAction, inspectionProductsReportAction, inspectionProductsReportSuccessAction } from '../actions/inspection-report.action';
+import { inspectionOkCommentsReport, getInspectionOkCommentReportSuccessAction, getInspectorReportAction, getInspectorReportSuccessAction, inspectionBarChartReportAction, inspectionBarChartReportSuccessAction, inspectionProductsReportAction, inspectionProductsReportSuccessAction, getInspectionFailedCommentsReportAction, getInspectionFailedCommentReportSuccessAction } from '../actions/inspection-report.action';
 
 @Injectable()
 export class InspectionReportEffect {
+  getInspectionFailedCommentsReportAction$ = createEffect(() => this.actions$.pipe(
+    ofType(getInspectionFailedCommentsReportAction),
+    switchMap(({ saved_checklist_id }) => {
+      return this.inspectionReportSrv.getById(saved_checklist_id, 'comment/failed').pipe(
+        map((response: any) => {
+          return getInspectionFailedCommentReportSuccessAction({ response });
+        })
+      )
+    })
+  ));
+
+  inspectionOkCommentsReport$ = createEffect(() => this.actions$.pipe(
+    ofType(inspectionOkCommentsReport),
+    switchMap(({ saved_checklist_id }) => {
+      return this.inspectionReportSrv.getById(saved_checklist_id, 'comment/ok').pipe(
+        map((response: any) => {
+          return getInspectionOkCommentReportSuccessAction({ response });
+        })
+      )
+    })
+  ));
+
   getInspectorReportAction$ = createEffect(() => this.actions$.pipe(
     ofType(getInspectorReportAction),
     switchMap(({ id }) => {

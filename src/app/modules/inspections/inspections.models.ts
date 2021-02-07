@@ -3,6 +3,17 @@ import { IUser } from '../user-management/user-mgmt.model';
 import { IContractProduct, IContractTerm, IContractCategory, ISavedChecklist } from '../contracts/contract.model';
 import { IVenue } from '../venues/venues.models';
 import { IProduct } from '../products/products.model';
+
+export interface IInspectionCommentReport {
+  comment?: string;
+  contract_product?: any;
+  contract_term?: any;
+  created_at?: string;
+  id?: string;
+  image?: any;
+  saved_checklist?: any;
+  verification: InspectionVerificationType
+}
 export interface IInspectionProductReport {
   totalFailedTermsCount?: number;
   totalPassedTermsCount?: number;

@@ -111,7 +111,7 @@ export class InspectionReportInspectionComponent extends GenericDestroyPageCompo
           this.barChartData[0].data = bar_data;
           this.barChartSummary = res;
           this.dataSource = res?.bar_data;
-          console.log(res?.bar_data)
+      
         }
       });
   }

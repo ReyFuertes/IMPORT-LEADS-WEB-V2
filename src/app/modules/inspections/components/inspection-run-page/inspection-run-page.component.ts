@@ -284,9 +284,10 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       }));
     }
   }
-
-  /* TODO:  */
+  
   public $pauseOrRun(): Observable<boolean> {
+    /* TODO:  */
+    
     // if (!this.permitToNavigate) {
     //   const dialogRef = this.dialog.open(PauseOrRunDialogComponent, { width: '410px', data: { ins: this.inspectionRun } });
     //   return dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe), debounceTime(1000))

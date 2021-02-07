@@ -1,38 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-
-export interface Failure {
-  itemNumber: number;
-  product: string;
-  picture: string;
-  comment: string;
-}
-
-const ELEMENT_DATA: Failure[] = [
-  {
-    itemNumber: 2,
-    product: 'Lazergun > Green',
-    picture: 'https://dummyimage.com/200x150/ccc/ccc.png',
-    comment: 'is not sandal one, is different model from different customer'
-  },
-  {
-    itemNumber: 4,
-    product: 'Lazergun > Blue',
-    picture: 'https://dummyimage.com/200x150/ccc/ccc.png',
-    comment: 'Missing 2 beads on bracelets'
-  },
-  {
-    itemNumber: 5,
-    product: 'Lazergun > Orange',
-    picture: 'https://dummyimage.com/200x150/ccc/ccc.png',
-    comment: 'Not rosewood but walnut wood'
-  },
-  {
-    itemNumber: 8,
-    product: 'Lazergun > Yellow',
-    picture: 'https://dummyimage.com/200x150/ccc/ccc.png',
-    comment: 'broken keyboard'
-  }
-];
+import { ActivatedRoute } from '@angular/router';
+import { select, Store } from '@ngrx/store';
+import { AppState } from 'src/app/store/app.reducer';
+import { environment } from 'src/environments/environment';
+import { getInspectionFailedCommentsReportAction } from '../../store/actions/inspection-report.action';
+import { getInspectionFailedCommentsReportSelector } from '../../store/selectors/inspection-report.selector';
 
 @Component({
   selector: 'il-inspection-report-failures',
@@ -42,13 +14,30 @@ const ELEMENT_DATA: Failure[] = [
 
 export class InspectionReportFailuresComponent implements OnInit {
 
-  public failureHeader: any[] = [
-    { title: 'Total failues', value: '4' }
-  ];
+  public displayedColumns: string[] = ['product', 'picture', 'comment'];
+  public dataSource: any;
+  public apiImagePath: string = environment.apiImagePath;
+  public imgPath: string = environment.imgPath;
 
-  public displayedColumns: string[] = ['itemNumber', 'product', 'picture', 'comment'];
-  public dataSource = ELEMENT_DATA;
-  constructor() { }
+  constructor(private route: ActivatedRoute, private store: Store<AppState>) {
 
-  ngOnInit() { }
+    const saved_checklist_id = this.route.snapshot.paramMap.get('id') || null;
+    if (saved_checklist_id) {
+      this.store.dispatch(getInspectionFailedCommentsReportAction({ saved_checklist_id }));
+    }
+  }
+
+  ngOnInit() {
+    this.store.pipe(select(getInspectionFailedCommentsReportSelector))
+      .subscribe(res => {
+        if (res) {
+          this.dataSource = res;
+          console.log(res)
+        }
+      });
+  }
+
+  public getImage(image: string): string {
+    return image ? this.apiImagePath + image : `${this.imgPath}no-image.png`;
+  }
 }

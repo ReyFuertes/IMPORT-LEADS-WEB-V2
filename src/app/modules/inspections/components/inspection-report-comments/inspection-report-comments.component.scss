@@ -7,6 +7,10 @@ h2 {
 }
 img {
   padding: 10px 0px 5px;
+  max-width: 150px;
+  height: auto;
+  border: thin $color-gray-4 solid;
+  border-radius: 2px;
 }
 :host ::ng-deep {
   .mat-expansion-panel-body {
@@ -27,8 +31,12 @@ img {
       padding: 0 20px;
     }
   }
+  td.mat-cell {
+    padding-top: 5px !important;
+  }
   .mat-table {
     width: 100%;
+    border-top: thin #eee solid;
+    border-radius: 0;
   }
-
 }

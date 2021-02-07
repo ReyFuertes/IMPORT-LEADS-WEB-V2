@@ -2,6 +2,14 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { InspectionModuleState } from '../reducers';
 
 export const selectContractModuleState = createFeatureSelector<InspectionModuleState>('inspectionModule');
+export const getInspectionFailedCommentsReportSelector = createSelector(
+  selectContractModuleState,
+  state => state?.inspectionReport?.inspectionFailedCommentsReport
+);
+export const getInspectionOkCommentsReportSelector = createSelector(
+  selectContractModuleState,
+  state => state?.inspectionReport?.inspectionOkCommentsReport
+);
 export const getInspectionInspectorSelector = createSelector(
   selectContractModuleState,
   state => state?.inspectionReport?.inspector

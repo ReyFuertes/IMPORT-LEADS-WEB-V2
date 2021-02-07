@@ -3,7 +3,10 @@ import { Component, OnInit, Input, ChangeDetectorRef, OnChanges, SimpleChanges }
 import { IInspectionRun, InspectionVerificationType } from '../../inspections.models';
 import * as _ from 'lodash';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
+import { getInspectionRunSelector } from '../../store/selectors/inspection.selector';
+import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'il-inspection-run-category',
@@ -11,7 +14,7 @@ import { Store } from '@ngrx/store';
   styleUrls: ['./inspection-run-category.component.scss']
 })
 
-export class InspectionRunCategoryComponent implements OnInit, OnChanges {
+export class InspectionRunCategoryComponent extends GenericDestroyPageComponent implements OnInit {
   public displayedColumns: string[] = ['term_name', 'term_description', 'verification', 'Comments'];
   public dataSource: any;
   public inspectionVeriType = InspectionVerificationType;
@@ -20,20 +23,21 @@ export class InspectionRunCategoryComponent implements OnInit, OnChanges {
 
   @Input() public inspectionRun: any;
 
-  constructor(private store: Store<AppState>, private cdRef: ChangeDetectorRef, public dialog: MatDialog) { }
+  constructor(private store: Store<AppState>, private cdRef: ChangeDetectorRef, public dialog: MatDialog) {
+    super();
+  }
 
   ngOnInit() {
-    this.processItem();
+    this.store.pipe(select(getInspectionRunSelector))
+      .pipe(takeUntil(this.$unsubscribe)).subscribe((res: any) => {
+        if (res) this.processItem(res);
+      })
   }
 
-  ngOnChanges(): void {
-    this.processItem();
-  }
+  private processItem(inspectionRun: any): void {
+    const { terms } = inspectionRun;
 
-  private processItem(): void {
-    const { terms } = this.inspectionRun;
-
-    const grouped = _.groupBy(terms, function (t) {
+    const grouped = _.groupBy(terms, (t: any) => {
       return t?.category?.category_name;
     });
 
@@ -44,9 +48,7 @@ export class InspectionRunCategoryComponent implements OnInit, OnChanges {
       });
 
       return {
-        category: {
-          category_name: g
-        },
+        category: { category_name: g },
         terms
       }
     });

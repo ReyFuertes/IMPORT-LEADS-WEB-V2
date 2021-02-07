@@ -24,7 +24,7 @@ export class PauseOrRunDialogComponent {
   public onStop(): void {
     const payload = {
       id: this.data.ins?.id,
-      saved_checklist: this.data.ins?.checklist,
+      saved_checklist: this.data.ins?.saved_checklist,
       run_status: RunStatusType.stop
     }
     this.store.dispatch(changeInspectionRuntimeStatusAction({ payload }));
@@ -34,7 +34,7 @@ export class PauseOrRunDialogComponent {
   public onPause(): void {
     const payload = {
       id: this.data.ins?.id,
-      saved_checklist: this.data.ins?.checklist,
+      saved_checklist: this.data.ins?.saved_checklist,
       run_status: RunStatusType.pause
     }
     this.store.dispatch(changeInspectionRuntimeStatusAction({ payload }));

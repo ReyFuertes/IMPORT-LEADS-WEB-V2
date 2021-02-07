@@ -57,10 +57,6 @@ export class InspectionChecklistEffect {
     switchMap(({ payload }) => {
       return this.insChecklistCommentSrv.patch(payload).pipe(
         map((response: any) => {
-          if (response && response?.inspection_checklist_run) {
-            this.store.dispatch(loadInspectionRunAction({ id: response?.inspection_checklist_run?.id }));
-          };
-
           return updateInsChecklistCommentSuccessAction({ response });
         })
       )

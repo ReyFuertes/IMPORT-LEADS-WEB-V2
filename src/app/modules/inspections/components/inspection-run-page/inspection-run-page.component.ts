@@ -36,7 +36,6 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   public isStopTriggered: boolean = false;
   public id: string;
   public selProduct: ISimpleItem;
-  public $inspectionRun: Observable<any>;
   public hideCategoryTerms: boolean = false;
 
   constructor(private route: ActivatedRoute, private dialog: MatDialog, private store: Store<AppState>, private cdRef: ChangeDetectorRef, private router: Router, private fb: FormBuilder) {
@@ -130,7 +129,6 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
           contract_term_id: selItem?.contract_term?.id
         }
       }
-      debugger
       this.store.dispatch(inspectChecklistRunProductAction(payload));
     }
   }
@@ -138,7 +136,6 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   ngAfterViewInit(): void {
     this.cdRef.detectChanges();
   }
-
 
   public navigateTo(): void {
     this.permitToNavigate = true;

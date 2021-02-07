@@ -74,9 +74,11 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
           this.runInspectionCount = count;
           this.savedChecklistId = saved_checklist?.id;
           this.inspectionRun = res;
-
-          this.permitToNavigate = Number(res?.run_status) === Number(RunStatusType.pause) && !this.isStopTriggered;
-
+          
+          if(res?.run_status) {
+            this.permitToNavigate = Number(res?.run_status) === Number(RunStatusType.pause) && !this.isStopTriggered;
+          }
+          
           this.products = saved_checklist_items?.map(sci => {
             return {
               label: sci.product?.product_name,
@@ -117,7 +119,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
 
     const selItem = this.inspectionRun?.saved_checklist_items?.find(i => i?.contract_product?.id === event
       && i?.product?.id === this.selProduct?.value);
-      
+
     if (Object.keys(this.selProduct)?.length > 0) {
       const payload = {
         payload: {
@@ -253,12 +255,14 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
         .subscribe(result => {
           if (result) {
+
             const payload = {
               id: inspectionRun.id,
               copyCount: Number(this.form.get('copyCount').value),
-              contractProductId: this.selProduct?.id,
-              saved_checklist_id: inspectionRun?.saved_checklist?.id,
-              inspection: this.inspectionRun?.inspection
+              contract_product: { id: this.selProduct?._id },
+              saved_checklist: { id: inspectionRun?.saved_checklist?.id },
+              inspection: this.inspectionRun?.inspection,
+              product: { id: this.selProduct?.value }
             };
 
             this.store.dispatch(copyInspectionAction(payload));
@@ -272,21 +276,24 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       this.store.dispatch(runNextInspectionAction({
         payload: {
           id: inspectionRun.id,
-          saved_checklist_id: inspectionRun?.saved_checklist?.id,
-          inspection: this.inspectionRun.inspection,
-          contractProductId: this.selProduct?.id
+          contract_product: { id: this.selProduct?._id },
+          saved_checklist: { id: inspectionRun?.saved_checklist?.id },
+          inspection: this.inspectionRun?.inspection,
+          product: { id: this.selProduct?.value }
         }
       }));
     }
   }
 
+  /* TODO:  */
   public $pauseOrRun(): Observable<boolean> {
-    if (!this.permitToNavigate) {
-      const dialogRef = this.dialog.open(PauseOrRunDialogComponent, { width: '410px', data: { ins: this.inspectionRun } });
-      return dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe), debounceTime(1000))
-    } else {
-      return of(true);
-    }
+    // if (!this.permitToNavigate) {
+    //   const dialogRef = this.dialog.open(PauseOrRunDialogComponent, { width: '410px', data: { ins: this.inspectionRun } });
+    //   return dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe), debounceTime(1000))
+    // } else {
+     
+    // }
+    return of(true);
   }
 
   public onBack(): void {

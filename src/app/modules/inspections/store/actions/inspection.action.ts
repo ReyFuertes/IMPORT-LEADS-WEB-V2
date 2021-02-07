@@ -137,7 +137,7 @@ export const runPrevInspectionSuccessAction = createAction(
 );
 export const runNextInspectionAction = createAction(
   InspectionActionTypes.runNextInspectionAction,
-  props<{ payload: { id: string, saved_checklist_id: string, inspection: IInspection, contractProductId: string } }>()
+  props<{ payload: { id: string, saved_checklist: any, inspection: IInspection, contract_product: any, product: any } }>()
 );
 export const runNextInspectionSuccessAction = createAction(
   InspectionActionTypes.runNextInspectionSuccessAction,

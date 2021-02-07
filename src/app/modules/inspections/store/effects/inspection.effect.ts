@@ -153,12 +153,9 @@ export class InspectionEffect {
   runNextInspectionAction$ = createEffect(() => this.actions$.pipe(
     ofType(runNextInspectionAction),
     switchMap(({ payload }) => {
-
       return this.inspectionChecklistRunSrv.post(payload, 'next').pipe(
         map((response: any) => {
-
           this.router.navigateByUrl(`/dashboard/inspections/${response?.id}/run`);
-          this.store.dispatch(loadInspectionRunAction({ id: response?.id }))
 
           return runNextInspectionSuccessAction({ response });
         })

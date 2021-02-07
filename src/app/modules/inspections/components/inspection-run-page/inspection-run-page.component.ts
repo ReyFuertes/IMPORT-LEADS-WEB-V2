@@ -5,17 +5,18 @@ import { Component, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/co
 import { Observable, of } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
-import { getInspectionRunSelector, getInspectionRunStatusSelector } from '../../store/selectors/inspection.selector';
+import { getInspectionRunSelector, getInspectionRunStatusSelector, getUpdatedInspectionRunSelector } from '../../store/selectors/inspection.selector';
 import { runNextInspectionAction, runPrevInspectionAction, changeInspectionRuntimeStatusAction, deleteAndNavigateToAction, copyInspectionAction, navigateToInspectionAction, setPauseInspectionStatusAction, loadInspectionRunAction, inspectChecklistRunProductAction } from '../../store/actions/inspection.action';
 import { IInspectionRun, RunStatusType } from '../../inspections.models';
 import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 import * as _ from 'lodash';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
-import { debounceTime, takeUntil, tap } from 'rxjs/operators';
+import { debounceTime, take, takeUntil, tap } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
 import { PauseOrRunDialogComponent } from 'src/app/modules/dialogs/components/pause-run/pause-run.component';
 import { StorageService } from 'src/app/services/storage.service';
+import { getInspectionChecklistProductAction } from '../../store/actions/inspection-checklist.action';
 @Component({
   selector: 'il-inspection-run-page',
   templateUrl: './inspection-run-page.component.html',
@@ -35,10 +36,12 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   public isStopTriggered: boolean = false;
   public id: string;
   public selProduct: ISimpleItem;
-  public productId: string;
+  public $inspectionRun: Observable<any>;
+  public hideCategoryTerms: boolean = false;
 
-  constructor(private storageSrv: StorageService, private route: ActivatedRoute, private dialog: MatDialog, private store: Store<AppState>, private cdRef: ChangeDetectorRef, private router: Router, private fb: FormBuilder) {
+  constructor(private route: ActivatedRoute, private dialog: MatDialog, private store: Store<AppState>, private cdRef: ChangeDetectorRef, private router: Router, private fb: FormBuilder) {
     super();
+
     this.form = this.fb.group({
       copyCount: [null],
       items: [null],
@@ -66,10 +69,11 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
     this.store.pipe(select(getInspectionRunSelector))
       .pipe(takeUntil(this.$unsubscribe)).subscribe((res: any) => {
         if (res) {
-          const { checklist, count, inspection_checklist_product, saved_checklist_items } = res;
+
+          const { saved_checklist, count, contract_product, saved_checklist_items, terms } = res;
 
           this.runInspectionCount = count;
-          this.savedChecklistId = checklist.id;
+          this.savedChecklistId = saved_checklist?.id;
           this.inspectionRun = res;
 
           this.permitToNavigate = Number(res?.run_status) === Number(RunStatusType.pause) && !this.isStopTriggered;
@@ -77,8 +81,8 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
           this.products = saved_checklist_items?.map(sci => {
             return {
               label: sci.product?.product_name,
-              value: sci?.contract_product?.id,
-              _id: sci?.product?.id
+              value: sci?.product?.id,
+              _id: sci?.contract_product?.id
             }
           });
 
@@ -88,10 +92,53 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
             this.products = _.uniqBy(this.products, 'value');
           }
 
-          this.selProduct = Object.assign({}, this.products.find(cp => cp.value === inspection_checklist_product?.contract_product?.id));
+          this.selProduct = Object.assign({}, this.products?.find(cp => cp._id === contract_product?.id));
+
+          if (!this.selProduct?.value) {
+            /* if it doesnt find anything then use the localstorage  */
+            const insChecklistSelectedProduct = localStorage.getItem('ins_check_sel_product');
+
+            this.selProduct = JSON.parse(insChecklistSelectedProduct);
+          }
         }
       });
+
+    /* get the updated run inspection if the runInspection variable is not set */
+    this.store.pipe(select(getUpdatedInspectionRunSelector))
+      .subscribe(res => { })
   }
+
+  public onSelectProductChange(event: string): void {
+    if (!event) {
+      this.selProduct = null;
+      return;
+    };
+
+    this.selProduct = Object.assign({}, this.products?.find(cp => cp?.value === event));
+
+    const selItem = this.inspectionRun?.saved_checklist_items?.find(i => i?.contract_product?.id === event
+      && i?.product?.id === this.selProduct?.value);
+      
+    if (Object.keys(this.selProduct)?.length > 0) {
+      const payload = {
+        payload: {
+          id: this.selProduct?._id || null, //contract product id
+          product_id: this.selProduct?.value,
+          inspection_checklist_run: { id: this.route.snapshot.paramMap.get('id') },
+          saved_checklist: { id: this.inspectionRun?.saved_checklist?.id },
+          contract_category_id: selItem?.id,
+          contract_term_id: selItem?.contract_term?.id
+        }
+      }
+      debugger
+      this.store.dispatch(inspectChecklistRunProductAction(payload));
+    }
+  }
+
+  ngAfterViewInit(): void {
+    this.cdRef.detectChanges();
+  }
+
 
   public navigateTo(): void {
     this.permitToNavigate = true;
@@ -134,7 +181,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   public triggerStop(): void {
     const payload = {
       id: this.inspectionRun?.id,
-      saved_checklist: { id: this.inspectionRun?.checklist.id },
+      saved_checklist: { id: this.inspectionRun?.saved_checklist.id },
       run_status: RunStatusType.stop
     }
     this.store.dispatch(changeInspectionRuntimeStatusAction({ payload }));
@@ -145,7 +192,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
 
     const payload = {
       id: inspectionRun?.id,
-      saved_checklist: inspectionRun?.checklist,
+      saved_checklist: inspectionRun?.saved_checklist,
       run_status: null
     }
     this.store.dispatch(changeInspectionRuntimeStatusAction({ payload }));
@@ -168,42 +215,19 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   public triggerPause(): void {
     const payload = {
       id: this.inspectionRun?.id,
-      saved_checklist: this.inspectionRun?.checklist,
+      saved_checklist: this.inspectionRun?.saved_checklist,
       run_status: this.inspectionRunStatus === RunStatusType.pause ? null : RunStatusType.pause
     }
     this.store.dispatch(changeInspectionRuntimeStatusAction({ payload }));
   }
 
-  public onSelectProductChange(event: string): void {
-    if (!event) return;
-
-    this.selProduct = Object.assign({}, this.products?.find(cp => cp?.value === event));
-    const selItem = this.inspectionRun?.saved_checklist_items
-      ?.find(s => s?.contract_product?.id === event && s?.product?.id === this.selProduct?._id);
-    
-    if (this.selProduct) {
-      this.store.dispatch(inspectChecklistRunProductAction({
-        payload: {
-          id: this.selProduct?.value || null,
-          product_id: this.selProduct?._id,
-          inspection_checklist_run: { id: this.route.snapshot.paramMap.get('id') },
-          saved_checklist_id: this.inspectionRun?.checklist?.id,
-          contract_category_id: selItem?.id,
-          contract_term_id: selItem?.contract_term?.id
-        }
-      }));
-      this.productId = this.selProduct?.value;
-    }
-  }
-
   public onPrev(inspectionRun: IInspectionRun): void {
     this.permitToNavigate = true;
-    this.productId = null;
 
     this.store.dispatch(runPrevInspectionAction({
       payload: {
         id: inspectionRun.id,
-        saved_checklist_id: inspectionRun?.checklist?.id,
+        saved_checklist_id: inspectionRun?.saved_checklist?.id,
         inspection: this.inspectionRun?.inspection
       }
     }));
@@ -212,7 +236,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   public onNext(inspectionRun: IInspectionRun): void {
     this.permitToNavigate = true;
 
-    if (!this.productId) {
+    if (!this.selProduct?.value) {
       const dialogNoProductRef = this.dialog.open(ConfirmationComponent, {
         width: '410px',
         height: '175px',
@@ -236,7 +260,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
               id: inspectionRun.id,
               copyCount: Number(this.form.get('copyCount').value),
               contractProductId: this.selProduct?.id,
-              saved_checklist_id: inspectionRun?.checklist?.id,
+              saved_checklist_id: inspectionRun?.saved_checklist?.id,
               inspection: this.inspectionRun?.inspection
             };
 
@@ -251,14 +275,12 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       this.store.dispatch(runNextInspectionAction({
         payload: {
           id: inspectionRun.id,
-          saved_checklist_id: inspectionRun?.checklist?.id,
+          saved_checklist_id: inspectionRun?.saved_checklist?.id,
           inspection: this.inspectionRun.inspection,
           contractProductId: this.selProduct?.id
         }
       }));
     }
-
-    this.productId = null;
   }
 
   public $pauseOrRun(): Observable<boolean> {
@@ -275,15 +297,11 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   }
 
   public get checklistProductHasTerms(): boolean {
-    return this.inspectionRun?.inspection_checklist_product?.terms?.length > 0;
+    return this.inspectionRun?.terms?.length > 0 || !this.selProduct;
   }
 
   public get hasSelectedProduct(): boolean {
-    return this.productId ? true : false;
-  }
-
-  ngAfterViewInit(): void {
-    this.cdRef.detectChanges();
+    return this.selProduct?.value ? true : false;
   }
 
   public get isFirstRecord(): boolean {
@@ -295,6 +313,6 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   }
 
   public get isNext(): boolean {
-    return Number(this.inspectionRunStatus) === Number(RunStatusType.pause) || !this.productId;
+    return Number(this.inspectionRunStatus) === Number(RunStatusType.pause) || !this.selProduct?.value;
   }
 }

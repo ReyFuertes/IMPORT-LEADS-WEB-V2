@@ -31,18 +31,18 @@ export class InspectionRunCategoryComponent implements OnInit, OnChanges {
   }
 
   private processItem(): void {
-    const { inspection_checklist_product } = this.inspectionRun;
+    const { terms } = this.inspectionRun;
 
-    const grouped = _.groupBy(inspection_checklist_product?.terms, function (t) {
+    const grouped = _.groupBy(terms, function (t) {
       return t?.category?.category_name;
     });
 
     this.dataSource = Object.keys(grouped)?.map(g => {
       const flattenArr = _.flatten(Object.values(grouped));
-      const terms = Object.values(flattenArr).filter(function(itm: any){
+      const terms = Object.values(flattenArr).filter(function (itm: any) {
         return g.indexOf(itm?.category?.category_name) > -1;
       });
- 
+
       return {
         category: {
           category_name: g

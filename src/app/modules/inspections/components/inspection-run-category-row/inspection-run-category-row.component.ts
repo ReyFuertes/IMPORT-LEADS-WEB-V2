@@ -86,10 +86,9 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
               verification: option?.value
             }
           });
-
-          /* save verification and comments */
           
-          const source = this.source.terms.find(s => s?.id === this.row?.id);
+          /* save verification and comments */
+          const source = this.source?.terms?.find(s => s?.id === this.row?.id);
           const payload = {
             payload: {
               id: this.row?.comment?.id,

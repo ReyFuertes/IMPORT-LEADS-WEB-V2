@@ -11,7 +11,7 @@
       </tr>
 
       <ng-container *ngFor="let row of source?.terms; let i = index">
-        <il-inspection-run-category-row [source]="source" [runId]="inspectionRun?.id" [row]="row"></il-inspection-run-category-row>
+        <il-inspection-run-category-row [source]="source" [runId]="inspectionRun?.inspection_checklist_run?.id" [row]="row"></il-inspection-run-category-row>
       </ng-container>
     </table>
   </div>

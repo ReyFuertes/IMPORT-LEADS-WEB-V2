@@ -1,12 +1,13 @@
 import { IActiveInspection, IFinishedInspection, IInspectionRun, RunStatusType } from './../../inspections.models';
-import { loadActiveInspectionSuccessAction, loadInspectionRunSuccessAction, clearLoadAction, updateSourceTermAction, runInspectionSuccessAction, changeInspectionRuntimeStatusSuccessAction, setPauseInspectionStatusAction, loadInspectionDetailSuccessAction, loadFinishInspectionSuccessAction, inspectChecklistRunProductSuccessAction } from '../actions/inspection.action';
+import { loadActiveInspectionSuccessAction, loadInspectionRunSuccessAction, clearLoadAction, updateSourceTermAction, changeInspectionRuntimeStatusSuccessAction, setPauseInspectionStatusAction, loadInspectionDetailSuccessAction, loadFinishInspectionSuccessAction, inspectChecklistRunProductSuccessAction, getInspectionWithLastRunProductSuccessAction } from '../actions/inspection.action';
 import { createReducer, on, Action } from "@ngrx/store";
 import { getInspectionChecklistProductSuccessAction } from '../actions/inspection-checklist.action';
 export interface InspectionState {
   loaded?: boolean;
   activeInspection?: IActiveInspection[],
   finishedInspections?: IFinishedInspection[],
-  runInspection?: IInspectionRun
+  runInspection?: IInspectionRun,
+  updatedRunInspection?: IInspectionRun
   isPaused?: boolean,
   detail?: IActiveInspection;
 }
@@ -15,16 +16,24 @@ export const initialState: InspectionState = {
   activeInspection: null,
   finishedInspections: null,
   runInspection: null,
+  updatedRunInspection: null,
   isPaused: null,
   detail: null
 };
 const reducer = createReducer(
   initialState,
+  on(getInspectionChecklistProductSuccessAction, (state, action) => {
+    const newState = Object.assign({}, state, {
+      updatedRunInspection: action.response
+    });
+    return Object.assign({}, newState);
+  }),
+  on(getInspectionWithLastRunProductSuccessAction, (state, action) => {
+    return Object.assign({}, state, { runInspection: action.response });
+  }),
   on(inspectChecklistRunProductSuccessAction, (state, action) => {
     const newState = Object.assign({}, state, {
-      runInspection: Object.assign({}, state?.runInspection, {
-        inspection_checklist_product: action.response
-      })
+      runInspection: action.response
     });
     return Object.assign({}, newState);
   }),
@@ -47,12 +56,13 @@ const reducer = createReducer(
     /* override the term */
     let newState = Object.assign({}, state);
     let checklist_items: any;
-    checklist_items = newState?.runInspection?.checklist?.items?.map((item, idx) => {
-      if (item.contract_term.id === action.term.id) {
-        return Object.assign({}, item, { contract_term: action.term });
-      }
-      return item;
-    });
+    debugger
+    // checklist_items = newState?.runInspection?.checklist?.items?.map((item, idx) => {
+    //   if (item.contract_term.id === action.term.id) {
+    //     return Object.assign({}, item, { contract_term: action.term });
+    //   }
+    //   return item;
+    // });
     return Object.assign({}, state, {
       runInspection: {
         saved_checklist: { checklist_items }

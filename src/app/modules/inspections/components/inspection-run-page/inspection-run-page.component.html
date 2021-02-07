@@ -1,7 +1,7 @@
 <div *ngIf="inspectionRun" class="irp-container">
   <div class="title">
     <h1>
-      <span>{{ inspectionRun?.checklist?.checklist_name | uppercase }} : </span>
+      <span>{{ inspectionRun?.saved_checklist?.checklist_name | uppercase }} : </span>
       <span>#{{ inspectionRun?.count }}</span>
     </h1>
   </div>
@@ -74,8 +74,8 @@
       <il-dropdown-select-search [selectedItem]="selProduct?.value" (valueEmitter)="onSelectProductChange($event)" placeholder="Select Product" [options]="products"></il-dropdown-select-search>
     </div>
   </div>
-  <div *ngIf="checklistProductHasTerms; else selectedAProduct">
-    <il-inspection-run-category *ngIf="inspectionRun" [inspectionRun]="inspectionRun"></il-inspection-run-category>
+  <div *ngIf="selProduct; else selectedAProduct">
+    <il-inspection-run-category [inspectionRun]="inspectionRun"></il-inspection-run-category>
   </div>
 </div>
 

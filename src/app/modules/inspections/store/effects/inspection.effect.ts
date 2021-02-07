@@ -1,5 +1,5 @@
 import { IActiveInspection, IInspectionRun, RunStatusType } from './../../inspections.models';
-import { loadActiveInspectionSuccessAction, runInspectionAction, runInspectionSuccessAction, createInspectionChecklistAction, createInspectionChecklistSuccessAction, loadInspectionRunAction, loadInspectionRunSuccessAction, runNextInspectionAction, runNextInspectionSuccessAction, runPrevInspectionAction, runPrevInspectionSuccessAction, changeInspectionRuntimeStatusAction, changeInspectionRuntimeStatusSuccessAction, deleteAndNavigateToAction, deleteAndNavigateToSuccessAction, copyInspectionAction, copyInspectionSuccessAction, navigateToInspectionAction, navigateToInspectionSuccessAction, navigateToFailed, deleteInspectionAction, deleteInspectionSuccessAction, loadInspectionDetailAction, loadInspectionDetailSuccessAction, finishInspectionSuccessAction, finishInspectionAction, loadFinishInspectionAction, loadFinishInspectionSuccessAction, inspectChecklistRunProductAction, inspectChecklistRunProductSuccessAction } from '../actions/inspection.action';
+import { loadActiveInspectionSuccessAction, runInspectionAction, runInspectionSuccessAction, createInspectionChecklistAction, createInspectionChecklistSuccessAction, loadInspectionRunAction, loadInspectionRunSuccessAction, runNextInspectionAction, runNextInspectionSuccessAction, runPrevInspectionAction, runPrevInspectionSuccessAction, changeInspectionRuntimeStatusAction, changeInspectionRuntimeStatusSuccessAction, deleteAndNavigateToAction, deleteAndNavigateToSuccessAction, copyInspectionAction, copyInspectionSuccessAction, navigateToInspectionAction, navigateToInspectionSuccessAction, navigateToFailed, deleteInspectionAction, deleteInspectionSuccessAction, loadInspectionDetailAction, loadInspectionDetailSuccessAction, finishInspectionSuccessAction, finishInspectionAction, loadFinishInspectionAction, loadFinishInspectionSuccessAction, inspectChecklistRunProductAction, inspectChecklistRunProductSuccessAction, getInspectionWithLastRunProductAction, getInspectionWithLastRunProductSuccessAction } from '../actions/inspection.action';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
@@ -19,6 +19,12 @@ export class InspectionEffect {
     switchMap(({ payload }) => {
       return this.inspectionChecklistRunSrv.post(payload, 'inspect-product').pipe(
         map((response: any) => {
+
+          localStorage.setItem('ins_check_sel_product', JSON.stringify({
+            value: payload?.id,
+            _id: payload?.product_id
+          }));
+
           return inspectChecklistRunProductSuccessAction({ response });
         })
       )
@@ -73,6 +79,7 @@ export class InspectionEffect {
       )
     })
   ));
+
   copyInspectionAction$ = createEffect(() => this.actions$.pipe(
     ofType(copyInspectionAction),
     switchMap((payload) => {
@@ -80,13 +87,14 @@ export class InspectionEffect {
         map((response: any) => {
 
           this.router.navigateByUrl(`dashboard/inspections/${response?.id}/run`);
-          this.store.dispatch(loadInspectionRunAction({ id: response?.id }));
+          this.store.dispatch(getInspectionWithLastRunProductAction({ id: response?.id }));
 
           return copyInspectionSuccessAction({ response });
         })
       )
     })
   ));
+
   deleteAndNavigateToAction$ = createEffect(() => this.actions$.pipe(
     ofType(deleteAndNavigateToAction),
     switchMap(({ id }) => {
@@ -101,6 +109,7 @@ export class InspectionEffect {
       )
     })
   ));
+
   changeInspectionRuntimeStatusAction$ = createEffect(() => this.actions$.pipe(
     ofType(changeInspectionRuntimeStatusAction),
     switchMap(({ payload }) => {
@@ -156,6 +165,18 @@ export class InspectionEffect {
       )
     })
   ));
+
+  getInspectionWithLastRunProductAction$ = createEffect(() => this.actions$.pipe(
+    ofType(getInspectionWithLastRunProductAction),
+    switchMap(({ id }) => {
+      return this.inspectionChecklistRunSrv.getById(id, 'last-run-product').pipe(
+        map((response: IInspectionRun) => {
+          return getInspectionWithLastRunProductSuccessAction({ response });
+        })
+      )
+    })
+  ))
+
   loadInspectionRunAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadInspectionRunAction),
     switchMap(({ id }) => {

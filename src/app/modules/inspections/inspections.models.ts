@@ -84,13 +84,13 @@ export interface IInspectionChecklistComment {
 // }
 export interface IInspectionRun {
   id?: string;
-  checklist?: IInsChecklist;
+  saved_checklist?: ISavedChecklist;
   count?: number;
   run_status?: string;
   inspection?: IInspection;
   contract_products?: any;
   saved_checklist_items?: any;
-  inspection_checklist_product?: any;
+  terms?: any[];
 }
 export interface IInspection {
   id?: string;

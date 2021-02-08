@@ -17,7 +17,7 @@
           <div class="drag-placeholder" *cdkDragPlaceholder></div>
           <div [id]="cached?.id" fxLayout="column" fxLayoutAlign="center end">
             <img class="remove" (click)="onRemoveCachedImage(cached)" [src]="svgPath + 'cancel-red-16px.svg'">
-            <div class="thumb-img" [ngStyle]="{'background-image': getBg(cached?.image ? cached?.image : imgUrl + cached?.filename)}"></div>
+            <div class="thumb-img" [ngStyle]="{'background-image': getBg(cached?.image ? cached?.image : apiImagePath + cached?.filename)}"></div>
           </div>
         </div>
       </div>

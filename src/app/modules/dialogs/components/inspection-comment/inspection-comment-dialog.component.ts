@@ -28,7 +28,7 @@ export class InspectionCommentDialogComponent extends GenericDestroyPageComponen
   public cachedImages: IInspectionChecklistImage[] = [];
   public $cachedImages: Observable<IInspectionChecklistImage[]>;
   public files: File[] = [];
-  public imgUrl: string = `${environment.apiUrl}contracts/image/`;
+  public apiImagePath: string = environment.apiImagePath;
 
   constructor(private cdRef: ChangeDetectorRef, private insChecklistSrv: InspectionChecklistCommentService, private store: Store<AppState>, public fb: FormBuilder,
     public dialogRef: MatDialogRef<InspectionCommentDialogComponent>,

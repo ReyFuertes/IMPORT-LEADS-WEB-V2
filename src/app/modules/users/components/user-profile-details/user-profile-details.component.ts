@@ -67,7 +67,6 @@ export class UserProfileDetailsComponent extends GenericDestroyPageComponent imp
   ngOnInit() {
     if (this.detail)
       this.form.patchValue(this.detail);
-
   }
 
   public updateProfile(): void {
@@ -77,10 +76,11 @@ export class UserProfileDetailsComponent extends GenericDestroyPageComponent imp
 
       /* update profile data */
       this.store.dispatch(updateProfileAction({ payload }));
+
       setTimeout(() => {
         this.isContactEditMode = false;
         this.isComDetailEditMode = false;
-      }, 500);
+      }, 100);
     }
   }
 

@@ -26,5 +26,5 @@ export const loadUserProfileAction = createAction(
 );
 export const loadUserProfileSuccessAction = createAction(
   UserProfileActionTypes.loadUserProfileSuccessAction,
-  props<{ detail: IUserProfile }>()
+  props<{ response: IUserProfile }>()
 );

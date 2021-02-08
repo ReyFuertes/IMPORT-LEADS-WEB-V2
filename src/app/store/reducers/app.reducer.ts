@@ -4,6 +4,7 @@ import { loginSuccessAction, logoutSuccessAction, isLoggingInAction, loginFailed
 import { IAccess } from 'src/app/models/user.model';
 import { IRole } from 'src/app/modules/user-management/user-mgmt.model';
 import { IUserProfile } from "src/app/modules/users/users.models";
+import { updateProfileSuccessAction } from "src/app/modules/users/store/actions/user-profile.actions";
 export interface InitAppState {
   token?: string,
   isLoggedIn?: boolean,
@@ -28,6 +29,9 @@ export const initialState: InitAppState = {
 };
 const initAppReducer = createReducer(
   initialState,
+  on(updateProfileSuccessAction, (state, action) => {
+    return Object.assign({}, state, { detail: action.response });
+  }),
   on(loadAppUserProfileSuccessAction, (state, action) => {
     return Object.assign({}, state, { detail: action.detail });
   }),

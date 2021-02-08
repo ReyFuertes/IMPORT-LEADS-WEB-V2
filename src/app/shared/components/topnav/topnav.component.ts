@@ -20,7 +20,7 @@ import { GenericDestroyPageComponent } from '../../generics/generic-destroy-page
 })
 
 export class TopNavComponent extends GenericDestroyPageComponent implements OnInit {
-  public apilUrlPath: string = environment.apiImagePath;
+  public apiImagePath: string = environment.apiImagePath;
   public svgPath: string = environment.svgPath;
   public imgPath: string = environment.imgPath;
   public toolbarMenu: Array<{
@@ -67,24 +67,24 @@ export class TopNavComponent extends GenericDestroyPageComponent implements OnIn
     this.store.pipe(select(getAppUserProfileSelector),
       takeUntil(this.$unsubscribe))
       .subscribe(res => {
-        if(res) {
+        if (res) {
+
           const user = Object.assign({}, res, {
             username: `${res?.firstname} ${res?.lastname}`
           });
-          
+
           const localUser = JSON.parse(localStorage.getItem('at')) || null;
           if (localUser) {
             this.user = localUser.user;
           }
-  
+
           this.user = user || localUser.user;
         }
       })
   }
 
   public get getProfilePic(): string {
-    return this.user && this.user?.image
-      ? this.apilUrlPath + this.user.image
+    return this.user?.image ? this.apiImagePath + this.user?.image
       : this.imgPath + 'no-image.png';
   }
 

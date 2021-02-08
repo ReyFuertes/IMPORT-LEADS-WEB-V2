@@ -15,10 +15,6 @@ export class UserProfileEffects {
     ofType(updateProfileAction),
     switchMap(({ payload }) => this.userProfileSrv.patch(payload).pipe(
       map((response: IUserProfile) => {
-        const localUser = JSON.parse(localStorage.getItem('at') || null);
-
-        this.store.dispatch(loadUserProfileAction({ id: localUser.user.id }));
-
         return updateProfileSuccessAction({ response });
       })
     ))
@@ -32,8 +28,8 @@ export class UserProfileEffects {
   loadUserProfileAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadUserProfileAction),
     switchMap(({ id }) => this.userProfileSrv.getById(id).pipe(
-      map((detail: IUserProfile) => {
-        return loadUserProfileSuccessAction({ detail });
+      map((response: IUserProfile) => {
+        return loadUserProfileSuccessAction({ response });
       })
     ))
   ));

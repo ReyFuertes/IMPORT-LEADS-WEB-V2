@@ -25,13 +25,13 @@ const reducer = createReducer(
     return Object.assign({}, state, { contractCategories: action.response });
   }),
   on(updateCategorysSuccess, (state, action) => {
-    let entities = Object.values(state.entities);
+    let entities = Object.assign([], Object.values(state.entities));
     entities.forEach(item => {
       if (item.category.id === action.updated.id) {
-        item.category = action.updated
+        Object.assign({}, item, { category: action.updated })
       }
     });
-    return state
+    return Object.assign({}, state);
   }),
   on(selTermsForChecklistAction, (state, action) => {
     let terms = Object.assign([], state.selTermsForChecklist);
@@ -47,9 +47,9 @@ const reducer = createReducer(
   }),
   on(updateContractTermTagSuccessAction, (state, action) => {
     let _entities = Object.assign([], Object.values(state.entities));
-    
+
     const entities = _entities.map(en => {
-      if(en.id === action.updated.id) {
+      if (en.id === action.updated.id) {
         return Object.assign({}, en, {
           contract_tag: action.updated.contract_tag
         });
@@ -83,7 +83,7 @@ const reducer = createReducer(
   }),
   on(updateContractTermSuccessAction, (state, action) => {
     let _entities = Object.assign([], Object.values(state.entities));
-    
+
     const match = _entities.find(t => t.terms.find(tg => tg.id === action.updated.id));
     let updatedTerms = match?.terms?.map(term => {
       if (term.id === action.updated.id) {
@@ -91,9 +91,9 @@ const reducer = createReducer(
       }
       return term;
     });
-    
+
     const entities = _entities.map(en => {
-      if(en.id === action.updated.contract_category.id) {
+      if (en.id === action.updated.contract_category.id) {
         return Object.assign({}, en, {
           terms: updatedTerms
         });

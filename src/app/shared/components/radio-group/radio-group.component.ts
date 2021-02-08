@@ -8,7 +8,6 @@ import { ISimpleItem } from '../../generics/generic.model';
 })
 export class RadioGroupComponent implements OnChanges {
   @Input() public options: ISimpleItem[];
-  @Input() public name: string;
   @Input() public selected: string;
   @Input() public disabled: boolean = false;
 
@@ -17,8 +16,14 @@ export class RadioGroupComponent implements OnChanges {
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.selected = changes?.selected?.currentValue;
-    this.disabled = changes?.disabled?.currentValue;
+    if (changes?.selected?.currentValue) {
+      this.selected = changes?.selected?.currentValue;
+    }
+    if (changes?.disabled?.currentValue) {
+      this.disabled = changes?.disabled?.currentValue;
+    }
+
+    console.log('selected', this.selected)
   }
 
   public onChange(option: ISimpleItem): void {

@@ -65,8 +65,10 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
   public handleSelOption(option: ISimpleItem, item: InsChecklistTerm): void {
 
     /* we need to trigger changes to an object so we can trigger an update */
-    this.rowUpdate = Object.assign({}, this.row, {
-      verification: option?.value,
+    this.rowUpdate = Object.assign({}, this.rowUpdate, {
+      comment: Object.assign({}, this.rowUpdate.comment, {
+        verification: option?.value
+      })
     });
 
     /* clear all the state images first */
@@ -74,7 +76,9 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
 
     if (option.value === InspectionVerificationType.failed
       || option.value === InspectionVerificationType.comment) {
+
       const dialogRef = this.dialog.open(InspectionCommentDialogComponent, {});
+
       dialogRef.afterClosed().subscribe((result) => {
         if (result) {
 
@@ -106,6 +110,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
           this.saveAndUpdateImage();
 
         } else {
+          /* revert back to the previous ui setting */
           this.rowUpdate = Object.assign({}, this.row);
         }
 
@@ -150,7 +155,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
       if (result) {
 
         const source = this.source?.terms?.find(s => s?.id === this.row?.id);
-        
+
         this.store.dispatch(updateInsChecklistCommentAction({
           payload: {
             id: result?.id,

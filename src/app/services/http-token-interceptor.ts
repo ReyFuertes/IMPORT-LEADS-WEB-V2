@@ -14,16 +14,9 @@ export class TokenInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       catchError(error => {
-
+        
         // handle only 401 error
         if (error instanceof HttpErrorResponse && error.status === 401) {
-          this.store.dispatch(appNotification({
-            notification: {
-              success: true,
-              message: error.error
-            }
-          }));
-
           from(this.handleRequest(request));
           return throwError(error);
         }
@@ -35,6 +28,6 @@ export class TokenInterceptor implements HttpInterceptor {
   private async handleRequest(request: HttpRequest<any>) {
     //const isRetriedRequest = request.headers.get("retry");
     localStorage.clear();
-    this.router.navigateByUrl('/login');
+    this.router.navigateByUrl('login');
   }
 }

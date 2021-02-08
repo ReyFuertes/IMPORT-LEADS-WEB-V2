@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
 import { environment } from './../../../../environments/environment';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { logoutAction } from 'src/app/modules/auth/store/auth.action';
@@ -33,7 +33,7 @@ export class TopNavComponent extends GenericDestroyPageComponent implements OnIn
   public excludedMenus: string[] = ['CHAT', 'SETTINGS'];
   public accessMenus: string[] = [];
 
-  constructor(private store: Store<AppState>) {
+  constructor(private cdRef: ChangeDetectorRef, private store: Store<AppState>) {
     super();
   }
 
@@ -79,6 +79,8 @@ export class TopNavComponent extends GenericDestroyPageComponent implements OnIn
           }
 
           this.user = user || localUser.user;
+
+          this.cdRef.detectChanges();
         }
       })
   }

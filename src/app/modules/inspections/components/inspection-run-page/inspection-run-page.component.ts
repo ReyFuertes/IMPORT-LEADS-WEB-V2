@@ -258,7 +258,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
 
             const payload = {
               id: inspectionRun.id,
-              copyCount: Number(this.form.get('copyCount').value),
+              copy_count: Number(this.form.get('copyCount').value),
               contract_product: { id: this.selProduct?._id },
               saved_checklist: { id: inspectionRun?.saved_checklist?.id },
               inspection: this.inspectionRun?.inspection,

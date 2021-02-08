@@ -86,7 +86,9 @@ export class UserProfileDetailsComponent extends GenericDestroyPageComponent imp
 
   public upload(event: any): void {
     const file = event.target.files[0];
+
     this.files.push(file);
+
     /* collect all drop images in base64 results */
     convertBlobToBase64(file)
       .pipe(take(1),
@@ -103,7 +105,7 @@ export class UserProfileDetailsComponent extends GenericDestroyPageComponent imp
         }))
       .subscribe((result) => {
         if (result) {
-          this.rawImage = result.image;
+          this.rawImage = result?.image;
 
           /* upload profile image */
           const dataFile = new FormData();
@@ -120,6 +122,4 @@ export class UserProfileDetailsComponent extends GenericDestroyPageComponent imp
         }
       })
   }
-
-  public handleSelectChange(event: any): void { }
 }

@@ -87,7 +87,6 @@ export class InspectionEffect {
         map((response: any) => {
 
           this.router.navigateByUrl(`dashboard/inspections/${response?.id}/run`);
-          this.store.dispatch(getInspectionWithLastRunProductAction({ id: response?.id }));
 
           return copyInspectionSuccessAction({ response });
         })

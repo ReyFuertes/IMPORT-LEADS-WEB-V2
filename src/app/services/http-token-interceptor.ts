@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from '../modules/contracts/store/reducers';
 import { appNotification } from '../store/actions/notification.action';
+import { logoutAction } from '../modules/auth/store/auth.action';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -27,7 +28,8 @@ export class TokenInterceptor implements HttpInterceptor {
 
   private async handleRequest(request: HttpRequest<any>) {
     //const isRetriedRequest = request.headers.get("retry");
-    localStorage.clear();
-    this.router.navigateByUrl('login');
+    console.log('%c SESSION EXPIRED!', 'background: green; color: white');
+
+    this.store.dispatch(logoutAction());
   }
 }

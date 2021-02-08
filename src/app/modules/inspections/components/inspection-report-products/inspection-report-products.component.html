@@ -1,5 +1,5 @@
 <div *ngIf="productData">
-  <il-expandable-panel title="Products" [expanded]="true">
+  <il-expandable-panel title="Products ({{dataSource?.length}})" [expanded]="false">
     <div fxLayout="column" fxLayoutGap="20px">
       <div class="detail" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
         <mat-list fxLayout>

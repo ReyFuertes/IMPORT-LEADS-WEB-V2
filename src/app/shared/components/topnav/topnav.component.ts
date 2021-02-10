@@ -87,7 +87,7 @@ export class TopNavComponent extends GenericDestroyPageComponent implements OnIn
 
   public get getProfilePic(): string {
     return this.user?.image ? this.apiImagePath + this.user?.image
-      : this.imgPath + 'no-image.png';
+      : this.imgPath + 'default-profile-pic.png';
   }
 
   public onLogout(): void {

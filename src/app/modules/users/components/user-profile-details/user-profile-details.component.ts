@@ -84,6 +84,10 @@ export class UserProfileDetailsComponent extends GenericDestroyPageComponent imp
     }
   }
 
+  public getImage(image: any): any {
+    return this.rawImage ? this.rawImage : (image ? this.apiImageUrl + image : this.imgPath + 'default-profile-pic.png');
+  }
+
   public upload(event: any): void {
     const file = event.target.files[0];
 

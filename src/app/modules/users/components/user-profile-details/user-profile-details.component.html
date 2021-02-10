@@ -12,7 +12,7 @@
     <div fxLayout="row">
       <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" fxFlex="150px">
         <div class="img-container">
-          <img *ngIf="rawImage ? rawImage:  detail?.image" [src]="rawImage ? rawImage : apiImageUrl + detail?.image" />
+          <img [src]="getImage(detail?.image)" />
         </div>
         <input hidden type="file" #uploader (change)="upload($event)" />
         <div fxLayout="row" fxLayoutAlign="center center">

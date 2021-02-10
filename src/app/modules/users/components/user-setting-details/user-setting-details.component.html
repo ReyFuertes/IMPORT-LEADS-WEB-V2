@@ -1,8 +1,7 @@
-
 <mat-card class="setting-card">
   <div *ngIf="form" fxLayout="column">
     <div class="card-row">
-      <div  fxFlex fxLayout="column" fxLayoutGap="20px">
+      <div fxFlex fxLayout="column" fxLayoutGap="20px">
         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
           <div class="img-box">
             <img [src]="svgPath + 'user-icon-blue.svg'" />
@@ -18,7 +17,7 @@
       </div>
     </div>
     <div class="card-row">
-      <div  fxFlex fxLayout="column" fxLayoutGap="20px">
+      <div fxFlex fxLayout="column" fxLayoutGap="20px">
         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
           <div class="img-box">
             <img [src]="svgPath + 'venues-icon-blue.svg'" />
@@ -31,8 +30,8 @@
         </div>
       </div>
     </div>
-    <div class="card-row">
-      <div  fxFlex fxLayout="column" fxLayoutGap="20px">
+    <!--  <div class="card-row">
+     <div  fxFlex fxLayout="column" fxLayoutGap="20px">
         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
           <div class="img-box">
             <img [src]="svgPath + 'credit-card-icon-blue.svg'" />
@@ -45,9 +44,9 @@
           <il-input fxFlex="25" [form]="form" isFloatLabel="true" controlName="cvv" placeholder="CVV/CSV"></il-input>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="card-row">
-      <div  fxFlex fxLayout="column" fxLayoutGap="20px">
+      <div fxFlex fxLayout="column" fxLayoutGap="20px">
         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
           <div class="img-box">
             <img [src]="svgPath + 'lock-icon-blue.svg'" />
@@ -60,7 +59,7 @@
         </div>
       </div>
     </div>
-    <div fxLayout="row" fxLayoutAlign="center center">
+    <div class="action-btns" fxLayout="row" fxLayoutAlign="center center">
       <button (click)="updateProfile()" mat-flat-button class="il-button primary large">Save settings</button>
     </div>
   </div>

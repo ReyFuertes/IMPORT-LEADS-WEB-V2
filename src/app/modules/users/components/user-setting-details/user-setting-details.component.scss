@@ -4,9 +4,13 @@
 }
 .card-row {
   padding: 32px;
+  border-bottom: thin $color-gray-3 solid;
 }
 .details-container {
   padding: 0 50px;
+}
+.action-btns {
+  margin-top: 20px
 }
 .il-button {
   @include il-button;

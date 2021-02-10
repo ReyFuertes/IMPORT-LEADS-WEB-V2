@@ -43,7 +43,7 @@ export class TopNavComponent extends GenericDestroyPageComponent implements OnIn
         if (res) {
           /* process user access menus */
           this.accessMenus.push(...res);
-
+         
           this.$menus = this.store.pipe(select(getAccessSelector), map(m => {
             /* filter the parent menus */
             let parentMenuMatches = m?.filter(

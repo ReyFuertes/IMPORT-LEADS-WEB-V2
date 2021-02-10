@@ -1,6 +1,7 @@
 import { createSelector } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducer';
 import { IRole } from 'src/app/modules/user-management/user-mgmt.model';
+import { sortByDesc } from 'src/app/shared/util/sort';
 
 export const selectedState = (state: AppState) => state.initApp;
 export const getAppUserProfileSelector = createSelector(
@@ -30,9 +31,7 @@ export const getAllRolesSelector = createSelector(
 );
 export const getAccessSelector = createSelector(
   selectedState,
-  state => state
-    && state?.access
-    && state?.access.map(a => {
+  state => state?.access.map(a => {
       const children = state?.access?.filter(c => {
         return c.parent && c?.parent?.id === a.id;
       }) || null;
@@ -44,7 +43,7 @@ export const getAccessSelector = createSelector(
         children,
         user_route: a.user_route
       }
-    })
+    }).sort((a, b) => sortByDesc(a, b, 'position'))
 );
 export const getIsLoginFailedSelector = createSelector(
   selectedState,

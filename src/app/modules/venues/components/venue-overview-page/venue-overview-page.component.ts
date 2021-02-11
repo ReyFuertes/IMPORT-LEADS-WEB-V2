@@ -19,40 +19,6 @@ import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-des
 export class VenueOverviewPageComponent extends GenericDestroyPageComponent implements OnInit {
   public isProduct: boolean = true;
   public venues: IVenue[];
-  public colProducts: Array<{ label: string, width?: any }> = [
-    {
-      label: 'Venue name',
-      width: 30.2
-    },
-    {
-      label: 'Location',
-      width: 50
-    },
-    // {
-    //   label: 'Related products',
-    //   width: 18
-    // },
-    {
-      label: 'Contracts',
-      width: '100px'
-    },
-    // {
-    //   label: 'Inspections',
-    //   width: '100px'
-    // },
-    {
-      label: 'Avg. pass/fail',
-      width: '100px'
-    },
-    // {
-    //   label: 'Rating',
-    //   width: '100px'
-    // },
-    {
-      label: '',
-      width: '60px'
-    }
-  ];
   public colAddress: Array<{ label: string, width?: any }> = [
     {
       label: 'Venue name',

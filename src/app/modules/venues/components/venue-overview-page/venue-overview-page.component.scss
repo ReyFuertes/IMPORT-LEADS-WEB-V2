@@ -4,6 +4,15 @@
   bottom: 20px;
   right: 20px;
 }
+.venue-img {
+  cursor: pointer;
+  img {
+    width: 40px;
+    border-radius: 50%;
+    border: thin $color-gray-3 solid;
+    height: 40px;
+  }
+}
 .il-bg-blue {
   @include il-bg-blue;
   background: $color-white;

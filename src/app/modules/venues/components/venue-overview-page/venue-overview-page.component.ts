@@ -26,20 +26,20 @@ export class VenueOverviewPageComponent extends GenericDestroyPageComponent impl
     },
     {
       label: 'Location',
-      width: 18
+      width: 50
     },
-    {
-      label: 'Related products',
-      width: 18
-    },
+    // {
+    //   label: 'Related products',
+    //   width: 18
+    // },
     {
       label: 'Contracts',
       width: '100px'
     },
-    {
-      label: 'Inspections',
-      width: '100px'
-    },
+    // {
+    //   label: 'Inspections',
+    //   width: '100px'
+    // },
     {
       label: 'Avg. pass/fail',
       width: '100px'

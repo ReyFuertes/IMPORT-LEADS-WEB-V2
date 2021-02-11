@@ -20,6 +20,10 @@ import * as _ from 'lodash';
 })
 
 export class VenueProductsComponent extends GenericRowComponent implements OnInit {
+  @Input() public items: IVenue[];
+  @Input() public isProduct: boolean;
+  @Output() public valueEmitter = new EventEmitter<IVenue>();
+
   public svgPath: string = environment.svgPath;
   public imgPath: string = environment.imgPath;
   public imageApiPath: string = environment.apiImagePath;
@@ -30,12 +34,29 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
   public selectedId: string;
   public dragStart: boolean = false;
   public base64Image: any;
-  
-  @Input() public items: IVenue[];
-  @Input() public colsHeader: Array<{ label: string, width?: any }>;
-  @Input() public isProduct: boolean;
+  public colsHeader: Array<{ label: string, width?: any }> = [
+    {
+      label: 'Venue name',
+      width: 31
+    },
+    {
+      label: 'Location',
+      width: 50
+    },
+    {
+      label: 'Contracts',
+      width: '100px'
+    },
+    {
+      label: 'Avg. pass/fail',
+      width: '100px'
+    },
+    {
+      label: '',
+      width: '60px'
+    }
+  ];;
 
-  @Output() public valueEmitter = new EventEmitter<IVenue>();
 
   public drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.items, event.previousIndex, event.currentIndex);
@@ -63,12 +84,10 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
         }))
       .subscribe(b64 => {
         if (b64) {
-          /* upload new image */
           const dataFile = new FormData();
           dataFile.append('file', file, filename);
           this.store.dispatch(uploadVenueImageAction({ file: dataFile }));
 
-          /* update venue image */
           item.image = _.pickBy({
             filename,
             mimetype: b64.mimetype,
@@ -136,7 +155,7 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
     if (item && item.related_products && item.related_products.length === 0) {
       //pnl.close();
     }
-    
+
     if (item)
       this.selectedItem = item;
 

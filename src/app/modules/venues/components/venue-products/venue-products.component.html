@@ -20,27 +20,27 @@
               <input matInput (input)="onEdit(item, 'name', $event?.target.value)" (click)="$event.stopPropagation()" [value]="item?.name">
             </mat-form-field>
           </div>
-          <div fxFlex="15" fxLayoutAlign="start center">
+          <div fxFlex="50" fxLayoutAlign="start center">
             <span *ngIf="selectedIndex !== i">{{item?.location}}</span>
             <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
               <input matInput (input)="onEdit(item, 'location', $event?.target.value)" (click)="$event.stopPropagation()" [value]="item?.location">
             </mat-form-field>
           </div>
-          <div fxFlex="21" fxLayoutAlign="start center">
+          <!-- <div fxFlex="21" fxLayoutAlign="start center">
             <ng-container *ngIf="item?.related_products && item?.related_products.length > 0">
               <il-pill *ngFor="let product of item?.related_products | slice:0:1; let i = index;" [item]="{ value: product?._id, label: product?.product_name }" [hasRemoveIcon]="false"
                 (removeEmitter)="onRemoveProduct({ id: $event, venue_id: item?.id })">
               </il-pill>
             </ng-container>
-          </div>
+          </div> -->
           <div fxFlex="100px" fxLayoutAlign="center center">
-            <span *ngIf="selectedIndex !== i">{{item?.contract_count}}</span>
+            <span *ngIf="selectedIndex !== i">{{item?.contract_count || 0}}</span>
           </div>
-          <div fxFlex="100px" fxLayoutAlign="center center">
+          <!-- <div fxFlex="100px" fxLayoutAlign="center center">
             <span>{{item?.inspections}}</span>
-          </div>
+          </div> -->
           <div fxFlex="100px" fxLayoutAlign="center center">
-            <span>{{item?.avg_pass_fail}}%</span>
+            <span>{{item?.avg_pass_fail}} %</span>
           </div>
           <!-- <div fxFlex="100px" fxLayoutAlign="start center">
             <span>

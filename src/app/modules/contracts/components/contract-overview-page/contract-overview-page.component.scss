@@ -31,3 +31,13 @@
     height: 40px !important;
   }
 }
+@media (max-width: 768px) {
+  .il-fab {
+    left: 90%;
+  }
+}
+@media (max-width: 1024px) {
+  .il-fab {
+    left: 93%;
+  }
+}

@@ -38,3 +38,9 @@ img.profile-pic {
     }
   }
 }
+@media (max-width: 768px) {
+  .logo {
+    max-width: 15% !important;
+  }
+}
+

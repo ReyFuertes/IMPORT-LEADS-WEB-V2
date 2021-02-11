@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label, Color } from 'ng2-charts';
+import { takeUntil } from 'rxjs/operators';
+import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { AppState } from 'src/app/store/app.reducer';
 import { IInspectionProductReport } from '../../inspections.models';
 import { inspectionProductsReportAction } from '../../store/actions/inspection-report.action';
@@ -14,7 +16,7 @@ import { getInspectionProductReportSelector } from '../../store/selectors/inspec
   styleUrls: ['./inspection-report-products.component.scss']
 })
 
-export class InspectionReportProductsComponent implements OnInit {
+export class InspectionReportProductsComponent extends GenericDestroyPageComponent implements OnInit {
   public productHeader: any[] = [
     { title: 'Total items', value: '58' },
     { title: 'Failed items', value: '12' },
@@ -28,6 +30,8 @@ export class InspectionReportProductsComponent implements OnInit {
   public barChartOption: any;
 
   constructor(private store: Store<AppState>, private route: ActivatedRoute) {
+    super();
+
     const id = this.route.snapshot.paramMap.get('id') || null;
     if (id) {
       this.store.dispatch(inspectionProductsReportAction({ id }))
@@ -35,11 +39,11 @@ export class InspectionReportProductsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.pipe(select(getInspectionProductReportSelector))
+    this.store.pipe(select(getInspectionProductReportSelector),
+    takeUntil(this.$unsubscribe))
       .subscribe(res => {
         if (res) {
-          this.productData = res;
-          this.dataSource = res?.products;
+          this.dataSource = res;
         }
       });
   }

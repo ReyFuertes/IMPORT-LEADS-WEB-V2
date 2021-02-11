@@ -8,7 +8,11 @@
 
       <ng-container matColumnDef="picture">
         <th mat-header-cell *matHeaderCellDef> Picture(s) </th>
-        <td mat-cell *matCellDef="let item"> <img [src]="getImage(item?.image?.filename)"> </td>
+        <td mat-cell *matCellDef="let item">
+          <div fxLayout="row wrap" fxLayoutAlign="start center">
+            <img *ngFor="let image of getLimitImages(item?.images)" [src]="getImage(image?.filename)">
+          </div>
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="comment">

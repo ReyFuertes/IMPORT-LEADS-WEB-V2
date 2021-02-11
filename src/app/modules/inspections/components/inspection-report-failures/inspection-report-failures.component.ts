@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
+import { takeUntil } from 'rxjs/operators';
+import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { AppState } from 'src/app/store/app.reducer';
 import { environment } from 'src/environments/environment';
 import { getInspectionFailedCommentsReportAction } from '../../store/actions/inspection-report.action';
@@ -12,7 +14,7 @@ import { getInspectionFailedCommentsReportSelector } from '../../store/selectors
   styleUrls: ['./inspection-report-failures.component.scss']
 })
 
-export class InspectionReportFailuresComponent implements OnInit {
+export class InspectionReportFailuresComponent extends GenericDestroyPageComponent implements OnInit {
 
   public displayedColumns: string[] = ['product', 'picture', 'comment'];
   public dataSource: any;
@@ -20,6 +22,7 @@ export class InspectionReportFailuresComponent implements OnInit {
   public imgPath: string = environment.imgPath;
 
   constructor(private route: ActivatedRoute, private store: Store<AppState>) {
+    super();
 
     const saved_checklist_id = this.route.snapshot.paramMap.get('id') || null;
     if (saved_checklist_id) {
@@ -28,13 +31,17 @@ export class InspectionReportFailuresComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.pipe(select(getInspectionFailedCommentsReportSelector))
+    this.store.pipe(select(getInspectionFailedCommentsReportSelector),
+      takeUntil(this.$unsubscribe))
       .subscribe(res => {
         if (res) {
           this.dataSource = res;
-          console.log(res)
         }
       });
+  }
+
+  public getLimitImages(images: any[]): any {
+    return images.slice(0, 3);
   }
 
   public getImage(image: string): string {

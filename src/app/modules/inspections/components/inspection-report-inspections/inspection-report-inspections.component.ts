@@ -117,7 +117,6 @@ export class InspectionReportInspectionComponent extends GenericDestroyPageCompo
   }
 
   ngOnInit() {
-    
     // moment.locale(this.locale); // optional - can remove if you are only dealing with one locale
     // for (let hour = 0; hour < 24; hour++) {
     //   this.hours.push(moment({ hour }).format("HH:mm"));

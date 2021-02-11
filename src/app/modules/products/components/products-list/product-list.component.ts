@@ -22,8 +22,7 @@ export class ProductListComponent extends GenericRowComponent implements OnInit,
   public selectedIndex: number | null = null;
   public cols: string[] = ['product_name', 'parent'];
 
-  @Input()
-  public products: IProduct[];
+  @Input() public products: IProduct[];
 
   public drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.products, event.previousIndex, event.currentIndex);
@@ -42,8 +41,8 @@ export class ProductListComponent extends GenericRowComponent implements OnInit,
     this.store.dispatch(updateProductAction({ item: payload }))
   }
 
-  public get getDdItems(): ISimpleItem[] {
-    return this.products.slice(0, 10).map(p => {
+  public get dropdownItems(): ISimpleItem[] {
+    return this.products?.map(p => {
       return {
         value: p.id,
         label: p.product_name
@@ -52,7 +51,7 @@ export class ProductListComponent extends GenericRowComponent implements OnInit,
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes && changes.products && changes.products.currentValue) {
+    if (changes?.products?.currentValue) {
       this.products = changes.products.currentValue;
     }
   }

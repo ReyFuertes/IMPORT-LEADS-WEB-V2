@@ -14,36 +14,16 @@ export class ProductAddDialogComponent implements OnInit {
   public form: FormGroup;
   public isProduct: boolean;
   public selectedItems: ISimpleItem[] = [];
-  public items: ISimpleItem[] = [
-    {
-      label: 'Product 1',
-      value: '1'
-    },
-    {
-      label: 'zxc 2',
-      value: '2'
-    },
-    {
-      label: 'bnm 3',
-      value: '3'
-    },
-    {
-      label: '67876',
-      value: '4'
-    },
-    {
-      label: 'SFDF',
-      value: '5'
-    }
-  ];
-  constructor(public fb: FormBuilder,
-    public dialogRef: MatDialogRef<ProductAddDialogComponent>,
+  public items: ISimpleItem[] = [];
+
+  constructor(public fb: FormBuilder, public dialogRef: MatDialogRef<ProductAddDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: boolean) {
+
     this.form = this.fb.group({
       id: [null],
       product_name: [null, [Validators.required]],
-      qty: [null, [Validators.required]],
-      cost: [null, [Validators.required]]
+      // qty: [null, [Validators.required]],
+      // cost: [null, [Validators.required]]
     });
   }
 

@@ -19,9 +19,9 @@ import { takeUntil } from 'rxjs/operators';
 })
 
 export class TagExpansionPanelComponent extends GenericRowComponent implements OnInit {
-  public svgPath: string = environment.svgPath;
   @Input() public items: ITag[];
 
+  public svgPath: string = environment.svgPath;
   public hoveredIndex: number | null = null;
   public selectedIndex: number | null = null;
   public selectedId: string;
@@ -63,14 +63,17 @@ export class TagExpansionPanelComponent extends GenericRowComponent implements O
 
   public onEdit(item: ITag, value: string): void {
     this.selectedItem = item;
-    if (value)
-      item.tag_name = value;
+
+    if (value) {
+      item = Object.assign({}, item, {
+        tag_name: value
+      });
+      this.selectedItem = item;
+    }
   }
 
   public onSave(): void {
-    if (this.selectedItem)
-      this.store.dispatch(updateTag({ item: this.selectedItem }));
-
+    this.store.dispatch(updateTag({ item: this.selectedItem }));
     this.selectedIndex = null;
   }
 

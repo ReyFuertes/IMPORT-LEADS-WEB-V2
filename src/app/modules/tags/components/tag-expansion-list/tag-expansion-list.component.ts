@@ -20,17 +20,16 @@ import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-des
 })
 
 export class TagExpansionListComponent extends GenericDestroyPageComponent implements OnInit {
-  public svgPath: string = environment.svgPath;
   @Input() public items: string[];
   @Input() public tag: ITag;
+  @Output() public valueEmitter = new EventEmitter<ITagQuestion>();
 
+  public svgPath: string = environment.svgPath;
   public hoveredIndex: number | null = null;
   public selectedIndex: number | null = null;
   public selectedId: string;
   public selectedItem: ITagQuestion;
 
-  @Output()
-  public valueEmitter = new EventEmitter<ITagQuestion>();
 
   constructor(private store: Store<AppState>, public dialog: MatDialog) {
     super();
@@ -81,7 +80,6 @@ export class TagExpansionListComponent extends GenericDestroyPageComponent imple
     if (this.selectedItem) {
       this.store.dispatch(updateTagQuestion({ item: this.selectedItem }));
     }
-
     this.onClose();
   }
 

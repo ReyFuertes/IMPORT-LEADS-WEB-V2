@@ -2,15 +2,15 @@
   <mat-accordion cdkDropList (cdkDropListDropped)="drop($event)">
     <mat-expansion-panel #pnl cdkDrag (cdkDragStarted)="dragStarted(true)" #pnl="matExpansionPanel" *ngFor="let item of items; let i = index" hideToggle="true">
 
-      <mat-expansion-panel-header (keydown.Space)="$event.stopImmediatePropagation()"
-      (keydown.Enter)="$event.stopImmediatePropagation()" (click)="onClickPnl(pnl, $event, i, item)" (keydown.Space)="$event.stopImmediatePropagation()"
-      (keydown.Enter)="$event.stopImmediatePropagation()" (mouseover)="mouseover(i)" (mouseleave)="mouseout()">
+      <mat-expansion-panel-header (keydown.Space)="$event.stopImmediatePropagation()" (keydown.Enter)="$event.stopImmediatePropagation()" (click)="onClickPnl(pnl, $event, i, item)" (keydown.Space)="$event.stopImmediatePropagation()"
+        (keydown.Enter)="$event.stopImmediatePropagation()" (mouseover)="mouseover(i)" (mouseleave)="mouseout()">
+
         <div class="pnl-header" fxLayout="row" fxlayoutGap="20px" fxLayoutGap="10px">
           <img cdkDragHandle [src]="svgPath + 'drag-icon.svg'" />
           <div fxFlex fxLayoutAlign="start center">
             <span *ngIf="selectedIndex !== i">{{item?.tag_name}}</span>
             <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
-              <input matInput (click)="$event.stopPropagation()" class="no-expand" [value]="item?.tag_name" (input)="onEdit(item, $event?.target.value)">
+              <input matInput (click)="$event.stopPropagation()" (keydown.Space)="$event.stopImmediatePropagation()" class="no-expand" [value]="item?.tag_name" (input)="onEdit(item, $event?.target.value)">
             </mat-form-field>
           </div>
           <div fxFlex="100px" class="pnl-actions" fxLayoutAlign="end center">

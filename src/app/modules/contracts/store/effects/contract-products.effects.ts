@@ -14,8 +14,8 @@ export class ContractProductsEffect {
   loadContractProductsAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadContractProductsAction),
     switchMap(({ id }) => this.contractProductService.getAll(`${id}`).pipe(
-      map((items: IContractProduct[]) => {
-        return loadContractProductSuccessAction({ items });
+      map((response: IContractProduct[]) => {
+        return loadContractProductSuccessAction({ response });
       })
     ))
   ));
@@ -37,19 +37,17 @@ export class ContractProductsEffect {
     switchMap(({ payload }) =>
       this.contractProductService.post(payload)
         .pipe(
-          map((created: any) => {
-
+          map((response: IContractProduct[]) => {
             this.store.dispatch(removeSelectedProductAction());
 
-            return addContractProductsSuccessAction({ created });
+            return addContractProductsSuccessAction({ response });
           })
         ))
   ));
   deleteContractProduct$ = createEffect(() => this.actions$.pipe(
     ofType(deleteContractProduct),
-    switchMap(({ id }) =>
-      this.contractProductService.delete(id)
-    )), { dispatch: false });
+    switchMap(({ id }) => this.contractProductService.delete(id))),
+    { dispatch: false });
 
   constructor(
     private store: Store<AppState>,

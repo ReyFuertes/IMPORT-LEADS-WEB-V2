@@ -1,5 +1,5 @@
 <div *ngIf="dataSource">
-  <il-expandable-panel title="Products ({{dataSource?.products?.length}})" [expanded]="false">
+  <il-expandable-panel title="Products ({{dataSource?.contract_products?.length}})" [expanded]="false">
     <div fxLayout="column" fxLayoutGap="20px">
       <div class="detail" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
         <mat-list fxLayout>
@@ -23,20 +23,20 @@
         <div echarts [ngStyle]="{'min-height': '250px'}" [options]="barChartOption"></div>
       </div>
     </div> -->
-    <table mat-table [dataSource]="dataSource?.products">
+    <table mat-table [dataSource]="dataSource?.contract_products">
       <ng-container matColumnDef="product">
         <th mat-header-cell *matHeaderCellDef> Product </th>
-        <td mat-cell *matCellDef="let items"> {{items?.product_name}} </td>
+        <td mat-cell *matCellDef="let items"> {{items?.product?.product_name}} </td>
       </ng-container>
 
       <ng-container matColumnDef="failed">
         <th mat-header-cell *matHeaderCellDef> Failed </th>
-        <td mat-cell *matCellDef="let items"> {{items?.failed}} </td>
+        <td mat-cell *matCellDef="let items"> {{items?.failed_count}} </td>
       </ng-container>
 
       <ng-container matColumnDef="passed">
         <th mat-header-cell *matHeaderCellDef> Passed </th>
-        <td mat-cell *matCellDef="let items"> {{items?.passed}} </td>
+        <td mat-cell *matCellDef="let items"> {{items?.passed_count}} </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

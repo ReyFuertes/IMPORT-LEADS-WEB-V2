@@ -22,8 +22,6 @@ export class RadioGroupComponent implements OnChanges {
     if (changes?.disabled?.currentValue) {
       this.disabled = changes?.disabled?.currentValue;
     }
-
-    console.log('selected', this.selected)
   }
 
   public onChange(option: ISimpleItem): void {

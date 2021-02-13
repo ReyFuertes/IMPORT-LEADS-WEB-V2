@@ -27,13 +27,13 @@ const reducer = createReducer(
     return Object.assign({}, state, { selectedProduct });
   }),
   on(addContractProductsSuccessAction, (state, action) => {
-    return ({ ...adapter.addOne(action.created, state) })
+    return ({ ...adapter.setAll(action.response, state) })
   }),
   on(updateContractProductsSuccessAction, (state, action) => {
     return ({ ...adapter.updateOne({ id: action.updated.id, changes: action.updated }, state) })
   }),
   on(loadContractProductSuccessAction, (state, action) => {
-    return ({ ...adapter.addAll(action.items, state) })
+    return ({ ...adapter.setAll(action.response, state) })
   })
 );
 export function ContractProductsReducer(state: ContractProductsState, action: Action) {

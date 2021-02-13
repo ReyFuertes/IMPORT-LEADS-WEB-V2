@@ -112,7 +112,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
             });
           })
         }
-      })
+      });
 
     this.store.pipe(select(getChecklistSelector),
       takeUntil(this.$unsubscribe))
@@ -122,7 +122,6 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
         this.checklistProducts = res.checklistProducts || [];
         this.checklistEntities = Object.values(res.entities) || [];
         this.checklistItems = res.checklistItems || [];
-
       })).subscribe();
   }
 
@@ -180,15 +179,14 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       this.store.dispatch(removeSelectedProductAction());
     }
 
-    if (!this.inCheckListing)
-      this.onResetForm();
+    if (!this.inCheckListing) this.onResetForm();
   };
 
   public preSelectChange(item: ICommonIdPayload, isPreselected?: boolean): void {
     /* in checklisting */
     if (!isPreselected && this.inCheckListing) {
       const id = (this.checklistSource && this.checklistSource.id) || null;
-
+      
       /* check if the user is multi updating */
       if (this.checklistTerms && this.checklistTerms.length === 0
         && this.checklistProducts.length > 1) {
@@ -202,15 +200,13 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
       /* find by product id */
       const entities = this.checklistEntities.filter(ci => ci?.contract_product?.product?.id === item.id);
-      
+
       /* perform apply and override here */
       if (this.checklistSource && this.checklistProducts.length >= 1) {
-        const action = this.isProductHasChecklist(item.id)
-          ? ProductStatusType.Override : ProductStatusType.Apply;
-
-        if (this.isProductHasChecklist(item.id) /* if the selected product has a checklist */
-          /* if the selected product doesnt have a checklist and the source has a checklist */
-          || !this.isProductHasChecklist(item.id) && this.isProductHasChecklist(id))
+        const action = this.isProductHasChecklist(item.id) ? ProductStatusType.Override : ProductStatusType.Apply;
+        
+        /* if the selected product doesnt have a checklist and the source has a checklist */
+        if (this.isProductHasChecklist(item.id) || !this.isProductHasChecklist(item.id) && this.isProductHasChecklist(id))
           this.overrideOrApply(item, action);
         else
           this.addToChecklist(item, entities);
@@ -219,13 +215,14 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       }
     } else {
       this.isAddState = true;
+      
       this.store.dispatch(selectProductAction({ item }));
     }
   }
 
   private addToChecklist(item: ICommonIdPayload, entities: IContractChecklistItem[]): void {
     this.store.dispatch(addItemToChecklistProductsAction({ item }));
-    
+
     /* get all the terms of selected source */
     if (this.checklistSource && this.checklistProducts.length === 1) {
 
@@ -282,8 +279,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   }
 
   public hasChecklist(id: string): boolean {
-    let preSelected = this.checklistEntities && this.checklistEntities
-      .filter(c => c.contract_product && c.contract_product.product.id === id).shift();
+    let preSelected = this.checklistEntities?.find(c => c?.contract_product?.product?.id === id);
 
     const ret = this.checklistEntities && this.inCheckListing && preSelected;
     return ret ? true : false;
@@ -297,9 +293,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   }
 
   public isProductSelected(id: string): boolean {
-    return !this.inCheckListing
-      && this.selectedProduct
-      && this.selectedProduct.id === id ? true : false;
+    return !this.inCheckListing && this.selectedProduct?.id === id ? true : false;
   }
 
   public isSubProductSelected(id: string): boolean {
@@ -317,24 +311,21 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   /* when selecting product in checklist state
     we are matching the subproduct by using childid 
   */
-  public isSubProductChecklistRelated(sub: any): boolean {
-    return this.inCheckListing
-      && this.checklistEntities
-      && this.checklistEntities.length > 0
-      && this.checklistEntities.filter(c => {
-        return c.contract_product
-          && c.contract_product.product
-          && (c.contract_product.product.id === sub.id /* if the product is the same */
-            || c.contract_product.product._id === sub._id) /* if product has the same checklists */
-      }).shift() ? true : false;
+  public isSubProductChecklistRelated(sub: any, contract_product_id: string): boolean {
+    return this.checklistEntities?.filter(c => {
+      return (c.contract_product?.product?.id === sub?.id /* if the product is the same */
+        && c.contract_product?.id === contract_product_id) /* if product has the same checklists */
+    }).shift() ? true : false;
   }
 
-  public fmtToSimpleItem(p: IProduct): ISimpleItem {
-    return Object.assign({}, { value: p.id, label: p.product_name, _id: p._id });
+  public fmtToSimpleItem(p: IProduct, contract_product_id: string): ISimpleItem {
+    const i = { value: p.id, label: p.product_name, _id: contract_product_id };
+    return Object.assign({}, i);
   }
 
-  public fmtSubToSimpleItem(p: IProduct): ISimpleItem {
-    return Object.assign({}, { value: p.id, label: p.product_name, _id: p._id, });
+  public fmtSubToSimpleItem(p: IProduct, contract_product_id: string): ISimpleItem {
+    const i = { value: p.id, label: p.product_name, _id: contract_product_id };
+    return Object.assign({}, i);
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
@@ -351,7 +342,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   public onAdd(): void {
     if (this.form.value && this.initInputProduct) {
       let payload: IContractProduct = this.fmtPayload(this.form.value);
- 
+
       if (payload) {
         this.store.dispatch(addContractProductsAction({ payload }));
       }
@@ -438,8 +429,9 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
     const subProducts = this.fmtSubProducts(sub_products);
     this.formSubProdsArr = this.form.get('sub_products') as FormArray;
 
-    if (this.formSubProdsArr)
+    if (this.formSubProdsArr) {
       this.formSubProdsArr.clear();
+    }
 
     subProducts?.forEach(subItem => {
       const item = this.createSubItem({
@@ -453,7 +445,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       this.formSubProdsArr.push(item);
     });
 
-    this.hasSubProducts = this.formSubProdsArr && this.formSubProdsArr.length > 0;
+    this.hasSubProducts = this.formSubProdsArr?.length > 0;
     this.isEditProduct = this.selectedProduct ? true : false;
 
     if (!this.selectedProduct) {

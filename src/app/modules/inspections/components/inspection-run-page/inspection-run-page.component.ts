@@ -14,9 +14,6 @@ import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-des
 import { debounceTime, take, takeUntil, tap } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
-import { PauseOrRunDialogComponent } from 'src/app/modules/dialogs/components/pause-run/pause-run.component';
-import { StorageService } from 'src/app/services/storage.service';
-import { getInspectionChecklistProductAction } from '../../store/actions/inspection-checklist.action';
 @Component({
   selector: 'il-inspection-run-page',
   templateUrl: './inspection-run-page.component.html',
@@ -92,7 +89,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
             this.products?.unshift({ label: '', value: null });
             this.products = _.uniqBy(this.products, 'value');
           }
-
+          
           this.selProduct = Object.assign({}, this.products?.find(cp => cp._id === contract_product?.id));
 
           if (!this.selProduct?.value) {

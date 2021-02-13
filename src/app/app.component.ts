@@ -26,9 +26,7 @@ export class AppComponent extends GenericDestroyPageComponent implements OnInit,
 
   constructor(private router: Router, public loaderSrv: LoaderService, private store: Store<AppState>, private cdRef: ChangeDetectorRef) {
     super();
-
     this.store.dispatch(initAppAction());
-
   }
 
   ngOnInit(): void {
@@ -56,6 +54,10 @@ export class AppComponent extends GenericDestroyPageComponent implements OnInit,
       .subscribe(res => {
         this.isLoggedIn = res;
       })
+
+    // this.store.subscribe((res: any) => {
+    //     console.log(res)
+    // })
   }
 
   ngAfterViewInit(): void {

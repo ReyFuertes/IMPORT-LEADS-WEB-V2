@@ -11,6 +11,9 @@ h2 {
   line-height: 32px;
 }
 :host ::ng-deep {
+  tr.mat-header-row {
+    height: 40px !important;
+  }
   .mat-expansion-panel-header {
     height: 45px !important;
   }
@@ -27,13 +30,14 @@ h2 {
   .mat-list {
     width: 100%;
     background: $color-white-1;
-    padding: 0 5px;
-    
+    padding: 0;
     .mat-list-item {
-      height: 65px;
+      height: 40px;
+      border-bottom: 1px solid $color-gray-3;
+      border-top: 1px solid $color-gray-3;
     }
     .mat-list-item:not(:last-child) {
-      border-right: 1px solid $color-gray-2;
+      border-right: 1px solid $color-gray-3;
     }
     .mat-list-item-content {
       display: block;

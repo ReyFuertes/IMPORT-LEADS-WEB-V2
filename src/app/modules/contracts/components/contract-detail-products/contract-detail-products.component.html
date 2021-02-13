@@ -5,23 +5,25 @@
     </div>
     <h2>Products</h2>
   </div>
+
   <div class="cp-container" fxLayout="column" fxLayoutGap="10px">
-    <p *ngIf="inCheckListing && productPillsArr && productPillsArr.length > 0">
+    <p *ngIf="inCheckListing && productPillsArr?.length > 0">
       Select the product to select the related terms that you want to inspect
     </p>
 
     <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="15px">
       <ng-container *ngFor="let item of ($contractProducts | async); let i = index">
+
         <!-- parent product -->
         <il-pill [state]="state" 
             [reset]="!inCheckListing" 
-            (preSelectEmitter)="preSelectChange({id: $event?.value, _id: $event?._id}, isChecklistProductSelected(item?.id))"
+            (preSelectEmitter)="preSelectChange({id: $event?.value, _id: $event?._id}, isChecklistProductSelected(item?.product?.id))"
             (deSelectEmitter)="deSelectChange({id: $event?.value, _id: $event?._id})" 
             (click)="onEdit(item)" 
-            [ngClass]="{sel: (isChecklistProductSelected(item?.id) || isProductSelected(item?.id)), 
-              highlighted: hasChecklist(item?.id)}" 
+            [ngClass]="{sel: (isChecklistProductSelected(item?.product?.id) || isProductSelected(item?.product?.id)), 
+              highlighted: hasChecklist(item?.product?.id)}" 
             [enabled]="!inCheckListing || (inCheckListing && item?.sub_products)" 
-            [item]="fmtToSimpleItem(item)" 
+            [item]="fmtToSimpleItem(item?.product, item?.id)" 
             [enableHighlight]="true" 
             (removeEmitter)="onRemoveProduct(item)" 
             [selectable]="true" 
@@ -31,16 +33,16 @@
         <!-- child product (stateEmitter)="removeSelection()" -->
         <il-pill *ngFor="let sub of item?.sub_products; let i = index" size="small" 
           (preSelectEmitter)="preSelectChange({id: $event?.value, _id: $event?._id}, 
-          isChecklistProductSelected(sub?.id))" 
+          isChecklistProductSelected(sub?.product?.id))" 
           (deSelectEmitter)="deSelectChange({id: $event?.value, _id: $event?._id})"
           
           (click)="onEdit(sub)" 
           [reset]="!inCheckListing" 
-          [ngClass]="{sel: (isChecklistProductSelected(sub?.id) 
+          [ngClass]="{sel: (isChecklistProductSelected(sub?.product?.id) 
             || isSubProductChecklistSelected(sub?._id)),
-            highlighted: isSubProductChecklistRelated(sub)}"
+            highlighted: isSubProductChecklistRelated(sub?.product, sub?.id)}"
           [enabled]="inCheckListing" 
-          [item]="fmtSubToSimpleItem(sub)" 
+          [item]="fmtSubToSimpleItem(sub?.product, sub?.id)" 
           [enableHighlight]="true" 
           (removeEmitter)="onRemoveSubProduct(sub)" 
           [selectable]="true" 

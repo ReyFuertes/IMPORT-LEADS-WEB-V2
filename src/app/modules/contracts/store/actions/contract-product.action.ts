@@ -41,7 +41,7 @@ export const addContractProductsAction = createAction(
 );
 export const addContractProductsSuccessAction = createAction(
   ProductActionTypes.addContractProductsSuccessAction,
-  props<{ created: IContractProduct }>()
+  props<{ response: IContractProduct[] }>()
 );
 export const loadContractProductsAction = createAction(
   ProductActionTypes.loadContractProduct,
@@ -49,5 +49,5 @@ export const loadContractProductsAction = createAction(
 );
 export const loadContractProductSuccessAction = createAction(
   ProductActionTypes.loadContractProductSuccessAction,
-  props<{ items: IContractProduct[] }>()
+  props<{ response: IContractProduct[] }>()
 );

@@ -1,10 +1,9 @@
-import { PillStateType, IContractProduct } from './../../../modules/contracts/contract.model';
+import { PillStateType } from './../../../modules/contracts/contract.model';
 import { ISimpleItem } from './../../generics/generic.model';
 import { GenericControl } from './../../generics/generic-control';
 import { environment } from './../../../../environments/environment';
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, ɵConsole, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, AfterViewInit, ChangeDetectorRef, OnChanges, SimpleChanges } from '@angular/core';
 import { fromEvent } from 'rxjs';
-
 @Component({
   selector: 'il-pill',
   templateUrl: './pill.component.html',
@@ -23,19 +22,19 @@ export class PillComponent extends GenericControl<ISimpleItem> implements OnInit
   @Input() public reset: boolean = false;
   @Input() public hasRemoveIcon: boolean = true;
   @Input() public isSelected: boolean = false;
+
   @Output() public removeEmitter = new EventEmitter<number>();
   @Output() public stateEmitter = new EventEmitter<PillStateType>();
   @Output() public deSelectEmitter = new EventEmitter<ISimpleItem>();
   @Output() public preSelectEmitter = new EventEmitter<ISimpleItem>();
 
   @ViewChild('pill', { static: false }) pill: any;
+
   constructor(private cdRef: ChangeDetectorRef) {
     super();
   }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   ngAfterViewInit() {
     fromEvent(this.pill.nativeElement, 'dblclick')

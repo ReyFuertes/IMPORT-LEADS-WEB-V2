@@ -59,7 +59,7 @@ const reducer = createReducer(
         }),
       );
     });
-    return ({ ...adapter.addAll(fmtEntities, state) })
+    return ({ ...adapter.setAll(fmtEntities, state) })
   }),
   on(getSavedChecklistByIdAction, (state, action) => {
     return Object.assign({}, state, { saveChecklistSource: { id: action.id } });
@@ -135,8 +135,8 @@ const reducer = createReducer(
     return Object.assign({}, state, { checklistTerms });
   }),
   on(addItemToChecklistItemsAction, (state, action) => {
-    const match = state.checklistItems
-      && state.checklistItems.filter(
+    debugger
+    const match =  state?.checklistItems?.filter(
         t => t.contract_term.id === action.item.contract_term.id
           && t.contract_product.id === action.item.contract_product.id).shift();
 
@@ -200,18 +200,16 @@ export function ContractChecklistReducer(state: ContractChecklistState, action: 
 }
 
 function processToItem(state: ContractChecklistState, bucket: boolean): IContractChecklistItem[] {
-  const products = state.checklistProducts || [];
-  const terms = state.checklistTerms || [];
+  const products = state?.checklistProducts || [];
+  const terms = state?.checklistTerms || [];
   let checklistItems: IContractChecklistItem[] = [];
   
   products?.forEach(product => {
-    terms.forEach(term => {
+    terms?.forEach(term => {
       const searchBucket = (bucket ? state.checklistItems : Object.values(state.entities)) || [];
-      const match = searchBucket
-        && searchBucket.length > 0
-        && searchBucket.filter(i => i?.contract_term?.id === term?.term_id
-          && product.id === i?.contract_product?.product?.id).shift();
-      
+      const match = searchBucket?.find(i => i?.contract_term?.id === term?.term_id
+          && product?.id === i?.contract_product?.product?.id);
+          debugger
       if (!match) {
         checklistItems.push({
           contract_contract: { id: term.contract_id },

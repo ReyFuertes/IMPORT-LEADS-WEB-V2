@@ -56,7 +56,7 @@ export class InspectionActivePanelComponent extends GenericRowComponent implemen
     label: 'FINISH',
     icon: 'done.svg',
     action: (item) => {
-      if (item) 
+      if (item)
         this.store.dispatch(finishInspectionAction({ payload: { id: item.id } }))
     }
   }];
@@ -81,6 +81,12 @@ export class InspectionActivePanelComponent extends GenericRowComponent implemen
 
   ngOnChanges(changes: SimpleChanges): void {
     this.store.dispatch(clearLoadAction());
+
+    console.log(this.activeInspections)
+  }
+
+  public hideReportIfNoInspectionRun(run: any[], menu: any): boolean {
+    return run?.length === 0 && menu?.label === 'REPORT' ? true : false;
   }
 
   public dragStarted(event: any): void {
@@ -98,5 +104,4 @@ export class InspectionActivePanelComponent extends GenericRowComponent implemen
       pnl.close();
     }
   }
-
 }

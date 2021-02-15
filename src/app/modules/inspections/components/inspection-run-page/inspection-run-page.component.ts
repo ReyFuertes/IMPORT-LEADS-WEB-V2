@@ -6,7 +6,7 @@ import { Observable, of } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { getInspectionRunSelector, getInspectionRunStatusSelector, getUpdatedInspectionRunSelector } from '../../store/selectors/inspection.selector';
-import { runNextInspectionAction, runPrevInspectionAction, changeInspectionRuntimeStatusAction, deleteAndNavigateToAction, copyInspectionAction, navigateToInspectionAction, setPauseInspectionStatusAction, loadInspectionRunAction, inspectChecklistRunProductAction } from '../../store/actions/inspection.action';
+import { runNextInspectionAction, runPrevInspectionAction, changeInspectionRuntimeStatusAction, deleteAndNavigateToAction, copyInspectionAction, navigateToInspectionAction, setPauseInspectionStatusAction, loadInspectionRunAction, inspectChecklistRunProductAction, clearRunInspectionAction } from '../../store/actions/inspection.action';
 import { IInspectionRun, RunStatusType } from '../../inspections.models';
 import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 import * as _ from 'lodash';
@@ -47,6 +47,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
     this.id = this.route.snapshot.paramMap.get('id') || null;
     if (this.id) {
       this.store.dispatch(loadInspectionRunAction({ id: this.id }));
+      this.store.dispatch(clearRunInspectionAction())
     }
 
     this.store.pipe(select(getInspectionRunStatusSelector),

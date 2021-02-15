@@ -1,7 +1,7 @@
 import { IActiveInspection, IFinishedInspection, IInspectionRun, RunStatusType } from './../../inspections.models';
-import { loadActiveInspectionSuccessAction, loadInspectionRunSuccessAction, clearLoadAction, updateSourceTermAction, changeInspectionRuntimeStatusSuccessAction, setPauseInspectionStatusAction, loadInspectionDetailSuccessAction, loadFinishInspectionSuccessAction, inspectChecklistRunProductSuccessAction, getInspectionWithLastRunProductSuccessAction, runNextInspectionSuccessAction, copyInspectionSuccessAction } from '../actions/inspection.action';
+import { loadActiveInspectionSuccessAction, loadInspectionRunSuccessAction, clearLoadAction, updateSourceTermAction, changeInspectionRuntimeStatusSuccessAction, setPauseInspectionStatusAction, loadInspectionDetailSuccessAction, loadFinishInspectionSuccessAction, inspectChecklistRunProductSuccessAction, getInspectionWithLastRunProductSuccessAction, runNextInspectionSuccessAction, copyInspectionSuccessAction, clearRunInspectionAction } from '../actions/inspection.action';
 import { createReducer, on, Action } from "@ngrx/store";
-import { getInspectionChecklistProductSuccessAction, saveInsChecklistCommentSuccessAction, updateInsChecklistCommentSuccessAction } from '../actions/inspection-checklist.action';
+import { saveInsChecklistCommentSuccessAction, updateInsChecklistCommentSuccessAction } from '../actions/inspection-checklist.action';
 export interface InspectionState {
   loaded?: boolean;
   activeInspection?: IActiveInspection[],
@@ -22,6 +22,9 @@ export const initialState: InspectionState = {
 };
 const reducer = createReducer(
   initialState,
+  on(clearRunInspectionAction, (state) => {
+    return Object.assign({}, state, { runInspection: null });
+  }),
   on(copyInspectionSuccessAction, (state, action) => {
     const newState = Object.assign({}, state, {
       runInspection: action.response
@@ -46,12 +49,6 @@ const reducer = createReducer(
     });
     return Object.assign({}, newState);
   }),
-  // on(getInspectionChecklistProductSuccessAction, (state, action) => {
-  //   const newState = Object.assign({}, state, {
-  //     updatedRunInspection: action.response
-  //   });
-  //   return Object.assign({}, newState);
-  // }),
   on(getInspectionWithLastRunProductSuccessAction, (state, action) => {
     return Object.assign({}, state, { runInspection: action.response });
   }),

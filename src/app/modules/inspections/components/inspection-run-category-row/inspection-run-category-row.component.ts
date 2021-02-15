@@ -74,14 +74,13 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
     /* clear all the state images first */
     this.store.dispatch(clearInsChecklistImageAction());
 
-    if (option.value === InspectionVerificationType.failed
-      || option.value === InspectionVerificationType.comment) {
-
-      const dialogRef = this.dialog.open(InspectionCommentDialogComponent, {});
-
+    if (option.value === InspectionVerificationType.failed || option.value === InspectionVerificationType.comment) {
+      const dialogRef = this.dialog.open(InspectionCommentDialogComponent, {
+        data: { isFailed: option.value === InspectionVerificationType.failed }
+      });
+      
       dialogRef.afterClosed().subscribe((result) => {
         if (result) {
-
           /* update the ui selection */
           this.rowUpdate = new InsChecklistTerm();
           this.rowUpdate = Object.assign({}, this.row, {
@@ -91,7 +90,6 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
           });
 
           const source = this.source?.terms?.find(s => s?.id === this.row?.id);
-
           const payload = {
             payload: {
               id: this.row?.comment?.id,
@@ -104,31 +102,25 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
               contract_product: { id: source?.contract_product?.id }
             }
           }
-
           this.store.dispatch(saveInsChecklistCommentAction(payload));
-
           this.saveAndUpdateImage();
 
         } else {
           /* revert back to the previous ui setting */
           this.rowUpdate = Object.assign({}, this.row);
         }
-
         this.cdRef.detectChanges();
       });
     } else {
-
       const dialogRef = this.dialog.open(ConfirmationComponent, { width: '410px', data: { action: 2 } });
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
-
           this.rowUpdate = new InsChecklistTerm();
           this.rowUpdate = Object.assign({}, this.row, {
             comment: {
               verification: option?.value
             }
           });
-
           const source = this.source?.terms?.find(s => s?.id === this.row?.id);
 
           this.store.dispatch(updateInsChecklistCommentAction({
@@ -149,7 +141,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
 
   public showComment(id: string): void {
     const dialogRef = this.dialog.open(InspectionCommentDialogComponent, {
-      data: { state: ModalStateType.edit, id }
+      data: { state: ModalStateType.edit, id, isFailed: false }
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {

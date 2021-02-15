@@ -38,7 +38,7 @@ export class InspectionCommentDialogComponent extends GenericDestroyPageComponen
     this.form = this.fb.group({
       id: [null],
       comments: [null, Validators.required],
-      images: [null]
+      images: [null, Validators.required]
     });
   }
 
@@ -48,6 +48,10 @@ export class InspectionCommentDialogComponent extends GenericDestroyPageComponen
 
   public getBg(base64: string): string {
     return `url(${base64})`;
+  }
+
+  public get isFailed(): boolean {
+    return this.data?.isFailed;
   }
 
   ngOnInit() {
@@ -63,9 +67,6 @@ export class InspectionCommentDialogComponent extends GenericDestroyPageComponen
               this.cachedImages.push(img);
             }
           });
-
-          //this.cachedImages.push(...res);
-          
           this.form.get('images').patchValue(this.cachedImages);
         }
       })).subscribe();
@@ -134,7 +135,6 @@ export class InspectionCommentDialogComponent extends GenericDestroyPageComponen
   }
 
   public onRemoveCachedImage(image: IInspectionChecklistImage): void {
-    if (image)
-      this.store.dispatch(removeInsChecklistImageAction({ image }));
+    if (image) this.store.dispatch(removeInsChecklistImageAction({ image }));
   }
 }

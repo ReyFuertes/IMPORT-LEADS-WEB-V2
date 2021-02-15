@@ -8,7 +8,7 @@
       <mat-expansion-panel-header (keydown.Space)="$event.stopImmediatePropagation()" (keydown.Enter)="$event.stopImmediatePropagation()" (click)="onClickPnl(pnl, $event, i)" (mouseover)="mouseover(i)" (mouseleave)="mouseout()">
         <div class="pnl-header" fxLayout="row" fxLayoutGap="10px">
           <img cdkDragHandle [src]="svgPath + 'drag-icon.svg'" />
-          <div fxFlex="35" class="contact-title" [matTooltip]="item?.title" fxLayoutAlign="start center">
+          <div fxFlex="35" [matTooltip]="item?.title" fxLayoutAlign="start center">
             <span>{{item?.checklist_contract?.contract_name}}</span>
           </div>
           <div fxFlex="35" class="assigned-to" [matTooltip]="item?.user?.username" fxLayoutAlign="start center" fxLayoutGap="10px">

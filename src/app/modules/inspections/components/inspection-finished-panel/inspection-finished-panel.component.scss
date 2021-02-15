@@ -26,12 +26,12 @@
 .il-draggable-expansion {
   @include il-draggable-expansion;
   box-shadow: $box-shadow;
-
 }
 :host ::ng-deep {
   .mat-expansion-panel-header {
     padding-right: 10px;
     padding-left: 15px;
+    font-weight: 500;
   }
   .il-pill {
     img {

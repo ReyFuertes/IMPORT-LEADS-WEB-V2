@@ -13,7 +13,7 @@ import { getInspectionOkCommentsReportSelector } from '../../store/selectors/ins
 
 export class InspectionReportCommentsComponent implements OnInit {
 
-  public displayedColumns: string[] = ['product', 'picture', 'comment'];
+  public displayedColumns: string[] = ['num', 'product', 'picture', 'comment'];
   public dataSource: any;
   public apiImagePath: string = environment.apiImagePath;
   public imgPath: string = environment.imgPath;

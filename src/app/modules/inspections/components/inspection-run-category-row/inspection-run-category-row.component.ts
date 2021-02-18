@@ -62,8 +62,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
       });
   }
 
-  public handleSelOption(option: ISimpleItem, item: InsChecklistTerm): void {
-
+  public handleSelOption(option: ISimpleItem): void {
     /* we need to trigger changes to an object so we can trigger an update */
     this.rowUpdate = Object.assign({}, this.rowUpdate, {
       comment: Object.assign({}, this.rowUpdate.comment, {

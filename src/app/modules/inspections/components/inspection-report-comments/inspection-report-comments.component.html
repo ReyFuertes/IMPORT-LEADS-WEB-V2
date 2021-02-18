@@ -1,6 +1,12 @@
 <div>
   <il-expandable-panel title="Comments ({{dataSource?.length}})" [expanded]="false">
     <table mat-table [dataSource]="dataSource">
+
+      <ng-container matColumnDef="num">
+        <th mat-header-cell *matHeaderCellDef> No. </th>
+        <td mat-cell *matCellDef="let item"> {{item?.num}} </td>
+      </ng-container>
+
       <ng-container matColumnDef="product">
         <th mat-header-cell *matHeaderCellDef> Product </th>
         <td mat-cell *matCellDef="let item"> {{item?.contract_product?.product?.product_name}} </td>

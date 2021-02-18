@@ -4,7 +4,7 @@
     <div [innerHTML]="row?.contract_term?.term_description"></div>
   </td>
   <td fxFlex="120px">
-    <il-radio-group [disabled]="isPaused" [selected]="rowUpdate?.comment?.verification" (valueEmitter)="handleSelOption($event, row)" [options]="verifOptions">
+    <il-radio-group [disabled]="isPaused" [selected]="rowUpdate?.comment?.verification" (valueEmitter)="handleSelOption($event)" [options]="verifOptions">
     </il-radio-group>
   </td>
   <td fxFlex="120px">

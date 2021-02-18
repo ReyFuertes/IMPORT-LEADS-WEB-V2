@@ -61,15 +61,9 @@ export interface IInspectionChecklistImage {
 }
 export class InsChecklistTerm {
   id?: string;
-  // verification?: string;
   term_description?: string;
   term_name?: string;
   comment?: IInspectionChecklistComment;
-  // inspection_checklist_run?: { id: string };
-  // contract_term?: { id: string };
-  // contract_category?: { id: string };
-  // saved_checklist?: { id: string };
-  // contract_product?: { id: string };
 }
 export enum InspectionVerificationType {
   ok = 'ok',
@@ -86,13 +80,6 @@ export interface IInspectionChecklistComment {
   saved_checklist?: ISavedChecklist,
   contract_product?: IContractProduct
 }
-// export interface IInsCheckComment {
-//   id?: string;
-//   verification?: string;
-//   comment?: string;
-//   created_at?: string;
-//   updated_at?: string;
-// }
 export interface IInspectionRun {
   id?: string;
   saved_checklist?: ISavedChecklist;
@@ -102,6 +89,7 @@ export interface IInspectionRun {
   contract_products?: any;
   saved_checklist_items?: any;
   terms?: any[];
+  checklist_product?: { id: string }
 }
 export interface IInspection {
   id?: string;

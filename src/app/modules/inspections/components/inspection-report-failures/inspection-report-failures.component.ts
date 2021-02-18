@@ -16,7 +16,7 @@ import { getInspectionFailedCommentsReportSelector } from '../../store/selectors
 
 export class InspectionReportFailuresComponent extends GenericDestroyPageComponent implements OnInit {
 
-  public displayedColumns: string[] = ['product', 'picture', 'comment'];
+  public displayedColumns: string[] = ['num', 'product', 'picture', 'comment'];
   public dataSource: any;
   public apiImagePath: string = environment.apiImagePath;
   public imgPath: string = environment.imgPath;

@@ -67,15 +67,15 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       .pipe(takeUntil(this.$unsubscribe)).subscribe((res: any) => {
         if (res) {
           const { saved_checklist, count, contract_product, saved_checklist_items, terms } = res;
-          
+
           this.runInspectionCount = count;
           this.savedChecklistId = saved_checklist?.id;
           this.inspectionRun = res;
-          
-          if(res?.run_status) {
+
+          if (res?.run_status) {
             this.permitToNavigate = Number(res?.run_status) === Number(RunStatusType.pause) && !this.isStopTriggered;
           }
-          
+
           this.products = saved_checklist_items?.map(sci => {
             return {
               label: sci.product?.product_name,
@@ -89,7 +89,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
             this.products?.unshift({ label: '', value: null });
             this.products = _.uniqBy(this.products, 'value');
           }
-          
+
           this.selProduct = Object.assign({}, this.products?.find(cp => cp._id === contract_product?.id));
 
           if (!this.selProduct?.value) {
@@ -251,21 +251,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
         .subscribe(result => {
           if (result) {
-
-            const payload = {
-              id: inspectionRun.id,
-              copy_count: Number(this.form.get('copyCount').value),
-              contract_product: { id: this.selProduct?._id },
-              saved_checklist: { id: inspectionRun?.saved_checklist?.id },
-              inspection: this.inspectionRun?.inspection,
-              product: { id: this.selProduct?.value },
-              checklist_product: { id: inspectionRun?.checklist_product?.id }
-            };
-            
-            this.store.dispatch(copyInspectionAction(payload));
-
-            this.form.get('copyCount').patchValue(null, { emitEvent: false });
-            this.form.reset();
+            this.onCopy(inspectionRun);
           }
         });
     } else {
@@ -281,15 +267,32 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       }));
     }
   }
-  
+
+  public onCopy(inspectionRun: any): void {
+    const payload = {
+      id: inspectionRun.id,
+      copy_count: Number(this.form.get('copyCount').value),
+      contract_product: { id: this.selProduct?._id },
+      saved_checklist: { id: inspectionRun?.saved_checklist?.id },
+      inspection: this.inspectionRun?.inspection,
+      product: { id: this.selProduct?.value },
+      checklist_product: { id: inspectionRun?.checklist_product?.id }
+    };
+
+    this.store.dispatch(copyInspectionAction(payload));
+
+    this.form.get('copyCount').patchValue(null, { emitEvent: false });
+    this.form.reset();
+  }
+
   public $pauseOrRun(): Observable<boolean> {
     /* TODO:  */
-    
+
     // if (!this.permitToNavigate) {
     //   const dialogRef = this.dialog.open(PauseOrRunDialogComponent, { width: '410px', data: { ins: this.inspectionRun } });
     //   return dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe), debounceTime(1000))
     // } else {
-     
+
     // }
     return of(true);
   }

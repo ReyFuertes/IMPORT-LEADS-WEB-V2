@@ -32,7 +32,21 @@ img {
     }
   }
   td.mat-cell {
-    padding-top: 5px !important;
+    padding: 5px !important;
+    &:first-child {
+      min-width: 70px;
+      width: 70px;
+      padding-left: 20px !important;
+    }
+    &:nth-child(2) {
+      min-width: 250px;
+      width: 250px;
+    }
+    &:last-child {
+      min-width: 350px;
+      width: 350px;
+      padding: 20px !important;
+    }
   }
   .mat-table {
     width: 100%;

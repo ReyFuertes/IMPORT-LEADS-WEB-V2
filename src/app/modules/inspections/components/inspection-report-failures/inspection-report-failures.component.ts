@@ -7,6 +7,7 @@ import { AppState } from 'src/app/store/app.reducer';
 import { environment } from 'src/environments/environment';
 import { getInspectionFailedCommentsReportAction } from '../../store/actions/inspection-report.action';
 import { getInspectionFailedCommentsReportSelector } from '../../store/selectors/inspection-report.selector';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'il-inspection-report-failures',
@@ -38,6 +39,12 @@ export class InspectionReportFailuresComponent extends GenericDestroyPageCompone
           this.dataSource = res;
         }
       });
+  }
+
+  public get getProductFailures(): any {
+    return _.sumBy(this.dataSource, function (f) {
+      return f.failure_count;
+    });
   }
 
   public getLimitImages(images: any[]): any {

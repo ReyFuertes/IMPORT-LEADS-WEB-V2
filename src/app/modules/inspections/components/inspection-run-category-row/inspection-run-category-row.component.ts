@@ -197,7 +197,6 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
           /* upload image */
           let formData = new FormData();
           this.cnsFileObj(formData);
-
           this.store.dispatch(saveInsChecklistImageFilesAction({ files: formData }));
         }
       });

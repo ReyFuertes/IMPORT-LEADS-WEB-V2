@@ -5,6 +5,7 @@ import { AppState } from 'src/app/store/app.reducer';
 import { environment } from 'src/environments/environment';
 import { inspectionOkCommentsReport } from '../../store/actions/inspection-report.action';
 import { getInspectionOkCommentsReportSelector } from '../../store/selectors/inspection-report.selector';
+import * as _ from 'lodash';
 @Component({
   selector: 'il-inspection-report-comments',
   templateUrl: './inspection-report-comments.component.html',
@@ -32,6 +33,12 @@ export class InspectionReportCommentsComponent implements OnInit {
         if (res) 
           this.dataSource = res;
       });
+  }
+
+  public get getProductComments(): any {
+    return _.sumBy(this.dataSource, function (f) {
+      return f.comments_count;
+    });
   }
 
   public getLimitImages(images: any[]): any {

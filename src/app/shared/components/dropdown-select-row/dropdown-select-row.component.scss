@@ -11,6 +11,11 @@
     font-size: 1em !important;
   }
   .ui-dropdown-label {
+    max-width: 300px;
+    padding-right: 42px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     padding: 3px;
     font-size: 13px;
     span {

@@ -33,6 +33,18 @@ img {
   }
   td.mat-cell {
     padding-top: 5px !important;
+    &:first-child {
+      min-width: 60px;
+      width: 60px;
+    }
+    &:nth-child(2) {
+      min-width: 250px;
+      width: 250px;
+    }
+    &:last-child {
+      min-width: 350px;
+      width: 350px;
+    }
   }
   .mat-table {
     width: 100%;

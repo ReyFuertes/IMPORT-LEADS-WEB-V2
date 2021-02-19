@@ -29,9 +29,8 @@ export class InspectionReportCommentsComponent implements OnInit {
   ngOnInit() {
     this.store.pipe(select(getInspectionOkCommentsReportSelector))
       .subscribe(res => {
-        if (res) {
+        if (res) 
           this.dataSource = res;
-        }
       });
   }
 

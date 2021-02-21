@@ -135,7 +135,7 @@ const reducer = createReducer(
     return Object.assign({}, state, { checklistTerms });
   }),
   on(addItemToChecklistItemsAction, (state, action) => {
-    debugger
+    
     const match =  state?.checklistItems?.filter(
         t => t.contract_term.id === action.item.contract_term.id
           && t.contract_product.id === action.item.contract_product.id).shift();
@@ -209,7 +209,7 @@ function processToItem(state: ContractChecklistState, bucket: boolean): IContrac
       const searchBucket = (bucket ? state.checklistItems : Object.values(state.entities)) || [];
       const match = searchBucket?.find(i => i?.contract_term?.id === term?.term_id
           && product?.id === i?.contract_product?.product?.id);
-          debugger
+          
       if (!match) {
         checklistItems.push({
           contract_contract: { id: term.contract_id },

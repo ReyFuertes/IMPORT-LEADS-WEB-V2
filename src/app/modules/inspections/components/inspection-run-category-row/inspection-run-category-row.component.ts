@@ -23,7 +23,7 @@ import { getInspectionRunStatusSelector } from '../../store/selectors/inspection
 
 export class InspectionRunCategoryRowComponent extends GenericDestroyPageComponent implements OnInit, OnChanges {
   @Input() public source: any;
-  @Input() public row: any;
+  @Input() public term: any;
 
   public verifOptions: ISimpleItem[] = [
     { label: 'Ok', value: 'ok' },
@@ -31,7 +31,6 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
     { label: 'Comment', value: 'comment' }
   ];
   public inspectionVeriType = InspectionVerificationType;
-  public term: IContractTerm;
   public images: IInspectionChecklistImage[];
   public runInspectionStatus: string;
   public rowUpdate: InsChecklistTerm;
@@ -41,7 +40,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
   }
 
   ngOnInit() {
-    this.rowUpdate = Object.assign({}, this.row);
+    this.rowUpdate = Object.assign({}, this.term);
 
     this.store.pipe(select(getInspectionRunStatusSelector),
       tap(res => {
@@ -54,8 +53,8 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
           this.images = res?.map(r => {
             return ({
               ...r,
-              inspection_checklist_run: { id: this.row?.inspection_checklist_run?.id },
-              contract_term: { id: this.row?.id }
+              inspection_checklist_run: { id: this.term?.inspection_checklist_run?.id },
+              contract_term: { id: this.term?.id }
             })
           });
         }
@@ -82,19 +81,19 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
         if (result) {
           /* update the ui selection */
           this.rowUpdate = new InsChecklistTerm();
-          this.rowUpdate = Object.assign({}, this.row, {
+          this.rowUpdate = Object.assign({}, this.term, {
             comment: {
               verification: option?.value
             }
           });
 
-          const source = this.source?.terms?.find(s => s?.id === this.row?.id);
+          const source = this.source?.terms?.find(s => s?.id === this.term?.id);
           const payload = {
             payload: {
-              id: this.row?.comment?.id,
+              id: this.term?.comment?.id,
               comment: result.comments,
               verification: option.value,
-              inspection_checklist_run: { id: this.row?.inspection_checklist_run?.id },
+              inspection_checklist_run: { id: this.term?.inspection_checklist_run?.id },
               contract_term: { id: source?.contract_term?.id },
               contract_category: { id: source?.contract_category?.id },
               saved_checklist: { id: source?.saved_checklist?.id },
@@ -106,7 +105,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
 
         } else {
           /* revert back to the previous ui setting */
-          this.rowUpdate = Object.assign({}, this.row);
+          this.rowUpdate = Object.assign({}, this.term);
         }
         this.cdRef.detectChanges();
       });
@@ -115,24 +114,24 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
           this.rowUpdate = new InsChecklistTerm();
-          this.rowUpdate = Object.assign({}, this.row, {
+          this.rowUpdate = Object.assign({}, this.term, {
             comment: {
               verification: option?.value
             }
           });
-          const source = this.source?.terms?.find(s => s?.id === this.row?.id);
+          const source = this.source?.terms?.find(s => s?.id === this.term?.id);
 
           this.store.dispatch(updateInsChecklistCommentAction({
             payload: {
-              id: this.row?.comment?.id,
+              id: this.term?.comment?.id,
               verification: InspectionVerificationType.ok,
               comment: null,
-              inspection_checklist_run: { id: this.row?.inspection_checklist_run?.id },
+              inspection_checklist_run: { id: this.term?.inspection_checklist_run?.id },
               contract_product: { id: source?.contract_product?.id }
             }
           }));
         } else {
-          this.rowUpdate = this.row;
+          this.rowUpdate = this.term;
         }
       });
     }
@@ -145,13 +144,13 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
 
-        const source = this.source?.terms?.find(s => s?.id === this.row?.id);
+        const source = this.source?.terms?.find(s => s?.id === this.term?.id);
 
         this.store.dispatch(updateInsChecklistCommentAction({
           payload: {
             id: result?.id,
             comment: result.comments,
-            inspection_checklist_run: { id: this.row?.inspection_checklist_run?.id },
+            inspection_checklist_run: { id: this.term?.inspection_checklist_run?.id },
             contract_product: { id: source?.contract_product?.id }
           }
         }));
@@ -177,16 +176,16 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
       take(1)).subscribe((res) => {
         if (res?.length > 0) {
 
-          const source = this.source?.terms?.find(s => s?.id === this.row?.id);
-
+          const source = this.source?.terms?.find(s => s?.id === this.term?.id);
+          
           this.images = res?.map(r => {
             return ({
               file: r?.file,
               filename: r?.filename,
               mimetype: r?.mimetype,
               size: r?.size,
-              inspection_checklist_run: { id: this.row?.inspection_checklist_run?.id },
-              contract_term: { id: this.row?.contract_term?.id },
+              inspection_checklist_run: { id: this.term?.inspection_checklist_run?.id },
+              contract_term: { id: this.term?.contract_term?.id },
               saved_checklist: { id: source?.saved_checklist?.id },
               contract_product: { id: source?.contract_product?.id }
             })
@@ -216,7 +215,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
       this.source = changes?.source?.currentValue;
     }
     if (changes?.row?.currentValue) {
-      this.row = changes?.row?.currentValue;
+      this.term = changes?.row?.currentValue;
     }
   }
 
@@ -225,7 +224,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
   }
 
   public get getSelection(): any {
-    return this.row?.comment?.verification || String(this.inspectionVeriType.ok);
+    return this.term?.comment?.verification || String(this.inspectionVeriType.ok);
   }
 
   public isVerified(verification: InspectionVerificationType): boolean {

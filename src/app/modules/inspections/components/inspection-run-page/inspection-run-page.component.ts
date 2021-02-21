@@ -116,7 +116,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
 
     const selItem = this.inspectionRun?.saved_checklist_items?.find(i => i?.contract_product?.id === event
       && i?.product?.id === this.selProduct?.value);
-
+      
     if (Object.keys(this.selProduct)?.length > 0) {
       const payload = {
         payload: {

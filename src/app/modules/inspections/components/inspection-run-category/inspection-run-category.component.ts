@@ -37,11 +37,20 @@ export class InspectionRunCategoryComponent extends GenericDestroyPageComponent 
   private processItem(inspectionRun: any): void {
     const { terms } = inspectionRun;
 
-    const grouped = _.groupBy(terms, (t: any) => {
+    const fmtTerms = terms?.map(t => {
+      return {
+        ...t,
+        inspection_checklist_run: { id: inspectionRun?.id },
+        saved_checklist: { id: inspectionRun?.saved_checklist?.id }
+      }
+    });
+    
+    const grouped = _.groupBy(fmtTerms, (t: any) => {
       return t?.category?.category_name;
     });
-
+    
     this.dataSource = Object.keys(grouped)?.map(g => {
+      
       const flattenArr = _.flatten(Object.values(grouped));
       const terms = Object.values(flattenArr).filter(function (itm: any) {
         return g.indexOf(itm?.category?.category_name) > -1;

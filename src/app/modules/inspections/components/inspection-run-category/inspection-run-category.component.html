@@ -10,8 +10,8 @@
         <th fxFlex="250px"></th>
       </tr>
 
-      <ng-container *ngFor="let row of source?.terms; let i = index">
-        <il-inspection-run-category-row [source]="source" [row]="row"></il-inspection-run-category-row>
+      <ng-container *ngFor="let term of source?.terms; let i = index">
+        <il-inspection-run-category-row [source]="source" [term]="term"></il-inspection-run-category-row>
       </ng-container>
     </table>
   </div>

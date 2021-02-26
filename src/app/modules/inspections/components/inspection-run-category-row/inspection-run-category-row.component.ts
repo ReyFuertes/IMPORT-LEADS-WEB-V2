@@ -76,15 +76,13 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
       const dialogRef = this.dialog.open(InspectionCommentDialogComponent, {
         data: { isFailed: option.value === InspectionVerificationType.failed }
       });
-      
+
       dialogRef.afterClosed().subscribe((result) => {
         if (result) {
           /* update the ui selection */
           this.rowUpdate = new InsChecklistTerm();
           this.rowUpdate = Object.assign({}, this.term, {
-            comment: {
-              verification: option?.value
-            }
+            comment: { verification: option?.value }
           });
 
           const source = this.source?.terms?.find(s => s?.id === this.term?.id);
@@ -177,7 +175,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
         if (res?.length > 0) {
 
           const source = this.source?.terms?.find(s => s?.id === this.term?.id);
-          
+
           this.images = res?.map(r => {
             return ({
               file: r?.file,
@@ -190,7 +188,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
               contract_product: { id: source?.contract_product?.id }
             })
           });
-          
+
           this.store.dispatch(saveInsChecklisImageAction({ payload: this.images }));
 
           /* upload image */

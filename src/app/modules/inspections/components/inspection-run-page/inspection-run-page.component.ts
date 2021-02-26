@@ -94,7 +94,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
 
           if (!this.selProduct?.value) {
             /* if it doesnt find anything then use the localstorage  */
-            const insChecklistSelectedProduct = localStorage.getItem('ins_check_sel_product');
+            const insChecklistSelectedProduct = localStorage.getItem('ic_sel_prod');
 
             this.selProduct = JSON.parse(insChecklistSelectedProduct);
           }

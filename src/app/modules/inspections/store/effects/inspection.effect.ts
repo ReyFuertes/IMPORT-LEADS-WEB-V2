@@ -20,8 +20,8 @@ export class InspectionEffect {
       return this.inspectionChecklistRunSrv.post(payload, 'inspect-product').pipe(
         map((response: any) => {
 
-          localStorage.setItem('ins_check_sel_product', JSON.stringify({
-            value: payload?.id,
+          localStorage.setItem('ic_sel_prod', JSON.stringify({
+            value: response?.contract_product?.id,
             _id: payload?.product_id
           }));
 
@@ -82,11 +82,14 @@ export class InspectionEffect {
 
   copyInspectionAction$ = createEffect(() => this.actions$.pipe(
     ofType(copyInspectionAction),
-    switchMap((payload) => {
+    switchMap((payload: any) => {
       return this.inspectionChecklistRunSrv.post(payload, 'copy').pipe(
         map((response: any) => {
 
-          this.router.navigateByUrl(`dashboard/inspections/${response?.id}/run`);
+          localStorage.setItem('ic_sel_prod', JSON.stringify({
+            value: payload?.contract_product?.id,
+            _id: payload?.product?.id
+          }));
 
           return copyInspectionSuccessAction({ response });
         })

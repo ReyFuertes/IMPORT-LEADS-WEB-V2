@@ -41,14 +41,14 @@ export class InspectionReportFailuresComponent extends GenericDestroyPageCompone
       });
   }
 
-  public get getProductFailures(): any {
+  public get getProductFailureCount(): any {
     return _.sumBy(this.dataSource, function (f) {
       return f.failure_count;
     });
   }
 
   public getLimitImages(images: any[]): any {
-    return images.slice(0, 3);
+    return images?.slice(0, 3);
   }
 
   public getImage(image: string): string {

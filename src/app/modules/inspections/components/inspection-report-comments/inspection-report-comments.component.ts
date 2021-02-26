@@ -42,7 +42,7 @@ export class InspectionReportCommentsComponent implements OnInit {
   }
 
   public getLimitImages(images: any[]): any {
-    return images.slice(0, 3);
+    return images?.slice(0, 3);
   }
 
   public getImage(image: string): string {

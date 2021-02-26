@@ -7,6 +7,7 @@ import { select, Store } from '@ngrx/store';
 import { getInspectionRunSelector } from '../../store/selectors/inspection.selector';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { takeUntil } from 'rxjs/operators';
+import { sortByDesc } from 'src/app/shared/util/sort';
 
 @Component({
   selector: 'il-inspection-run-category',
@@ -43,7 +44,7 @@ export class InspectionRunCategoryComponent extends GenericDestroyPageComponent 
         inspection_checklist_run: { id: inspectionRun?.id },
         saved_checklist: { id: inspectionRun?.saved_checklist?.id }
       }
-    });
+    }).sort((a, b) => sortByDesc(a, b, 'position')); //make sure the terms are sorted by position
     
     const grouped = _.groupBy(fmtTerms, (t: any) => {
       return t?.category?.category_name;

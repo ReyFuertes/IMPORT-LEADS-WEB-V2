@@ -74,7 +74,7 @@ export class InspectionPageComponent extends GenericDestroyPageComponent impleme
         if (res) this.activeInspections = res;
       });
 
-    localStorage.removeItem('ins_check_sel_product');
+    localStorage.removeItem('ic_sel_prod');
   }
 
   public handleSortChanges(event: any): void {

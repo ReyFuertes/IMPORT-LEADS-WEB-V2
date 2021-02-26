@@ -35,9 +35,9 @@ export class InspectionReportCommentsComponent implements OnInit {
       });
   }
 
-  public get getProductComments(): any {
+  public get getProductCommentCount(): any {
     return _.sumBy(this.dataSource, function (f) {
-      return f.comments_count;
+      return f.count;
     });
   }
 

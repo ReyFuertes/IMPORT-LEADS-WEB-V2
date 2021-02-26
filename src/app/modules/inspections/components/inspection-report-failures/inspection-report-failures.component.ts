@@ -35,15 +35,13 @@ export class InspectionReportFailuresComponent extends GenericDestroyPageCompone
     this.store.pipe(select(getInspectionFailedCommentsReportSelector),
       takeUntil(this.$unsubscribe))
       .subscribe(res => {
-        if (res) {
-          this.dataSource = res;
-        }
+        if (res) this.dataSource = res;
       });
   }
 
   public get getProductFailureCount(): any {
     return _.sumBy(this.dataSource, function (f) {
-      return f.failure_count;
+      return f.count;
     });
   }
 

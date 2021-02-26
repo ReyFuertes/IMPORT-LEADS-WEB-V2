@@ -25,6 +25,9 @@ export class InspectionEffect {
             _id: payload?.product_id
           }));
 
+          //redirect the inspection to the latest record
+          this.router.navigateByUrl(`dashboard/inspections/${response?.id}/run`);
+
           return inspectChecklistRunProductSuccessAction({ response });
         })
       )
@@ -90,6 +93,9 @@ export class InspectionEffect {
             value: payload?.contract_product?.id,
             _id: payload?.product?.id
           }));
+
+          //redirect the inspection to the latest record
+          this.router.navigateByUrl(`dashboard/inspections/${response?.id}/run`);
 
           return copyInspectionSuccessAction({ response });
         })

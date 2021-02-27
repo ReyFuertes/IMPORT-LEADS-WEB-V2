@@ -42,7 +42,7 @@ export class InspectionReportFailuresComponent extends GenericDestroyPageCompone
   public get getProductFailureCount(): any {
     return _.sumBy(this.dataSource, function (f) {
       return f.count;
-    });
+    }) || 0;
   }
 
   public getLimitImages(images: any[]): any {

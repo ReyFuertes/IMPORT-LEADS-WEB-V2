@@ -38,7 +38,7 @@ export class InspectionReportCommentsComponent implements OnInit {
   public get getProductCommentCount(): any {
     return _.sumBy(this.dataSource, function (f) {
       return f.count;
-    });
+    }) || 0;
   }
 
   public getLimitImages(images: any[]): any {

@@ -151,7 +151,6 @@ export class InspectionEffect {
         map((response: any) => {
 
           this.router.navigateByUrl(`/dashboard/inspections/${response?.id}/run`);
-          this.store.dispatch(loadInspectionRunAction({ id: response?.id }));
 
           return runPrevInspectionSuccessAction({ response });
         })

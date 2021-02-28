@@ -114,9 +114,10 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
 
     this.selProduct = Object.assign({}, this.products?.find(cp => cp?.value === event));
 
-    const selItem = this.inspectionRun?.saved_checklist_items?.find(i => i?.contract_product?.id === event
-      && i?.product?.id === this.selProduct?.value);
-      
+    const selSavedChecklistItem = this.inspectionRun?.saved_checklist_items?.find(
+      i => i?.contract_product?.id === this.selProduct?._id
+        && i?.product?.id === this.selProduct?.value);
+
     if (Object.keys(this.selProduct)?.length > 0) {
       const payload = {
         payload: {
@@ -124,8 +125,8 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
           product_id: this.selProduct?.value,
           inspection_checklist_run: { id: this.route.snapshot.paramMap.get('id') },
           saved_checklist: { id: this.inspectionRun?.saved_checklist?.id },
-          contract_category_id: selItem?.id,
-          contract_term_id: selItem?.contract_term?.id
+          contract_category_id: selSavedChecklistItem?.contract_category?.id,
+          contract_term_id: selSavedChecklistItem?.contract_term?.id
         }
       }
       this.store.dispatch(inspectChecklistRunProductAction(payload));
@@ -223,8 +224,9 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
     this.store.dispatch(runPrevInspectionAction({
       payload: {
         id: inspectionRun.id,
-        saved_checklist_id: inspectionRun?.saved_checklist?.id,
-        inspection: this.inspectionRun?.inspection
+        saved_checklist: { id: inspectionRun?.saved_checklist?.id },
+        inspection: this.inspectionRun?.inspection,
+        contract_product: { id: this.selProduct?._id },
       }
     }));
   }
@@ -238,8 +240,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
         height: '175px',
         data: { action: 8, isCloseOnlyOption: true }
       });
-      dialogNoProductRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
-        .subscribe(result => { });
+      dialogNoProductRef.afterClosed().pipe(takeUntil(this.$unsubscribe)).subscribe(result => { });
       return;
     }
 
@@ -278,7 +279,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       product: { id: this.selProduct?.value },
       checklist_product: { id: inspectionRun?.checklist_product?.id }
     };
-
+    debugger
     this.store.dispatch(copyInspectionAction(payload));
 
     this.form.get('copyCount').patchValue(null, { emitEvent: false });

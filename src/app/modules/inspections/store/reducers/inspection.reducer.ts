@@ -1,5 +1,5 @@
 import { IActiveInspection, IFinishedInspection, IInspectionRun, RunStatusType } from './../../inspections.models';
-import { loadActiveInspectionSuccessAction, loadInspectionRunSuccessAction, clearLoadAction, updateSourceTermAction, changeInspectionRuntimeStatusSuccessAction, setPauseInspectionStatusAction, loadInspectionDetailSuccessAction, loadFinishInspectionSuccessAction, inspectChecklistRunProductSuccessAction, getInspectionWithLastRunProductSuccessAction, runNextInspectionSuccessAction, copyInspectionSuccessAction, clearRunInspectionAction } from '../actions/inspection.action';
+import { loadActiveInspectionSuccessAction, loadInspectionRunSuccessAction, clearLoadAction, updateSourceTermAction, changeInspectionRuntimeStatusSuccessAction, setPauseInspectionStatusAction, loadInspectionDetailSuccessAction, loadFinishInspectionSuccessAction, inspectChecklistRunProductSuccessAction, getInspectionWithLastRunProductSuccessAction, runNextInspectionSuccessAction, copyInspectionSuccessAction, clearRunInspectionAction, runPrevInspectionSuccessAction } from '../actions/inspection.action';
 import { createReducer, on, Action } from "@ngrx/store";
 import { saveInsChecklistCommentSuccessAction, updateInsChecklistCommentSuccessAction } from '../actions/inspection-checklist.action';
 export interface InspectionState {
@@ -22,6 +22,13 @@ export const initialState: InspectionState = {
 };
 const reducer = createReducer(
   initialState,
+  
+  on(runPrevInspectionSuccessAction, (state, action) => {
+    const newState = Object.assign({}, state, {
+      runInspection: action.response
+    });
+    return Object.assign({}, newState);
+  }),
   on(clearRunInspectionAction, (state) => {
     return Object.assign({}, state, { runInspection: null });
   }),

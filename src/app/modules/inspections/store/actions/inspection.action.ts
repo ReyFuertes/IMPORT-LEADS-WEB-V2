@@ -133,7 +133,7 @@ export const changeInspectionRuntimeStatusSuccessAction = createAction(
 );
 export const runPrevInspectionAction = createAction(
   InspectionActionTypes.runPrevInspectionAction,
-  props<{ payload: { id: string, saved_checklist_id: string, inspection: IInspection } }>()
+  props<{ payload: { id: string, saved_checklist: { id: string }, inspection: IInspection, contract_product: { id: string } } }>()
 );
 export const runPrevInspectionSuccessAction = createAction(
   InspectionActionTypes.runPrevInspectionSuccessAction,

@@ -54,10 +54,6 @@ export class AppComponent extends GenericDestroyPageComponent implements OnInit,
       .subscribe(res => {
         this.isLoggedIn = res;
       })
-
-    // this.store.subscribe((res: any) => {
-    //     console.log(res)
-    // })
   }
 
   ngAfterViewInit(): void {

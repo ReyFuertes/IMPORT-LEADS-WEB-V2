@@ -81,8 +81,6 @@ export class InspectionActivePanelComponent extends GenericRowComponent implemen
 
   ngOnChanges(changes: SimpleChanges): void {
     this.store.dispatch(clearLoadAction());
-
-    console.log(this.activeInspections)
   }
 
   public hideReportIfNoInspectionRun(run: any[], menu: any): boolean {

@@ -1,33 +1,38 @@
 import { IActiveInspection, IFinishedInspection, IInspectionRun, RunStatusType } from './../../inspections.models';
-import { loadActiveInspectionSuccessAction, loadInspectionRunSuccessAction, clearLoadAction, updateSourceTermAction, changeInspectionRuntimeStatusSuccessAction, setPauseInspectionStatusAction, loadInspectionDetailSuccessAction, loadFinishInspectionSuccessAction, inspectChecklistRunProductSuccessAction, getInspectionWithLastRunProductSuccessAction, runNextInspectionSuccessAction, copyInspectionSuccessAction, clearRunInspectionAction, runPrevInspectionSuccessAction } from '../actions/inspection.action';
+import { loadActiveInspectionSuccessAction, loadInspectionRunSuccessAction, changeInspectionRuntimeStatusSuccessAction, setPauseInspectionStatusAction, loadInspectionDetailSuccessAction, loadFinishInspectionSuccessAction, inspectChecklistRunProductSuccessAction, getInspectionWithLastRunProductSuccessAction, runNextInspectionSuccessAction, copyInspectionSuccessAction, clearRunInspectionAction, runPrevInspectionSuccessAction, runNextInspectionAction, clearExistErrorAction } from '../actions/inspection.action';
 import { createReducer, on, Action } from "@ngrx/store";
 import { saveInsChecklistCommentSuccessAction, updateInsChecklistCommentSuccessAction } from '../actions/inspection-checklist.action';
 export interface InspectionState {
-  loaded?: boolean;
   activeInspection?: IActiveInspection[],
   finishedInspections?: IFinishedInspection[],
   runInspection?: IInspectionRun,
   updatedRunInspection?: IInspectionRun
   isPaused?: boolean,
   detail?: IActiveInspection;
+  prevExistError: boolean
 }
 export const initialState: InspectionState = {
-  loaded: null,
   activeInspection: null,
   finishedInspections: null,
   runInspection: null,
   updatedRunInspection: null,
   isPaused: null,
-  detail: null
+  detail: null,
+  prevExistError: null
 };
 const reducer = createReducer(
   initialState,
-  
+  on(clearExistErrorAction, (state) => {
+    return Object.assign({}, state, { prevExistError: null });
+  }),
   on(runPrevInspectionSuccessAction, (state, action) => {
-    const newState = Object.assign({}, state, {
-      runInspection: action.response
-    });
-    return Object.assign({}, newState);
+    if(action?.response?.id) {
+      const newState = Object.assign({}, state, {
+        runInspection: action.response
+      });
+      return Object.assign({}, newState);
+    }
+    return Object.assign({}, state, { prevExistError: true });
   }),
   on(clearRunInspectionAction, (state) => {
     return Object.assign({}, state, { runInspection: null });
@@ -79,27 +84,6 @@ const reducer = createReducer(
     } else {
       return Object.assign({}, state, { isPaused: null });
     }
-  }),
-  on(updateSourceTermAction, (state, action) => {
-    /* override the term */
-    let newState = Object.assign({}, state);
-    let checklist_items: any;
-
-    // checklist_items = newState?.runInspection?.checklist?.items?.map((item, idx) => {
-    //   if (item.contract_term.id === action.term.id) {
-    //     return Object.assign({}, item, { contract_term: action.term });
-    //   }
-    //   return item;
-    // });
-
-    return Object.assign({}, state, {
-      runInspection: {
-        saved_checklist: { checklist_items }
-      }
-    });
-  }),
-  on(clearLoadAction, (state) => {
-    return Object.assign({}, state, { loaded: null });
   }),
   on(loadFinishInspectionSuccessAction, (state, action) => {
     return Object.assign({}, state, { finishedInspections: action.response });

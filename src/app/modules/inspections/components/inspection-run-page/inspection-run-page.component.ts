@@ -5,8 +5,8 @@ import { Component, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/co
 import { Observable, of } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
-import { getInspectionRunSelector, getInspectionRunStatusSelector, getUpdatedInspectionRunSelector } from '../../store/selectors/inspection.selector';
-import { runNextInspectionAction, runPrevInspectionAction, changeInspectionRuntimeStatusAction, deleteAndNavigateToAction, copyInspectionAction, navigateToInspectionAction, setPauseInspectionStatusAction, loadInspectionRunAction, inspectChecklistRunProductAction, clearRunInspectionAction } from '../../store/actions/inspection.action';
+import { getInspectionRunSelector, getInspectionRunStatusSelector, getPrevExistErrorSelector, getUpdatedInspectionRunSelector } from '../../store/selectors/inspection.selector';
+import { runNextInspectionAction, runPrevInspectionAction, changeInspectionRuntimeStatusAction, deleteAndNavigateToAction, copyInspectionAction, navigateToInspectionAction, setPauseInspectionStatusAction, loadInspectionRunAction, inspectChecklistRunProductAction, clearRunInspectionAction, clearExistErrorAction } from '../../store/actions/inspection.action';
 import { IInspectionRun, RunStatusType } from '../../inspections.models';
 import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 import * as _ from 'lodash';
@@ -14,6 +14,7 @@ import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-des
 import { debounceTime, take, takeUntil, tap } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
+import { RunExistErrorDialogComponent } from 'src/app/modules/dialogs/components/run-exist-error/run-exist-error.component';
 @Component({
   selector: 'il-inspection-run-page',
   templateUrl: './inspection-run-page.component.html',
@@ -104,6 +105,19 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
     /* get the updated run inspection if the runInspection variable is not set */
     this.store.pipe(select(getUpdatedInspectionRunSelector))
       .subscribe(res => { })
+
+    this.store.pipe(select(getPrevExistErrorSelector)).subscribe(res => {
+      if (res) {
+        const dialogRef = this.dialog.open(RunExistErrorDialogComponent, {
+          width: '410px',
+        });
+        dialogRef.afterClosed().subscribe(res => {
+          this.store.dispatch(clearExistErrorAction());
+
+          if(res) this.router.navigateByUrl('/dashboard/inspections');
+        })
+      }
+    })
   }
 
   public onSelectProductChange(event: string): void {

@@ -33,6 +33,7 @@ import { ContractCategoryImportDialogComponent } from './components/contract-cat
 import { TableModule } from 'primeng/table';
 import { ContractImportTemplateDialogComponent } from './components/contract-import-template/contract-import-template.component';
 import { CategoryTemplateDialogComponent } from './components/category-template/category-template-dialog.component';
+import { RunExistErrorDialogComponent } from './components/run-exist-error/run-exist-error.component';
 
 const dialogComponents = [
   ContractAddDialogComponent,
@@ -56,7 +57,8 @@ const dialogComponents = [
   PauseOrRunDialogComponent,
   ContractImportTemplateDialogComponent,
   ContractCategoryImportDialogComponent,
-  CategoryTemplateDialogComponent
+  CategoryTemplateDialogComponent,
+  RunExistErrorDialogComponent
 ];
 
 const materialModules = [

@@ -12,7 +12,6 @@ export enum InspectionActionTypes {
   loadInspectionRunAction = '[Inspection Run] load inspection run',
   loadInspectionRunSuccessAction = '[Inspection Run] load inspection run (success)',
   clearLoadAction = '[Inspection Run] clear load',
-  updateSourceTermAction = '[Inspection Run] update source term',
   runNextInspectionAction = '[Inspection Run] run next inspection',
   runNextInspectionSuccessAction = '[Inspection Run] run next inspection (success)',
   runPrevInspectionAction = '[Inspection Run] run prev inspection',
@@ -40,7 +39,15 @@ export enum InspectionActionTypes {
   getInspectionWithLastRunProductAction = '[Inspection Run] get inspection with last run product',
   getInspectionWithLastRunProductSuccessAction = '[Inspection Run] get inspection with last run product (success)',
   clearRunInspectionAction = '[Inspection Run] clear run inspection',
+  prevExistErrorAction = '[Inspection Run] run prev exist error',
+  clearExistErrorAction = '[Inspection Run] clear prev exist error',
 }
+export const clearExistErrorAction = createAction(
+  InspectionActionTypes.clearExistErrorAction
+);
+export const prevExistErrorAction = createAction(
+  InspectionActionTypes.prevExistErrorAction
+);
 export const clearRunInspectionAction = createAction(
   InspectionActionTypes.clearRunInspectionAction
 );
@@ -146,10 +153,6 @@ export const runNextInspectionAction = createAction(
 export const runNextInspectionSuccessAction = createAction(
   InspectionActionTypes.runNextInspectionSuccessAction,
   props<{ response: any }>()
-);
-export const updateSourceTermAction = createAction(
-  InspectionActionTypes.updateSourceTermAction,
-  props<{ term: IContractTerm }>()
 );
 export const clearLoadAction = createAction(
   InspectionActionTypes.clearLoadAction

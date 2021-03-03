@@ -35,6 +35,7 @@ import { ContractImportTemplateDialogComponent } from './components/contract-imp
 import { CategoryTemplateDialogComponent } from './components/category-template/category-template-dialog.component';
 import { RunExistErrorDialogComponent } from './components/run-exist-error/run-exist-error.component';
 import { ImageViewerDialogComponent } from './components/image-viewer-dialog/image-viewer-dialog.component';
+import { MatBadgeModule } from '@angular/material/badge';
 
 const dialogComponents = [
   ContractAddDialogComponent,
@@ -71,7 +72,8 @@ const materialModules = [
   DragDropModule,
   MatDividerModule,
   ScrollingModule,
-  TableModule
+  TableModule,
+  MatBadgeModule
 ];
 
 @NgModule({

@@ -1,7 +1,7 @@
 <div class="menu-container" fxLayoutGap="0" fxLayoutAlign="center center">
-  <span *ngIf="menu?.label === 'DATA'"  matBadge="Demo" matBadgePosition="after" matBadgeColor="accent"> {{ menu?.label }}</span>
+  <span *ngIf="menu?.label === 'DATA'" matBadge="Demo" matBadgePosition="after" matBadgeColor="accent"> {{ menu?.label }}</span>
   <span *ngIf="menu?.label !== 'DATA'"> {{ menu?.label }}</span>
- 
+
   <img *ngIf="hasChildren(menu)" [src]="svgPath + 'arrow-down-icon-black.svg'" (click)="$event.stopPropagation()" [matMenuTriggerFor]="subMenu">
 </div>
 <mat-menu #subMenu="matMenu">

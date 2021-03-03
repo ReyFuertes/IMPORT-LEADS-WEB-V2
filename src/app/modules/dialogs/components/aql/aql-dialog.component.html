@@ -3,7 +3,10 @@
     <div fxLayoutAlign="end center">
       <img [src]="svgPath + 'close-icon-big-gray.svg'" />
     </div>
-    <div fxLayoutAlign="center center"><h2>AQL</h2></div>
+    <div fxLayoutAlign="center center">
+      <h2>AQL</h2>
+      <span matBadge="Demo" matBadgePosition="after" matBadgeColor="accent"></span>
+    </div>
   </div>
   <div class="content">
     <div *ngIf="form" fxLayoutAlign="start start" fxLayout="column">

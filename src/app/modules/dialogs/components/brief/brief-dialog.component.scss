@@ -15,3 +15,15 @@
     }
   }
 }
+:host ::ng-deep {
+  .mat-badge-medium.mat-badge-after .mat-badge-content {
+    right: -47px !important;
+    top: -20px !important;
+    width: 47px !important;
+    height: 18px;
+    font-size: 11px;
+    line-height: 18px;
+    border-radius: 2px !important;
+    font-weight: 100 !important;
+  }
+}

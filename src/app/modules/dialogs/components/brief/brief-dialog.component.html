@@ -1,9 +1,12 @@
-<div class="il-dialog" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px">
+<div class="il-dialog" fxLayout="column" fxLayoutAlign="center center">
   <div class="header" fxLayoutAlign="center start" fxLayout="column">
     <div fxLayoutAlign="end center">
       <img [src]="svgPath + 'close-icon-big-gray.svg'" />
     </div>
-    <div fxLayoutAlign="center center"><h2>Brief</h2></div>
+    <div fxLayoutAlign="center center">
+      <h2>Brief</h2>
+      <span matBadge="Demo" matBadgePosition="after" matBadgeColor="accent"></span>
+    </div>
   </div>
   <div class="content">
     <il-primeng-editor></il-primeng-editor>

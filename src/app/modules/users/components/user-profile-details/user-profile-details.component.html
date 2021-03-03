@@ -5,7 +5,7 @@
         <h3>Personal Details</h3>
       </div>
       <div fxFlex="200px" fxLayoutAlign="end center">
-        <button routerLink="/dashboard/contracts" mat-flat-button class="il-button default small">Close</button>
+        <button [routerLink]="inspectionRoute" mat-flat-button class="il-button default small">Close</button>
         <button [disabled]="!form.valid" (click)="updateProfile()" mat-flat-button class="il-button primary small">Update</button>
       </div>
     </div>

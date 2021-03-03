@@ -10,8 +10,8 @@ import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'il-contract-import-template',
-  templateUrl: './contract-import-template.component.html',
-  styleUrls: ['./contract-import-template.component.scss']
+  templateUrl: './contract-import-template-dialog.component.html',
+  styleUrls: ['./contract-import-template-dialog.component.scss']
 })
 export class ContractImportTemplateDialogComponent extends GenericDestroyPageComponent implements OnInit {
   public svgPath: string = environment.svgPath;
@@ -21,7 +21,7 @@ export class ContractImportTemplateDialogComponent extends GenericDestroyPageCom
   public selectedContractTemplate: any;
 
   constructor(private store: Store<AppState>, public dialogRef: MatDialogRef<ContractImportTemplateDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,) {
+    @Inject(MAT_DIALOG_DATA) public data: any) {
     super();
     this.store.dispatch(loadContractTemplatesAction());
   }

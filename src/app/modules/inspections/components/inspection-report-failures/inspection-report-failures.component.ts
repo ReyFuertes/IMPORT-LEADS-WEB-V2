@@ -8,6 +8,8 @@ import { environment } from 'src/environments/environment';
 import { getInspectionFailedCommentsReportAction } from '../../store/actions/inspection-report.action';
 import { getInspectionFailedCommentsReportSelector } from '../../store/selectors/inspection-report.selector';
 import * as _ from 'lodash';
+import { MatDialog } from '@angular/material/dialog';
+import { ImageViewerDialogComponent } from 'src/app/modules/dialogs/components/image-viewer-dialog/image-viewer-dialog.component';
 
 @Component({
   selector: 'il-inspection-report-failures',
@@ -22,7 +24,7 @@ export class InspectionReportFailuresComponent extends GenericDestroyPageCompone
   public apiImagePath: string = environment.apiImagePath;
   public imgPath: string = environment.imgPath;
 
-  constructor(private route: ActivatedRoute, private store: Store<AppState>) {
+  constructor(private dialog: MatDialog, private route: ActivatedRoute, private store: Store<AppState>) {
     super();
 
     const saved_checklist_id = this.route.snapshot.paramMap.get('id') || null;
@@ -37,6 +39,12 @@ export class InspectionReportFailuresComponent extends GenericDestroyPageCompone
       .subscribe(res => {
         if (res) this.dataSource = res;
       });
+  }
+
+  public viewImage(image: string): void {
+    const imageViewDialog = this.dialog.open(ImageViewerDialogComponent, { data: { image } });
+    imageViewDialog.afterClosed()
+      .subscribe(result => { });
   }
 
   public get getProductFailureCount(): any {

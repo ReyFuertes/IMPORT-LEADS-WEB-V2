@@ -9,6 +9,7 @@ import { select, Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducer';
 import { takeUntil } from 'rxjs/operators';
 import { getFinishedInspectionsSelector } from '../../store/selectors/inspection.selector';
+import { INSPECTIONSRUNTEMPLATEROUTE, INSPECTIONSROUTE, INSPECTIONSRUNREPORTROUTE } from 'src/app/shared/constants/routes';
 
 @Component({
   selector: 'il-inspection-finished-panel',
@@ -16,15 +17,15 @@ import { getFinishedInspectionsSelector } from '../../store/selectors/inspection
   styleUrls: ['./inspection-finished-panel.component.scss']
 })
 export class InspectionFinishedPanelComponent extends GenericRowComponent implements OnInit, AfterViewInit {
-  public apiImagePath: string = environment.apiImagePath;
-  public svgPath: string = environment.svgPath;
-  public imgPath: string = environment.imgPath;
-  public menus: Menu[];
-
   @Input() public colsHeader: Array<{ label: string, width?: any }>;
   @Input() public items: InspectionPanelModel[];
   @Input() public finishedInspections: IActiveInspection[];
   @Input() public isCategory: boolean = false;
+
+  public apiImagePath: string = environment.apiImagePath;
+  public svgPath: string = environment.svgPath;
+  public imgPath: string = environment.imgPath;
+  public menus: Menu[];
 
   constructor(private store: Store<AppState>, private cdRef: ChangeDetectorRef, private router: Router) {
     super();
@@ -48,7 +49,7 @@ export class InspectionFinishedPanelComponent extends GenericRowComponent implem
         value: 'REPORT',
         icon: 'inspection-icon-black.svg',
         action: (item) => {
-          this.router.navigateByUrl(`/dashboard/inspections/${item?.id}/report`);
+          this.router.navigateByUrl(`${INSPECTIONSROUTE}/${item?.id}/report`);
         }
       },
       {
@@ -68,11 +69,11 @@ export class InspectionFinishedPanelComponent extends GenericRowComponent implem
   }
 
   public onEdit = (): void => {
-    this.router.navigateByUrl('/dashboard/inspections/run-template');
+    this.router.navigateByUrl(INSPECTIONSRUNTEMPLATEROUTE);
   }
 
   public onOpenReport = (): void => {
-    this.router.navigateByUrl('/dashboard/inspections/report');
+    this.router.navigateByUrl(INSPECTIONSRUNREPORTROUTE);
   }
 
   public expandPnl(pnl: any, event: any, i: number): void {

@@ -15,6 +15,7 @@ import { debounceTime, take, takeUntil, tap } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
 import { RunExistErrorDialogComponent } from 'src/app/modules/dialogs/components/run-exist-error/run-exist-error.component';
+import { INSPECTIONSROUTE, INSPECTIONSRUNREPORTROUTE } from 'src/app/shared/constants/routes';
 @Component({
   selector: 'il-inspection-run-page',
   templateUrl: './inspection-run-page.component.html',
@@ -114,7 +115,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
         dialogRef.afterClosed().subscribe(res => {
           this.store.dispatch(clearExistErrorAction());
 
-          if(res) this.router.navigateByUrl('/dashboard/inspections');
+          if (res) this.router.navigateByUrl(INSPECTIONSROUTE);
         })
       }
     })
@@ -254,7 +255,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
         height: '175px',
         data: { action: 8, isCloseOnlyOption: true }
       });
-      dialogNoProductRef.afterClosed().pipe(takeUntil(this.$unsubscribe)).subscribe(result => { });
+      dialogNoProductRef.afterClosed().subscribe(result => { });
       return;
     }
 
@@ -263,7 +264,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
         width: '410px',
         data: { action: 6 }
       });
-      dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+      dialogRef.afterClosed()
         .subscribe(result => {
           if (result) {
             this.onCopy(inspectionRun);
@@ -313,7 +314,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   }
 
   public onBack(): void {
-    this.router.navigateByUrl('/dashboard/inspections');
+    this.router.navigateByUrl(INSPECTIONSROUTE);
   }
 
   public get checklistProductHasTerms(): boolean {

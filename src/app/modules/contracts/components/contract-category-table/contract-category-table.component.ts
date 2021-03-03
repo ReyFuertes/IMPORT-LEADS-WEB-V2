@@ -8,7 +8,7 @@ import { AppState } from '../../../../store/app.reducer';
 import { Store, select } from '@ngrx/store';
 import { ITag } from '../../../tags/tags.model';
 import { Observable } from 'rxjs';
-import { ContractCategoryTermDialogComponent } from '../../../dialogs/components/contract-category-term-dialog/contract-category-term-dialog.component';
+import { ContractCategoryTermDialogComponent } from '../../../dialogs/components/contract-category-term/contract-category-term-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ISimpleItem } from '../../../../shared/generics/generic.model';

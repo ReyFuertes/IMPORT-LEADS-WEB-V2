@@ -11,6 +11,7 @@ import { runInspectionAction, clearLoadAction, deleteInspectionAction, finishIns
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
 import { takeUntil } from 'rxjs/operators';
+import { INSPECTIONSRUNTEMPLATEROUTE, INSPECTIONSROUTE } from 'src/app/shared/constants/routes';
 
 @Component({
   selector: 'il-inspection-active-panel',
@@ -21,6 +22,7 @@ export class InspectionActivePanelComponent extends GenericRowComponent implemen
   public apiImagePath: string = environment.apiImagePath;
   public svgPath: string = environment.svgPath;
   public imgPath: string = environment.imgPath;
+
   public menus: Menu[] = [{
     label: 'RUN',
     icon: 'edit-icon-black.svg',
@@ -35,7 +37,7 @@ export class InspectionActivePanelComponent extends GenericRowComponent implemen
     label: 'REPORT',
     icon: 'inspection-icon-black.svg',
     action: (item) => {
-      this.router.navigateByUrl(`/dashboard/inspections/${item?.id}/report`);
+      this.router.navigateByUrl(`${INSPECTIONSROUTE}/${item?.id}/report`);
     }
   }, {
     label: 'DELETE',
@@ -92,7 +94,7 @@ export class InspectionActivePanelComponent extends GenericRowComponent implemen
   }
 
   public onEdit = (): void => {
-    this.router.navigateByUrl('/dashboard/inspections/run-template');
+    this.router.navigateByUrl(INSPECTIONSRUNTEMPLATEROUTE);
   }
 
   public expandPnl(pnl: any, event: any, i: number): void {

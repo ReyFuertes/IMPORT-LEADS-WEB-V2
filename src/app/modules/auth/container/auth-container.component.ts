@@ -4,6 +4,7 @@ import { AppState } from '../../contracts/store/reducers';
 import { getIsLoggedInSelector } from 'src/app/store/selectors/app.selector';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { CONTRACTSROUTE } from 'src/app/shared/constants/routes';
 
 @Component({
   selector: 'ae-auth-container',
@@ -15,7 +16,7 @@ export class AuthContainerComponent implements OnInit {
       .pipe(
         tap(isLoggedIn => {
           if (isLoggedIn) {
-            this.router.navigateByUrl('/dashboard/contracts');
+            this.router.navigateByUrl(CONTRACTSROUTE);
           }
         })
       )

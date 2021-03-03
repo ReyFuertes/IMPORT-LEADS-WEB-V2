@@ -1,5 +1,4 @@
 import { addItemToChecklistTermsAction, clearAllSelectedTerms, removeItemFromChecklistProductsAction, clearChecklistProductsAction, addItemToChecklistItemsAction, processItemsToChecklistAction, removeTermFormChecklistAction, processItemsToChecklistEntitiesAction, removeItemFromEntitiesAction, clearChecklistSourceAction, clearEntitiesAction } from './../../store/actions/contract-checklist.action';
-import { sortByAsc, sortByDesc } from 'src/app/shared/util/sort';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { reOrderImagesAction, deleteContractAction } from './../../store/actions/contracts.action';
 import { tap, take, map, takeUntil, debounceTime } from 'rxjs/operators';
@@ -8,7 +7,6 @@ import { addContractCategoryAction, addMultipleContractCategoryAction, loadContr
 import { ContractCategoryDialogComponent } from '../../../dialogs/components/contract-category/contract-category-dialog.component';
 import { loadContractProductsAction, clearPreSelectProducts } from './../../store/actions/contract-product.action';
 import { getContractById } from './../../store/selectors/contracts.selector';
-import { User } from './../../../users/users.models';
 import { AppState } from './../../../../store/app.reducer';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -29,10 +27,11 @@ import { saveChecklistAction } from '../../store/actions/saved-checklist.action'
 import { IUser } from 'src/app/modules/user-management/user-mgmt.model';
 import { ContractCategoryImportDialogComponent } from 'src/app/modules/dialogs/components/contract-category-import/contract-category-import.component';
 import { importContractTemplateAction, saveContractTemplateAction } from '../../store/actions/contract-template.action';
-import { ContractImportTemplateDialogComponent } from 'src/app/modules/dialogs/components/contract-import-template/contract-import-template.component';
 import { IVenue } from 'src/app/modules/venues/venues.models';
 import { getVenuesSelector } from 'src/app/modules/venues/store/venues.selector';
 import { DomSanitizer } from '@angular/platform-browser';
+import { CONTRACTSROUTE } from 'src/app/shared/constants/routes';
+import { ContractImportTemplateDialogComponent } from 'src/app/modules/dialogs/components/contract-import-template-dialog/contract-import-template-dialog.component';
 
 @Component({
   selector: 'il-contract-detail-page',
@@ -275,7 +274,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
         if (result && this.form.get('id').value) {
           this.store.dispatch(deleteContractAction({ id: this.form.get('id').value }));
           setTimeout(() => {
-            this.router.navigateByUrl('/dashboard/contracts');
+            this.router.navigateByUrl(CONTRACTSROUTE);
           });
         } else { }
       });

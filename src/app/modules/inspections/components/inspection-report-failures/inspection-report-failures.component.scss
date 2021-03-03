@@ -12,6 +12,9 @@ img {
   border: thin $color-gray-4 solid;
   border-radius: 2px;
 }
+.fail-image {
+  cursor: pointer;
+}
 :host ::ng-deep {
   .mat-expansion-panel-body {
     padding: 0 !important;

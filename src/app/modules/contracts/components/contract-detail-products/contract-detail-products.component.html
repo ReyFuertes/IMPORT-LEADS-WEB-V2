@@ -30,7 +30,7 @@
             [hasRemoveIcon]="!inCheckListing">
         </il-pill>
 
-        <!-- child product (stateEmitter)="removeSelection()" -->
+        <!-- child product -->
         <il-pill *ngFor="let sub of item?.sub_products; let i = index" size="small" 
           (preSelectEmitter)="preSelectChange({id: $event?.value, _id: $event?._id}, 
           isChecklistProductSelected(sub?.product?.id))" 

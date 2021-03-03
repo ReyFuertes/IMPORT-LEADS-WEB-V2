@@ -11,6 +11,7 @@ import { appNotification } from 'src/app/store/actions/notification.action';
 import { loadVenuesAction } from '../../venues/store/venues.action';
 import { loadAccessAction, loadAllRolesAction, getUserAccessAction, getUserRoleAction, loadAppUserProfileAction } from 'src/app/store/actions/app.action';
 import { loadAllUsersAction } from '../../user-management/store/user-mgmt.actions';
+import { CONTRACTSROUTE } from 'src/app/shared/constants/routes';
 
 @Injectable()
 export class AuthEffect {
@@ -26,7 +27,7 @@ export class AuthEffect {
         map((accessToken: any) => {
           if (accessToken) {
             localStorage.setItem('at', JSON.stringify(accessToken));
-            this.router.navigateByUrl('dashboard/contracts');
+            this.router.navigateByUrl(CONTRACTSROUTE);
 
             this.store.dispatch(loadVenuesAction());
             this.store.dispatch(loadAccessAction());

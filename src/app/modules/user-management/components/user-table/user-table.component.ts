@@ -20,6 +20,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { USERMNGMNTROUTE } from 'src/app/shared/constants/routes';
 
 @Component({
   selector: 'il-user-table',
@@ -106,7 +107,7 @@ export class UserTableComponent extends GenericContainer implements AfterViewIni
   }
 
   public toDetail(id: string): void {
-    this.router.navigateByUrl(`/dashboard/user-management/${id}/detail`);
+    this.router.navigateByUrl(`${USERMNGMNTROUTE}/${id}/detail`);
   }
 
   public fmtItem(item: IUser, col?: string) {

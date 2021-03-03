@@ -15,6 +15,7 @@ import { getUserByIdSelector } from '../../store/user-mgmt.selectors';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { textRegex } from 'src/app/shared/util/text';
 import { emailRegex } from 'src/app/shared/util/email';
+import { USERMNGMNTROUTE } from 'src/app/shared/constants/routes';
 
 @Component({
   selector: 'il-user-detail',
@@ -28,6 +29,7 @@ export class UserDetailComponent extends GenericDestroyPageComponent implements 
   public $roles: Observable<ISimpleItem[]>;
   public $access: Observable<ISimpleItem[]>;
   public id: string;
+  public userMngmtRoute = USERMNGMNTROUTE;
 
   constructor(private userMgmtSrv: UserMgmtService, private route: ActivatedRoute, private store: Store<AppState>, private fb: FormBuilder) {
     super();

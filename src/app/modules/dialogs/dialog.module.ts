@@ -1,4 +1,4 @@
-import { ContractCategoryTermDialogComponent } from './components/contract-category-term-dialog/contract-category-term-dialog.component';
+import { ContractCategoryTermDialogComponent } from './components/contract-category-term/contract-category-term-dialog.component';
 import { ProductAddDialogComponent } from './components/products-add/products-add-dialog.component';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { ConfirmationComponent } from './components/confirmation/confirmation.component';
@@ -31,9 +31,10 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { PauseOrRunDialogComponent } from './components/pause-run/pause-run.component';
 import { ContractCategoryImportDialogComponent } from './components/contract-category-import/contract-category-import.component';
 import { TableModule } from 'primeng/table';
-import { ContractImportTemplateDialogComponent } from './components/contract-import-template/contract-import-template.component';
+import { ContractImportTemplateDialogComponent } from './components/contract-import-template-dialog/contract-import-template-dialog.component';
 import { CategoryTemplateDialogComponent } from './components/category-template/category-template-dialog.component';
 import { RunExistErrorDialogComponent } from './components/run-exist-error/run-exist-error.component';
+import { ImageViewerDialogComponent } from './components/image-viewer-dialog/image-viewer-dialog.component';
 
 const dialogComponents = [
   ContractAddDialogComponent,
@@ -58,7 +59,8 @@ const dialogComponents = [
   ContractImportTemplateDialogComponent,
   ContractCategoryImportDialogComponent,
   CategoryTemplateDialogComponent,
-  RunExistErrorDialogComponent
+  RunExistErrorDialogComponent,
+  ImageViewerDialogComponent
 ];
 
 const materialModules = [

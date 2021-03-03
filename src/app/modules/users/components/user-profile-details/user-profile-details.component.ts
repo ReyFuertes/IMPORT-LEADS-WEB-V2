@@ -10,6 +10,7 @@ import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { Store } from '@ngrx/store';
 import { uploadProfileImageAction, updateProfileAction } from '../../store/actions/user-profile.actions';
 import { ISimpleItem } from 'src/app/shared/generics/generic.model';
+import { CONTRACTSROUTE, INSPECTIONSROUTE } from 'src/app/shared/constants/routes';
 
 @Component({
   selector: 'il-user-profile-details',
@@ -39,6 +40,7 @@ export class UserProfileDetailsComponent extends GenericDestroyPageComponent imp
   public files: File[] = [];
   public isContactEditMode: boolean = false;
   public isComDetailEditMode: boolean = false;
+  public inspectionRoute = CONTRACTSROUTE;
 
   @Input() public detail: IUserProfile;
 

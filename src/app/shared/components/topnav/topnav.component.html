@@ -1,7 +1,7 @@
 <div fxLayout="row" class="top-nav fade-in" fxLayoutAlign="start center" fxLayoutGap="20px">
   <div *ngIf="($menus | async) as menus" fxFlex fxLayoutAlign="start center">
     <div class="menu-box logo" fxFlex="10">
-      <img routerLink="/dashboard/contracts" [src]="imgPath + 'logo.png'" />
+      <img [routerLink]="contractsRoute" [src]="imgPath + 'logo.png'" />
     </div>
     <ng-container *ngFor="let menu of menus; let i = index">
       <div class="menu-box" [routerLink]="menu?.user_route" fxFlex="25" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:
@@ -13,19 +13,17 @@
   </div>
   <div fxFlex="20" fxLayoutAlign="end center" fxLayoutGap="40px">
     <div fxLayoutAlign="end center">
-      <!-- <img class="chat" [src]="svgPath + 'chat-icon-black.svg'" routerLink="dashboard/chat" />
-      <span matBadge="4" matBadgeColor="warn"></span> -->
     </div>
     <div class="settings" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
       <img class="profile-pic" [src]="getProfilePic" />
       <span class="username" [matTooltip]="user?.username" [matMenuTriggerFor]="menu">{{ user?.username }}</span>
       <img class="arrow" [matMenuTriggerFor]="menu" [src]="svgPath + 'arrow-down-icon-black.svg'" />
       <mat-menu #menu="matMenu">
-        <button mat-menu-item routerLink="dashboard/users/profile">Profile</button>
-        <button *appHasRole="'admin'" mat-menu-item routerLink="dashboard/users/setting">Settings</button>
+        <button mat-menu-item [routerLink]="profileRoute">Profile</button>
+        <button *appHasRole="'admin'" mat-menu-item [routerLink]="settingsRoute">Settings</button>
         
         <!-- NOTE: THIS WILL BE DISPLAYED IN ADMIN LEVEL -->
-        <button *appHasRole="'admin'" mat-menu-item routerLink="dashboard/user-management">User Management</button>
+        <button *appHasRole="'admin'" mat-menu-item [routerLink]="userMngmntRoute">User Management</button>
         <button mat-menu-item (click)="onLogout()">Logout</button>
       </mat-menu>
     </div>

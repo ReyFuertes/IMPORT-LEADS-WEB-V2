@@ -9,6 +9,7 @@ import { takeUntil } from 'rxjs/operators';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { IVenue } from 'src/app/modules/venues/venues.models';
 import { DomSanitizer } from '@angular/platform-browser';
+import { CONTRACTSROUTE } from 'src/app/shared/constants/routes';
 
 @Component({
   selector: 'il-contract-card',
@@ -55,7 +56,7 @@ export class ContractCardComponent extends GenericDestroyPageComponent implement
   }
 
   public gotoDetail(id: string): void {
-    this.router.navigateByUrl(`dashboard/contracts/${id}/detail`);
+    this.router.navigateByUrl(`${CONTRACTSROUTE}/${id}/detail`);
   }
 
   public ngAfterViewInit(): void {

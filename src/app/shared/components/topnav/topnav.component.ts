@@ -10,7 +10,7 @@ import { getAccessSelector, getAppUserProfileSelector, getUserAccessSelector } f
 import { ISimpleItem } from '../../generics/generic.model';
 import { debounceTime, map, takeUntil } from 'rxjs/operators';
 import { sortByAsc, sortByDesc } from '../../util/sort';
-import { getUserProfileSelector } from 'src/app/modules/users/store/selectors/user-profile.selector';
+import { CONTRACTSROUTE, PROFILEROUTE, SETTINGSROUTE, USERMNGMNTROUTE } from 'src/app/shared/constants/routes';
 import { GenericDestroyPageComponent } from '../../generics/generic-destroy-page';
 
 @Component({
@@ -32,6 +32,10 @@ export class TopNavComponent extends GenericDestroyPageComponent implements OnIn
   public $menus: Observable<ISimpleItem[]>;
   public excludedMenus: string[] = ['CHAT', 'SETTINGS'];
   public accessMenus: string[] = [];
+  public contractsRoute = CONTRACTSROUTE;
+  public settingsRoute = SETTINGSROUTE;
+  public profileRoute = PROFILEROUTE;
+  public userMngmntRoute = USERMNGMNTROUTE;
 
   constructor(private cdRef: ChangeDetectorRef, private store: Store<AppState>) {
     super();

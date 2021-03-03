@@ -18,6 +18,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { loadContractsAction } from 'src/app/modules/contracts/store/actions/contracts.action';
 import { getReportContractById } from '../../store/selectors/report.selector';
 import * as html2pdf from 'html2pdf.js'
+import { CONTRACTSROUTE } from 'src/app/shared/constants/routes';
 
 @Component({
   selector: 'il-contract-detail-report',
@@ -34,6 +35,7 @@ export class ContractDetailReportComponent extends GenericDestroyPageComponent i
   public dataSource: MatTableDataSource<IContractTerm[]>;
   public columnsToDisplay = ['term_name', 'term_description'];
   public isPrinting: boolean = false;
+  public contractsRoute = CONTRACTSROUTE;
 
   constructor(private sanitizer: DomSanitizer, private store: Store<AppState>, private route: ActivatedRoute) {
     super();

@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { AuthGuard } from './services/auth.guard';
+import { PageNotFoundComponent } from './shared/components/pageNotFound/pageNotFound.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'metaverse', redirectTo: 'metaverse/login', pathMatch: 'full' },
   {
-    path: 'dashboard',
+    path: 'metaverse/dashboard',
     canActivate: [AuthGuard],
     children: [
       { path: 'contracts', loadChildren: './modules/contracts/contracts.module#ContractsModule' },
@@ -22,6 +23,7 @@ const routes: Routes = [
     ]
   },
   { path: 'report', loadChildren: './modules/report/report.module#ReportModule' },
+  { path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({

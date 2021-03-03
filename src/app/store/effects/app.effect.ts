@@ -17,6 +17,7 @@ import { loadAllUsersAction } from 'src/app/modules/user-management/store/user-m
 import { loadUserProfileAction } from 'src/app/modules/users/store/actions/user-profile.actions';
 import { UserProfileService } from 'src/app/modules/users/users.service';
 import { IUserProfile } from 'src/app/modules/users/users.models';
+import { CONTRACTSROUTE, LOGINROUTE } from 'src/app/shared/constants/routes';
 
 @Injectable()
 export class InitAppEffect {
@@ -62,7 +63,7 @@ export class InitAppEffect {
     ofType(logoutAction),
     tap(() => {
       localStorage.clear();
-      this.router.navigateByUrl('login');
+      this.router.navigateByUrl(LOGINROUTE);
     }),
     map(() => logoutSuccessAction())
   ));
@@ -114,7 +115,7 @@ export class InitAppEffect {
         const inLoginPage = e.urlAfterRedirects.includes('login');
 
         if (isLoggedIn && inLoginPage) {
-          this.router.navigateByUrl('/dashboard/contracts');
+          this.router.navigateByUrl(CONTRACTSROUTE);
         }
       });
   }

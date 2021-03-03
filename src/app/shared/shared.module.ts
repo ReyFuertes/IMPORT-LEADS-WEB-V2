@@ -69,6 +69,8 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { RadioGroupComponent } from './components/radio-group/radio-group.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { SafePipe } from './pipes/html';
+import { PageNotFoundComponent } from './components/pageNotFound/pageNotFound.component';
+import { MatCardModule } from '@angular/material/card';
 
 const materialModules = [
   MatListModule,
@@ -89,7 +91,8 @@ const materialModules = [
   MatSortModule,
   MatTableModule,
   MatPaginatorModule,
-  MatRadioModule
+  MatRadioModule,
+  MatCardModule
 ];
 
 const primeNgModules = [
@@ -133,7 +136,8 @@ const sharedComponents = [
   EditorComponent,
   InputSwitchComponent,
   HasRoleDirective,
-  RadioGroupComponent
+  RadioGroupComponent,
+  PageNotFoundComponent
 ];
 
 const directives = [

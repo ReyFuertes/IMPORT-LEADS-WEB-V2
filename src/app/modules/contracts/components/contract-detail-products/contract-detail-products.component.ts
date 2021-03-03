@@ -378,12 +378,12 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
     return null;
   }
 
-  private fmtSubProducts(sp: IProduct[]): any {
+  private fmtSubProducts(sp: any[]): any {
     return sp && sp.map(sp => {
       const ret = _.pickBy({
-        _id: sp._id,
-        id: sp.id ? sp.id : this.getId(sp.product_name),
-        product_name: this.getName(sp.product_name),
+        _id: sp.id,
+        id: sp?.product?.id,
+        product_name: this.getName(sp?.product?.product_name),
         qty: sp.qty,
         cost: sp.cost,
       }, _.identity);
@@ -409,19 +409,20 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
     return ret;
   }
 
-  public onEdit(product: IProduct): void {
+  public onEdit(p: any): void {
     if (this.inCheckListing) return;
+    
     /* assign selected item to form */
-    const { _id, id, product_name, qty, cost, sub_products } = product;
-
+    const { id, product, qty, cost, sub_products } = p;
+    debugger
     this.formSubProdsArr = null;
     this.initInputProduct = this.selectedProduct ? true : false;
 
     /* use contract product id here */
-    this.form.controls['id'].patchValue(_id);
+    this.form.controls['id'].patchValue(id);
 
     /* we use an object for passing values to suggestion control */
-    this.form.controls['product_name'].patchValue({ label: product_name, value: id });
+    this.form.controls['product_name'].patchValue({ label: product?.product_name, value: product?.id });
     this.form.controls['qty'].patchValue(qty);
     this.form.controls['cost'].patchValue(cost);
     this.form.controls['sub_products'].patchValue(this.fmtSubProducts(sub_products));
@@ -433,14 +434,15 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       this.formSubProdsArr.clear();
     }
 
-    subProducts?.forEach(subItem => {
+    subProducts?.forEach(si => {
+      debugger
       const item = this.createSubItem({
-        _id: subItem._id,
-        id: subItem.id,
+        _id: si._id,
+        id: si.id,
         /* we use an object for passing values to suggestion control */
-        product_name: { label: subItem.product_name, value: subItem.id },
-        qty: subItem.qty,
-        cost: subItem.cost
+        product_name: { label: si.product_name, value: si.id },
+        qty: si.qty,
+        cost: si.cost
       });
       this.formSubProdsArr.push(item);
     });

@@ -3,16 +3,12 @@
 .il-dialog {
   @include il-dialog;
   width: 100%;
+  overflow: auto;
   .content {
     height: 100%;
   }
 }
 img {
-  width: 100%;
-  height: 100%;
-}
-::ng-deep {
-  .cdk-overlay-pane {
-    max-width: 95vw !important;
-  }
+  width: auto;
+  height: auto;
 }

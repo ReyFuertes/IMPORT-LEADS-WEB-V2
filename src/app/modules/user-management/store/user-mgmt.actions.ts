@@ -39,7 +39,7 @@ export const signUpUserAction = createAction(
 );
 export const signUpUserSuccessAction = createAction(
   UserMgmtActionTypes.signUpUserSuccessAction,
-  props<{ response: IUser }>()
+  props<{ response: IUser[] }>()
 );
 export const addUserAction = createAction(
   UserMgmtActionTypes.addUserAction,
@@ -47,7 +47,7 @@ export const addUserAction = createAction(
 );
 export const addUserSuccessAction = createAction(
   UserMgmtActionTypes.addUserSuccessAction,
-  props<{ response: IUser[] }>()
+  props<{ response: IUser }>()
 );
 export const saveUserRoleAction = createAction(
   UserMgmtActionTypes.saveUserRoleAction,

@@ -20,6 +20,9 @@ const userMgmtReducer = createReducer(
   on(signUpUserSuccessAction, (state) => {
     return Object.assign({}, state, { creatingUser: null });
   }),
+  on(signUpUserSuccessAction, (state, action) => {
+    return ({ ...adapter.setAll(action.response, state) });
+  }),
   on(signUpUserAction, (state) => {
     return Object.assign({}, state, { creatingUser: true });
   }),

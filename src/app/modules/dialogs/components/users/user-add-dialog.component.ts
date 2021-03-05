@@ -28,13 +28,13 @@ export class UserAddDialogComponent extends GenericDestroyPageComponent implemen
     super();
     this.form = this.fb.group({
       id: [''],
-      username: [null, Validators.compose([Validators.required, Validators.pattern(emailRegex.email)])],
-      password: [null, Validators.required],
+      username: ['testlogin@gmail.com', Validators.compose([Validators.required, Validators.pattern(emailRegex.email)])],
+      password: ['p@55w0rd', Validators.required],
       user_profile: this.fb.group({
-        phone: [null, Validators.required],
-        company_name: [null, Validators.required],
-        firstname: [null, Validators.required],
-        lastname: [null, Validators.required],
+        phone: ['123456789', Validators.required],
+        company_name: ['testcompany', Validators.required],
+        firstname: ['test', Validators.required],
+        lastname: ['login', Validators.required],
       }),
       user_access: [null, Validators.required],
       user_role: [null, Validators.required],
@@ -49,20 +49,14 @@ export class UserAddDialogComponent extends GenericDestroyPageComponent implemen
     this.$roles = this.store.pipe(select(getAllRolesSelector))
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   public onSave(): void {
     if (this.form.value && this.form.valid) {
-      const { username, password } = this.form.value;
 
-      this.store.dispatch(signUpUserAction({
-        payload: { username, password }
-      }));
+      this.store.dispatch(signUpUserAction({ payload: this.form.value }));
 
-      setTimeout(() => {
-        this.store.dispatch(addUserAction({ payload: this.form.value }));
-        this.dialogRef.close();
-      }, 500);
+      setTimeout(() => { this.dialogRef.close(); }, 500);
     }
   }
 }

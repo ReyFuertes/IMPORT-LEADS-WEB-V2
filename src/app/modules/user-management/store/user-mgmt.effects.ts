@@ -16,12 +16,6 @@ export class UserMgmtEffects {
     ofType(saveUserAction),
     switchMap(({ payload }) => {
       return this.userMgmtSrv.patch(payload).pipe(
-        tap((response) => {
-          if (response)
-            this.store.dispatch(appNotification({
-              notification: { success: true, message: 'User successfully Updated' }
-            }))
-        }),
         map((response: IUser) => {
           return saveUserSuccessAction({ response });
         })
@@ -30,14 +24,8 @@ export class UserMgmtEffects {
   ));
   deleteUserAction$ = createEffect(() => this.actions$.pipe(
     ofType(deleteUserAction),
-    mergeMap(({ id }) => this.userMgmtSrv.delete(id)
+    switchMap(({ id }) => this.userMgmtSrv.delete(id)
       .pipe(
-        tap((created) => {
-          if (created)
-            this.store.dispatch(appNotification({
-              notification: { success: true, message: 'User successfully Deleted' }
-            }));
-        }),
         map((deleted: IUser) => {
           return deleteUserSuccessAction({ deleted });
         })
@@ -47,7 +35,7 @@ export class UserMgmtEffects {
     ofType(signUpUserAction),
     switchMap(({ payload }) => {
       return this.authSrv.post(payload, 'signup').pipe(
-        map((response: IUser) => {
+        map((response: IUser[]) => {
           return signUpUserSuccessAction({ response });
         })
       )
@@ -57,14 +45,10 @@ export class UserMgmtEffects {
     ofType(addUserAction),
     switchMap(({ payload }) => {
       return this.userMgmtSrv.post(payload).pipe(
-        tap(() => setTimeout(() => this.store.dispatch(loadAllUsersAction()), 1000)),
-        tap((created) => {
-          if (created)
-            this.store.dispatch(appNotification({
-              notification: { success: true, message: 'User successfully Created' }
-            }))
-        }),
-        map((response: IUser[]) => {
+        map((response: IUser) => {
+
+          this.store.dispatch(loadAllUsersAction());
+
           return addUserSuccessAction({ response });
         })
       )
@@ -74,8 +58,10 @@ export class UserMgmtEffects {
     ofType(saveUserRoleAction),
     switchMap(({ payload }) => {
       return this.userRoleSrv.post(payload).pipe(
-        // tap(() => this.store.dispatch(loadAllUsersAction())),
         map((response: IUserRole) => {
+
+          this.store.dispatch(loadAllUsersAction());
+
           return saveUserRoleSuccessAction({ response });
         })
       )
@@ -84,23 +70,17 @@ export class UserMgmtEffects {
   saveUserAccessAction$ = createEffect(() => this.actions$.pipe(
     ofType(saveUserAccessAction),
     switchMap(({ payload }) => this.userAccessSrv.post(payload).pipe(
-      tap(() => {
-        setTimeout(() => {
-          /* NOTE: we dont need to make the user access changes realtime atm */
-          const at = JSON.parse(localStorage.getItem('at')) || null;
-          if (at && at.user) {
-            //this.store.dispatch(getUserAccessAction({ id: at.user.id }))
-          }
-        });
-      }),
       map((response: IUserAccess[]) => {
+
+        const at = JSON.parse(localStorage.getItem('at')) || null;
+
         return saveUserAccessSuccessAction({ response });
       })
     ))
   ));
   loadAllUsersAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadAllUsersAction),
-    mergeMap(() => this.userMgmtSrv.getAll().pipe(
+    switchMap(() => this.userMgmtSrv.getAll().pipe(
       map((users: IUser[]) => {
         return loadAllUsersSuccessAction({ users });
       })

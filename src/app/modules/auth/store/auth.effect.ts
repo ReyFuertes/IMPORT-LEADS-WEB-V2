@@ -12,6 +12,7 @@ import { loadVenuesAction } from '../../venues/store/venues.action';
 import { loadAccessAction, loadAllRolesAction, getUserAccessAction, getUserRoleAction, loadAppUserProfileAction } from 'src/app/store/actions/app.action';
 import { loadAllUsersAction } from '../../user-management/store/user-mgmt.actions';
 import { CONTRACTSROUTE } from 'src/app/shared/constants/routes';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Injectable()
 export class AuthEffect {
@@ -26,14 +27,17 @@ export class AuthEffect {
       .pipe(
         map((accessToken: any) => {
           if (accessToken) {
-            localStorage.setItem('at', JSON.stringify(accessToken));
+            //localStorage.setItem('at', JSON.stringify(accessToken));
+            this.storageSrv.set('at', JSON.stringify(accessToken));
+
             this.router.navigateByUrl(CONTRACTSROUTE);
 
             this.store.dispatch(loadVenuesAction());
             this.store.dispatch(loadAccessAction());
             this.store.dispatch(loadAllRolesAction());
 
-            const at = JSON.parse(localStorage.getItem('at')) || null;
+            const at = JSON.parse(this.storageSrv.get('at')) || null;
+            debugger
             if (at?.user) {
               this.store.dispatch(getUserAccessAction({ id: at.user.id }));
               this.store.dispatch(getUserRoleAction({ id: at.user.id }));
@@ -44,9 +48,6 @@ export class AuthEffect {
           return loginSuccessAction({ accessToken });
         }),
         catchError((error: any) => {
-          this.store.dispatch(appNotification({
-            notification: { error: true, message: 'Login Failed!' }
-          }));
           return of(loginFailedAction({ error: error.message }));
         })
       ))
@@ -56,6 +57,7 @@ export class AuthEffect {
     private store: Store<AppState>,
     private actions$: Actions,
     private router: Router,
-    private authSrv: AuthService
+    private authSrv: AuthService,
+    private storageSrv: StorageService
   ) { }
 }

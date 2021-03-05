@@ -28,13 +28,13 @@ export class UserAddDialogComponent extends GenericDestroyPageComponent implemen
     super();
     this.form = this.fb.group({
       id: [''],
-      username: ['testlogin@gmail.com', Validators.compose([Validators.required, Validators.pattern(emailRegex.email)])],
-      password: ['p@55w0rd', Validators.required],
+      username: [null, Validators.compose([Validators.required, Validators.pattern(emailRegex.email)])],
+      password: [null, Validators.required],
       user_profile: this.fb.group({
-        phone: ['123456789', Validators.required],
-        company_name: ['testcompany', Validators.required],
-        firstname: ['test', Validators.required],
-        lastname: ['login', Validators.required],
+        phone: [null, Validators.required],
+        company_name: [null, Validators.required],
+        firstname: [null, Validators.required],
+        lastname: [null, Validators.required],
       }),
       user_access: [null, Validators.required],
       user_role: [null, Validators.required],

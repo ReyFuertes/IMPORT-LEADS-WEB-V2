@@ -32,6 +32,7 @@ import { getVenuesSelector } from 'src/app/modules/venues/store/venues.selector'
 import { DomSanitizer } from '@angular/platform-browser';
 import { CONTRACTSROUTE } from 'src/app/shared/constants/routes';
 import { ContractImportTemplateDialogComponent } from 'src/app/modules/dialogs/components/contract-import-template-dialog/contract-import-template-dialog.component';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'il-contract-detail-page',
@@ -65,7 +66,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   @Output() public openNavChange = new EventEmitter<boolean>();
   @ViewChild('scrollPnl', { static: false }) public scrollPnl: any;
 
-  constructor(private sanitizer: DomSanitizer, private router: Router, private store: Store<AppState>, private route: ActivatedRoute, public fb: FormBuilder, public dialog: MatDialog, cdRef: ChangeDetectorRef) {
+  constructor(private storageSrv: StorageService, private sanitizer: DomSanitizer, private router: Router, private store: Store<AppState>, private route: ActivatedRoute, public fb: FormBuilder, public dialog: MatDialog, cdRef: ChangeDetectorRef) {
     super(cdRef);
     this.form = this.fb.group({
       id: [null],
@@ -81,7 +82,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       desiredRunDate: [new Date(), Validators.required]
     });
 
-    const at = JSON.parse(localStorage.getItem('at')) || null;
+    const at = JSON.parse(this.storageSrv.get('at')) || null;
     if (at && at.user) this.user = at.user;
 
     this.store.pipe(select(getVenuesSelector), takeUntil(this.$unsubscribe))

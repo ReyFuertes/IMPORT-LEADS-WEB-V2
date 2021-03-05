@@ -9,6 +9,7 @@ import { UserAccessService, RolesService, UserRolesService, UserMgmtService } fr
 import { AuthService } from '../../auth/auth.service';
 import { appNotification } from 'src/app/store/actions/notification.action';
 import { getUserAccessAction } from 'src/app/store/actions/app.action';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Injectable()
 export class UserMgmtEffects {
@@ -72,7 +73,7 @@ export class UserMgmtEffects {
     switchMap(({ payload }) => this.userAccessSrv.post(payload).pipe(
       map((response: IUserAccess[]) => {
 
-        const at = JSON.parse(localStorage.getItem('at')) || null;
+        const at = JSON.parse(this.storageSrv.get('at')) || null;
 
         return saveUserAccessSuccessAction({ response });
       })
@@ -93,5 +94,6 @@ export class UserMgmtEffects {
     private userMgmtSrv: UserMgmtService,
     private userAccessSrv: UserAccessService,
     private userRoleSrv: UserRolesService,
+    private storageSrv: StorageService,
     private authSrv: AuthService) { }
 }

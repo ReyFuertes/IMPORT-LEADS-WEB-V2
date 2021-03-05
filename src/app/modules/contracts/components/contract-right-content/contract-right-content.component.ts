@@ -14,6 +14,7 @@ import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-des
 import { getSavedChecklistByIdAction } from '../../store/actions/saved-checklist.action';
 import { IUser, IUserMgmt } from 'src/app/modules/user-management/user-mgmt.model';
 import { getAllSimpleUsersSelector } from 'src/app/modules/user-management/store/user-mgmt.selectors';
+import { getUserListSelector } from 'src/app/store/selectors/app.selector';
 
 @Component({
   selector: 'il-contract-right-content',
@@ -24,7 +25,7 @@ import { getAllSimpleUsersSelector } from 'src/app/modules/user-management/store
 export class ContractRightContentComponent extends GenericDestroyPageComponent implements OnInit {
   public svgPath: string = environment.svgPath;
   public $savedChecklist: Observable<ISavedChecklistItem[]>;
-  public $users: Observable<ISimpleItem[]>;
+  public $userList: Observable<ISimpleItem[]>;
 
   @Input() public form: FormGroup;
   @Output() public closeEmitter = new EventEmitter<boolean>();
@@ -36,7 +37,7 @@ export class ContractRightContentComponent extends GenericDestroyPageComponent i
 
   ngOnInit() {
     this.$savedChecklist = this.store.pipe(select(getAllSavedChecklistSelector));
-    this.$users = this.store.pipe(select(getAllSimpleUsersSelector))
+    this.$userList = this.store.pipe(select(getUserListSelector))
   }
 
   public getChecklist(id: string): void {

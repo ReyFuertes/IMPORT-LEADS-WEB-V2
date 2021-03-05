@@ -12,6 +12,7 @@ import { debounceTime, map, takeUntil } from 'rxjs/operators';
 import { sortByAsc, sortByDesc } from '../../util/sort';
 import { CONTRACTSROUTE, PROFILEROUTE, SETTINGSROUTE, USERMNGMNTROUTE } from 'src/app/shared/constants/routes';
 import { GenericDestroyPageComponent } from '../../generics/generic-destroy-page';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'il-topnav',
@@ -37,7 +38,7 @@ export class TopNavComponent extends GenericDestroyPageComponent implements OnIn
   public profileRoute = PROFILEROUTE;
   public userMngmntRoute = USERMNGMNTROUTE;
 
-  constructor(private cdRef: ChangeDetectorRef, private store: Store<AppState>) {
+  constructor(private storageSrv: StorageService, private cdRef: ChangeDetectorRef, private store: Store<AppState>) {
     super();
   }
 
@@ -77,7 +78,7 @@ export class TopNavComponent extends GenericDestroyPageComponent implements OnIn
             username: `${res?.firstname} ${res?.lastname}`
           });
 
-          const localUser = JSON.parse(localStorage.getItem('at')) || null;
+          const localUser = JSON.parse(this.storageSrv.get('at')) || null;
           if (localUser) {
             this.user = localUser.user;
           }

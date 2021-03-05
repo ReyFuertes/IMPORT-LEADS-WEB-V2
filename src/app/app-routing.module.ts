@@ -5,6 +5,7 @@ import { PageNotFoundComponent } from './shared/components/pageNotFound/pageNotF
 
 const routes: Routes = [
   { path: 'metaverse', redirectTo: 'metaverse/login', pathMatch: 'full' },
+  { path: 'metaverse/dashboard', redirectTo: 'metaverse/dashboard/contracts', pathMatch: 'full' },
   {
     path: 'metaverse/dashboard',
     canActivate: [AuthGuard],
@@ -20,7 +21,7 @@ const routes: Routes = [
       { path: 'chat', loadChildren: './modules/chat/chat.module#ChatModule' },
       { path: 'products', loadChildren: './modules/products/products.module#ProductsModule' },
       { path: 'user-management', loadChildren: './modules/user-management/user-management.module#UserManagementModule' },
-    ]
+    ],
   },
   { path: 'report', loadChildren: './modules/report/report.module#ReportModule' },
   { path: '**', component: PageNotFoundComponent },

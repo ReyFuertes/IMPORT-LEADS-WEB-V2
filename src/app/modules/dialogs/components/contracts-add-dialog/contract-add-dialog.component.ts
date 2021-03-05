@@ -18,6 +18,7 @@ import { v4 as uuid } from 'uuid';
 import { ActivatedRoute } from '@angular/router';
 import { convertBlobToBase64 } from 'src/app/shared/util/convert-to-blob';
 import * as _ from 'lodash';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'il-contract-add-dialog',
@@ -36,7 +37,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
   public imgUrl: string = `${environment.apiUrl}contracts/image/`;
   public AddEditState = AddEditState;
 
-  constructor(public fb: FormBuilder, public dialogRef: MatDialogRef<ContractAddDialogComponent>,
+  constructor(private storageSrv: StorageService, public fb: FormBuilder, public dialogRef: MatDialogRef<ContractAddDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: AddEditDialogState, private store: Store<AppState>, public route: ActivatedRoute) {
     super();
     this.form = this.fb.group({
@@ -128,7 +129,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
     this.store.dispatch(uploadContractImagesAction({ files }));
 
     if (this.state === AddEditState.Add) {
-      const locaUser = JSON.parse(localStorage.getItem('at')) || null;
+      const locaUser = JSON.parse(this.storageSrv.get('at')) || null;
       if (locaUser) {
         item.user = locaUser.user
       }

@@ -4,6 +4,7 @@ import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import * as _ from 'lodash';
 import { Directive } from '@angular/core';
+import { StorageService } from './storage.service';
 
 @Directive()
 export abstract class BaseService<T> {
@@ -11,13 +12,14 @@ export abstract class BaseService<T> {
 
   constructor(
     public http: HttpClient,
-    private entity: string = '') {
+    private entity: string = '',
+    private storageSrv: StorageService) {
     this.baseUrl = environment.apiUrl;
   }
 
   private getToken(): string {
-    return JSON.parse(localStorage.getItem('at') || null) ?
-      JSON.parse(localStorage.getItem('at')).accessToken : null;
+    return JSON.parse(this.storageSrv.get('at') || null) ?
+      JSON.parse(this.storageSrv.get('at')).accessToken : null;
   }
 
   protected commonHeaders(): HttpHeaders {

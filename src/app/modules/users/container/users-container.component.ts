@@ -4,6 +4,7 @@ import { AppState } from '../../contracts/store/reducers';
 import { Store, select } from '@ngrx/store';
 import { getContractCategorySelector } from '../../contracts/store/selectors/contract-category.selector';
 import { loadUserProfileAction } from '../store/actions/user-profile.actions';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'il-users-container',
@@ -12,9 +13,9 @@ import { loadUserProfileAction } from '../store/actions/user-profile.actions';
 })
 
 export class UsersContainerComponent extends GenericContainer implements OnInit {
-  constructor(private store: Store<AppState>) {
+  constructor(private storageSrv: StorageService, private store: Store<AppState>) {
     super();
-    const at = JSON.parse(localStorage.getItem('at')) || null;
+    const at = JSON.parse(this.storageSrv.get('at')) || null;
     if (at?.user) {
       this.store.dispatch(loadUserProfileAction({ id: at.user.id }));
     }

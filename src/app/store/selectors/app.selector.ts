@@ -4,6 +4,10 @@ import { IRole } from 'src/app/modules/user-management/user-mgmt.model';
 import { sortByDesc } from 'src/app/shared/util/sort';
 
 export const selectedState = (state: AppState) => state.initApp;
+export const getUserListSelector = createSelector(
+  selectedState,
+  state => state?.userList
+);
 export const getAppUserProfileSelector = createSelector(
   selectedState,
   state => state?.detail

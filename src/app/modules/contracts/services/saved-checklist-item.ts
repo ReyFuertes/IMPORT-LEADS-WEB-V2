@@ -3,10 +3,11 @@ import { IContractProduct, IContractTerm, ISavedChecklistItem } from './../contr
 import { HttpClient } from '@angular/common/http';
 import { BaseService } from 'src/app/services/base.service';
 import { Injectable } from '@angular/core';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Injectable({ providedIn: 'root' })
 export class SavedChecklistItemService extends BaseService<ISavedChecklistItem> {
-  constructor(http: HttpClient) {
-    super(http, 'saved-checklist-item');
+  constructor(http: HttpClient, storageSrv: StorageService) {
+    super(http, 'saved-checklist-item', storageSrv);
   }
 }

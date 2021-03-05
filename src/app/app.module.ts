@@ -23,6 +23,7 @@ import { AccessService } from './services/api.service';
 import { UserMgmtEffects } from './modules/user-management/store/user-mgmt.effects';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { UserProfileEffects } from './modules/users/store/effects/user-profile.effects';
+import { UserService } from './modules/users/users.service';
 
 const materialModules = [
   MatProgressSpinnerModule,

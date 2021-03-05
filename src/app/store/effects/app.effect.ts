@@ -2,7 +2,7 @@ import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { tap, map, switchMap, takeUntil, filter, catchError } from 'rxjs/operators';
-import { initAppAction, initAppSuccessAction, loadAccessAction, loadAccessSuccessAction, loadAllRolesAction, loadAllRolesSuccessAction, getUserAccessAction, getUserAccessSuccessAction, getUserRoleAction, getUserRoleSuccessAction, loadAppUserProfileAction, loadAppUserProfileSuccessAction, loadProfileErrorAction } from '../actions/app.action';
+import { initAppAction, initAppSuccessAction, loadAccessAction, loadAccessSuccessAction, loadAllRolesAction, loadAllRolesSuccessAction, getUserAccessAction, getUserAccessSuccessAction, getUserRoleAction, getUserRoleSuccessAction, loadAppUserProfileAction, loadAppUserProfileSuccessAction, loadProfileErrorAction, loadUserListAction, loadUserListSuccessAction } from '../actions/app.action';
 import { loginFailedAction, logoutAction, logoutSuccessAction } from 'src/app/modules/auth/store/auth.action';
 import { NavigationEnd, Router } from '@angular/router';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
@@ -11,13 +11,25 @@ import { IAccess } from 'src/app/models/user.model';
 import { AccessService } from 'src/app/services/api.service';
 import { of } from 'rxjs';
 import { RolesService, UserAccessService, UserRolesService } from 'src/app/modules/user-management/user-mgmt.service';
-import { IRole, IUserAccess } from 'src/app/modules/user-management/user-mgmt.model';
-import { UserProfileService } from 'src/app/modules/users/users.service';
+import { IRole, IUser, IUserAccess } from 'src/app/modules/user-management/user-mgmt.model';
+import { UserProfileService, UserService } from 'src/app/modules/users/users.service';
 import { IUserProfile } from 'src/app/modules/users/users.models';
 import { CONTRACTSROUTE, LOGINROUTE, NOTFOUNDPAGE } from 'src/app/shared/constants/routes';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Injectable()
 export class InitAppEffect {
+  loadUserListAction$ = createEffect(() => this.actions$.pipe(
+    ofType(loadUserListAction),
+    switchMap(() => {
+      return this.userSrv.getAll('list').pipe(
+        map((response: IUser[]) => {
+          return loadUserListSuccessAction({ response });
+        })
+      )
+    })
+  ));
+
   getUserRoleAction$ = createEffect(() => this.actions$.pipe(
     ofType(getUserRoleAction),
     switchMap(({ id }) => {
@@ -66,7 +78,7 @@ export class InitAppEffect {
   ));
   initAppAction$ = createEffect(() => this.actions$.pipe(
     ofType(initAppAction),
-    switchMap(() => of(localStorage.getItem('at'))
+    switchMap(() => of(this.storageSrv.get('at'))
       .pipe(
         tap((res) => {
           if (res) {
@@ -74,13 +86,14 @@ export class InitAppEffect {
             this.store.dispatch(loadAccessAction());
             this.store.dispatch(loadAllRolesAction());
 
-            const at = JSON.parse(localStorage.getItem('at')) || null;
+            const at = JSON.parse(this.storageSrv.get('at')) || null;
             const isLoggedIn = at?.user;
 
             if (isLoggedIn) {
               this.store.dispatch(getUserAccessAction({ id: at.user.id }));
               this.store.dispatch(getUserRoleAction({ id: at.user.id }));
               this.store.dispatch(loadAppUserProfileAction({ id: at.user.id }));
+              this.store.dispatch(loadUserListAction());
             }
             this.isInloginpage(isLoggedIn);
           }
@@ -100,12 +113,13 @@ export class InitAppEffect {
     switchMap(({ id }) => this.userProfileSrv.getById(id)
       .pipe(
         map((detail: IUserProfile) => {
-          
+
           return loadAppUserProfileSuccessAction({ detail });
         }),
         catchError((error: any) => {
           this.store.dispatch(logoutAction());
           this.router.navigateByUrl(NOTFOUNDPAGE);
+
           console.log('%c PROFILE DOESNT EXIST!', 'background: green; color: white');
 
           return of(loadProfileErrorAction({ error: error.message }));
@@ -126,6 +140,12 @@ export class InitAppEffect {
   }
 
   constructor(private store: Store<AppState>, private actions$: Actions,
-    private router: Router, private accessSrv: AccessService, private userAccessSrv: UserAccessService,
-    private roleSrv: RolesService, private userRolesSrv: UserRolesService, private userProfileSrv: UserProfileService) { }
+    private router: Router, 
+    private userSrv: UserService,
+    private accessSrv: AccessService, 
+    private userAccessSrv: UserAccessService,
+    private roleSrv: RolesService, 
+    private userRolesSrv: UserRolesService, 
+    private userProfileSrv: UserProfileService,
+    private storageSrv: StorageService) { }
 }

@@ -1,9 +1,9 @@
 import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { tap, map, switchMap, takeUntil, filter } from 'rxjs/operators';
-import { initAppAction, initAppSuccessAction, loadAccessAction, loadAccessSuccessAction, loadAllRolesAction, loadAllRolesSuccessAction, getUserAccessAction, getUserAccessSuccessAction, getUserRoleAction, getUserRoleSuccessAction, loadAppUserProfileAction, loadAppUserProfileSuccessAction } from '../actions/app.action';
-import { logoutAction, logoutSuccessAction } from 'src/app/modules/auth/store/auth.action';
+import { tap, map, switchMap, takeUntil, filter, catchError } from 'rxjs/operators';
+import { initAppAction, initAppSuccessAction, loadAccessAction, loadAccessSuccessAction, loadAllRolesAction, loadAllRolesSuccessAction, getUserAccessAction, getUserAccessSuccessAction, getUserRoleAction, getUserRoleSuccessAction, loadAppUserProfileAction, loadAppUserProfileSuccessAction, loadProfileErrorAction } from '../actions/app.action';
+import { loginFailedAction, logoutAction, logoutSuccessAction } from 'src/app/modules/auth/store/auth.action';
 import { NavigationEnd, Router } from '@angular/router';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { loadVenuesAction } from 'src/app/modules/venues/store/venues.action';
@@ -12,12 +12,9 @@ import { AccessService } from 'src/app/services/api.service';
 import { of } from 'rxjs';
 import { RolesService, UserAccessService, UserRolesService } from 'src/app/modules/user-management/user-mgmt.service';
 import { IRole, IUserAccess } from 'src/app/modules/user-management/user-mgmt.model';
-import { loadSavedChecklistAction } from 'src/app/modules/contracts/store/actions/saved-checklist.action';
-import { loadAllUsersAction } from 'src/app/modules/user-management/store/user-mgmt.actions';
-import { loadUserProfileAction } from 'src/app/modules/users/store/actions/user-profile.actions';
 import { UserProfileService } from 'src/app/modules/users/users.service';
 import { IUserProfile } from 'src/app/modules/users/users.models';
-import { CONTRACTSROUTE, LOGINROUTE } from 'src/app/shared/constants/routes';
+import { CONTRACTSROUTE, LOGINROUTE, NOTFOUNDPAGE } from 'src/app/shared/constants/routes';
 
 @Injectable()
 export class InitAppEffect {
@@ -76,11 +73,10 @@ export class InitAppEffect {
             this.store.dispatch(loadVenuesAction());
             this.store.dispatch(loadAccessAction());
             this.store.dispatch(loadAllRolesAction());
-            this.store.dispatch(loadAllUsersAction());
 
             const at = JSON.parse(localStorage.getItem('at')) || null;
             const isLoggedIn = at?.user;
-  
+
             if (isLoggedIn) {
               this.store.dispatch(getUserAccessAction({ id: at.user.id }));
               this.store.dispatch(getUserRoleAction({ id: at.user.id }));
@@ -101,11 +97,20 @@ export class InitAppEffect {
 
   loadAppUserProfileAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadAppUserProfileAction),
-    switchMap(({ id }) => this.userProfileSrv.getById(id).pipe(
-      map((detail: IUserProfile) => {
-        return loadAppUserProfileSuccessAction({ detail });
-      })
-    ))
+    switchMap(({ id }) => this.userProfileSrv.getById(id)
+      .pipe(
+        map((detail: IUserProfile) => {
+          
+          return loadAppUserProfileSuccessAction({ detail });
+        }),
+        catchError((error: any) => {
+          this.store.dispatch(logoutAction());
+          this.router.navigateByUrl(NOTFOUNDPAGE);
+          console.log('%c PROFILE DOESNT EXIST!', 'background: green; color: white');
+
+          return of(loadProfileErrorAction({ error: error.message }));
+        })
+      ))
   ));
 
   public isInloginpage(isLoggedIn: boolean): void {

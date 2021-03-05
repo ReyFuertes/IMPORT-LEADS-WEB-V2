@@ -1,4 +1,4 @@
-<div class="il-dialog" fxLayout="column" fxLayoutAlign="center center">
+<div [formGroup]="form" class="il-dialog" fxLayout="column" fxLayoutAlign="center center">
   <div class="header" fxLayoutAlign="center center" fxLayout="column">
     <div fxLayoutAlign="end center">
       <img [src]="svgPath + 'close-icon-big-gray.svg'" (click)="dialogRef.close(false)" />
@@ -32,8 +32,9 @@
       <il-dropdown-multi-select fxFlex="50" [form]="form" controlName="user_role" placeHolder="Role" [options]="$roles | async">
       </il-dropdown-multi-select>
     </div>
-    <div>
-      <mat-checkbox><span>I agree with <a href="javascript:void(0)">terms and conditions</a></span></mat-checkbox>
+    <div class="terms-conditions-text" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+      <p-checkbox formControlName="termsConditions" binary="true" inputId="binary"></p-checkbox>
+      <span>I agree with <a href="javascript:void(0)">terms and conditions</a></span>
     </div>
 
   </div>

@@ -2,7 +2,7 @@ import { AppState } from './../../../store/app.reducer';
 import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, mergeMap, tap, catchError } from 'rxjs/operators';
+import { map, mergeMap, tap, catchError, switchMap } from 'rxjs/operators';
 import { loginAction, loginSuccessAction, logoutAction, loginFailedAction } from './auth.action';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
@@ -22,7 +22,7 @@ export class AuthEffect {
 
   loginAction$ = createEffect(() => this.actions$.pipe(
     ofType(loginAction),
-    mergeMap(({ cred }) => this.authSrv.post(cred, 'signin')
+    switchMap(({ cred }) => this.authSrv.post(cred, 'signin')
       .pipe(
         map((accessToken: any) => {
           if (accessToken) {
@@ -32,7 +32,6 @@ export class AuthEffect {
             this.store.dispatch(loadVenuesAction());
             this.store.dispatch(loadAccessAction());
             this.store.dispatch(loadAllRolesAction());
-            this.store.dispatch(loadAllUsersAction());
 
             const at = JSON.parse(localStorage.getItem('at')) || null;
             if (at?.user) {

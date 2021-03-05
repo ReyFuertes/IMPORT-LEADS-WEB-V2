@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
 import { addUserAction, signUpUserAction } from 'src/app/modules/user-management/store/user-mgmt.actions';
 import { getCreatingUserSelector } from 'src/app/modules/user-management/store/user-mgmt.selectors';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
+import { emailRegex } from 'src/app/shared/util/email';
 
 @Component({
   selector: 'app-user-add-dialog',
@@ -27,7 +28,7 @@ export class UserAddDialogComponent extends GenericDestroyPageComponent implemen
     super();
     this.form = this.fb.group({
       id: [''],
-      username: [null, Validators.required],
+      username: [null, Validators.compose([Validators.required, Validators.pattern(emailRegex.email)])],
       password: [null, Validators.required],
       user_profile: this.fb.group({
         phone: [null, Validators.required],
@@ -37,6 +38,7 @@ export class UserAddDialogComponent extends GenericDestroyPageComponent implemen
       }),
       user_access: [null, Validators.required],
       user_role: [null, Validators.required],
+      termsConditions: [null, Validators.requiredTrue]
     });
 
     this.form.get('user_role').valueChanges.pipe(take(1)).subscribe(res => {

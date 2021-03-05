@@ -1,5 +1,5 @@
 <div [formGroup]="form" class="login-container" fxLayoutAlign="center center" fxFlexFill>
-  <div fxLayout="column" fxLayoutGap="20px">
+  <div fxLayout="column" fxLayoutGap="10px">
     <mat-card>
       <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="5px">
         <img class="logo" [src]="imgPath + 'logo.png'" />
@@ -9,13 +9,15 @@
             <label>Company</label>
             <il-input fxFlex="50" [form]="form" hasBorder="true" isFloatLabel="true" controlName="company" placeholder="Enter Company Name"></il-input>
           </div> -->
-          <div fxLayout="column">
-            <label>Email</label>
-            <il-input fxFlex="50" [form]="form" hasBorder="true" isFloatLabel="true" controlName="username" placeholder="Enter Username or Email"></il-input>
-          </div>
-          <div fxLayout="column">
-            <label>Password</label>
-            <il-input inputType="password" fxFlex="50" [form]="form" hasBorder="true" isFloatLabel="true" controlName="password" placeholder="Password"></il-input>
+          <div>
+            <div fxLayout="column">
+              <label>Email</label>
+              <il-input fxFlex="50" [form]="form" hasBorder="true" isFloatLabel="true" controlName="username" placeholder="Enter Username or Email"></il-input>
+            </div>
+            <div fxLayout="column">
+              <label>Password</label>
+              <il-input class="password" inputType="password" fxFlex="50" [form]="form" hasBorder="true" isFloatLabel="true" controlName="password" placeholder="Password"></il-input>
+            </div>
           </div>
           <div fxLayoutAlign="start center">
             <p-checkbox label="Remember Me"></p-checkbox>

@@ -1,5 +1,3 @@
-import { Observable } from 'rxjs';
-import { HttpHeaders } from '@angular/common/http';
 import { environment } from './../../../../environments/environment';
 import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';

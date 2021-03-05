@@ -6,3 +6,4 @@ export const USERMNGMNTROUTE = '/metaverse/dashboard/user-management';
 export const INSPECTIONSROUTE = '/metaverse/dashboard/inspections';
 export const INSPECTIONSRUNTEMPLATEROUTE = '/metaverse/dashboard/inspections/run-template';
 export const INSPECTIONSRUNREPORTROUTE = '/metaverse/dashboard/inspections/report';
+export const NOTFOUNDPAGE = '/metaverse/not-found-page';

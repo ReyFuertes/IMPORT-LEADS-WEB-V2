@@ -57,8 +57,6 @@ export class UserDetailComponent extends GenericDestroyPageComponent implements 
       })
     });
 
-    /* trigger reload to all users so we will get the updated data */
-    this.store.dispatch(loadAllUsersAction());
   }
 
   ngOnInit(): void {

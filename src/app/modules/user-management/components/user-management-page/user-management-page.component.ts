@@ -28,8 +28,6 @@ export class UserManagementPageComponent extends GenericDestroyPageComponent imp
     });
     dialogRef.afterClosed()
       .pipe(takeUntil(this.$unsubscribe))
-      .subscribe(result => {
-
-      });
+      .subscribe(result => { });
   }
 }

@@ -15,8 +15,13 @@ export enum AppActionTypes {
   getUserRoleAction = '[User] user role',
   getUserRoleSuccessAction = '[User] user role (success)',
   loadAppUserProfileAction = '[User] user app profile',
-  loadAppUserProfileSuccessAction = '[User] user app profile (success)'
+  loadAppUserProfileSuccessAction = '[User] user app profile (success)',
+  loadProfileErrorAction = '[User] load profile error'
 }
+export const loadProfileErrorAction = createAction(
+  AppActionTypes.loadProfileErrorAction,
+  props<{ error: any }>()
+);
 export const loadAppUserProfileAction = createAction(
   AppActionTypes.loadAppUserProfileAction,
   props<{ id: string }>()

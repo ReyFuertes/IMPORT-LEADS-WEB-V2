@@ -61,8 +61,6 @@ export class UserTableComponent extends GenericContainer implements AfterViewIni
 
   constructor(private cdRef: ChangeDetectorRef, private dialog: MatDialog, private router: Router, private store: Store<AppState>) {
     super();
-    /* trigger reload to all users so we will get the updated data */
-    //this.store.dispatch(loadAllUsersAction());
   }
 
   private setData(data: any): void {
@@ -123,10 +121,7 @@ export class UserTableComponent extends GenericContainer implements AfterViewIni
 
   public fmt(item: IUser, col: string, propIdx: string, propName: string) {
     const _item = Object.assign({}, item);
-    const ret = _item
-      && _item[col]
-      && _item[col].map(a => a[propIdx] && a[propIdx][propName]).join(', ');
-
+    const ret = _item[col]?.map(a => a[propIdx] && a[propIdx][propName]).join(', ');
     return ret;
   }
 

@@ -36,6 +36,7 @@ import { CategoryTemplateDialogComponent } from './components/category-template/
 import { RunExistErrorDialogComponent } from './components/run-exist-error/run-exist-error.component';
 import { ImageViewerDialogComponent } from './components/image-viewer-dialog/image-viewer-dialog.component';
 import { MatBadgeModule } from '@angular/material/badge';
+import { CheckboxModule } from 'primeng/checkbox';
 
 const dialogComponents = [
   ContractAddDialogComponent,
@@ -76,12 +77,17 @@ const materialModules = [
   MatBadgeModule
 ];
 
+const primeNgModules = [
+  CheckboxModule
+];
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     ...materialModules,
+    ...primeNgModules,
     SharedModule,
     FlexLayoutModule
   ],

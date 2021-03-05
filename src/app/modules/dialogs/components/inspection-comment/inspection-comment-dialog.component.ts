@@ -83,7 +83,6 @@ export class InspectionCommentDialogComponent extends GenericDestroyPageComponen
 
     this.files.push(file);
 
-    this.files.push(event);
     /* collect all drop images in base64 results */
     convertBlobToBase64(event)
       .pipe(take(1),

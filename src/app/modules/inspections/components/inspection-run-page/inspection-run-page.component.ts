@@ -294,7 +294,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       product: { id: this.selProduct?.value },
       checklist_product: { id: inspectionRun?.checklist_product?.id }
     };
-    debugger
+    
     this.store.dispatch(copyInspectionAction(payload));
 
     this.form.get('copyCount').patchValue(null, { emitEvent: false });

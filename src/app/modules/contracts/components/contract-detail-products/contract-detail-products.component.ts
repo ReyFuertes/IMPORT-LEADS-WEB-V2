@@ -414,7 +414,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
     
     /* assign selected item to form */
     const { id, product, qty, cost, sub_products } = p;
-    debugger
+    
     this.formSubProdsArr = null;
     this.initInputProduct = this.selectedProduct ? true : false;
 
@@ -435,7 +435,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
     }
 
     subProducts?.forEach(si => {
-      debugger
+      
       const item = this.createSubItem({
         _id: si._id,
         id: si.id,

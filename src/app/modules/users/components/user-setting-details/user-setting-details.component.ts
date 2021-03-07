@@ -47,10 +47,13 @@ export class UserSettingDetailsComponent extends GenericDestroyPageComponent imp
     this.store.pipe(select(getUserProfileSelector),
       takeUntil(this.$unsubscribe)).subscribe(res => {
         this.form.patchValue({
+          id: res?.id,
           firstname: res?.firstname,
           lastname: res?.lastname,
           phone: res?.phone,
-          email: res?.email
+          email: res?.email,
+          company_name: res?.company_name,
+          company_address: res?.company_address
         });
       })
   }

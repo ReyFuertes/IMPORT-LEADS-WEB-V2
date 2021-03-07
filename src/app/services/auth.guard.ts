@@ -15,7 +15,7 @@ export class AuthGuard implements CanActivate {
       .pipe(
         tap(isLoggedIn => {
           if (!isLoggedIn) {
-            this.router.navigateByUrl('metaverse/login');
+            this.router.navigateByUrl('iaad/login');
           }
         })
       )

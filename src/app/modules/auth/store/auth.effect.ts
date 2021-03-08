@@ -37,7 +37,7 @@ export class AuthEffect {
             this.store.dispatch(loadAllRolesAction());
 
             const at = JSON.parse(this.storageSrv.get('at')) || null;
-            debugger
+  
             if (at?.user) {
               this.store.dispatch(getUserAccessAction({ id: at.user.id }));
               this.store.dispatch(getUserRoleAction({ id: at.user.id }));

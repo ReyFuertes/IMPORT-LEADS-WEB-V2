@@ -7,7 +7,6 @@ import { UserProfileService } from '../../users.service';
 import { IUserProfile } from '../../users.models';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { UploadService } from 'src/app/services/upload.service';
-import { appNotification } from 'src/app/store/actions/notification.action';
 
 @Injectable()
 export class UserProfileEffects {
@@ -19,7 +18,6 @@ export class UserProfileEffects {
       })
     ))
   ));
-
   uploadProfileImageAction$ = createEffect(() => this.actions$.pipe(
     ofType(uploadProfileImageAction),
     switchMap(({ file }) => this.uploadSrv.upload(file, 'single'))

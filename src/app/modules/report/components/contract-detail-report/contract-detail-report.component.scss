@@ -91,6 +91,9 @@ mat-icon {
   cursor: pointer;
 }
 :host ::ng-deep {
+  p {
+    margin: 5px 0;
+  }
   th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type {
     padding-left: 10px;
   }
@@ -159,6 +162,9 @@ td.mat-cell:first-child .text-edit, td.mat-cell:first-child .text-display {
 }
 .card-row {
   border: none !important;
+}
+p.ql-align-justify {
+  margin: 5px 0 !important;
 }
 tr { 
   border-left: thin $color-gray-3 solid;

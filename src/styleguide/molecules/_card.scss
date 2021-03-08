@@ -51,6 +51,7 @@
 .card-row {
   padding: 30px;
   &:nth-child(odd) {
+    margin-bottom: 15px;
     border-bottom: thin solid $color-gray-3;
   }
 }

@@ -42,6 +42,8 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { reducers } from './store/reducers';
 import { UserProfileEffects } from './store/effects/user-profile.effects';
+import { UserChangePasswordComponent } from './components/user-change-password/user-change-password.component';
+import { UserEffects } from './store/effects/user.effects';
 
 const routes: Routes = [
   {
@@ -59,6 +61,10 @@ const routes: Routes = [
       {
         path: 'setting',
         component: UserSettingPageComponent
+      },
+      {
+        path: 'change-password',
+        component: UserChangePasswordComponent
       }
     ]
   }
@@ -103,7 +109,7 @@ const materialModules = [
     DialogModule,
     RouterModule.forChild(routes),
     StoreModule.forFeature('usersModule', reducers),
-    EffectsModule.forFeature([UserProfileEffects])
+    EffectsModule.forFeature([UserProfileEffects, UserEffects])
   ],
   exports: [],
   declarations: [
@@ -115,7 +121,8 @@ const materialModules = [
     UserProfileSummaryComponent,
     UserProfileInspectionComponent,
     UserSettingPageComponent,
-    UserSettingDetailsComponent
+    UserSettingDetailsComponent,
+    UserChangePasswordComponent
   ],
   providers: [UserProfileService, UserService],
 })

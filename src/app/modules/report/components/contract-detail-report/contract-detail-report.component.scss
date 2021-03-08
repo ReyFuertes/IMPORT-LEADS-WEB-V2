@@ -1,6 +1,7 @@
 @import "src/styleguide/shared";
 .contract-detail-report-container {
   padding: 40px;
+  width: 100%;
 }
 .header {
   width: 100%;
@@ -90,6 +91,9 @@ mat-icon {
   cursor: pointer;
 }
 :host ::ng-deep {
+  th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type {
+    padding-left: 10px;
+  }
   .card-row {
     border: none !important;
     padding: 20px;
@@ -102,6 +106,8 @@ mat-icon {
     border-left: thin $color-gray-3 solid;
     border-right: thin $color-gray-3 solid;
     width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
   }
   .mat-tab-body-wrapper {
     margin-bottom: 20px;
@@ -132,8 +138,12 @@ mat-icon {
   }
 }
 /* print css */
-tr.mat-header-row {
+tr.mat-header-row, tr.mat-row, tr.mat-footer-row {
   height: 35px !important;
+}
+td.mat-cell:first-child .text-edit, td.mat-cell:first-child .text-display {
+  padding-top: 0;
+  padding-bottom: 0;
 }
 .contract-images {
   img {
@@ -144,6 +154,8 @@ tr.mat-header-row {
 .mat-card {
   border: thin $color-gray-3 solid !important;
   width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
 }
 .card-row {
   border: none !important;
@@ -152,15 +164,33 @@ tr {
   border-left: thin $color-gray-3 solid;
   border-right: thin $color-gray-3 solid;
   th {
+    padding-left: 10px !important;
     border-top: thin $color-gray-3 solid;
     border-bottom: none !important;
     &:first-child {
       width: 250px;
+      min-width: 250px;
+      max-width: 250px;
+    }
+    &:nth-child(2) {
+      width: 100% !important;
+      min-width: 100% !important;
+      max-width: 100% !important;
     }
   }
   td {
     border-top: thin $color-gray-3 solid;
     padding: 10px;
     vertical-align: top;
+    &:nth-child(1) {
+      width: 250px;
+      min-width: 250px;
+      max-width: 250px;
+    }
+    &:nth-child(2) {
+      width: 100% !important;
+      min-width: 100% !important;
+      max-width: 100% !important;
+    }
   }
 }

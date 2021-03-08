@@ -68,20 +68,29 @@ export class ContractDetailReportComponent extends GenericDestroyPageComponent i
 
   public onExport(): void {
     this.isPrinting = true;
-    var element = document.querySelector('.contract-detail-report-container');
-    var opt = {
+    let element = document.querySelector('.contract-detail-report-container');
+    let opt = {
       margin: 0.3,
       filename: `contract-detail-${new Date().getTime()}`,
       image: { type: 'jpeg', quality: 1 },
       html2canvas: { scale: 2 },
       jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' },
       pagebreak: {
-        mode: 'avoid-all',
+        avoid: ['category-item', 'tab-header'],
         after: ['table'],
-        avoid: ['tab-header', 'thead', 'th', 'tr', 'td', '.mat-row', 'img']
+        // mode: 'avoid-all',
+        // avoid: ['tab-header', 'thead', 'th', 'tr', 'td', '.mat-row', 'img']
       }
     };
-    html2pdf().set(opt).from(element).save();
+
+    /* remove br tags */
+    element.innerHTML = element.innerHTML.replace(/<br>/gi, "");
+    element.innerHTML = element.innerHTML.replace(/<br\s\/>/gi, "");
+    element.innerHTML = element.innerHTML.replace(/<br\/>/gi, "");
+    /* remove empty p tags */
+    const parsedElement = element.innerHTML.replace("/<p[^>]*><\\/p[^>]*>/", '');
+
+    html2pdf().set(opt).from(parsedElement).save();
 
     setTimeout(() => {
       this.isPrinting = false;

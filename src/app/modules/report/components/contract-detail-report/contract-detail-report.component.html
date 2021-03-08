@@ -11,7 +11,7 @@
     </div>
   </div>
   <!-- contract details -->
-  <mat-card>
+  <mat-card *ngIf="contract?.images?.length > 0">
     <div *ngFor="let image of contract?.images" class="contract-images" fxLayout="row">
       <img [src]="image?.dataImage" />
     </div>

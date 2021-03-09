@@ -11,11 +11,13 @@ import { LoaderService } from './services/loader.interceptor';
 import { environment } from 'src/environments/environment';
 import { GenericDestroyPageComponent } from './shared/generics/generic-destroy-page';
 import { NavigationEnd, Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  providers: [MessageService]
 })
 export class AppComponent extends GenericDestroyPageComponent implements OnInit, AfterViewInit {
   public title: string = 'Import Leads';
@@ -24,7 +26,7 @@ export class AppComponent extends GenericDestroyPageComponent implements OnInit,
   public svgPath: string = environment.svgPath;
   public hideTopNav: boolean = false;
 
-  constructor(private router: Router, public loaderSrv: LoaderService, private store: Store<AppState>, private cdRef: ChangeDetectorRef) {
+  constructor(private msgSrv: MessageService, private router: Router, public loaderSrv: LoaderService, private store: Store<AppState>, private cdRef: ChangeDetectorRef) {
     super();
     this.store.dispatch(initAppAction());
   }

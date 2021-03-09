@@ -2,10 +2,12 @@ import { AppState } from './../../../store/app.reducer';
 import { Store } from '@ngrx/store';
 import { ProductsService } from './../products.service';
 import { IProduct } from './../products.model';
-import { loadProductsAction, loadProductsSuccessAction, addProductAction, addProductSuccessAction, deleteProductAction, deleteProductSuccessAction, updateProductSuccessAction, updateProductAction } from './products.actions';
+import { loadProductsAction, loadProductsSuccessAction, addProductAction, addProductSuccessAction, deleteProductAction, deleteProductSuccessAction, updateProductSuccessAction, updateProductAction, deleteErrorAction } from './products.actions';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
+import { MessageService } from 'primeng/api';
+import { of } from 'rxjs';
 
 @Injectable()
 export class ProductsEffect {
@@ -23,12 +25,16 @@ export class ProductsEffect {
 
   deleteProductAction$ = createEffect(() => this.actions$.pipe(
     ofType(deleteProductAction),
-    switchMap(({ id }) => this.productService.delete(id)
-      .pipe(
-        map((deleted: IProduct) => {
-          return deleteProductSuccessAction({ deleted });
-        })
-      ))
+    switchMap(({ id }) => this.productService.delete(id).pipe(
+      map((deleted: IProduct) => {
+        return deleteProductSuccessAction({ deleted });
+      }),
+      catchError((error) => {
+        console.log('%c PRODUCT CANNOT BE DELETED! ', 'background: red; color: white');
+        console.log('Error: ',  error?.message)
+        return of(deleteErrorAction());
+      })
+    ))
   ));
 
   addProductAction$ = createEffect(() => this.actions$.pipe(

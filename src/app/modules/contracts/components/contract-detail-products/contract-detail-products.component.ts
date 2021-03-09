@@ -319,12 +319,13 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   }
 
   public fmtToSimpleItem(p: IProduct, contract_product_id: string): ISimpleItem {
-    const i = { value: p.id, label: p.product_name, _id: contract_product_id };
+    const i = { value: p?.id, label: p?.product_name, _id: contract_product_id };
     return Object.assign({}, i);
   }
 
   public fmtSubToSimpleItem(p: IProduct, contract_product_id: string): ISimpleItem {
-    const i = { value: p.id, label: p.product_name, _id: contract_product_id };
+    console.log(p)
+    const i = { value: p?.id, label: p?.product_name, _id: contract_product_id };
     return Object.assign({}, i);
   }
 
@@ -342,7 +343,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   public onAdd(): void {
     if (this.form.value && this.initInputProduct) {
       let payload: IContractProduct = this.fmtPayload(this.form.value);
-
+      debugger
       if (payload) {
         this.store.dispatch(addContractProductsAction({ payload }));
       }
@@ -366,7 +367,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
   private getName(name: any): any {
     if (typeof (name) === 'object') {
-      return name?.label && name?.label?.trim() || '';
+      return name?.label?.trim() || '';
     }
     return name?.trim() || '';
   }
@@ -379,16 +380,16 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   }
 
   private fmtSubProducts(sp: any[]): any {
-    return sp && sp.map(sp => {
+    const ret = sp?.map(sp => {
       const ret = _.pickBy({
-        _id: sp.id,
-        id: sp?.product?.id,
-        product_name: this.getName(sp?.product?.product_name),
+        id: sp?.product?.id || sp?.product_name?.value,
+        product_name: sp?.product_name || this.getName(sp?.product?.product_name),
         qty: sp.qty,
         cost: sp.cost,
       }, _.identity);
       return ret;
     }) || [];
+    return ret;
   }
 
   private fmtPayload(formValue: IProduct): any {

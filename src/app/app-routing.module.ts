@@ -5,6 +5,7 @@ import { PageNotFoundComponent } from './shared/components/pageNotFound/pageNotF
 
 const routes: Routes = [
   { path: 'iaad', redirectTo: 'iaad/login', pathMatch: 'full' },
+  { path: '', redirectTo: 'iaad/dashboard', pathMatch: 'full' },
   { path: 'iaad/dashboard', redirectTo: 'iaad/dashboard/contracts', pathMatch: 'full' },
   {
     path: 'iaad/dashboard',

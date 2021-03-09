@@ -1,6 +1,8 @@
-<div *ngIf="($notify | async)?.error" class="notification" [ngClass]="{'error': ($notify | async)?.error }">
+<!-- <div *ngIf="($notify | async)?.error" class="notification" [ngClass]="{'error': ($notify | async)?.error }">
   <p>{{($notify | async)?.message}}</p>
-</div>
+</div> -->
+
+<p-toast position="bottom-center" key="ilt"></p-toast>
 
 <p-blockUI [blocked]="(loaderSrv?.isLoading | async)">
   <div fxFlexFill fxLayout="row" fxLayoutAlign="center center">

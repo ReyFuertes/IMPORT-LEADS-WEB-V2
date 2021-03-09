@@ -41,6 +41,8 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ProductsReducer } from './store/products.reducer';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ToastModule } from 'primeng/toast';
+
 
 const routes: Routes = [
   {
@@ -59,7 +61,8 @@ const primeNgModules = [
   SidebarModule,
   InputSwitchModule,
   ConfirmDialogModule,
-  OverlayPanelModule
+  OverlayPanelModule,
+  ToastModule
 ];
 
 const materialModules = [

@@ -37,6 +37,9 @@ label {
   }
 }
 :host ::ng-deep {
+  .mat-form-field-infix{
+    background-color: $color-gray-5;
+  }
   mat-card {
     margin-bottom: 65px;
   }

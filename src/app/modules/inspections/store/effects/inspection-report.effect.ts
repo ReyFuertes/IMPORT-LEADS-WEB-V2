@@ -6,10 +6,21 @@ import { map, switchMap } from 'rxjs/operators';
 import { AppState } from 'src/app/store/app.reducer';
 import { IInspectionBarReport } from '../../inspections.models';
 import { InspectionReportService } from '../../inspections.service';
-import { inspectionOkCommentsReport, getInspectionOkCommentReportSuccessAction, getInspectorReportAction, getInspectorReportSuccessAction, inspectionBarChartReportAction, inspectionBarChartReportSuccessAction, inspectionProductsReportAction, inspectionProductsReportSuccessAction, getInspectionFailedCommentsReportAction, getInspectionFailedCommentReportSuccessAction } from '../actions/inspection-report.action';
+import { inspectionOkCommentsReport, getInspectionOkCommentReportSuccessAction, getInspectorReportAction, getInspectorReportSuccessAction, inspectionBarChartReportAction, inspectionBarChartReportSuccessAction, inspectionProductsReportAction, inspectionProductsReportSuccessAction, getInspectionFailedCommentsReportAction, getInspectionFailedCommentReportSuccessAction, getTagsReportAction, getTagsReportSuccessAction } from '../actions/inspection-report.action';
 
 @Injectable()
 export class InspectionReportEffect {
+  getTagsReportAction$ = createEffect(() => this.actions$.pipe(
+    ofType(getTagsReportAction),
+    switchMap(({ saved_checklist_id }) => {
+      return this.inspectionReportSrv.getById(saved_checklist_id, 'tags').pipe(
+        map((response: any) => {
+          return getTagsReportSuccessAction({ response });
+        })
+      )
+    })
+  ));
+
   getInspectionFailedCommentsReportAction$ = createEffect(() => this.actions$.pipe(
     ofType(getInspectionFailedCommentsReportAction),
     switchMap(({ saved_checklist_id }) => {

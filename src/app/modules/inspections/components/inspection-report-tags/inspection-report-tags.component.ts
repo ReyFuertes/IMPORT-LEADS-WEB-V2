@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { select, Store } from '@ngrx/store';
 import { ChartOptions, ChartType, ChartDataSets, Chart } from 'chart.js';
 import { Label, Color } from 'ng2-charts';
-
+import { takeUntil } from 'rxjs/operators';
+import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
+import { AppState } from 'src/app/store/app.reducer';
+import { getTagsReportAction, getTagsReportSuccessAction } from '../../store/actions/inspection-report.action';
+import { getTagsReportSelector } from '../../store/selectors/inspection-report.selector';
 export interface Tag {
   tag: string;
   failed: number;
@@ -47,75 +53,40 @@ const ELEMENT_DATA: Tag[] = [
   styleUrls: ['./inspection-report-tags.component.scss']
 })
 
-export class InspectionReportTagsComponent implements OnInit {
+export class InspectionReportTagsComponent extends GenericDestroyPageComponent implements OnInit {
 
-  public tagHeader: any[] = [
-    { title: 'Total amount of tags', value: '4' },
-    { title: 'Average failure rate', value: '5%' }
-  ];
-
-  public barChartOptions: ChartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      yAxes: [{
-          ticks: {
-              beginAtZero: true,
-              stepSize: 10
-          }
-      }],
-      xAxes: [{
-        gridLines: {
-            display: false
-        }
-      }],
-    }
-  };
-  public barChartLabels: Label[] = ['Apperance', 'Materials', 'Measurements', 'Packaging'];
-  public barChartType: ChartType = 'bar';
-  public barChartLegend = true;
-  public barChartPlugins = [];
-
-  public barChartData: ChartDataSets[] = [
-    { data: [49, 50, 48, 50], categoryPercentage: 0.3, label: 'Passsed Items' },
-    { data: [2, 1, 1, 3], categoryPercentage: 0.3, label: 'Failed Items' }
-  ];
-
-  public barChartColors: Color[] = [
-    { backgroundColor: '#c4e3c8' },
-    { backgroundColor: '#b23535' },
-  ];
-
-  public graphData = [
-    {
-      dataConsume: 4,
-      dataRemaining: 96,
-      percent: 4
-    },
-    {
-      dataConsume: 2,
-      dataRemaining: 92,
-      percent: 2
-    },
-    {
-      dataConsume: 6,
-      dataRemaining: 94,
-      percent: 6
-    },
-    {
-      dataConsume: 2,
-      dataRemaining: 98,
-      percent: 2
-    }
-  ];
+  public tagHeader: any[]
 
   public displayedColumns: string[] = ['tag', 'failed', 'passed', 'failureRate', 'aQLimit'];
-  public dataSource = ELEMENT_DATA;
+  public dataSource: any;
+  public totalTags: any;
 
-  constructor() { }
+  constructor(private route: ActivatedRoute, private store: Store<AppState>) {
+    super();
+
+    const saved_checklist_id = this.route.snapshot.paramMap.get('id') || null;
+    if (saved_checklist_id) {
+      this.store.dispatch(getTagsReportAction({ saved_checklist_id }));
+    }
+  }
+
+  public get getTagsCount(): string {
+    return String(this.tagHeader[0]?.total_tags);
+  }
 
   ngOnInit() {
+    this.store.pipe(select(getTagsReportSelector),
+      takeUntil(this.$unsubscribe))
+      .subscribe((res: any) => {
+        if (res) {
+          this.dataSource = res?.tags;
+          this.totalTags = String(res?.total_tags);
 
-   }
-
+          this.tagHeader = [
+            { title: 'Total amount of tags', value:  this.totalTags },
+            { title: 'Average failure rate', value: '--' }
+          ];
+        }
+      });
+  }
 }

@@ -11,7 +11,17 @@ export enum InspectionReportActionTypes {
   getInspectionOkCommentReportSuccessAction = '[Inspection Report] get comment report (success)',
   getInspectionFailedCommentsReportAction = '[Inspection Report] get failed comment report',
   getInspectionFailedCommentReportSuccessAction = '[Inspection Report] get failed comment report (success)',
+  getTagsReportAction = '[Inspection Report] get tag report',
+  getTagsReportSuccessAction = '[Inspection Report] get tag report (success)',
 }
+export const getTagsReportAction = createAction(
+  InspectionReportActionTypes.getTagsReportAction,
+  props<{ saved_checklist_id: string }>()
+);
+export const getTagsReportSuccessAction = createAction(
+  InspectionReportActionTypes.getTagsReportSuccessAction,
+  props<{ response: any }>()
+);
 export const getInspectionFailedCommentsReportAction = createAction(
   InspectionReportActionTypes.getInspectionFailedCommentsReportAction,
   props<{ saved_checklist_id: string }>()

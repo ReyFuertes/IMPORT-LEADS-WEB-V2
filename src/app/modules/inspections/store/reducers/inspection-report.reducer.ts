@@ -1,23 +1,28 @@
 import { createReducer, on, Action } from "@ngrx/store";
 import { IInspectionBarReport, IInspectionCommentReport, IInspectionProductReport } from '../../inspections.models';
-import { getInspectorReportSuccessAction, inspectionBarChartReportSuccessAction, inspectionProductsReportSuccessAction, getInspectionOkCommentReportSuccessAction, getInspectionFailedCommentReportSuccessAction } from '../actions/inspection-report.action';
+import { getInspectorReportSuccessAction, inspectionBarChartReportSuccessAction, inspectionProductsReportSuccessAction, getInspectionOkCommentReportSuccessAction, getInspectionFailedCommentReportSuccessAction, getTagsReportSuccessAction } from '../actions/inspection-report.action';
 
 export interface InspectionReportState {
   inspectionsBarChartReport: IInspectionBarReport,
   productsReport: IInspectionProductReport,
   inspector: any,
   inspectionOkCommentsReport: IInspectionCommentReport[],
-  inspectionFailedCommentsReport: IInspectionCommentReport[]
+  inspectionFailedCommentsReport: IInspectionCommentReport[],
+  inspectionTagsReport: any[]
 }
 export const initialState: InspectionReportState = {
   inspectionsBarChartReport: null,
   productsReport: null,
   inspector: null,
   inspectionOkCommentsReport: null,
-  inspectionFailedCommentsReport: null
+  inspectionFailedCommentsReport: null,
+  inspectionTagsReport: null
 };
 const reducer = createReducer(
   initialState,
+  on(getTagsReportSuccessAction, (state, action) => {
+    return Object.assign({}, state, { inspectionTagsReport: action?.response });
+  }),
   on(getInspectionFailedCommentReportSuccessAction, (state, action) => {
     return Object.assign({}, state, { inspectionFailedCommentsReport: action?.response });
   }),

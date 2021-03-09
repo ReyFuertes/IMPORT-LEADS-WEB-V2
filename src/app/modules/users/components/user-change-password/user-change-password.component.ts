@@ -41,6 +41,10 @@ export class UserChangePasswordComponent extends GenericDestroyPageComponent imp
   public changePassword(): void {
     if (this.form.valid) {
       this.store.dispatch(changeUserPasswordAction({ payload: this.form.value }));
+
+      setTimeout(() => {
+        this.form.reset();
+      }, 1000);
     }
   }
 }

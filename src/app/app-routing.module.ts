@@ -4,10 +4,10 @@ import { AuthGuard } from './services/auth.guard';
 import { PageNotFoundComponent } from './shared/components/pageNotFound/pageNotFound.component';
 
 const routes: Routes = [
-  { path: 'metaverse', redirectTo: 'metaverse/login', pathMatch: 'full' },
-  { path: 'metaverse/dashboard', redirectTo: 'metaverse/dashboard/contracts', pathMatch: 'full' },
+  { path: 'iaad', redirectTo: 'iaad/login', pathMatch: 'full' },
+  { path: 'iaad/dashboard', redirectTo: 'iaad/dashboard/contracts', pathMatch: 'full' },
   {
-    path: 'metaverse/dashboard',
+    path: 'iaad/dashboard',
     canActivate: [AuthGuard],
     children: [
       { path: 'contracts', loadChildren: './modules/contracts/contracts.module#ContractsModule' },

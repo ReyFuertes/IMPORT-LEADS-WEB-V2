@@ -2,8 +2,6 @@
   <p>{{($notify | async)?.message}}</p>
 </div> -->
 
-<p-toast position="bottom-center" key="ilt"></p-toast>
-
 <p-blockUI [blocked]="(loaderSrv?.isLoading | async)">
   <div fxFlexFill fxLayout="row" fxLayoutAlign="center center">
     <img [src]="svgPath + 'loader.svg'" />

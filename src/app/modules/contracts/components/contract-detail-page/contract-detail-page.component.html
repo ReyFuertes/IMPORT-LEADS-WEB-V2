@@ -32,11 +32,11 @@
                 <div>Company</div>
                 <div>{{ contract?.venue?.name }}</div>
               </div>
-              <div fxFlex="25">
+              <div fxFlex="35">
                 <div>Responsible Person</div>
-                <div>{{ contract?.responsible_person || 'None' }}</div>
+                <div>{{ contract?.user?.username || 'None' }}</div>
               </div>
-              <div fxFlex="15">
+              <div fxFlex="10">
                 <div>Upload Date</div>
                 <div>{{ contract?.created_at | date: 'dd/MM/yyyy'}}</div>
               </div>

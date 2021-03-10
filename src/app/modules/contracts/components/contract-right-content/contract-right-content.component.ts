@@ -37,7 +37,8 @@ export class ContractRightContentComponent extends GenericDestroyPageComponent i
 
   ngOnInit() {
     this.$savedChecklist = this.store.pipe(select(getAllSavedChecklistSelector));
-    this.$userList = this.store.pipe(select(getUserListSelector))
+    this.$userList = this.store.pipe(select(getUserListSelector));
+    this.$userList.subscribe(res => console.log(res))
   }
 
   public getChecklist(id: string): void {

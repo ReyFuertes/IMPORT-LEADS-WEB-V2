@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { appNotification } from 'src/app/store/actions/notification.action';
 import { loadVenuesAction } from '../../venues/store/venues.action';
-import { loadAccessAction, loadAllRolesAction, getUserAccessAction, getUserRoleAction, loadAppUserProfileAction } from 'src/app/store/actions/app.action';
+import { loadAccessAction, loadAllRolesAction, getUserAccessAction, getUserRoleAction, loadAppUserProfileAction, loadUserListAction } from 'src/app/store/actions/app.action';
 import { loadAllUsersAction } from '../../user-management/store/user-mgmt.actions';
 import { CONTRACTSROUTE } from 'src/app/shared/constants/routes';
 import { StorageService } from 'src/app/services/storage.service';
@@ -42,6 +42,7 @@ export class AuthEffect {
               this.store.dispatch(getUserAccessAction({ id: at.user.id }));
               this.store.dispatch(getUserRoleAction({ id: at.user.id }));
               this.store.dispatch(loadAppUserProfileAction({ id: at.user.id }));
+              this.store.dispatch(loadUserListAction());
             }
           }
 

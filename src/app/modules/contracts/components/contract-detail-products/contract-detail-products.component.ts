@@ -324,7 +324,6 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   }
 
   public fmtSubToSimpleItem(p: IProduct, contract_product_id: string): ISimpleItem {
-    console.log(p)
     const i = { value: p?.id, label: p?.product_name, _id: contract_product_id };
     return Object.assign({}, i);
   }

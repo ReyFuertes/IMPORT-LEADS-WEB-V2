@@ -38,7 +38,7 @@ export class InspectionCommentDialogComponent extends GenericDestroyPageComponen
     this.form = this.fb.group({
       id: [null],
       comments: [null, Validators.required],
-      images: [null, Validators.required]
+      images: [null, Validators.required],
     });
   }
 
@@ -48,6 +48,10 @@ export class InspectionCommentDialogComponent extends GenericDestroyPageComponen
 
   public getBg(base64: string): string {
     return `url(${base64})`;
+  }
+
+  public getFilePath(cached: any): string {
+    return `${cached?.saved_checklist?.id}/${cached?.filename}`;
   }
 
   public get isFailed(): boolean {

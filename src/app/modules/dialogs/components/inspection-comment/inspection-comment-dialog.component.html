@@ -10,26 +10,17 @@
       <il-textarea rows="5" [noResize]="true" [isFloatLabel]="false" [form]="form" controlName="comments" placeholder="Comment here..."></il-textarea>
       <il-upload-box (imageEmitter)="onImageChange($event)" fxFlex="30"></il-upload-box>
     </div>
-    <!-- inspection images (cdkDropListDropped)="drop($event)"-->
     <div class="img-container" *ngIf="($cachedImages | async)?.length > 0">
       <div cdkDropList  fxLayout="row" class="image-list" cdkDropListOrientation="horizontal" fxLayoutAlign="start center">
         <div class="drag-box" cdkDrag *ngFor="let cached of ($cachedImages | async)" [cdkDragData]="cached" fxLayoutAlign="center center">
           <div class="drag-placeholder" *cdkDragPlaceholder></div>
           <div [id]="cached?.id" fxLayout="column" fxLayoutAlign="center end">
             <img class="remove" (click)="onRemoveCachedImage(cached)" [src]="svgPath + 'cancel-red-16px.svg'">
-            <div class="thumb-img" [ngStyle]="{'background-image': getBg(cached?.image ? cached?.image : apiImagePath + cached?.filename)}"></div>
+            <div class="thumb-img" [ngStyle]="{'background-image': getBg(cached?.image ? cached?.image : apiImagePath + getFilePath(cached))}"></div>
           </div>
         </div>
       </div>
     </div>
-    <!-- <div>
-      <mat-list role="list">
-        <mat-list-item *ngFor="let i of [0, 1, 2]" role="listitem">
-          Lorem Ipsum is simply dummy text of the printing and typesetting.
-        </mat-list-item>
-        <mat-divider></mat-divider>
-      </mat-list>
-    </div> -->
   </div>
   <div class="footer" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
     <button mat-flat-button class="il-button default large" (click)="dialogRef.close(false)">Cancel</button>

@@ -57,7 +57,7 @@ export class InspectionReportFailuresComponent extends GenericDestroyPageCompone
     return images?.slice(0, 3);
   }
 
-  public getImage(image: string): string {
-    return image ? this.apiImagePath + image : `${this.imgPath}no-image.png`;
+  public getImage(image: any): string {
+    return image ? `${this.apiImagePath}${image?.saved_checklist?.id}/${image?.filename}` : `${this.imgPath}no-image.png`;
   }
 }

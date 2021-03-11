@@ -38,7 +38,7 @@ export const removeInsChecklistImageSuccessAction = createAction(
 );
 export const saveInsChecklistImageFilesAction = createAction(
   InspectionActionTypes.saveInsChecklistImageFilesAction,
-  props<{ files: any }>()
+  props<{ files: any, saved_checklist?: any }>()
 );
 export const updateInsChecklistImageFilesSuccessAction = createAction(
   InspectionActionTypes.updateInsChecklistImageFilesSuccessAction,

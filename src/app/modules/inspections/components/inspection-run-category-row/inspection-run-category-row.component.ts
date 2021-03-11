@@ -153,15 +153,6 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
           }
         }));
 
-        /* if images is undefined then set what is being pre uploaded */
-        // this.images = result?.images?.map(i => {
-        //   return {
-        //     ...i,
-        //     inspection_checklist_run: { id: this.runId },
-        //     contract_term: { id: this.row?.id }
-        //   }
-        // });
-
         this.saveAndUpdateImage();
       }
     })
@@ -193,6 +184,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
 
           /* upload image */
           let formData = new FormData();
+          formData.set('saved_checklist_id', source?.saved_checklist?.id);
           this.cnsFileObj(formData);
           this.store.dispatch(saveInsChecklistImageFilesAction({ files: formData }));
         }

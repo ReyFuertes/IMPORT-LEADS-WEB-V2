@@ -6,10 +6,25 @@ import { map, switchMap } from 'rxjs/operators';
 import { AppState } from 'src/app/store/app.reducer';
 import { IInspectionBarReport } from '../../inspections.models';
 import { InspectionReportService } from '../../inspections.service';
-import { inspectionOkCommentsReport, getInspectionOkCommentReportSuccessAction, getInspectorReportAction, getInspectorReportSuccessAction, inspectionBarChartReportAction, inspectionBarChartReportSuccessAction, inspectionProductsReportAction, inspectionProductsReportSuccessAction, getInspectionFailedCommentsReportAction, getInspectionFailedCommentReportSuccessAction, getTagsReportAction, getTagsReportSuccessAction } from '../actions/inspection-report.action';
+import { inspectionOkCommentsReport, getInspectionOkCommentReportSuccessAction, getInspectorReportAction, getInspectorReportSuccessAction, inspectionBarChartReportAction, inspectionBarChartReportSuccessAction, inspectionProductsReportAction, inspectionProductsReportSuccessAction, getInspectionFailedCommentsReportAction, getInspectionFailedCommentReportSuccessAction, getTagsReportAction, getTagsReportSuccessAction, downloadProductionImagesAction, downloadProductionImagesSuccessAction } from '../actions/inspection-report.action';
+import { saveAs } from 'file-saver';
 
 @Injectable()
 export class InspectionReportEffect {
+  downloadProductionImagesAction$ = createEffect(() => this.actions$.pipe(
+    ofType(downloadProductionImagesAction),
+    switchMap(({ saved_checklist_id }) => {
+      return this.inspectionReportSrv.getBinaryById(saved_checklist_id, 'download-production-images').pipe(
+        map((response: any) => {
+
+          window.open(response?.link);
+ 
+          return downloadProductionImagesSuccessAction({ response });
+        })
+      )
+    })
+  ));
+
   getTagsReportAction$ = createEffect(() => this.actions$.pipe(
     ofType(getTagsReportAction),
     switchMap(({ saved_checklist_id }) => {

@@ -30,6 +30,12 @@ export abstract class BaseService<T> {
     });
   }
 
+  protected binaryHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      Authorization: `Bearer ${this.getToken()}`,
+    });
+  }
+
   private removeNullProps(obj: any): any {
     let ret: any;
     if (!Array.isArray(obj)) {
@@ -68,6 +74,11 @@ export abstract class BaseService<T> {
 
   public getById(id: string, addtnlParam?: string): Observable<T> {
     return this.http.get<T>(`${this.baseUrl}${this.entity}/${id}${this.fmtParam(addtnlParam)}`, { headers: this.commonHeaders() });
+  }
+
+  public getBinaryById(id: string, addtnlParam?: string): Observable<T> {
+    return this.http.get<T>(`${this.baseUrl}${this.entity}/${id}${this.fmtParam(addtnlParam)}`,
+      { headers: this.binaryHeaders() });
   }
 
   public upload(object?: any, addtnlParam?: string): Observable<T> {

@@ -43,8 +43,7 @@ export class InspectionReportFailuresComponent extends GenericDestroyPageCompone
 
   public viewImage(image: string): void {
     const imageViewDialog = this.dialog.open(ImageViewerDialogComponent, { data: { image } });
-    imageViewDialog.afterClosed()
-      .subscribe(result => { });
+    imageViewDialog.afterClosed().subscribe(result => { });
   }
 
   public get getProductFailureCount(): any {

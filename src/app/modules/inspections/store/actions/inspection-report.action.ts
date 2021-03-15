@@ -13,7 +13,17 @@ export enum InspectionReportActionTypes {
   getInspectionFailedCommentReportSuccessAction = '[Inspection Report] get failed comment report (success)',
   getTagsReportAction = '[Inspection Report] get tag report',
   getTagsReportSuccessAction = '[Inspection Report] get tag report (success)',
+  downloadProductionImagesAction = '[Inspection Report] download production images',
+  downloadProductionImagesSuccessAction = '[Inspection Report] download production images (success)',
 }
+export const downloadProductionImagesAction = createAction(
+  InspectionReportActionTypes.downloadProductionImagesAction,
+  props<{ saved_checklist_id: string }>()
+);
+export const downloadProductionImagesSuccessAction = createAction(
+  InspectionReportActionTypes.downloadProductionImagesSuccessAction,
+  props<{ response: any }>()
+);
 export const getTagsReportAction = createAction(
   InspectionReportActionTypes.getTagsReportAction,
   props<{ saved_checklist_id: string }>()

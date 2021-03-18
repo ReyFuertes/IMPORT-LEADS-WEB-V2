@@ -38,7 +38,7 @@ export class InspectionCommentDialogComponent extends GenericDestroyPageComponen
     this.form = this.fb.group({
       id: [null],
       comments: [null, Validators.required],
-      images: [null, Validators.required],
+      images: [null],
     });
   }
 

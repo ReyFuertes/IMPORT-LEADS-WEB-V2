@@ -32,7 +32,7 @@ const materialModules = [
 ];
 
 const routes: Routes = [
-  { path: 'iaad/login', component: LoginComponent }
+  { path: 'metaverse/login', component: LoginComponent }
 ];
 
 @NgModule({

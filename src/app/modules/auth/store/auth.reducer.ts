@@ -1,13 +1,17 @@
 import { createReducer, on, Action } from "@ngrx/store";
-import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
-import { loginSuccessAction, isLoggingInAction } from './auth.action';
-
+import {  loginFailedAction } from './auth.action';
 export interface AuthState {
+  loginError: any
 }
 export const initialState: AuthState = {
+  loginError: null
 };
 const authReducer = createReducer(
-  initialState
+  initialState,
+  on(loginFailedAction, (state) => {
+    return Object.assign({}, state, { loginError: true });
+  })
+  
 );
 export function AuthReducer(state: AuthState, action: Action) {
   return authReducer(state, action);

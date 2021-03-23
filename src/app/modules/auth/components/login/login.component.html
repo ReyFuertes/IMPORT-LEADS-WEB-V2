@@ -5,10 +5,6 @@
         <img class="logo" [src]="imgPath + 'logo.png'" />
 
         <div class="content" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="5px">
-          <!-- <div fxLayout="column">
-            <label>Company</label>
-            <il-input fxFlex="50" [form]="form" hasBorder="true" isFloatLabel="true" controlName="company" placeholder="Enter Company Name"></il-input>
-          </div> -->
           <div>
             <div fxLayout="column">
               <label>Email</label>
@@ -28,6 +24,7 @@
               <div>LOGIN</div>
             </div>
           </button>
+          <div *ngIf="loginError" class="error">Error</div>
         </div>
       </div>
     </mat-card>

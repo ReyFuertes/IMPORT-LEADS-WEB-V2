@@ -11,6 +11,7 @@ import { getIsLoggingInSelector, getIsLoginFailedSelector } from 'src/app/store/
 import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 import { textRegex } from 'src/app/shared/util/text';
 import { emailRegex } from 'src/app/shared/util/email';
+import { getLoginErrorSelector } from '../../store/auth.selector';
 
 @Component({
   selector: 'il-login',
@@ -25,14 +26,19 @@ export class LoginComponent implements OnInit {
   public $isLogging: Observable<boolean>;
   public $isLoginFailed: Observable<boolean>;
   public hasError: boolean = false;
-  public failedMsg: string;
+  public loginError: boolean = false;
 
   constructor(private route: ActivatedRoute, private store: Store<AppState>, private fb: FormBuilder) {
     this.form = this.fb.group({
       username: [null, Validators.compose([Validators.required, Validators.pattern(emailRegex.email)])],
-      password: [null, Validators.required],
-      // company: ['Test Company', Validators.required],
+      password: [null, Validators.required]
     });
+
+    this.store.pipe(select(getLoginErrorSelector))
+      .pipe(debounceTime(1000))
+      .subscribe(res => {
+        this.loginError = res;
+      });
   }
 
   ngOnInit() {

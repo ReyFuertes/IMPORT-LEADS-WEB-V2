@@ -22,6 +22,7 @@ const routes: Routes = [
       { path: 'chat', loadChildren: './modules/chat/chat.module#ChatModule' },
       { path: 'products', loadChildren: './modules/products/products.module#ProductsModule' },
       { path: 'user-management', loadChildren: './modules/user-management/user-management.module#UserManagementModule' },
+      { path: 'view-permission', loadChildren: './modules/view-permission/view-permission.module#ViewPermissionModule' },
     ],
   },
   { path: 'report', loadChildren: './modules/report/report.module#ReportModule' },

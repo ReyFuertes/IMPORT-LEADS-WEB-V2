@@ -44,7 +44,12 @@ export class LoginComponent implements OnInit {
     if (this.form.valid) {
       const { username, password } = this.form.value;
       this.store.dispatch(isLoggingInAction());
-      this.store.dispatch(loginAction({ cred: { username, password } }));
+      this.store.dispatch(loginAction({
+        cred: {
+          username: String(username).toLowerCase(),
+          password
+        }
+      }));
     }
   }
 }

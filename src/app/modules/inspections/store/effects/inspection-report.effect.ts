@@ -7,7 +7,7 @@ import { AppState } from 'src/app/store/app.reducer';
 import { IInspectionBarReport } from '../../inspections.models';
 import { InspectionReportService } from '../../inspections.service';
 import { inspectionOkCommentsReport, getInspectionOkCommentReportSuccessAction, getInspectorReportAction, getInspectorReportSuccessAction, inspectionBarChartReportAction, inspectionBarChartReportSuccessAction, inspectionProductsReportAction, inspectionProductsReportSuccessAction, getInspectionFailedCommentsReportAction, getInspectionFailedCommentReportSuccessAction, getTagsReportAction, getTagsReportSuccessAction, downloadProductionImagesAction, downloadProductionImagesSuccessAction } from '../actions/inspection-report.action';
-import { saveAs } from 'file-saver';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class InspectionReportEffect {
@@ -16,8 +16,8 @@ export class InspectionReportEffect {
     switchMap(({ saved_checklist_id }) => {
       return this.inspectionReportSrv.getBinaryById(saved_checklist_id, 'download-production-images').pipe(
         map((response: any) => {
-
-          window.open(response?.link);
+          
+          window.open(environment.apiDownloadsPath + response?.link);
  
           return downloadProductionImagesSuccessAction({ response });
         })

@@ -53,8 +53,11 @@ export class UserAddDialogComponent extends GenericDestroyPageComponent implemen
 
   public onSave(): void {
     if (this.form.value && this.form.valid) {
-
-      this.store.dispatch(signUpUserAction({ payload: this.form.value }));
+      const payload = {
+        ...this.form.value,
+        username: String(this.form.value?.username).toLowerCase()
+      }
+      this.store.dispatch(signUpUserAction({ payload }));
 
       setTimeout(() => { this.dialogRef.close(); }, 500);
     }

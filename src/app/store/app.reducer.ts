@@ -6,6 +6,7 @@ import { NotificationReducer, NotificationState } from './reducers/notification.
 import { AuthState, AuthReducer } from '../modules/auth/store/auth.reducer';
 import { InitAppState, InitAppReducer } from './reducers/app.reducer';
 import { UserMgmtState, UserMgmtReducer } from '../modules/user-management/store/user-mgmt.reducer';
+import { UserViewReducer, UserViewState } from '../modules/view-permission/store/view-permission.reducer';
 export interface AppState {
   initApp: InitAppState,
   notification?: NotificationState,
@@ -13,7 +14,8 @@ export interface AppState {
   products?: ContractProductsState,
   tags?: TagsState,
   auth: AuthState,
-  userMgmt?: UserMgmtState
+  userMgmt?: UserMgmtState,
+  userView?: UserViewState
 }
 export const reducers: ActionReducerMap<AppState> = {
   initApp: InitAppReducer,
@@ -22,5 +24,6 @@ export const reducers: ActionReducerMap<AppState> = {
   products: ProductsReducer,
   tags: TagsReducer,
   auth: AuthReducer,
-  userMgmt: UserMgmtReducer
+  userMgmt: UserMgmtReducer,
+  userView: UserViewReducer
 };

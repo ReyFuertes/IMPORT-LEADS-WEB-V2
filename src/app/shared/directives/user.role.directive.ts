@@ -11,7 +11,6 @@ export enum Roles {
   manager = 2,
   inspector = 3
 }
-
 @Directive({
   selector: '[appHasRole]'
 })

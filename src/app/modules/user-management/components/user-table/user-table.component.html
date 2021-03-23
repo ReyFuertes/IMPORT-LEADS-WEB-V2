@@ -18,6 +18,7 @@
           <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="toDetail(item?.id)">Edit</button>
             <button mat-menu-item (click)="onDelete(item?.id)">Delete</button>
+            <button *appHasRole="'admin'" mat-menu-item (click)="onDelete(item?.id)">View Permission</button>
           </mat-menu>
         </div>
       </td>

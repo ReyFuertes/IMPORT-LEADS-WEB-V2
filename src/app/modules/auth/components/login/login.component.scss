@@ -20,7 +20,7 @@ label {
 }
 .mat-card {
   width: 450px;
-  padding: 30px 55px 50px;
+  padding: 30px 55px 20px;
   border-radius: 2px;
 }
 .il-button {
@@ -36,7 +36,13 @@ label {
     width: 100%;
   }
 }
+.error {
+  height: 25px;
+}
 :host ::ng-deep {
+  .ui-chkbox-label {
+    cursor: pointer;
+  }
   .mat-form-field-infix{
     background-color: $color-gray-5;
   }

@@ -24,6 +24,7 @@
         <button mat-menu-item [routerLink]="changePasswordRoute">Change Password</button>
         <!-- NOTE: THIS WILL BE DISPLAYED IN ADMIN LEVEL -->
         <button *appHasRole="'admin'" mat-menu-item [routerLink]="userMngmntRoute">User Management</button>
+        <button *appHasRole="'admin'" mat-menu-item [routerLink]="viewPermissionRoute">View Permission</button>
         <button mat-menu-item (click)="onLogout()">Logout</button>
       </mat-menu>
     </div>

@@ -10,7 +10,7 @@ import { getAccessSelector, getAppUserProfileSelector, getUserAccessSelector } f
 import { ISimpleItem } from '../../generics/generic.model';
 import { debounceTime, map, takeUntil } from 'rxjs/operators';
 import { sortByAsc, sortByDesc } from '../../util/sort';
-import { CHANGEPASSWORDROUTE, CONTRACTSROUTE, PROFILEROUTE, SETTINGSROUTE, USERMNGMNTROUTE } from 'src/app/shared/constants/routes';
+import { CHANGEPASSWORDROUTE, CONTRACTSROUTE, PROFILEROUTE, SETTINGSROUTE, USERMNGMNTROUTE, VIEWPERMISSIONROUTE } from 'src/app/shared/constants/routes';
 import { GenericDestroyPageComponent } from '../../generics/generic-destroy-page';
 import { StorageService } from 'src/app/services/storage.service';
 
@@ -38,6 +38,7 @@ export class TopNavComponent extends GenericDestroyPageComponent implements OnIn
   public profileRoute = PROFILEROUTE;
   public userMngmntRoute = USERMNGMNTROUTE;
   public changePasswordRoute = CHANGEPASSWORDROUTE;
+  public viewPermissionRoute = VIEWPERMISSIONROUTE;
 
   constructor(private storageSrv: StorageService, private cdRef: ChangeDetectorRef, private store: Store<AppState>) {
     super();

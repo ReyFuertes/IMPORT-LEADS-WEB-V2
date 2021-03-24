@@ -9,8 +9,11 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { ViewPermissionPageComponent } from './components/view-permission-page/view-permission-page.component';
 import { ViewPermissionTableComponent } from './components/view-permission-table/view-permission-table.component';
+import { PickListModule } from 'primeng/picklist';
 
-const primeNgModules = [];
+const primeNgModules = [
+  PickListModule
+];
 
 const materialModules = [];
 
@@ -18,7 +21,12 @@ const routes: Routes = [
   {
     path: '',
     component: ViewPermissionContainerComponent,
-    children: []
+    children: [
+      {
+        path: '',
+        component: ViewPermissionPageComponent
+      },
+    ]
   }
 ];
 

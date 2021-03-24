@@ -1,0 +1,21 @@
+<div class="view-permission-container" fxLayout="column" fxLayoutGap="20px" fxFlexFill>
+  <h2>View Permission</h2>
+  <p-pickList [source]="sourceProducts" [target]="targetProducts" [showSourceControls]="false" [showTargetControls]="false" sourceHeader="Available Contracts" targetHeader="Selected Contracts" dragdrop="true" [responsive]="true"
+    [sourceStyle]="{'height':'100%'}" [targetStyle]="{'height':'100%'}" filterBy="name" sourceFilterPlaceholder="Search by name" targetFilterPlaceholder="Search by name">
+    <ng-template let-product pTemplate="item">
+      <div class="product-item">
+        <div class="product-list-detail">
+          <h5 class="p-mb-2">{{product.name}}</h5>
+          <div>
+            <span>Created by: </span>
+            <span class="product-category">arthur@metaversesolution.com</span>
+          </div>
+        </div>
+        <div class="product-list-action">
+          <h5>Related Venue</h5>
+          <span>The pen factory</span>
+        </div>
+      </div>
+    </ng-template>
+  </p-pickList>
+</div>

@@ -20,7 +20,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { USERMNGMNTROUTE } from 'src/app/shared/constants/routes';
+import { USERMNGMNTROUTE, VIEWPERMISSIONROUTE } from 'src/app/shared/constants/routes';
 
 @Component({
   selector: 'il-user-table',
@@ -51,6 +51,7 @@ export class UserTableComponent extends GenericContainer implements AfterViewIni
   public defaultPageSize: number = 25;
   public pageSizeOptions: number[] = [10, 15, 25, 100];
   public splitToSentCase = splitToSentCase;
+  public viewPermissionRoute = VIEWPERMISSIONROUTE;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;

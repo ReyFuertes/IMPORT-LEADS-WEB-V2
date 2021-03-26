@@ -23,7 +23,7 @@ const routes: Routes = [
     component: ViewPermissionContainerComponent,
     children: [
       {
-        path: '',
+        path: ':id',
         component: ViewPermissionPageComponent
       },
     ]

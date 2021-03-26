@@ -1,6 +1,6 @@
 <div class="view-permission-container" fxLayout="column" fxLayoutGap="20px" fxFlexFill>
   <h2>View Permission</h2>
-  <p-pickList [source]="sourceProducts" [target]="targetProducts" [showSourceControls]="false" [showTargetControls]="false" sourceHeader="Available Contracts" targetHeader="Selected Contracts" dragdrop="true" [responsive]="true"
+  <p-pickList (onMoveToTarget)="handleOnMoveToTarget($event)" (onMoveToSource)="handleOnMoveToSource($event)" [source]="sourceProducts" [target]="targetProducts" [showSourceControls]="false" [showTargetControls]="false" sourceHeader="Available Contracts" targetHeader="Selected Contracts" dragdrop="true" [responsive]="true"
     [sourceStyle]="{'height':'100%'}" [targetStyle]="{'height':'100%'}" filterBy="name" sourceFilterPlaceholder="Search by name" targetFilterPlaceholder="Search by name">
     <ng-template let-product pTemplate="item">
       <div class="product-item">

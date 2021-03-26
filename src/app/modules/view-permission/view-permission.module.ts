@@ -10,6 +10,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { ViewPermissionPageComponent } from './components/view-permission-page/view-permission-page.component';
 import { ViewPermissionTableComponent } from './components/view-permission-table/view-permission-table.component';
 import { PickListModule } from 'primeng/picklist';
+import { UserViewEffects } from './store/view-permission.effects';
+import { UserViewReducer } from './store/view-permission.reducer';
 
 const primeNgModules = [
   PickListModule
@@ -45,8 +47,8 @@ const routes: Routes = [
     ...primeNgModules,
     ...materialModules,
     RouterModule.forChild(routes),
-    StoreModule.forFeature('userView', {}),
-    EffectsModule.forFeature([])
+    StoreModule.forFeature('userView', UserViewReducer),
+    EffectsModule.forFeature([UserViewEffects])
   ],
   exports: [],
   providers: [],

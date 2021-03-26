@@ -47,7 +47,8 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
       start_date: [null, Validators.required],
       delivery_date: [null, Validators.required],
       details: [null],
-      images: [null]
+      images: [null],
+      view_clients: [null]
     });
     /* manually mark as valid if has value */
     this.form && this.form.get('venue').valueChanges
@@ -66,6 +67,22 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
       this.modalTitle = 'Edit ' + data.formValues['contract_name'];
     } else this.modalTitle = 'Add '
 
+  }
+
+  public get getViewClients(): any[] {
+    return [{
+      label: 'John Doe',
+      value: '1'
+    }, {
+      label: 'Bong Go',
+      value: '2'
+    },{
+      label: 'Lenie Robredo',
+      value: '3'
+    }, {
+      label: 'Rody Duterte',
+      value: '4'
+    }];
   }
 
   private formToEntity(item: IContract): void {
@@ -141,7 +158,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
 
     this.store.pipe(select(isAddingOrUpdatingSelector),
       takeUntil(this.$unsubscribe)).subscribe(res => {
-        if(!res) {
+        if (!res) {
           this.dialogRef.close(true);
         }
       });

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/store/app.reducer';
+import { saveUserPermissionAction } from '../../store/view-permission.actions';
 
 @Component({
   selector: 'il-view-permission-page',
@@ -46,9 +49,22 @@ export class ViewPermissionPageComponent implements OnInit {
   ]
   public targetProducts: any[];
 
-  constructor() { }
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
     this.targetProducts = [];
+  }
+
+  public handleOnMoveToTarget(event: any[]): void {
+    if (event?.shift()) {
+      const payload = {
+
+      };
+      this.store.dispatch(saveUserPermissionAction({ payload }));
+    }
+  }
+
+  public handleOnMoveToSource(event: any): void {
+    console.log(event);
   }
 }

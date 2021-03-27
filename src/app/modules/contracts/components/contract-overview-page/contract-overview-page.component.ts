@@ -6,7 +6,7 @@ import { AddEditState } from 'src/app/shared/generics/generic.model';
 import { tap, delay, take, debounceTime, takeUntil } from 'rxjs/operators'
 import { AppState, reducers } from './../../../../store/app.reducer';
 import { IContract } from './../../contract.model';
-import { ContractAddDialogComponent } from 'src/app/modules/dialogs/components/contracts-add-dialog/contract-add-dialog.component';
+import { ContractAddDialogComponent } from 'src/app/modules/dialogs/components/contract-add-dialog/contract-add-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from './../../../../../environments/environment';
 import { Component, Input, OnInit } from '@angular/core';

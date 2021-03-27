@@ -2,7 +2,7 @@ import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { tap, map, switchMap, takeUntil, filter, catchError } from 'rxjs/operators';
-import { initAppAction, initAppSuccessAction, loadAccessAction, loadAccessSuccessAction, loadAllRolesAction, loadAllRolesSuccessAction, getUserAccessAction, getUserAccessSuccessAction, getUserRoleAction, getUserRoleSuccessAction, loadAppUserProfileAction, loadAppUserProfileSuccessAction, loadProfileErrorAction, loadUserListAction, loadUserListSuccessAction } from '../actions/app.action';
+import { initAppAction, initAppSuccessAction, loadAccessAction, loadAccessSuccessAction, loadAllRolesAction, loadAllRolesSuccessAction, getUserAccessAction, getUserAccessSuccessAction, getUserRoleAction, getUserRoleSuccessAction, loadAppUserProfileAction, loadAppUserProfileSuccessAction, loadProfileErrorAction, loadUserListAction, loadUserListSuccessAction, loadUserClientsAction, loadUserClientsSuccessAction } from '../actions/app.action';
 import { loginFailedAction, logoutAction, logoutSuccessAction } from 'src/app/modules/auth/store/auth.action';
 import { NavigationEnd, Router } from '@angular/router';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
@@ -19,6 +19,17 @@ import { StorageService } from 'src/app/services/storage.service';
 
 @Injectable()
 export class InitAppEffect {
+  loadUserClientsAction$ = createEffect(() => this.actions$.pipe(
+    ofType(loadUserClientsAction),
+    switchMap(() => {
+      return this.userSrv.getAll('clients').pipe(
+        map((response: IUser[]) => {
+          return loadUserClientsSuccessAction({ response });
+        })
+      )
+    })
+  ));
+
   loadUserListAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadUserListAction),
     switchMap(() => {
@@ -94,6 +105,7 @@ export class InitAppEffect {
               this.store.dispatch(getUserRoleAction({ id: at.user.id }));
               this.store.dispatch(loadAppUserProfileAction({ id: at.user.id }));
               this.store.dispatch(loadUserListAction());
+              this.store.dispatch(loadUserClientsAction());
             }
             this.isInloginpage(isLoggedIn);
           }

@@ -14,7 +14,7 @@ import { IContract, IProductImage, IContractCategory, ICategory, IContractCatego
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, ViewChild, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import { ContractAddDialogComponent } from 'src/app/modules/dialogs/components/contracts-add-dialog/contract-add-dialog.component';
+import { ContractAddDialogComponent } from 'src/app/modules/dialogs/components/contract-add-dialog/contract-add-dialog.component';
 import { ContractTemplateDialogComponent } from 'src/app/modules/dialogs/components/contract-template/contract-template-dialog.component';
 import { GenericPageDetailComponent } from 'src/app/shared/generics/generic-page-detail';
 import { Observable, fromEvent, of } from 'rxjs';
@@ -331,7 +331,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
         /* reload all contract category */
         setTimeout(() => {
           this.store.dispatch(loadContractCategoryAction({ id: this.form.get('id').value }));
-        }, 3000);
+        }, 3001);
       }
     });
   }

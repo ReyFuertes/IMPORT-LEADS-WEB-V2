@@ -41,9 +41,11 @@ export class UserAddDialogComponent extends GenericDestroyPageComponent implemen
       termsConditions: [null, Validators.requiredTrue]
     });
 
-    this.form.get('user_role').valueChanges.pipe(take(1)).subscribe(res => {
-      if (res) this.form.controls['user_role'].setErrors(null);
-    })
+    this.form.get('user_role').valueChanges
+      .pipe(take(1))
+      .subscribe(res => {
+        if (res) this.form.controls['user_role'].setErrors(null);
+      });
 
     this.$access = this.store.pipe(select(getAccessSelector));
     this.$roles = this.store.pipe(select(getAllRolesSelector))

@@ -1,9 +1,20 @@
 import { createSelector } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducer';
-import { IRole } from 'src/app/modules/user-management/user-mgmt.model';
+import { IRole, IUser } from 'src/app/modules/user-management/user-mgmt.model';
 import { sortByDesc } from 'src/app/shared/util/sort';
 
 export const selectedState = (state: AppState) => state.initApp;
+export const getUserClientsSelector = createSelector(
+  selectedState,
+  state => state?.userClients?.map((uc: IUser) => {
+    const u = {
+      label: `${uc?.user_profile?.firstname} ${uc?.user_profile?.lastname}`,
+      value: uc.id
+    };
+    console.log(u)
+    return u
+  })
+);
 export const getUserListSelector = createSelector(
   selectedState,
   state => state?.userList
@@ -36,18 +47,18 @@ export const getAllRolesSelector = createSelector(
 export const getAccessSelector = createSelector(
   selectedState,
   state => state?.access?.map(a => {
-      const children = state?.access?.filter(c => {
-        return c.parent && c?.parent?.id === a.id;
-      }) || null;
+    const children = state?.access?.filter(c => {
+      return c.parent && c?.parent?.id === a.id;
+    }) || null;
 
-      return {
-        label: a.access_name,
-        value: String(a.id),
-        parent: a.parent,
-        children,
-        user_route: a.user_route
-      }
-    }).sort((a, b) => sortByDesc(a, b, 'position'))
+    return {
+      label: a.access_name,
+      value: String(a.id),
+      parent: a.parent,
+      children,
+      user_route: a.user_route
+    }
+  }).sort((a, b) => sortByDesc(a, b, 'position'))
 );
 export const getIsLoginFailedSelector = createSelector(
   selectedState,

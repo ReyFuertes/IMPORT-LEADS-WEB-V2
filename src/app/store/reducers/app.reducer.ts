@@ -1,5 +1,5 @@
 import { createReducer, on, Action } from "@ngrx/store";
-import { initAppSuccessAction, loadAccessSuccessAction, loadAllRolesSuccessAction, getUserAccessSuccessAction, getUserRoleSuccessAction, loadAppUserProfileSuccessAction, loadUserListSuccessAction } from '../actions/app.action';
+import { initAppSuccessAction, loadAccessSuccessAction, loadAllRolesSuccessAction, getUserAccessSuccessAction, getUserRoleSuccessAction, loadAppUserProfileSuccessAction, loadUserListSuccessAction, loadUserClientsSuccessAction } from '../actions/app.action';
 import { loginSuccessAction, logoutSuccessAction, isLoggingInAction, loginFailedAction } from 'src/app/modules/auth/store/auth.action';
 import { IAccess } from 'src/app/models/user.model';
 import { IRole, IUser } from 'src/app/modules/user-management/user-mgmt.model';
@@ -16,6 +16,7 @@ export interface InitAppState {
   userRoles?: string[],
   detail?: IUserProfile,
   userList?: IUser[]
+  userClients?: IUser[]
 }
 export const initialState: InitAppState = {
   token: null,
@@ -27,10 +28,14 @@ export const initialState: InitAppState = {
   userAccess: null,
   userRoles: null,
   detail: null,
-  userList: null
+  userList: null,
+  userClients: null
 };
 const initAppReducer = createReducer(
   initialState,
+  on(loadUserClientsSuccessAction, (state, action) => {
+    return Object.assign({}, state, { userClients: action.response });
+  }),
   on(loadUserListSuccessAction, (state, action) => {
     return Object.assign({}, state, { userList: action.response });
   }),

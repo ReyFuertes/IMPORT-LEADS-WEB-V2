@@ -19,7 +19,16 @@ export enum AppActionTypes {
   loadProfileErrorAction = '[User] load profile error',
   loadUserListAction = '[User] user list',
   loadUserListSuccessAction = '[User] user list (success)',
+  loadUserClientsAction = '[User] user clients',
+  loadUserClientsSuccessAction = '[User] user clients (success)',
 }
+export const loadUserClientsAction = createAction(
+  AppActionTypes.loadUserClientsAction
+);
+export const loadUserClientsSuccessAction = createAction(
+  AppActionTypes.loadUserClientsSuccessAction,
+  props<{ response: IUser[] }>()
+);
 export const loadUserListAction = createAction(
   AppActionTypes.loadUserListAction
 );

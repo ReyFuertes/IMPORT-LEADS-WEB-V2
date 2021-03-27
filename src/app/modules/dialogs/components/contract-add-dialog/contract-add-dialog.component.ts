@@ -1,8 +1,8 @@
-import { getContractById, getCachedImages, isAddingOrUpdatingSelector } from './../../../contracts/store/selectors/contracts.selector';
-import { getVenuesSelector } from './../../../venues/store/venues.selector';
-import { ISimpleItem } from './../../../../shared/generics/generic.model';
+import { getContractById, getCachedImages, isAddingOrUpdatingSelector } from '../../../contracts/store/selectors/contracts.selector';
+import { getVenuesSelector } from '../../../venues/store/venues.selector';
+import { ISimpleItem } from '../../../../shared/generics/generic.model';
 import { take, map, takeUntil } from 'rxjs/operators';
-import { AppState } from './../../../../store/app.reducer';
+import { AppState } from '../../../../store/app.reducer';
 import { AddEditDialogState } from '../../../../shared/generics/generic.model';
 import { GenericAddEditComponent } from '../../../../shared/generics/generic-ae';
 import { IContract, IProductImage } from '../../../contracts/contract.model';
@@ -19,6 +19,9 @@ import { ActivatedRoute } from '@angular/router';
 import { convertBlobToBase64 } from 'src/app/shared/util/convert-to-blob';
 import * as _ from 'lodash';
 import { StorageService } from 'src/app/services/storage.service';
+import { getUserClientsSelector } from 'src/app/store/selectors/app.selector';
+import { Observable } from 'rxjs';
+import { IUser } from 'src/app/modules/user-management/user-mgmt.model';
 
 @Component({
   selector: 'il-contract-add-dialog',
@@ -36,6 +39,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
   public files: File[] = [];
   public imgUrl: string = `${environment.apiUrl}contracts/image/`;
   public AddEditState = AddEditState;
+  public $userClients: Observable<ISimpleItem[]>;
 
   constructor(private storageSrv: StorageService, public fb: FormBuilder, public dialogRef: MatDialogRef<ContractAddDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: AddEditDialogState, private store: Store<AppState>, public route: ActivatedRoute) {
@@ -50,6 +54,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
       images: [null],
       view_clients: [null]
     });
+    
     /* manually mark as valid if has value */
     this.form && this.form.get('venue').valueChanges
       .pipe(take(1),
@@ -67,22 +72,6 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
       this.modalTitle = 'Edit ' + data.formValues['contract_name'];
     } else this.modalTitle = 'Add '
 
-  }
-
-  public get getViewClients(): any[] {
-    return [{
-      label: 'John Doe',
-      value: '1'
-    }, {
-      label: 'Bong Go',
-      value: '2'
-    },{
-      label: 'Lenie Robredo',
-      value: '3'
-    }, {
-      label: 'Rody Duterte',
-      value: '4'
-    }];
   }
 
   private formToEntity(item: IContract): void {
@@ -114,6 +103,8 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
         this.venues = <ISimpleItem[]>venues.map(venue => Object.assign([],
           { label: venue.name, value: venue.id }));
       });
+
+    this.$userClients = this.store.pipe(select(getUserClientsSelector));
   }
 
   public get isUploadDisabled(): boolean {

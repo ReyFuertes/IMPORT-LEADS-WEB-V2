@@ -13,6 +13,7 @@ export interface IUser {
   company?: string;
   phone?: string;
   user_access?: IUserAccess[];
+  user_profile?: IUserProfile;
   image?: string;
 }
 export interface IUserRole {

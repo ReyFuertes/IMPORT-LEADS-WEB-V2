@@ -42,6 +42,7 @@ label {
 :host ::ng-deep {
   .ui-chkbox-label {
     cursor: pointer;
+    font-size: 12px;
   }
   .mat-form-field-infix{
     background-color: $color-gray-5;

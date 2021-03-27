@@ -33,8 +33,10 @@
       </il-dropdown-multi-select>
     </div>
     <div class="terms-conditions-text" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-      <p-checkbox formControlName="termsConditions" binary="true" inputId="binary"></p-checkbox>
-      <span>I agree with <a href="javascript:void(0)">terms and conditions</a></span>
+      <div fxFlex="50" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+        <p-checkbox formControlName="termsConditions" binary="true"></p-checkbox>
+        <span>I agree with <a href="javascript:void(0)">terms and conditions</a></span>
+      </div>
     </div>
 
   </div>

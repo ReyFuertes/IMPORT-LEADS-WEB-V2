@@ -7,12 +7,10 @@ export const selectedState = (state: AppState) => state.initApp;
 export const getUserClientsSelector = createSelector(
   selectedState,
   state => state?.userClients?.map((uc: IUser) => {
-    const u = {
+    return {
       label: `${uc?.user_profile?.firstname} ${uc?.user_profile?.lastname}`,
       value: uc.id
     };
-    console.log(u)
-    return u
   })
 );
 export const getUserListSelector = createSelector(

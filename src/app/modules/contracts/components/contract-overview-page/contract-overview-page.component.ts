@@ -74,6 +74,6 @@ export class ContractOverviewPageComponent extends GenericDestroyPageComponent i
     const dialogRef = this.dialog.open(ContractAddDialogComponent, {
       data: { state: AddEditState.Add }
     });
-    dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe), take(1)).subscribe((res) => { });
+    dialogRef.afterClosed().subscribe((res) => { });
   }
 }

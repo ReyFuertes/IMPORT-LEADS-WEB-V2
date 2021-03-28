@@ -52,7 +52,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
       delivery_date: [null, Validators.required],
       details: [null],
       images: [null],
-      view_clients: [null]
+      user_client: [null]
     });
     
     /* manually mark as valid if has value */
@@ -77,7 +77,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
   private formToEntity(item: IContract): void {
     if (!item) return;
 
-    const { id, contract_name, venue, start_date, delivery_date, details, images } = item;
+    const { id, contract_name, venue, start_date, delivery_date, details, images, user_client } = item;
 
     this.form.controls['id'].patchValue(id);
     this.form.controls['contract_name'].patchValue(contract_name);
@@ -86,6 +86,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
     this.form.controls['delivery_date'].patchValue(delivery_date);
     this.form.controls['details'].patchValue(details);
     this.form.controls['images'].patchValue(images);
+    this.form.controls['user_client'].patchValue(user_client);
 
     this.store.dispatch(cacheImagesAction({ images: Object.assign([], images) }));
   }
@@ -130,7 +131,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
   public save = (item: IContract): void => {
     const files = new FormData();
     const { label, value } = this.venues.filter(v => v.value === this.form.get('venue').value)[0];
-
+    
     item.venue = { id: value, name: label };
     item.images = this.cnsFileObj(files);
 

@@ -15,7 +15,7 @@
       </il-dropdown-select>
       <il-datepicker fxFlex="31" [form]="form" controlName="start_date" placeholder="Start Date"></il-datepicker>
       <il-datepicker fxFlex="31" [form]="form" controlName="delivery_date" placeholder="Delivery Date"></il-datepicker>
-      <il-dropdown-multi-select fxFlex [form]="form" controlName="view_clients" placeHolder="Role" [options]="$userClients | async">
+      <il-dropdown-multi-select fxFlex [form]="form" controlName="user_client" placeHolder="Role" [options]="$userClients | async">
       </il-dropdown-multi-select>
     </div>
     <div fxLayoutAlign="start center" fxLayout="row" fxLayoutGap="40px">

@@ -17,3 +17,10 @@ export class UserService extends BaseService<IUser> {
     super(http, 'user', storageSrv);
   }
 }
+
+@Injectable({ providedIn: 'root' })
+export class UserClientService extends BaseService<IUser> {
+  constructor(http: HttpClient, storageSrv: StorageService) {
+    super(http, 'user-client', storageSrv);
+  }
+}

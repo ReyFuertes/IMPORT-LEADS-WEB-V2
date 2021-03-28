@@ -1,6 +1,6 @@
 import { ITag } from './../tags/tags.model';
 import { IProduct } from './../products/products.model';
-import { IUser } from '../user-management/user-mgmt.model';
+import { IRole, IUser } from '../user-management/user-mgmt.model';
 
 export interface ICategoryTemplate {
   id?: string;
@@ -149,6 +149,7 @@ export interface IContract extends ICoreModel {
   images?: IProductImage[];
   user?: IUser;
   contract_products?: IProduct[]
+  user_client?: IUser[]
 }
 export interface ICoreModel {
   id?: string;

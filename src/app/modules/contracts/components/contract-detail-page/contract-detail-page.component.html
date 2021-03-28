@@ -47,7 +47,7 @@
                 <div cdkDropList (cdkDropListDropped)="dropImages($event)" fxLayout="row" class="image-list" cdkDropListOrientation="horizontal" fxLayoutAlign="end center">
                   <div *ngFor="let image of contractImages" class="drag-box" cdkDrag [cdkDragDisabled]="showRightNav" [cdkDragData]="image" fxLayoutAlign="center center">
                     <div class="drag-placeholder" *cdkDragPlaceholder></div>
-                    <div *ngIf="image && image?.filename" class="img" [ngStyle]="{'background-image': getBg(imgUrl +  image?.filename)}"></div>
+                    <div *ngIf="image && image?.filename" class="img" [ngStyle]="{'background-image': getBg(apiContractsImagePath +  image?.filename)}"></div>
                   </div>
                 </div>
               </div>

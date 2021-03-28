@@ -14,7 +14,6 @@ import { IContract, IProductImage, IContractCategory, ICategory, IContractCatego
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, ViewChild, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import { ContractAddDialogComponent } from 'src/app/modules/dialogs/components/contract-add-dialog/contract-add-dialog.component';
 import { ContractTemplateDialogComponent } from 'src/app/modules/dialogs/components/contract-template/contract-template-dialog.component';
 import { GenericPageDetailComponent } from 'src/app/shared/generics/generic-page-detail';
 import { Observable, fromEvent, of } from 'rxjs';
@@ -33,6 +32,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { CONTRACTSROUTE } from 'src/app/shared/constants/routes';
 import { ContractImportTemplateDialogComponent } from 'src/app/modules/dialogs/components/contract-import-template-dialog/contract-import-template-dialog.component';
 import { StorageService } from 'src/app/services/storage.service';
+import { ContractAddDialogComponent } from 'src/app/modules/dialogs/components/contract-add-dialog/contract-add-dialog.component';
 
 @Component({
   selector: 'il-contract-detail-page',
@@ -62,6 +62,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   public checklistEntities: IContractChecklistItem[] = [];
   public venues: IVenue[];
   public apiImagePath: string = environment.apiImagePath;
+  public apiContractsImagePath: string = environment.apiContractsImagePath;
 
   @Output() public openNavChange = new EventEmitter<boolean>();
   @ViewChild('scrollPnl', { static: false }) public scrollPnl: any;

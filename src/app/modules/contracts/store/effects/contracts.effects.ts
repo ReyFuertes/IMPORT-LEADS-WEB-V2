@@ -8,7 +8,6 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { loadContractsAction, loadContractSuccessAction, addContractAction, addContractSuccessAction, uploadContractImagesAction, uploadContractImageSuccessAction, reOrderImagesAction, updateContractAction, updateContractSuccess, deleteContractAction, deleteContractSuccessAction, uploadTermImageAction, addImageUploadState } from '../actions/contracts.action';
 import { Store } from '@ngrx/store';
-import { appNotification } from 'src/app/store/actions/notification.action';
 
 @Injectable()
 export class ContractsEffect {
@@ -61,7 +60,7 @@ export class ContractsEffect {
   uploadContractImagesAction$ = createEffect(() => this.actions$.pipe(
     ofType(uploadContractImagesAction),
     switchMap(({ files }) => {
-      return this.uploadService.upload(files, 'multiple').pipe(
+      return this.uploadService.upload(files, 'contracts/multiple').pipe(
         map((images: any) => {
           return uploadContractImageSuccessAction({ images });
         })

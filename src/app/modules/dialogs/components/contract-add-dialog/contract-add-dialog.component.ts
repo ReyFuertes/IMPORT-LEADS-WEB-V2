@@ -37,7 +37,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
   public images: IProductImage[] = [];
   public cachedImages: IProductImage[] = [];
   public files: File[] = [];
-  public imgUrl: string = `${environment.apiUrl}contracts/image/`;
+  public apiContractsImagePath: string = environment.apiContractsImagePath;
   public AddEditState = AddEditState;
   public $userClients: Observable<ISimpleItem[]>;
 

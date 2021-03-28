@@ -331,7 +331,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
         /* reload all contract category */
         setTimeout(() => {
           this.store.dispatch(loadContractCategoryAction({ id: this.form.get('id').value }));
-        }, 3001);
+        }, 3000);
       }
     });
   }

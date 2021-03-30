@@ -113,7 +113,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   }
 
   ngAfterViewInit(): void {
-    this.dataSource = new MatTableDataSource<any>(this.contractCategory.terms);
+    this.dataSource = new MatTableDataSource<any>(this.contractCategory?.terms);
   }
 
   public onCategoryMoveDown(): void {
@@ -124,7 +124,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
     this.store.dispatch(moveUpContractCategoryAction({ payload: this.contractCategory }));
   }
 
-  public getColUuid = (element: any, col: string) => `${element.id}${col}`;
+  public getColUuid = (element: any, col: string) => `${element?.id}${col}`;
 
   public getTerm = (term: IContractTerm) => this.selectedTerm = term;
 
@@ -154,6 +154,10 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       .subscribe(result => {
         if (result) {
           this.store.dispatch(deleteContractCategoryAction({ id }));
+
+          setTimeout(() => {
+            this.store.dispatch(loadContractCategoryAction({ id: this.contractCategory?.contract?.id }));
+          }, 1000);
         }
       });
   }
@@ -164,7 +168,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
 
   private reloadContractCategory = () =>
     setTimeout(() => {
-      this.store.dispatch(loadContractCategoryAction({ id: this.contractCategory.contract.id }))
+      this.store.dispatch(loadContractCategoryAction({ id: this.contractCategory?.contract?.id }))
     }, 1000);
 
   public createTerm(): void {
@@ -185,9 +189,9 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
 
   public onSave(e: any): void {
     e.stopImmediatePropagation();
-    
+
     if (this.form.value) {
-      this.form.get('contract_category').patchValue({ id: this.contractCategory.id });
+      this.form.get('contract_category').patchValue({ id: this.contractCategory?.id });
 
       this.store.dispatch(updateContractTermAction({ payload: this.form.value }));
     }
@@ -203,7 +207,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   }
 
   public sanitizeHtml(html: any): any {
-    return this.sanitizer.bypassSecurityTrustHtml(html);
+    return this.sanitizer.bypassSecurityTrustHtml(html.replace("<p><br></p>", ""));
   }
 
   public getDefaultTerm(str: string, prop: string, collapsed: boolean): string {
@@ -248,7 +252,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       if (!this.inCheckListing) {
       }
     }
-    
+
     if (changes?.contractCategory?.currentValue)
       this.dataSource = new MatTableDataSource<any>(changes.contractCategory.currentValue.terms);
   }

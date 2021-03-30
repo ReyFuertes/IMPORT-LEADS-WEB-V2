@@ -151,7 +151,8 @@ export class InitAppEffect {
       });
   }
 
-  constructor(private store: Store<AppState>, private actions$: Actions,
+  constructor(private store: Store<AppState>, 
+    private actions$: Actions,
     private router: Router, 
     private userSrv: UserService,
     private accessSrv: AccessService, 

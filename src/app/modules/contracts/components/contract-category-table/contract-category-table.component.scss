@@ -23,6 +23,7 @@ il-editor {
   }
   img {
     cursor: pointer;
+    height: 20px;
   }
   > div > div {
     cursor: pointer;
@@ -47,8 +48,8 @@ table {
   }
 }
 .edit-content {
-  height: 20px;
-  margin-top: 5px;
+  height: 16px;
+  margin-top: 3px;
 }
 .btn-edit-actions {
   margin-bottom: 20px;
@@ -80,6 +81,7 @@ table {
       }
       .text-edit img {
         width: 40px;
+        height: 16px;
       }
     }
     &:nth-child(2) {
@@ -93,7 +95,7 @@ table {
       }
     }
     > div {
-      min-height: 32px;
+      min-height: 20px;
     }
   }
   td.mat-cell:not(:last-child) > div {

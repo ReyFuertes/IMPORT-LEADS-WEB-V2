@@ -55,7 +55,7 @@ export class ContractCategoryEffect {
 
   deleteContractCategoryAction$ = createEffect(() => this.actions$.pipe(
     ofType(deleteContractCategoryAction),
-    mergeMap(({ id }) => this.contractCategorySrv.delete(id).pipe(
+    switchMap(({ id }) => this.contractCategorySrv.delete(id).pipe(
       map((deleted: IContractCategory) => {
         return deleteContractCategoryActionSuccess({ deleted });
       })
@@ -63,7 +63,7 @@ export class ContractCategoryEffect {
   ));
   loadContractCategoryAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadContractCategoryAction),
-    mergeMap(({ id }) => this.contractCategorySrv.getAll(`${id}/contract`).pipe(
+    switchMap(({ id }) => this.contractCategorySrv.getAll(`${id}/contract`).pipe(
       map((items: any[]) => {
         return loadContractCategoryActionSuccess({ items });
       })

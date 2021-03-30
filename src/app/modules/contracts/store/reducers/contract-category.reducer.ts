@@ -83,7 +83,7 @@ const reducer = createReducer(
   }),
   on(updateContractTermSuccessAction, (state, action) => {
     let _entities = Object.assign([], Object.values(state.entities));
-
+    
     const match = _entities.find(t => t.terms.find(tg => tg.id === action.updated.id));
     let updatedTerms = match?.terms?.map(term => {
       if (term.id === action.updated.id) {
@@ -104,7 +104,7 @@ const reducer = createReducer(
     return Object.assign({}, state, { entities });
   }),
   on(deleteContractCategoryActionSuccess, (state, action) => {
-    return ({ ...adapter.removeOne(action.deleted.id, state) })
+    return adapter.removeOne(action?.deleted?.id, state)
   }),
   on(addContractCategoryActionSuccess, (state, action) => {
     return ({ ...adapter.addOne(action.created, state) })

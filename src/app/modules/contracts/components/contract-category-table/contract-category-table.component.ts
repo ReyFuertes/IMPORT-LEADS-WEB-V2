@@ -207,7 +207,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   }
 
   public sanitizeHtml(html: any): any {
-    return this.sanitizer.bypassSecurityTrustHtml(html.replace("<p><br></p>", ""));
+    return this.sanitizer.bypassSecurityTrustHtml(html?.replace("<p><br></p>", "") || '');
   }
 
   public getDefaultTerm(str: string, prop: string, collapsed: boolean): string {

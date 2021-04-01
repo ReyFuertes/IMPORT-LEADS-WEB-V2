@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
@@ -37,7 +37,8 @@ export class ContractDetailReportComponent extends GenericDestroyPageComponent i
   public isPrinting: boolean = false;
   public contractsRoute = CONTRACTSROUTE;
 
-  constructor(private sanitizer: DomSanitizer, private store: Store<AppState>, private route: ActivatedRoute) {
+  constructor(private cdRef: ChangeDetectorRef, private sanitizer: DomSanitizer, private store: Store<AppState>,
+    private route: ActivatedRoute, private router: Router) {
     super();
     this.store.dispatch(loadContractsAction({}));
   }
@@ -60,7 +61,7 @@ export class ContractDetailReportComponent extends GenericDestroyPageComponent i
   ngAfterViewInit(): void {
     this.$contractCategories = this.store.pipe(select(getContractCategorySelector));
     this.$contractCategories.pipe(debounceTime(1000)).subscribe((res: any) => {
-      if (res && res.length > 0) {
+      if (res && res?.length > 0) {
         this.dataSource = new MatTableDataSource<any>(res?.terms);
       }
     });
@@ -68,6 +69,8 @@ export class ContractDetailReportComponent extends GenericDestroyPageComponent i
 
   public onExport(): void {
     this.isPrinting = true;
+    console.log('1', this.isPrinting)
+
     let element = document.querySelector('.contract-detail-report-container');
     let opt = {
       margin: 0.3,
@@ -93,8 +96,8 @@ export class ContractDetailReportComponent extends GenericDestroyPageComponent i
     html2pdf().set(opt).from(parsedElement).save();
 
     setTimeout(() => {
-      this.isPrinting = false;
-    }, 5000);
+      this.router.navigateByUrl(`${this.contractsRoute}/${this.id}/detail`);
+    }, 3000);
   }
 
   public fmtCol(str: string): string {

@@ -1,6 +1,6 @@
 <!--  -->
-<div class="milestone__container" fxLayout="row" fxLayoutAlign="space-between center">
-  <div *ngFor="let date of pointOfDates; let i = index;" fxLayout="column" fxLayoutAlign="center center" class="milestone__box" [matTooltip]="getTooltip(date, i)"
+<div class="milestone-container" fxLayout="row" fxLayoutAlign="space-between center">
+  <div *ngFor="let date of pointOfDates; let i = index;" fxLayout="column" fxLayoutAlign="center center" class="milestone-box" [matTooltip]="getTooltip(date, i)"
     [ngClass]="{'border-left': i === 0, 'border-right': (pointOfDates.length - 1) == i, 'w-50': (pointOfDates.length - 1) == i || i === 0}" [attr.id]="i">
 
     <div class="milestone__h-line" fxLayoutGap="20px" [fxLayoutAlign]="(pointOfDates.length - 1) !== i ? (i === 0 ? 'start center': 'center center') : 'end center'" [ngClass]="{'top-1': i === 0 || (pointOfDates.length - 1) === i}">

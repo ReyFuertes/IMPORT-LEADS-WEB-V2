@@ -77,6 +77,14 @@ export class InspectionActivePanelComponent extends GenericRowComponent implemen
     this.dragStart = false;
   }
 
+  public onView(id: string): void {
+    this.store.dispatch(runInspectionAction({
+      payload: {
+        saved_checklist: { id }
+      }
+    }))
+  }
+
   ngAfterViewInit(): void {
     this.cdRef.detectChanges();
   }

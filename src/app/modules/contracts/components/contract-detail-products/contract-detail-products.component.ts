@@ -186,7 +186,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
     /* in checklisting */
     if (!isPreselected && this.inCheckListing) {
       const id = (this.checklistSource && this.checklistSource.id) || null;
-      
+
       /* check if the user is multi updating */
       if (this.checklistTerms && this.checklistTerms.length === 0
         && this.checklistProducts.length > 1) {
@@ -204,7 +204,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       /* perform apply and override here */
       if (this.checklistSource && this.checklistProducts.length >= 1) {
         const action = this.isProductHasChecklist(item.id) ? ProductStatusType.Override : ProductStatusType.Apply;
-        
+
         /* if the selected product doesnt have a checklist and the source has a checklist */
         if (this.isProductHasChecklist(item.id) || !this.isProductHasChecklist(item.id) && this.isProductHasChecklist(id))
           this.overrideOrApply(item, action);
@@ -215,7 +215,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       }
     } else {
       this.isAddState = true;
-      
+
       this.store.dispatch(selectProductAction({ item }));
     }
   }
@@ -342,7 +342,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   public onAdd(): void {
     if (this.form.value && this.initInputProduct) {
       let payload: IContractProduct = this.fmtPayload(this.form.value);
-      
+      debugger
       if (payload) {
         this.store.dispatch(addContractProductsAction({ payload }));
       }
@@ -380,21 +380,30 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
   private fmtSubProducts(sp: any[]): any {
     const ret = sp?.map(sp => {
+      let productName: string = '';
+      let productId: string = '';
+      if (typeof (sp?.product_name) === 'object') {
+        productId = sp?.product_name?.value;
+        productName = sp?.product_name?.label
+      } else {
+        productName = sp['product_name'];
+        productId = sp['id'];
+      }
       const ret = _.pickBy({
-        id: sp?.product?.id || sp?.product_name?.value,
-        product_name: sp['product_name'] ? sp?.product_name?.label : this.getName(sp?.product_name),
+        id: productId,
+        product_name: productName,
         qty: sp.qty,
         cost: sp.cost,
       }, _.identity);
       return ret;
     }) || [];
-    
+    debugger
     return ret;
   }
 
   private fmtPayload(formValue: IProduct): any {
     const { id, product_name, qty, cost, sub_products } = formValue;
-    
+
     const pid: string = this.getId(product_name);
     const ret = {
       parent: _.pickBy({
@@ -412,10 +421,10 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
   public onEdit(p: any): void {
     if (this.inCheckListing) return;
-    
+
     /* assign selected item to form */
     const { id, product, qty, cost, sub_products } = p;
-    
+
     this.formSubProdsArr = null;
     this.initInputProduct = this.selectedProduct ? true : false;
 
@@ -436,7 +445,6 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
     }
 
     subProducts?.forEach(si => {
-      
       const item = this.createSubItem({
         _id: si._id,
         id: si.id,

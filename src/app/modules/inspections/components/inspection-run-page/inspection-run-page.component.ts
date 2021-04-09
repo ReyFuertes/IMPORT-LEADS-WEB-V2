@@ -69,6 +69,10 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       .pipe(takeUntil(this.$unsubscribe)).subscribe((res: any) => {
         if (res) {
           const { saved_checklist, count, contract_product, saved_checklist_items, terms } = res;
+        
+          if(res?.isLastRow === true) {
+            alert('Your in the last row of the record.');
+          }
 
           this.runInspectionCount = count;
           this.savedChecklistId = saved_checklist?.id;
@@ -121,11 +125,16 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
     })
   }
 
-  public onSelectProductChange(event: string): void {
+  public onSelectProductChange(event: string, isViewing: boolean = false): void {
     if (!event) {
       this.selProduct = null;
       return;
     };
+
+    if(isViewing) {
+      alert('You are in viewing mode');
+      return;
+    }
 
     this.selProduct = Object.assign({}, this.products?.find(cp => cp?.value === event));
 
@@ -314,6 +323,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   }
 
   public onBack(): void {
+    this.permitToNavigate = true;
     this.router.navigateByUrl(INSPECTIONSROUTE);
   }
 

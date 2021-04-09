@@ -5,7 +5,7 @@
       <span>#{{ inspectionRun?.count }}</span>
     </h1>
   </div>
-
+  
   <!--- actions panel -->
   <div class="actions-panel" fxLayout="row" fxLayoutAlign="start center">
     <div fxFlex="40" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
@@ -27,13 +27,13 @@
         </div>
       </mat-menu>
 
-      <button [disabled]="isBtnActionDisabled || isFirstRecord" (click)="onDeleteNavigateTo(inspectionRun)" class="il-button il-bordered-blue delete-current desk-delete-nav-to" mat-flat-button>
+      <button [disabled]="isBtnActionDisabled || isFirstRecord || inspectionRun?.isViewing" (click)="onDeleteNavigateTo(inspectionRun)" class="il-button il-bordered-blue delete-current desk-delete-nav-to" mat-flat-button>
         <img [src]="svgPath + 'delete-icon-blue.svg'" />
         <span>Delete current and go back </span>
       </button>
 
       <!-- ipad button -->
-      <button [disabled]="isBtnActionDisabled || isFirstRecord" (click)="onDeleteNavigateTo(inspectionRun)" class="il-button il-bordered-blue delete-current ipad-delete-nav-to" mat-flat-button>
+      <button [disabled]="isBtnActionDisabled || isFirstRecord || inspectionRun?.isViewing" (click)="onDeleteNavigateTo(inspectionRun)" class="il-button il-bordered-blue delete-current ipad-delete-nav-to" mat-flat-button>
         <img [src]="svgPath + 'delete-icon-blue.svg'" />
       </button>
     </div>
@@ -51,14 +51,14 @@
           <img [src]="svgPath + 'arrow-right-icon-white.svg'" />
         </div>
       </button>
-      <button (click)="isBtnActionDisabled ? onResume(inspectionRun) : onPause()" mat-flat-button class="il-button il-bg-green">
+      <button [disabled]="inspectionRun?.isViewing" (click)="isBtnActionDisabled ? onResume(inspectionRun) : onPause()" mat-flat-button class="il-button il-bg-green">
         <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
           <img [src]="svgPath + 'pause-icon-white.svg'" />
           <span *ngIf="!isBtnActionDisabled">Pause run</span>
           <span *ngIf="isBtnActionDisabled">Resume run</span>
         </div>
       </button>
-      <button (click)="onStop()" mat-flat-button class="il-button il-bg-red">
+      <button (click)="!inspectionRun?.isViewing ? onStop() : onBack()" mat-flat-button class="il-button il-bg-red">
         <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
           <img [src]="svgPath + 'stop-icon-white.svg'" />
           <span>Stop run</span>
@@ -71,7 +71,7 @@
     <il-input fxFlex="122px" [form]="form" isFloatLabel="true" [inputMaxLen]="10" controlName="copyCount" placeholder="Items checked for this run"></il-input>
 
     <div fxFlex fxLayoutAlign="end center">
-      <il-dropdown-select-search [selectedItem]="selProduct?.value" (valueEmitter)="onSelectProductChange($event)" placeholder="Select Product" [options]="products"></il-dropdown-select-search>
+      <il-dropdown-select-search [selectedItem]="selProduct?.value" (valueEmitter)="onSelectProductChange($event, inspectionRun?.isViewing)" placeholder="Select Product" [options]="products"></il-dropdown-select-search>
     </div>
   </div>
   <div *ngIf="selProduct; else selectedAProduct">

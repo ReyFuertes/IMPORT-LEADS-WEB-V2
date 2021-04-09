@@ -4,11 +4,11 @@
     <div [innerHTML]="term?.contract_term?.term_description"></div>
   </td>
   <td fxFlex="120px">
-    <il-radio-group [disabled]="isPaused" [selected]="rowUpdate?.comment?.verification" (valueEmitter)="handleSelOption($event)" [options]="verifOptions">
+    <il-radio-group [disabled]="isPaused || isViewing" [selected]="rowUpdate?.comment?.verification" (valueEmitter)="handleSelOption($event)" [options]="verifOptions">
     </il-radio-group>
   </td>
   <td fxFlex="120px">
-    <button *ngIf="isVerified(term?.comment?.verification)" (click)="showComment(term?.comment?.id)" class="il-button purple" mat-flat-button>
+    <button *ngIf="isVerified(term?.comment?.verification) && !isViewing" (click)="showComment(term?.comment?.id)" class="il-button purple" mat-flat-button>
       <span>Remarks</span>
     </button>
   </td>

@@ -27,6 +27,12 @@ h1 {
   @include il-bg-blue;
   width: 120px;
   background-color: $color-green !important;
+
+  &:disabled {
+    border-color: $color-gray-2 !important;
+    cursor: not-allowed;
+    background-color: $color-gray-2 !important;
+  }
 }
 .il-bg-red {
   @include il-bg-blue;

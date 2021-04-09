@@ -24,6 +24,7 @@ import { getInspectionRunStatusSelector } from '../../store/selectors/inspection
 export class InspectionRunCategoryRowComponent extends GenericDestroyPageComponent implements OnInit, OnChanges {
   @Input() public source: any;
   @Input() public term: any;
+  @Input() public isViewing: boolean;
 
   public verifOptions: ISimpleItem[] = [
     { label: 'Ok', value: 'ok' },

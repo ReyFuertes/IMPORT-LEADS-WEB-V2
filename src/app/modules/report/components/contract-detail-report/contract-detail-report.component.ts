@@ -97,7 +97,7 @@ export class ContractDetailReportComponent extends GenericDestroyPageComponent i
 
     setTimeout(() => {
       this.router.navigateByUrl(`${this.contractsRoute}/${this.id}/detail`);
-    }, 3000);
+    }, 3001);
   }
 
   public fmtCol(str: string): string {

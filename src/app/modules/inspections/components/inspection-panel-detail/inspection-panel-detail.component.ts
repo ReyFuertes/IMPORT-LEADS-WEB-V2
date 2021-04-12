@@ -10,16 +10,15 @@ import { IActiveInspection } from '../../inspections.models';
 export class InspectionPanelDetailComponent implements OnInit {
   @Input() public detail: IActiveInspection;
 
+  public products: any[];
   constructor() { }
 
-  ngOnInit() {  }
-
-  public get getProducts(): any {
-    return this.detail.products.map(ci => {
+  ngOnInit() {
+    this.products = this.detail?.products?.map(ci => {
       return {
         label: ci.product_name,
         value: ci.id
       };
-    })
+    });
   }
 }

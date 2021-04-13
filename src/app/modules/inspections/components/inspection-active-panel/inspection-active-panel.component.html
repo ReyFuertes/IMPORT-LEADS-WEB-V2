@@ -34,8 +34,8 @@
                   <span>{{ item?.is_paused && i === 0 ? 'RESUME' : menu?.label }}</span>
                 </button>
               </ng-container>
-              <button *ngIf="item?.isViewing" (click)="onView(item?.id)" mat-menu-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-                <span>View</span>
+              <button *ngIf="item?.isViewing" [disabled]="item?.run_count === 0" (click)="onView(item?.id)" mat-menu-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                <span>{{ item?.run_count === 0 ? 'Not run yet': 'View' }}</span>
               </button>
             </mat-menu>
           </div>

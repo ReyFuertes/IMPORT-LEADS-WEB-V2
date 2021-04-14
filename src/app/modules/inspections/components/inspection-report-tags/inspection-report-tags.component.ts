@@ -57,7 +57,7 @@ export class InspectionReportTagsComponent extends GenericDestroyPageComponent i
 
   public tagHeader: any[]
 
-  public displayedColumns: string[] = ['tag', 'failed', 'passed', 'failureRate', 'aQLimit'];
+  public displayedColumns: string[] = ['tag', 'failed', 'passed', 'failureRate'];
   public dataSource: any;
   public totalTags: any;
 
@@ -82,9 +82,13 @@ export class InspectionReportTagsComponent extends GenericDestroyPageComponent i
           this.dataSource = res?.tags;
           this.totalTags = String(res?.total_tags);
 
+          const failure_rates = this.dataSource.map(o => o?.failure_rate);
+          const totalFailureRate = failure_rates?.reduce((a, c) => { return Number(a) + Number(c) });
+          const avgFailureRate = totalFailureRate / failure_rates?.length;
+  
           this.tagHeader = [
-            { title: 'Total amount of tags', value:  this.totalTags },
-            { title: 'Average failure rate', value: '--' }
+            { title: 'Total amount of tags', value: this.totalTags },
+            { title: 'Average failure rate', value: `${parseFloat(String(Math.abs(avgFailureRate))).toFixed(2)}%` }
           ];
         }
       });

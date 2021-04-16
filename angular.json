@@ -71,7 +71,7 @@
                   "with": "src/environments/environment.iaad.ts"
                 }
               ],
-              "outputPath": "dist/iaad",
+              "outputPath": "dist/iaad/",
               "optimization": false,
               "outputHashing": "all",
               "sourceMap": false,
@@ -96,6 +96,7 @@
                   "with": "src/environments/environment.metaverse.ts"
                 }
               ],
+              "outputPath": "dist/metaverse/",
               "optimization": false,
               "outputHashing": "all",
               "sourceMap": false,

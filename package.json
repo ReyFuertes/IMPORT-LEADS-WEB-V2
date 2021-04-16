@@ -6,7 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "build:iaad": "ng build --configuration iaad",
-    "metaverse": "ng build --configuration metaverse",
+    "build:metaverse": "ng build --configuration metaverse",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

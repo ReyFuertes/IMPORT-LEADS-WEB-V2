@@ -71,7 +71,6 @@ export class ContractDetailReportComponent extends GenericDestroyPageComponent i
     this.loaderService.isLoading.next(true);
 
     setTimeout(() => {
-      debugger
       let element = document.querySelector('.contract-detail-report-container');
       let opt = {
         margin: 0.3,

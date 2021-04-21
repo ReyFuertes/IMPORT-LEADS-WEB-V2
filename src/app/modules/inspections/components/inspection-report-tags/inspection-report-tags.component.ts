@@ -82,10 +82,18 @@ export class InspectionReportTagsComponent extends GenericDestroyPageComponent i
           this.dataSource = res?.tags;
           this.totalTags = String(res?.total_tags);
 
-          const failure_rates = this.dataSource.map(o => o?.failure_rate);
-          const totalFailureRate = failure_rates?.reduce((a, c) => { return Number(a) + Number(c) });
-          const avgFailureRate = totalFailureRate / failure_rates?.length;
-  
+          const failure_rates: any[] = this.dataSource?.map(o => o?.failure_rate);
+          
+          let totalFailureRate: any;
+          let avgFailureRate: any;
+          if (failure_rates?.length > 0) {
+            totalFailureRate = failure_rates?.reduce((a, c) => { return Number(a) + Number(c) });
+            avgFailureRate = totalFailureRate / failure_rates?.length;
+          } else {
+            totalFailureRate = 0;
+            avgFailureRate = 0;
+          }
+
           this.tagHeader = [
             { title: 'Total amount of tags', value: this.totalTags },
             { title: 'Average failure rate', value: `${parseFloat(String(Math.abs(avgFailureRate))).toFixed(2)}%` }

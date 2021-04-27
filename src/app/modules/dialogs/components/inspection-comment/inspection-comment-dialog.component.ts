@@ -95,7 +95,7 @@ export class InspectionCommentDialogComponent extends GenericDestroyPageComponen
           return {
             //id: uuid(),
             image: b64Result,
-            filename: `${uuid()}.${file.name.split('?')[0].split('.').pop()}`,
+            filename: `${uuid()}.${file.name.split('.').pop()}`,
             file: file,
             size: file.size,
             mimetype: file.type

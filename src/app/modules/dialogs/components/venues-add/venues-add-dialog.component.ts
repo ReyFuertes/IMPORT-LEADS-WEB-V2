@@ -42,7 +42,8 @@ export class VenuesAddDialogComponent implements OnInit {
 
   public uploadImage(event: any): void {
     const file: File = event.target.files[0];
-    const filename = `${uuid()}.${file.name.split('?')[0].split('.').pop()}`;
+
+    const filename = `${uuid()}.${file.name.split('.').pop()}`;
     convertBlobToBase64(file)
       .pipe(take(1),
         map(b64Result => {

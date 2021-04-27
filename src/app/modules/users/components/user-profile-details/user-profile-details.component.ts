@@ -99,11 +99,11 @@ export class UserProfileDetailsComponent extends GenericDestroyPageComponent imp
     convertBlobToBase64(file)
       .pipe(take(1),
         takeUntil(this.$unsubscribe),
-        map(b64Result => {
+        map(b64Result => {       
           return {
             id: uuid(),
             image: b64Result,
-            filename: `${uuid()}.${file.name.split('?')[0].split('.').pop()}`,
+            filename: `${uuid()}.${file.name.split('.').pop()}`,
             file: file,
             size: file.size,
             mimetype: file.type

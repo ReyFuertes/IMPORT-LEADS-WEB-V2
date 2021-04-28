@@ -14,6 +14,7 @@ import { ModalStateType } from 'src/app/models/generic.model';
 import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
 import { getInsChecklistImagesSelector } from '../../store/selectors/inspection-checklist.selector';
 import { getInspectionRunStatusSelector } from '../../store/selectors/inspection.selector';
+import { logToConsoleError } from 'src/app/shared/util/logger';
 
 @Component({
   selector: 'il-inspection-run-category-row',
@@ -185,9 +186,13 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
 
           /* upload image */
           let formData = new FormData();
-          formData.set('saved_checklist_id', source?.saved_checklist?.id);
-          this.cnsFileObj(formData);
-          this.store.dispatch(saveInsChecklistImageFilesAction({ files: formData }));
+          if(source?.saved_checklist?.id) {
+            formData.set('saved_checklist_id', source?.saved_checklist?.id);
+            this.cnsFileObj(formData);
+            this.store.dispatch(saveInsChecklistImageFilesAction({ files: formData }));
+          } else {
+            logToConsoleError('saveAndUpdateImage: SOURCE CHECKLIST ID IS NULL! ');
+          }
         }
       });
   }

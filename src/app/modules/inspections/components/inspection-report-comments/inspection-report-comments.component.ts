@@ -39,8 +39,7 @@ export class InspectionReportCommentsComponent implements OnInit {
 
   public viewImage(image: string): void {
     const imageViewDialog = this.dialog.open(ImageViewerDialogComponent, { data: { image } });
-    imageViewDialog.afterClosed()
-      .subscribe(result => { });
+    imageViewDialog.afterClosed().subscribe(result => { });
   }
 
   public get getProductCommentCount(): any {
@@ -53,7 +52,8 @@ export class InspectionReportCommentsComponent implements OnInit {
     return images?.slice(0, 3);
   }
 
-  public getImage(image: string): string {
-    return image ? this.apiImagePath + image : `${this.imgPath}no-image.png`;
+  public getImage(image: any): string {
+    //return image ? this.apiImagePath + image : `${this.imgPath}no-image.png`;
+    return image ? `${this.apiImagePath}${image?.saved_checklist?.id}/${image?.filename}` : `${this.imgPath}no-image.png`;
   }
 }

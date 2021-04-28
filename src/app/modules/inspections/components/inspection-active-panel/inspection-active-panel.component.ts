@@ -29,7 +29,8 @@ export class InspectionActivePanelComponent extends GenericRowComponent implemen
     action: (item) => {
       this.store.dispatch(runInspectionAction({
         payload: {
-          saved_checklist: { id: item.id }
+          saved_checklist: { id: item.id },
+          user: item?.user
         }
       }))
     }

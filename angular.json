@@ -63,6 +63,56 @@
                   "maximumError": "15mb"
                 }
               ]
+            },
+            "iaad": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.iaad.ts"
+                }
+              ],
+              "outputPath": "dist/iaad/",
+              "optimization": false,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "15mb",
+                  "maximumError": "15mb"
+                }
+              ]
+            },
+            "metaverse": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.metaverse.ts"
+                }
+              ],
+              "outputPath": "dist/metaverse/",
+              "optimization": false,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "15mb",
+                  "maximumError": "15mb"
+                }
+              ]
             }
           }
         },
@@ -74,6 +124,12 @@
           "configurations": {
             "production": {
               "browserTarget": "importleads:build:production"
+            },
+            "iaad": {
+              "browserTarget": "importleads:build:iaad"
+            },
+            "metaverse": {
+              "browserTarget": "importleads:build:metaverse"
             }
           }
         },
@@ -129,6 +185,12 @@
           "configurations": {
             "production": {
               "devServerTarget": "importleads:serve:production"
+            },
+            "iaad": {
+              "devServerTarget": "importleads:serve:iaad"
+            },
+            "metaverse": {
+              "devServerTarget": "importleads:serve:metaverse"
             }
           }
         },

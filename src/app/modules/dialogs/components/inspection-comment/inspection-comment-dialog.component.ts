@@ -89,13 +89,13 @@ export class InspectionCommentDialogComponent extends GenericDestroyPageComponen
 
     /* collect all drop images in base64 results */
     convertBlobToBase64(event)
-      .pipe(take(1),
+      .pipe(take(2),
         takeUntil(this.$unsubscribe),
         map(b64Result => {
           return {
             //id: uuid(),
             image: b64Result,
-            filename: `${uuid()}.${file.name.split('?')[0].split('.').pop()}`,
+            filename: `${uuid()}.${file.name.split('.').pop()}`,
             file: file,
             size: file.size,
             mimetype: file.type

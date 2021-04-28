@@ -105,7 +105,8 @@ export enum RunStatusType {
 export interface IInspectionRuntime {
   id?: string;
   saved_checklist?: IInsChecklist;
-  run_status?: RunStatusType
+  user?: any;
+  run_status?: RunStatusType;
 }
 export interface IInsChecklist {
   id?: string;

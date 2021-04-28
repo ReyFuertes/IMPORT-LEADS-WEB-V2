@@ -37,6 +37,7 @@ export class LoaderInterceptor extends GenericDestroyPageComponent implements Ht
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.requests.push(req);
     this.loaderService.isLoading.next(true);
+    
     return Observable.create(observer => {
       const subscription = next.handle(req)
         .pipe(takeUntil(this.$unsubscribe))

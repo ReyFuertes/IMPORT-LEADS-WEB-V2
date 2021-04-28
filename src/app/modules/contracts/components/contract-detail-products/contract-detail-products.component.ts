@@ -342,7 +342,6 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   public onAdd(): void {
     if (this.form.value && this.initInputProduct) {
       let payload: IContractProduct = this.fmtPayload(this.form.value);
-      debugger
       if (payload) {
         this.store.dispatch(addContractProductsAction({ payload }));
       }
@@ -397,7 +396,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       }, _.identity);
       return ret;
     }) || [];
-    debugger
+
     return ret;
   }
 

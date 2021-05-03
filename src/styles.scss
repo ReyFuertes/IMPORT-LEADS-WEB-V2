@@ -163,10 +163,10 @@ input:-webkit-autofill:active {
   mat-expansion-panel-header {
     border-radius: 0 !important;
   }
-  .mat-expansion-panel-content, .mat-expansion-panel-body, table {
-    page-break-inside: avoid;
+  .mat-expansion-panel-content, table {
+    // page-break-inside: avoid;
     overflow: visible;
-    break-inside: avoid;
+    // break-inside: avoid;
   }
   .mat-expansion-indicator {
     display: none !important;

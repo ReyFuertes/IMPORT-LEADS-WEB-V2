@@ -9,7 +9,6 @@ body {
   height: 100%;
   min-height: 100%;
   background-color: #f2f5f8;
-  overflow: hidden;
 }
 a,
 a:focus,
@@ -116,4 +115,76 @@ input:-webkit-autofill:active {
   place-content: center;
   align-items: center;
   font-size: 12px;
+}
+@media print {
+  script, style { 
+    display:none; 
+  }
+  body {
+    padding: 0 !important;
+    margin: 0 !important;
+    height: auto !important;
+    min-height: auto !important;
+    background-color: $color-white;
+    height:99%; 
+  }
+  .production-image {
+    display: none !important;
+  }
+  il-topnav {
+    display: none !important;
+  }
+  .page-container {
+    margin: 0 !important;
+    padding: 0 !important;
+    h2, h5 {
+      font-size: 12px !important;
+      font-weight: 500 !important;
+      line-height: 15px !important;
+    }
+  }
+  il-inspection-report-inspector, il-inspection-report-inspections {
+    width: 740px !important;
+    border-radius: 0 !important;
+  }
+  .mat-expansion-panel {
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+  .mat-expansion-panel-body {
+    background-color: $color-white !important;
+  }
+  mat-expansion-panel-header {
+    border: thin $color-gray-4 solid !important;
+    border-radius: 0 !important;
+    background-color: $color-gray-4 !important;
+  }
+  mat-expansion-panel,
+  mat-expansion-panel-header {
+    border-radius: 0 !important;
+  }
+  .mat-expansion-panel-content, .mat-expansion-panel-body, table {
+    page-break-inside: avoid;
+    overflow: visible;
+    break-inside: avoid;
+  }
+  .mat-expansion-indicator {
+    display: none !important;
+  }
+  tr.mat-row, tr.mat-footer-row {
+    height: 48px !important;
+    min-height: 48px !important;
+  }
+  .mat-cell, .mat-footer-cell {
+    font-size: 14px;
+    height: 48px !important;
+    min-height: 48px !important;
+  }
+  @page {
+    size: A4;
+    margin: 1.5cm;
+    @bottom-center {
+      content: counter(page) "/" counter(pages);
+    }
+  }
 }

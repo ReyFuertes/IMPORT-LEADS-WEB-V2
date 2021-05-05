@@ -64,14 +64,14 @@
                 }
               ]
             },
-            "iaad": {
+            "metaverse": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.iaad.ts"
+                  "with": "src/environments/environment.metaverse.ts"
                 }
               ],
-              "outputPath": "dist/iaad/",
+              "outputPath": "dist/metaverse/",
               "optimization": false,
               "outputHashing": "all",
               "sourceMap": false,
@@ -125,8 +125,8 @@
             "production": {
               "browserTarget": "importleads:build:production"
             },
-            "iaad": {
-              "browserTarget": "importleads:build:iaad"
+            "metaverse": {
+              "browserTarget": "importleads:build:metaverse"
             },
             "metaverse": {
               "browserTarget": "importleads:build:metaverse"
@@ -186,8 +186,8 @@
             "production": {
               "devServerTarget": "importleads:serve:production"
             },
-            "iaad": {
-              "devServerTarget": "importleads:serve:iaad"
+            "metaverse": {
+              "devServerTarget": "importleads:serve:metaverse"
             },
             "metaverse": {
               "devServerTarget": "importleads:serve:metaverse"

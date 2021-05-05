@@ -69,8 +69,8 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       .pipe(takeUntil(this.$unsubscribe)).subscribe((res: any) => {
         if (res) {
           const { saved_checklist, count, contract_product, saved_checklist_items, terms } = res;
-        
-          if(res?.isLastRow === true) {
+
+          if (res?.isLastRow === true) {
             alert('Your in the last row of the record.');
           }
 
@@ -131,12 +131,22 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       return;
     };
 
-    if(isViewing) {
+    if (isViewing) {
       alert('You are in viewing mode');
       return;
     }
-
-    this.selProduct = Object.assign({}, this.products?.find(cp => cp?.value === event));
+    let newSelection: any;
+    let changed: boolean = false;
+    debugger
+    if (this.selProduct?.value === event || this.selProduct === null) {
+      this.selProduct = Object.assign({},
+        this.products?.find(cp => cp?.value === event)
+      );
+      changed = false;
+    } else if (this.selProduct?.value !== event) {
+      newSelection = this.products?.find(cp => cp?.value === event);
+      changed = true;
+    }
 
     const selSavedChecklistItem = this.inspectionRun?.saved_checklist_items?.find(
       i => i?.contract_product?.id === this.selProduct?._id
@@ -150,7 +160,9 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
           inspection_checklist_run: { id: this.route.snapshot.paramMap.get('id') },
           saved_checklist: { id: this.inspectionRun?.saved_checklist?.id },
           contract_category_id: selSavedChecklistItem?.contract_category?.id,
-          contract_term_id: selSavedChecklistItem?.contract_term?.id
+          contract_term_id: selSavedChecklistItem?.contract_term?.id,
+          newSelection,
+          changed
         }
       }
       this.store.dispatch(inspectChecklistRunProductAction(payload));
@@ -303,7 +315,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       product: { id: this.selProduct?.value },
       checklist_product: { id: inspectionRun?.checklist_product?.id }
     };
-    
+
     this.store.dispatch(copyInspectionAction(payload));
 
     this.form.get('copyCount').patchValue(null, { emitEvent: false });

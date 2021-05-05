@@ -65,6 +65,5 @@ export class ViewPermissionPageComponent implements OnInit {
   }
 
   public handleOnMoveToSource(event: any): void {
-    console.log(event);
   }
 }

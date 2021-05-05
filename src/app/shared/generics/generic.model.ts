@@ -18,6 +18,7 @@ export interface ISimpleAttribute {
   parent?: ISimpleItem;
   children?: ISimpleItem[];
   user_route?: string;
+  changed?: boolean
 }
 export interface Menu {
   label?: string;

@@ -137,7 +137,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
     }
     let newSelection: any;
     let changed: boolean = false;
-    debugger
+    
     if (this.selProduct?.value === event || this.selProduct === null) {
       this.selProduct = Object.assign({},
         this.products?.find(cp => cp?.value === event)

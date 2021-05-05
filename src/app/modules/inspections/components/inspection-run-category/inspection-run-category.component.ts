@@ -33,8 +33,6 @@ export class InspectionRunCategoryComponent extends GenericDestroyPageComponent 
       .pipe(takeUntil(this.$unsubscribe)).subscribe((res: any) => {
         if (res) this.processItem(res);
       });
-
-      console.log(this.inspectionRun)
   }
 
   public get isViewing(): boolean {

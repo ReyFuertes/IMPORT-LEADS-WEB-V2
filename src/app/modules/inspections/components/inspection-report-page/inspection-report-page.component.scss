@@ -10,3 +10,11 @@
 .download {
   cursor: pointer;
 }
+:host ::ng-deep {
+  il-inspection-report-inspector, il-inspection-report-inspections, il-inspection-report-products,
+  il-inspection-report-tags, il-inspection-report-failures, il-inspection-report-comments {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+  }
+}

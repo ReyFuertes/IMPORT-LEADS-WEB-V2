@@ -1,7 +1,5 @@
 export const environment = {
   production: false,
-  iaad: false,
-  metaverse: false,
   svgPath: 'assets/svg/',
   imgPath: 'assets/image/',
   apiUrl: 'http://localhost:3000/iaad/api/v1/',

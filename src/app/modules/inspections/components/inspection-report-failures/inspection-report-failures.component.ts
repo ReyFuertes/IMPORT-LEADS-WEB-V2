@@ -52,11 +52,9 @@ export class InspectionReportFailuresComponent extends GenericDestroyPageCompone
     }) || 0;
   }
 
-  public getLimitImages(images: any[]): any {
-    return images?.slice(0, 3);
-  }
+  public getLimitImages = (images: any[]): any => images;
 
   public getImage(image: any): string {
-    return image ? `${this.apiImagePath}${image?.saved_checklist?.id}/${image?.filename}` : `${this.imgPath}no-image.png`;
+    return image ? `${this.apiImagePath}${image?.saved_checklist_id}/${image?.filename}` : `${this.imgPath}no-image.png`;
   }
 }

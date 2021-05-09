@@ -23,7 +23,7 @@ export class InspectionReportProductsComponent extends GenericDestroyPageCompone
     { title: 'Pass Items', value: '46' }
   ];
 
-  public displayedColumns: string[] = ['product', 'failed', 'passed'];
+  public displayedColumns: string[] = ['product', 'failed', 'passed', 'failure_rate'];
   public dataSource: any;
 
   public productData: IInspectionProductReport;

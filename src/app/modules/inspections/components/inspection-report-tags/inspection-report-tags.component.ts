@@ -79,8 +79,8 @@ export class InspectionReportTagsComponent extends GenericDestroyPageComponent i
       takeUntil(this.$unsubscribe))
       .subscribe((res: any) => {
         if (res) {
-          this.dataSource = res?.tags;
-          this.totalTags = String(res?.total_tags);
+          this.dataSource = res;
+          this.totalTags = String(res?.length > 0 ? res?.length : 0);
 
           const failure_rates: any[] = this.dataSource?.map(o => o?.failure_rate);
           

@@ -27,28 +27,23 @@
 
       <ng-container matColumnDef="tag">
         <th mat-header-cell *matHeaderCellDef> Tag </th>
-        <td mat-cell *matCellDef="let items"> {{items?.tag?.tag_name || '--'}} </td>
+        <td mat-cell *matCellDef="let items"> {{(items?.tag?.tag_name | titlecase) || '--'}} </td>
       </ng-container>
 
       <ng-container matColumnDef="failed">
         <th mat-header-cell *matHeaderCellDef> Failed </th>
-        <td mat-cell *matCellDef="let items"> {{items?.failure_count != 0 ? items?.failure_count : '--'}} </td>
+        <td mat-cell *matCellDef="let items"> {{items?.failed_tags != 0 ? items?.failed_tags : '--'}} </td>
       </ng-container>
 
       <ng-container matColumnDef="passed">
         <th mat-header-cell *matHeaderCellDef> Passed </th>
-        <td mat-cell *matCellDef="let items"> {{ items?.passed_count != 0 ? items?.passed_count : '--' }} </td>
+        <td mat-cell *matCellDef="let items"> {{ items?.passed_tags != 0 ? items?.passed_tags : '--' }} </td>
       </ng-container>
 
       <ng-container matColumnDef="failureRate">
         <th mat-header-cell *matHeaderCellDef> Failure Rate </th>
         <td mat-cell *matCellDef="let items"> {{ items?.failure_rate }} % </td>
       </ng-container>
-
-      <!-- <ng-container matColumnDef="aQLimit">
-        <th mat-header-cell *matHeaderCellDef> AQL Limit </th>
-        <td mat-cell *matCellDef="let items"> -- </td>
-      </ng-container> -->
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

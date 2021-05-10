@@ -49,11 +49,11 @@ export class InspectionReportCommentsComponent implements OnInit {
   }
 
   public getLimitImages(images: any[]): any {
-    return images?.slice(0, 3);
+    return images;
   }
 
   public getImage(image: any): string {
     //return image ? this.apiImagePath + image : `${this.imgPath}no-image.png`;
-    return image ? `${this.apiImagePath}${image?.saved_checklist?.id}/${image?.filename}` : `${this.imgPath}no-image.png`;
+    return image ? `${this.apiImagePath}${image?.saved_checklist_id}/${image?.filename}` : `${this.imgPath}no-image.png`;
   }
 }

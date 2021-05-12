@@ -32,7 +32,7 @@ export class InspectionReportCommentsComponent implements OnInit {
   ngOnInit() {
     this.store.pipe(select(getInspectionOkCommentsReportSelector))
       .subscribe(res => {
-        if (res) 
+        if (res)
           this.dataSource = res;
       });
   }
@@ -43,9 +43,14 @@ export class InspectionReportCommentsComponent implements OnInit {
   }
 
   public get getProductCommentCount(): any {
-    return _.sumBy(this.dataSource, function (f) {
+    const len = this.dataSource?.length;
+    const ret = _.sumBy(this.dataSource, function (f) {
       return f.count;
     }) || 0;
+    // return _.sumBy(this.dataSource, function (f) {
+    //   return f.count;
+    // }) || 0;
+    return ret / len;
   }
 
   public getLimitImages(images: any[]): any {

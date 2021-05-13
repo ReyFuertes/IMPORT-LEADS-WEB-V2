@@ -47,10 +47,7 @@ export class InspectionReportCommentsComponent implements OnInit {
     const ret = _.sumBy(this.dataSource, function (f) {
       return f.count;
     }) || 0;
-    // return _.sumBy(this.dataSource, function (f) {
-    //   return f.count;
-    // }) || 0;
-    return ret / len;
+    return (ret / len) || 0;
   }
 
   public getLimitImages(images: any[]): any {

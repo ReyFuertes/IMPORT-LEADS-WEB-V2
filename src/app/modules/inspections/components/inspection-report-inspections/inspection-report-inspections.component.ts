@@ -78,7 +78,7 @@ export class InspectionReportInspectionComponent extends GenericDestroyPageCompo
   public barChartType = "bar";
   public barChartPlugins = [];
 
-  public displayedColumns: string[] = ['inspector', 'date', 'duration', 'item', 'average'];
+  public displayedColumns: string[] = ['inspector', 'date', 'duration', 'item'];
   public dataSource: any[];
   public id: string;
   public barChartSummary: IInspectionBarReport;

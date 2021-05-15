@@ -183,6 +183,31 @@ input:-webkit-autofill:active {
     height: 48px !important;
     min-height: 48px !important;
   }
+  td.mat-cell {
+    padding: 5px !important;
+    &:first-child {
+      min-width: 70px;
+      width: 70px;
+      padding-left: 20px !important;
+    }
+    &:nth-child(2) {
+      min-width: 170px !important;
+      width: 170px !important;
+    }
+    &:nth-child(3) {
+      min-width: 220px !important;
+      width: 220px !important;
+    }
+    &:last-child {
+      min-width: 150px !important;
+      width: 100% !important;
+      padding: 20px !important;
+    }
+    img {
+      height: 100px !important;
+      width: 100px !important;
+    }
+  }
   @page {
     size: A4;
     margin: 1.5cm;

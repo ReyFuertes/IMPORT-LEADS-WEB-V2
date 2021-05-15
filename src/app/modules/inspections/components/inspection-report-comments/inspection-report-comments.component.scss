@@ -39,13 +39,17 @@ img {
       padding-left: 20px !important;
     }
     &:nth-child(2) {
-      min-width: 250px;
-      width: 250px;
+      min-width: 205px;
+      width: 205px;
+    }
+    &:nth-child(3) {
+      min-width: 470px;
+      width: 470px;
     }
     &:last-child {
-      min-width: 350px;
-      width: 350px;
-      padding: 20px 20px 20px 0 !important;
+      min-width: 100%;
+      width: 100%;
+      padding: 20px !important;
     }
   }
   .mat-table {

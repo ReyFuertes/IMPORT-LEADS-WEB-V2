@@ -23,6 +23,7 @@ export class InspectionReportFailuresComponent extends GenericDestroyPageCompone
   public dataSource: any;
   public apiImagePath: string = environment.apiImagePath;
   public imgPath: string = environment.imgPath;
+  public product_failure_count: number = 0;
 
   constructor(private dialog: MatDialog, private route: ActivatedRoute, private store: Store<AppState>) {
     super();
@@ -36,22 +37,17 @@ export class InspectionReportFailuresComponent extends GenericDestroyPageCompone
   ngOnInit() {
     this.store.pipe(select(getInspectionFailedCommentsReportSelector),
       takeUntil(this.$unsubscribe))
-      .subscribe(res => {
-        if (res) this.dataSource = res;
+      .subscribe((res: any) => {
+        if (res) {
+          this.dataSource = res?.data;
+          this.product_failure_count = res?.product_failure_count || 0;
+        }
       });
   }
 
   public viewImage(image: string): void {
     const imageViewDialog = this.dialog.open(ImageViewerDialogComponent, { data: { image } });
     imageViewDialog.afterClosed().subscribe(result => { });
-  }
-
-  public get getProductFailureCount(): any {
-    const len = this.dataSource?.length;
-    const ret = _.sumBy(this.dataSource, function (f) {
-      return f.count;
-    }) || 0;
-    return (ret / len) || 0;
   }
 
   public getLimitImages = (images: any[]): any => images;

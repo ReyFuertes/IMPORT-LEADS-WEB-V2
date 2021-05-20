@@ -12,7 +12,7 @@ import { appNotification } from 'src/app/store/actions/notification.action';
 export class ContractCategoryEffect {
   addMultipleContractCategoryAction$ = createEffect(() => this.actions$.pipe(
     ofType(addMultipleContractCategoryAction),
-    mergeMap(({ payload }) => this.contractCategorySrv.post(payload, 'multiple')
+    switchMap(({ payload }) => this.contractCategorySrv.post(payload, 'multiple')
       .pipe(
         map((created: any[]) => {
           return addMultipleContractCategoryActionSuccess({ created });
@@ -22,7 +22,7 @@ export class ContractCategoryEffect {
 
   loadAllContractCategoryAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadAllContractCategoryAction),
-    mergeMap(() => this.contractCategorySrv.getAll().pipe(
+    switchMap(() => this.contractCategorySrv.getAll().pipe(
       map((response: any) => {
         return loadAllContractCategoryActionSuccess({ response });
       })
@@ -71,7 +71,7 @@ export class ContractCategoryEffect {
   ));
   addContractCategoryAction$ = createEffect(() => this.actions$.pipe(
     ofType(addContractCategoryAction),
-    mergeMap(({ payload }) => this.contractCategorySrv.post(payload)
+    switchMap(({ payload }) => this.contractCategorySrv.post(payload)
       .pipe(
         map((created: IContractCategory) => {
           return addContractCategoryActionSuccess({ created });

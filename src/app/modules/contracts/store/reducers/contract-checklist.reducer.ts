@@ -43,6 +43,7 @@ export const initialState: ContractChecklistState = adapter.getInitialState({
 const reducer = createReducer(
   initialState,
   on(getSavedChecklistByIdSuccessAction, (state) => {
+    
     return adapter.removeAll({ ...state });
   }),
   on(getSavedChecklistByIdSuccessAction, (state, action) => {

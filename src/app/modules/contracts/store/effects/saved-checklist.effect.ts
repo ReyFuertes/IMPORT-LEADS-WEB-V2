@@ -14,7 +14,8 @@ export class SavedChecklistEffect {
   getSavedChecklistByIdAction$ = createEffect(() => this.actions$.pipe(
     ofType(getSavedChecklistByIdAction),
     mergeMap(({ id }) => this.savedChecklistSrv.getAll(`${id}`).pipe(
-      map((response: ISavedChecklistResponse[]) => {
+      map((response: any) => {
+        
         return getSavedChecklistByIdSuccessAction({ response });
       })
     ))

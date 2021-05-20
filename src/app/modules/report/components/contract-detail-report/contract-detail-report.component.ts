@@ -35,14 +35,13 @@ export class ContractDetailReportComponent extends GenericDestroyPageComponent i
   public columnsToDisplay = ['term_name', 'term_description'];
   public isPrinting: boolean = false;
   public contractsRoute = CONTRACTSROUTE;
+  public apiContractsImagePath: string = environment.apiContractsImagePath;
 
   constructor(private loaderService: LoaderService, private cdRef: ChangeDetectorRef, private sanitizer: DomSanitizer, private store: Store<AppState>,
     private route: ActivatedRoute, private router: Router) {
     super();
     this.store.dispatch(loadContractsAction({}));
-  }
 
-  ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id') || null;
     if (this.id) {
       this.store.dispatch(loadContractProductsAction({ id: this.id }));
@@ -53,17 +52,25 @@ export class ContractDetailReportComponent extends GenericDestroyPageComponent i
           this.store.dispatch(loadContractCategoryAction({ id: c.id }));
         }
       });
-      this.$contractProducts = this.store.pipe(select(getAllContractProductsSelector));
     }
   }
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.$contractCategories = this.store.pipe(select(getContractCategorySelector));
-    this.$contractCategories.pipe(debounceTime(1000)).subscribe((res: any) => {
-      if (res && res?.length > 0) {
-        this.dataSource = new MatTableDataSource<any>(res?.terms);
-      }
-    });
+    this.$contractCategories.pipe(
+      takeUntil(this.$unsubscribe))
+      .subscribe((res: any) => {
+        if (res?.length > 0) {
+          this.dataSource = new MatTableDataSource<any>(res?.terms);
+        }
+
+        this.cdRef.detectChanges();
+      });
+    this.$contractProducts = this.store.pipe(select(getAllContractProductsSelector));
+  }
+
+  ngAfterViewInit(): void {
+
   }
 
   public onExport(): void {
@@ -72,6 +79,7 @@ export class ContractDetailReportComponent extends GenericDestroyPageComponent i
 
     setTimeout(() => {
       let element = document.querySelector('.contract-detail-report-container');
+
       let opt = {
         margin: 0.3,
         filename: `contract-detail-${new Date().getTime()}`,
@@ -99,7 +107,7 @@ export class ContractDetailReportComponent extends GenericDestroyPageComponent i
     setTimeout(() => {
       this.loaderService.isLoading.next(false);
       this.isPrinting = false;
-      this.router.navigateByUrl(`${this.contractsRoute}/${this.id}/detail`);
+      //this.router.navigateByUrl(`${this.contractsRoute}/${this.id}/detail`);
     }, 1000);
   }
 

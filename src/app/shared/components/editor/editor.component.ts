@@ -18,6 +18,9 @@ import { convertBlobToBase64 } from '../../util/convert-to-blob';
 import { GenericDestroyPageComponent } from '../../generics/generic-destroy-page';
 Quill.register('modules/imageResize', ImageResize);
 
+var Clipboard = Quill.import('modules/clipboard')
+var Delta = Quill.import('delta')
+
 @Component({
   selector: 'il-editor',
   templateUrl: './editor.component.html',
@@ -58,10 +61,11 @@ export class EditorComponent extends GenericDestroyPageComponent implements OnIn
   public quillFileSelected(ev: any): void {
     this.quillFile = ev.target.files[0];
     this.filename = `${uuid()}.${this.quillFile.name.split('?')[0].split('.').pop()}`;
-
+    debugger
     /* save image physical file */
     const dataFile = new FormData();
     dataFile.append('file', this.quillFile, this.filename);
+
     this.store.dispatch(uploadTermImageAction({ file: dataFile }));
 
     /* collect all drop images in base64 results */
@@ -84,6 +88,7 @@ export class EditorComponent extends GenericDestroyPageComponent implements OnIn
             dataImage: data?.base64
           }
         }
+
         this.store.dispatch(saveTermImageDetailAction(imagePayload));
 
         this.getbase64Image();
@@ -92,6 +97,10 @@ export class EditorComponent extends GenericDestroyPageComponent implements OnIn
 
   public customImageUpload(image: any): void {
     this.quillFileRef.nativeElement.click();
+  }
+
+  public onContentChanged(event: any): void {
+
   }
 
   public getMeEditorInstance(editorInstance: any): void {
@@ -104,17 +113,16 @@ export class EditorComponent extends GenericDestroyPageComponent implements OnIn
 
   public getbase64Image(): void {
     this.store.pipe(select(getUploadImageStateSelector),
-      takeUntil(this.$unsubscribe)).subscribe(res => {
+      takeUntil(this.$unsubscribe))
+      .subscribe(res => {
         if (res && this.meQuillRef) {
- 
           try {
             /* display to editor */
-            let range = this.meQuillRef.getSelection();
-            /* set a default with for image so it will not ruin the preview */
-            this.meQuillRef.clipboard.dangerouslyPasteHTML(range.index, `<img width="300px" src="${this.base64}" />`);
+            const range = this.meQuillRef.getSelection()
 
-            /* update value to form */
-            this.form.get(this.controlName).patchValue((this.meQuillRef.root.innerHTML));
+            /* we need to save an optimize way of terms description */
+            this.meQuillRef.clipboard.dangerouslyPasteHTML(range.index, `<img width="300px" src="${this.imageApiPath}${this.filename}" />`);
+            this.form.get(this.controlName).patchValue(this.meQuillRef.root.innerHTML);
 
             this.store.dispatch(removeImageUploadState());
           } catch (error) {
@@ -124,9 +132,7 @@ export class EditorComponent extends GenericDestroyPageComponent implements OnIn
       })
   }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() { }
 
   public sanitizeHtml(html: any): any {
     return this.sanitizer.bypassSecurityTrustHtml(html);

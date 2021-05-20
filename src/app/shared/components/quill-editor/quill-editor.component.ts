@@ -7,17 +7,16 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 })
 
 export class QuillEditorComponent implements OnInit {
-  @Input()
-  public value: string;
-  @Output()
-  public closeEmitter = new EventEmitter<boolean>();
+  @Input() public value: string;
+  @Output() public closeEmitter = new EventEmitter<boolean>();
+  
   constructor() { }
 
   ngOnInit() { }
 
   defaultModules = {
     toolbar: [
-      [{table: true}],
+      [{ table: true }],
       ['bold', 'italic', 'underline'], // toggled buttons
       [{ header: 1 }, { header: 2 }], // custom button values
       [{ list: 'ordered' }, { list: 'bullet' }],

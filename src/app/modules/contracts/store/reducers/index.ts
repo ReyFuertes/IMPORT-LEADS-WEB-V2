@@ -20,7 +20,7 @@ export interface ContractModuleState {
   checkList: fromChecklist.ContractChecklistState,
   inspection: fromInspection.InspectionState,
   savedChecklistItem: fromSavedChecklistItem.SavedChecklistItemState,
-  SavedChecklist: fromSavedChecklist.SavedChecklistState,
+  savedChecklist: fromSavedChecklist.SavedChecklistState,
   contractTemplate: ContractTemplateState,
   categoryTemplate: CategoryTemplateState
 }
@@ -33,7 +33,7 @@ export const reducers: ActionReducerMap<ContractModuleState> = {
   checkList: fromChecklist.ContractChecklistReducer,
   inspection: fromInspection.InspectionReducer,
   savedChecklistItem: fromSavedChecklistItem.SavedChecklistItemReducer,
-  SavedChecklist: fromSavedChecklist.SavedChecklistReducer,
+  savedChecklist: fromSavedChecklist.SavedChecklistReducer,
   contractTemplate: ContractTemplateReducer,
   categoryTemplate: CategoryTemplateReducer
 };

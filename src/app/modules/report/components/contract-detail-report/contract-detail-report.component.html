@@ -1,19 +1,9 @@
 <div id="content" *ngIf="($contract | async) as contract" class="contract-detail-report-container" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
-  <div class="header" fxLayout="row" fxLayoutAlign="start center">
-    <div fxFlex>
-      <h1>{{ contract?.contract_name }}</h1>
-    </div>
-    <div *ngIf="!isPrinting" fxFlex="200px" fxLayoutAlign="end center">
-      <button mat-flat-button class="il-button default large" routerLink="{{contractsRoute}}/{{id}}/detail">Cancel</button>
-      <button (click)="onExport()" mat-flat-button class="il-button primary large" fxLayoutGap="5px">
-        <span>Download as PDF</span>
-      </button>
-    </div>
-  </div>
+
   <!-- contract details -->
   <mat-card *ngIf="contract?.images?.length > 0">
     <div *ngFor="let image of contract?.images" class="contract-images" fxLayout="row">
-      <img [src]="image?.dataImage" />
+      <img [src]="apiContractsImagePath + image?.filename" />
     </div>
   </mat-card>
 
@@ -21,26 +11,22 @@
   <div class="category-container" fxLayout="column" fxLayoutGap="20px">
     <div class="category-item" *ngFor="let contractCategory of ($contractCategories | async)">
       <div class="tab-header" fxLayout="row" fxLayoutGap="5px">
-        <div fxLayoutAlign="center center">
+        <div fxLayoutAlign="start center">
           <span>{{ contractCategory?.category?.category_name }}</span>
         </div>
       </div>
-      <table mat-table [dataSource]="contractCategory?.terms">
-        <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay; let i = index">
-          <th mat-header-cell *matHeaderCellDef> {{ fmtCol(column) }}</th>
-          <td mat-cell *matCellDef="let element">
+      <table *ngIf="contractCategory?.terms">
+        <thead>
+          <th>Term Name</th>
+          <th>Term Description</th>
+        </thead>
 
-            <div fxLayout="row" fxLayoutAlign="center start">
-              <div class="text-display" fxFlex fxLayoutAlign="start center">
-                <div [innerHTML]="sanitizeHtml(element[column])"></div>
-              </div>
-            </div>
-          </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-        <tr mat-row *matRowDef="let row; let element; columns: columnsToDisplay;">
-        </tr>
+        <tbody>
+          <tr *ngFor="let term of contractCategory?.terms">
+            <td>{{ term?.term_name }}</td>
+            <td><div [innerHTML]="sanitizeHtml(term?.term_description)"></div></td>
+          </tr>
+        </tbody>
       </table>
     </div>
   </div>

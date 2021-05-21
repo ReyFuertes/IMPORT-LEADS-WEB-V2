@@ -15,7 +15,7 @@ import { TokenInterceptor } from './services/http-token-interceptor';
 import { AuthGuard } from './services/auth.guard';
 import { AuthEffect } from './modules/auth/store/auth.effect';
 import { InitAppEffect } from './store/effects/app.effect';
-import { LoaderInterceptor, LoaderService } from './services/loader.interceptor';
+import { LoaderService } from './services/loader.interceptor';
 import { BlockUIModule } from 'primeng/blockui';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -23,7 +23,7 @@ import { AccessService } from './services/api.service';
 import { UserMgmtEffects } from './modules/user-management/store/user-mgmt.effects';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { UserProfileEffects } from './modules/users/store/effects/user-profile.effects';
-import { UserService } from './modules/users/users.service';
+import { ToastModule } from 'primeng/toast';
 
 const materialModules = [
   MatProgressSpinnerModule,
@@ -31,7 +31,8 @@ const materialModules = [
 ];
 
 const primengModules = [
-  BlockUIModule
+  BlockUIModule,
+  ToastModule
 ];
 
 @NgModule({
@@ -58,11 +59,11 @@ const primengModules = [
     AuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     LoaderService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: LoaderInterceptor,
-      multi: true
-    },
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: LoaderInterceptor,
+    //   multi: true
+    // },
     AccessService
   ],
   bootstrap: [AppComponent]

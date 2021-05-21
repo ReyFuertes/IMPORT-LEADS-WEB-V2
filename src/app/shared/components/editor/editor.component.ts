@@ -61,7 +61,7 @@ export class EditorComponent extends GenericDestroyPageComponent implements OnIn
   public quillFileSelected(ev: any): void {
     this.quillFile = ev.target.files[0];
     this.filename = `${uuid()}.${this.quillFile.name.split('?')[0].split('.').pop()}`;
-    debugger
+    
     /* save image physical file */
     const dataFile = new FormData();
     dataFile.append('file', this.quillFile, this.filename);

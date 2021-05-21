@@ -12,6 +12,7 @@ import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 import { loadSavedChecklistAction } from 'src/app/modules/contracts/store/actions/saved-checklist.action';
 import { loadFinishInspectionAction } from '../../store/actions/inspection.action';
 import { StorageService } from 'src/app/services/storage.service';
+import { LoaderService } from 'src/app/services/loader.interceptor';
 
 @Component({
   selector: 'il-inspection-page',
@@ -62,7 +63,7 @@ export class InspectionPageComponent extends GenericDestroyPageComponent impleme
   public $savedChecklists: Observable<IActiveInspection[]>;
   public activeInspections: IActiveInspection[];
 
-  constructor(private storageSrv: StorageService, private cdRef: ChangeDetectorRef, private store: Store<AppState>) {
+  constructor(private loaderSrv: LoaderService, private cdRef: ChangeDetectorRef, private store: Store<AppState>) {
     super();
     this.store.dispatch(loadSavedChecklistAction({}));
     this.store.dispatch(loadFinishInspectionAction());
@@ -75,6 +76,10 @@ export class InspectionPageComponent extends GenericDestroyPageComponent impleme
       });
 
     localStorage.removeItem('ic_sel_prod');
+
+    setTimeout(() => {
+      this.loaderSrv.isLoading.next(true);
+    }, 3000);
   }
 
   public handleSortChanges(event: any): void {

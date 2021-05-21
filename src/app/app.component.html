@@ -1,6 +1,11 @@
-<!-- <div *ngIf="($notify | async)?.error" class="notification" [ngClass]="{'error': ($notify | async)?.error }">
-  <p>{{($notify | async)?.message}}</p>
-</div> -->
+<div *ngIf="($notify | async)?.error" class="notification" [ngClass]="{'error': ($notify | async)?.error }">
+  <div fxLayout="row" fxLayoutAlign="start center">
+    <p fxFlex>{{($notify | async)?.message}}</p>
+    <div (click)="onClose()" fxFlex="40px">
+      <i class="pi pi-times"></i>
+    </div>
+  </div>
+</div>
 
 <p-blockUI [blocked]="(loaderSrv?.isLoading | async)">
   <div fxFlexFill fxLayout="row" fxLayoutAlign="center center">

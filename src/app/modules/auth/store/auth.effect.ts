@@ -29,7 +29,7 @@ export class AuthEffect {
           if (accessToken) {
             //localStorage.setItem('at', JSON.stringify(accessToken));
             this.storageSrv.set('at', JSON.stringify(accessToken));
-
+            
             this.router.navigateByUrl(CONTRACTSROUTE);
 
             this.store.dispatch(loadVenuesAction());

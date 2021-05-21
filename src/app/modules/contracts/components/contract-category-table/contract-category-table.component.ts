@@ -81,7 +81,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   public onToggleTerms(term: IContractTerm, checked: boolean): void {
     if (this.checkListProducts && this.checkListProducts.length === 0) {
       this.store.dispatch(appNotification({
-        notification: { error: true, message: 'You cant need to selecting a product' }
+        notification: { error: true, message: 'You need to selecting a product' }
       }));
       return;
     };

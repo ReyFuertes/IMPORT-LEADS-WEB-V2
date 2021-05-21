@@ -1,6 +1,6 @@
 import { getSuccessSelector } from './store/selectors/notification.selector';
 import { Observable } from 'rxjs';
-import { INotification } from './store/actions/notification.action';
+import { appNotification, INotification, removeNotification } from './store/actions/notification.action';
 import { AppState } from 'src/app/store/app.reducer';
 import { Component, ChangeDetectorRef, AfterViewInit, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
@@ -26,7 +26,7 @@ export class AppComponent extends GenericDestroyPageComponent implements OnInit,
   public svgPath: string = environment.svgPath;
   public hideTopNav: boolean = false;
 
-  constructor(private msgSrv: MessageService, private router: Router, public loaderSrv: LoaderService, private store: Store<AppState>, private cdRef: ChangeDetectorRef) {
+  constructor(private router: Router, public loaderSrv: LoaderService, private store: Store<AppState>, private cdRef: ChangeDetectorRef) {
     super();
     this.store.dispatch(initAppAction());
   }
@@ -47,7 +47,6 @@ export class AppComponent extends GenericDestroyPageComponent implements OnInit,
         }
       });
 
-    this.store.subscribe(res => console.log(res))
     this.$notify = this.store.pipe(select(getSuccessSelector), delay(100));
 
     /* check if user islogin then show the topnav */
@@ -56,6 +55,11 @@ export class AppComponent extends GenericDestroyPageComponent implements OnInit,
       .subscribe(res => {
         this.isLoggedIn = res;
       })
+  }
+
+  public onClose(): void {
+    this.store.dispatch(removeNotification());
+    this.loaderSrv.isLoading.next(false);
   }
 
   ngAfterViewInit(): void {

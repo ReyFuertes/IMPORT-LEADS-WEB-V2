@@ -76,10 +76,6 @@ export class InspectionPageComponent extends GenericDestroyPageComponent impleme
       });
 
     localStorage.removeItem('ic_sel_prod');
-
-    setTimeout(() => {
-      this.loaderSrv.isLoading.next(true);
-    }, 3000);
   }
 
   public handleSortChanges(event: any): void {

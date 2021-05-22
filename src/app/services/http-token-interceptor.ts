@@ -32,20 +32,23 @@ export class TokenInterceptor extends GenericDestroyPageComponent implements Htt
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    this.loaderSrv.isLoading.next(true);
+    this.requests.push(request);
 
     return next.handle(request).pipe(
       map((event: HttpEvent<any>) => {
+        this.loaderSrv.isLoading.next(true);
+
         if (event instanceof HttpResponse) {
           const i = this.requests.indexOf(request);
+ 
           if (i >= 0) {
             this.requests.splice(i, 1);
           }
           setTimeout(() => {
-            console.log('Removing the loader screen');
             this.loaderSrv.isLoading.next(this.requests.length > 0);
           });
         }
+  
         return event;
       }),
       catchError(error => {

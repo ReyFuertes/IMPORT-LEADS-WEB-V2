@@ -40,15 +40,12 @@ export class TokenInterceptor extends GenericDestroyPageComponent implements Htt
 
         if (event instanceof HttpResponse) {
           const i = this.requests.indexOf(request);
- 
+
           if (i >= 0) {
             this.requests.splice(i, 1);
           }
-          setTimeout(() => {
-            this.loaderSrv.isLoading.next(this.requests.length > 0);
-          });
+          this.loaderSrv.isLoading.next(this.requests.length > 0);
         }
-  
         return event;
       }),
       catchError(error => {
@@ -65,7 +62,9 @@ export class TokenInterceptor extends GenericDestroyPageComponent implements Htt
 
         return next.handle(request);
       }),
-      finalize(() => { })
+      finalize(() => { 
+        this.loaderSrv.isLoading.next(this.requests.length > 0);
+      })
     )
   }
 

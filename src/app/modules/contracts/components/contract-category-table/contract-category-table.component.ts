@@ -14,7 +14,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ISimpleItem } from '../../../../shared/generics/generic.model';
 import { environment } from '../../../../../environments/environment';
 import { trigger, transition, style, state, animate } from '@angular/animations';
-import { Component, OnInit, Input, OnChanges, SimpleChanges, AfterViewInit, ViewEncapsulation, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, AfterViewInit, ViewEncapsulation, EventEmitter, Output, ViewChild, ElementRef } from '@angular/core';
 import { map, tap, takeUntil } from 'rxjs/operators';
 import { IContractCategory } from '../../contract.model';
 import { deleteContractCategoryAction } from '../../store/actions/contract-category.action';
@@ -187,9 +187,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       });
   }
 
-  public onSave(e: any): void {
-    e.stopImmediatePropagation();
-
+  public onSave(): void {
     if (this.form.value) {
       this.form.get('contract_category').patchValue({ id: this.contractCategory?.id });
 

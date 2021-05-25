@@ -79,6 +79,6 @@
 <ng-template #detailBtnActions>
   <div class="btn-edit-actions" fxLayoutGap="10px">
     <button type="button" mat-flat-button class="il-button default" (click)="onClose()">Cancel</button>
-    <button type="button" mat-flat-button class="il-button primary" (click)="onSave($event)">Save</button>
+    <button type="button" mat-flat-button class="il-button primary" (click)="onSave();$event.stopImmediatePropagation()">Save</button>
   </div>
 </ng-template>

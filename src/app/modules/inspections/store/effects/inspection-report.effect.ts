@@ -16,7 +16,7 @@ export class InspectionReportEffect {
     switchMap(({ saved_checklist_id }) => {
       return this.inspectionReportSrv.getBinaryById(saved_checklist_id, 'download-production-images').pipe(
         map((response: any) => {
-          
+
           window.open(environment.apiDownloadsPath + response?.link);
  
           return downloadProductionImagesSuccessAction({ response });

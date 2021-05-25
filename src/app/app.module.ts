@@ -59,11 +59,6 @@ const primengModules = [
     AuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     LoaderService,
-    // {
-    //   provide: HTTP_INTERCEPTORS,
-    //   useClass: LoaderInterceptor,
-    //   multi: true
-    // },
     AccessService
   ],
   bootstrap: [AppComponent]

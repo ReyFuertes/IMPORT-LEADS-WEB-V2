@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import * as _ from 'lodash';
 import { Directive } from '@angular/core';
 import { StorageService } from './storage.service';
+import { shareReplay } from 'rxjs/operators';
 
 @Directive()
 export abstract class BaseService<T> {
@@ -69,11 +70,13 @@ export abstract class BaseService<T> {
   }
 
   public getAll(param?: string): Observable<T[]> {
-    return this.http.get<T[]>(`${this.baseUrl}${this.entity}${this.fmtParam(param)}`, { headers: this.commonHeaders() });
+    return this.http.get<T[]>(`${this.baseUrl}${this.entity}${this.fmtParam(param)}`, { headers: this.commonHeaders() })
+      .pipe(shareReplay());
   }
 
   public getById(id: string, addtnlParam?: string): Observable<T> {
-    return this.http.get<T>(`${this.baseUrl}${this.entity}/${id}${this.fmtParam(addtnlParam)}`, { headers: this.commonHeaders() });
+    return this.http.get<T>(`${this.baseUrl}${this.entity}/${id}${this.fmtParam(addtnlParam)}`, { headers: this.commonHeaders() })
+      .pipe(shareReplay());
   }
 
   public getBinaryById(id: string, addtnlParam?: string): Observable<T> {

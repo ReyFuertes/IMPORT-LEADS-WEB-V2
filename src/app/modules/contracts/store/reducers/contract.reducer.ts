@@ -23,6 +23,9 @@ export const initialState: ContractsState = adapter.getInitialState({
 });
 const contractsReducer = createReducer(
   initialState,
+  on(removeImageUploadState, (state) => { 
+    return Object.assign({}, state, { isImageReady: null })
+  }),
   /* we need to check if the contract is updating or adding, so that it will sync with the event actions */
   on(addContractAction, (state) => { 
     return Object.assign({}, state, { isAddingOrUpdating: true })

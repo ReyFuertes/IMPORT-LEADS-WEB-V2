@@ -9,7 +9,7 @@ export const isAddingOrUpdatingSelector = createSelector(
 );
 export const getUploadImageStateSelector = createSelector(
   selectContractModuleState,
-  state => state.contract.isImageReady
+  state => state?.contract?.isImageReady
 );
 export const getAllContractsSelector = createSelector(
   selectContractModuleState,

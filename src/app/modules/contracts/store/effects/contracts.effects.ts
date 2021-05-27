@@ -8,17 +8,16 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { loadContractsAction, loadContractSuccessAction, addContractAction, addContractSuccessAction, uploadContractImagesAction, uploadContractImageSuccessAction, reOrderImagesAction, updateContractAction, updateContractSuccess, deleteContractAction, deleteContractSuccessAction, uploadTermImageAction, addImageUploadState } from '../actions/contracts.action';
 import { Store } from '@ngrx/store';
+import { saveTermImageDetailAction } from '../actions/contract-term.actions';
 
 @Injectable()
 export class ContractsEffect {
   uploadTermImageAction$ = createEffect(() => this.actions$.pipe(
     ofType(uploadTermImageAction),
     switchMap(({ file }) => this.uploadService.upload(file, 'single')
-      .pipe(
-        map(() => {
-          return addImageUploadState({ isImageReady: true })
-        }),
-      ))
+      .pipe(map(() => {
+        return addImageUploadState({ isImageReady: true })
+      })))
   ));
 
   deleteContractAction$ = createEffect(() => this.actions$.pipe(

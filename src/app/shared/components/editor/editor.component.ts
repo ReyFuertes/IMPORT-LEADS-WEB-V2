@@ -61,47 +61,19 @@ export class EditorComponent extends GenericDestroyPageComponent implements OnIn
   public quillFileSelected(ev: any): void {
     this.quillFile = ev.target.files[0];
     this.filename = `${uuid()}.${this.quillFile.name.split('?')[0].split('.').pop()}`;
-    
+
     /* save image physical file */
     const dataFile = new FormData();
     dataFile.append('file', this.quillFile, this.filename);
 
     this.store.dispatch(uploadTermImageAction({ file: dataFile }));
-
-    /* collect all drop images in base64 results */
-    convertBlobToBase64(this.quillFile)
-      .pipe(
-        takeUntil(this.$unsubscribe),
-        map(b64Result => {
-          return { id: uuid(), base64: b64Result }
-        }))
-      .subscribe((data) => {
-
-        this.base64 = data?.base64;
-        /* store the image details*/
-        const imagePayload = {
-          image: {
-            filename: this.filename,
-            size: this.quillFile.size,
-            type: this.quillFile.type,
-            term_id: this.entityId,
-            dataImage: data?.base64
-          }
-        }
-
-        this.store.dispatch(saveTermImageDetailAction(imagePayload));
-
-        this.getbase64Image();
-      });
   }
 
   public customImageUpload(image: any): void {
     this.quillFileRef.nativeElement.click();
   }
 
-  public onContentChanged(event: any): void {
-
-  }
+  public onContentChanged(event: any): void { }
 
   public getMeEditorInstance(editorInstance: any): void {
     this.meQuillRef = editorInstance;
@@ -111,18 +83,29 @@ export class EditorComponent extends GenericDestroyPageComponent implements OnIn
     super();
   }
 
-  public getbase64Image(): void {
+  ngOnInit() {
     this.store.pipe(select(getUploadImageStateSelector),
       takeUntil(this.$unsubscribe))
       .subscribe(res => {
-        if (res && this.meQuillRef) {
+        if (res === true && this.meQuillRef) {
           try {
             /* display to editor */
-            const range = this.meQuillRef.getSelection()
-
+            const range = this.meQuillRef.getSelection();
+            
             /* we need to save an optimize way of terms description */
             this.meQuillRef.clipboard.dangerouslyPasteHTML(range.index, `<img width="300px" src="${this.imageApiPath}${this.filename}" />`);
             this.form.get(this.controlName).patchValue(this.meQuillRef.root.innerHTML);
+
+            /* store the image details*/
+            const imagePayload = {
+              image: {
+                filename: this.filename,
+                size: this.quillFile.size,
+                type: this.quillFile.type,
+                term_id: this.entityId
+              }
+            }
+            this.store.dispatch(saveTermImageDetailAction(imagePayload));
 
             this.store.dispatch(removeImageUploadState());
           } catch (error) {
@@ -131,8 +114,6 @@ export class EditorComponent extends GenericDestroyPageComponent implements OnIn
         }
       })
   }
-
-  ngOnInit() { }
 
   public sanitizeHtml(html: any): any {
     return this.sanitizer.bypassSecurityTrustHtml(html);

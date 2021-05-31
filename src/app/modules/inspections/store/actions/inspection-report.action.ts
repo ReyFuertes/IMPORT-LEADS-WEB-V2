@@ -66,7 +66,7 @@ export const inspectionProductsReportSuccessAction = createAction(
 );
 export const inspectionBarChartReportAction = createAction(
   InspectionReportActionTypes.inspectionBarChartReportAction,
-  props<{ id: string }>()
+  props<{ id: string, date?: any }>()
 );
 export const inspectionBarChartReportSuccessAction = createAction(
   InspectionReportActionTypes.inspectionBarChartReportSuccessAction,

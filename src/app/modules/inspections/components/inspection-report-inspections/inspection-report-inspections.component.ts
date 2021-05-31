@@ -10,7 +10,8 @@ import { loadInspectionDetailAction } from '../../store/actions/inspection.actio
 import { isPlatformBrowser } from '@angular/common';
 import { takeUntil } from 'rxjs/operators';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
-
+import { FormBuilder, FormGroup } from '@angular/forms';
+import * as moment from 'moment';
 @Component({
   selector: 'il-inspection-report-inspections',
   templateUrl: './inspection-report-inspections.component.html',
@@ -43,14 +44,16 @@ export class InspectionReportInspectionComponent extends GenericDestroyPageCompo
         },
         time: {
           format: "HH:mm",
-          unit: "minute",
-          unitStepSize: 0.5,
+          unit: "hour",
+          unitStepSize: 1,
           displayFormats: {
             minute: "HH:mm",
             hour: "HH:mm",
             min: "00:00",
             max: "23:59"
-          }
+          },
+          min: "00:00",
+          max: "23:59"
         },
         scaleShowHorizontalLines: true,
         gridLines: {
@@ -84,11 +87,13 @@ export class InspectionReportInspectionComponent extends GenericDestroyPageCompo
   public barChartSummary: IInspectionBarReport;
   public barChartOption: any;
   public isBrowser: boolean;
-
+  public form: FormGroup;
   public locale = 'en';
   public hours = [];
+  public barChartRawData: any;
+  public filterDate: any;
 
-  constructor(private cdRef: ChangeDetectorRef, @Inject(PLATFORM_ID) private platformId: object, private route: ActivatedRoute, private store: Store<AppState>) {
+  constructor(private fb: FormBuilder, private cdRef: ChangeDetectorRef, @Inject(PLATFORM_ID) private platformId: object, private route: ActivatedRoute, private store: Store<AppState>) {
     super();
     this.isBrowser = isPlatformBrowser(platformId);
 
@@ -99,21 +104,47 @@ export class InspectionReportInspectionComponent extends GenericDestroyPageCompo
       this.store.dispatch(loadInspectionDetailAction({ payload: `?saved_checklist_id=${this.id}` }));
     }
 
+    this.form = this.fb.group({
+      date: [null]
+    });
+
     this.store.pipe(select(getInspectionsLineReportSelector),
       takeUntil(this.$unsubscribe)).subscribe((res: IInspectionBarReport) => {
         if (res) {
-          const bar_data = res?.bar_data?.map(r => {
-            return {
-              x: new Date(r?.date),
-              y: r?.inspection_checklist_run_count
-            }
-          });
-          this.barChartData[0].data = bar_data;
-          this.barChartSummary = res;
-          this.dataSource = res?.bar_data;
-      
+          this.barChartSummary = Object.assign({}, res);
+          this.filterDate = moment(this.barChartSummary?.start_date).format('YYYY-MM-DD');
+
+          const bar_data = this.filterDataSource(res?.bar_data);
+
+          this.barChartData[0].data = Object.assign([], bar_data);
+          this.dataSource = Object.assign([], res?.bar_data);
+
+          this.form.get('date').patchValue(new Date(this.barChartSummary?.start_date), { emitEvent: false });
         }
       });
+
+    this.form.valueChanges.pipe(takeUntil(this.$unsubscribe))
+      .subscribe(res => {
+        if (res) {
+          this.filterDate = moment(new Date(res?.date)).format('YYYY-MM-DD');
+
+          const bar_data = this.filterDataSource(this.barChartSummary?.bar_data);
+
+          this.barChartData[0].data = Object.assign([], bar_data);
+        }
+      });
+  }
+
+  private filterDataSource(source: any): any {
+    const ret = Object.assign([], source)
+      ?.filter(bd => moment(bd?.date).format('YYYY-MM-DD') === this.filterDate)
+      ?.map(r => {
+        return {
+          x: moment(r?.date).format('HH:mm'),
+          y: r?.inspection_checklist_run_count
+        }
+      });
+    return ret;
   }
 
   ngOnInit() {
@@ -130,7 +161,6 @@ export class InspectionReportInspectionComponent extends GenericDestroyPageCompo
   }
 
   ngAfterViewInit(): void {
-
     this.cdRef.detectChanges();
   }
 }

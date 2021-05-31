@@ -12,7 +12,13 @@ h2 {
   line-height: 26px;
   font-size: 21px;
 }
+.filter-date {
+  margin: 0 20px !important;
+}
 :host ::ng-deep {
+  .il-datepicker {
+    height: 50px !important;
+  }
   .mat-expansion-panel-header {
     height: 45px !important;
   }

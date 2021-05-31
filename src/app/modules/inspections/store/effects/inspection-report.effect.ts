@@ -18,7 +18,7 @@ export class InspectionReportEffect {
         map((response: any) => {
 
           window.open(environment.apiDownloadsPath + response?.link);
- 
+
           return downloadProductionImagesSuccessAction({ response });
         })
       )
@@ -82,8 +82,8 @@ export class InspectionReportEffect {
 
   inspectionBarChartReportAction$ = createEffect(() => this.actions$.pipe(
     ofType(inspectionBarChartReportAction),
-    switchMap(({ id }) => {
-      return this.inspectionReportSrv.post({ id }, 'bar-chart').pipe(
+    switchMap((payload) => {
+      return this.inspectionReportSrv.post(payload, 'bar-chart').pipe(
         map((response: IInspectionBarReport) => {
           return inspectionBarChartReportSuccessAction({ response });
         })

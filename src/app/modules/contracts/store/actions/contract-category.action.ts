@@ -22,7 +22,7 @@ export enum CategoryActionTypes {
 }
 export const addMultipleContractCategoryAction = createAction(
   CategoryActionTypes.addMultipleContractCategoryAction,
-  props<{ payload: IContractCategory[] }>()
+  props<{ payload: IContractCategory }>()
 );
 export const addMultipleContractCategoryActionSuccess = createAction(
   CategoryActionTypes.addMultipleContractCategoryActionSuccess,

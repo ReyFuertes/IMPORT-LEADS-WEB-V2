@@ -176,7 +176,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
         this.checklistTerms = res.checklistTerms || [];
         this.savedChecklistSourceId = res?.saveChecklistSource?.id;
         this.checklistEntities = Object.values(res?.entities) || [];
-   
+
       })).subscribe();
   }
 
@@ -246,7 +246,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
         contract_term: { id: c?.contract_term?.id },
       }
     });
-    
+
     const payload: ISavedChecklistPayload = {
       id: this.savedChecklistSourceId,
       checklist_name: `cl-${new Date().getTime()}`,
@@ -259,7 +259,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
 
     if (payload) {
       this.store.dispatch(saveChecklistAction({ payload }));
-      
+
       setTimeout(() => {
         this.formChecklist.reset();
       }, 1000);
@@ -319,15 +319,16 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
     });
     dialogRef.afterClosed().subscribe((payload: any) => {
       if (payload) {
-        payload = [{
-          ...payload,
-          contract: {
-            id: this.form.get('id').value,
-            contract_name: this.form.get('contract_name').value
-          }
-        }]
 
-        this.store.dispatch(addMultipleContractCategoryAction({ payload }));
+        this.store.dispatch(addMultipleContractCategoryAction({
+          payload: {
+            ...payload,
+            contract: {
+              id: this.form.get('id').value,
+              contract_name: this.form.get('contract_name').value
+            }
+          }
+        }));
 
         /* reload all contract category */
         setTimeout(() => {

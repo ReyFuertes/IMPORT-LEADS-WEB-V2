@@ -91,7 +91,7 @@ export class EditorComponent extends GenericDestroyPageComponent implements OnIn
           try {
             /* display to editor */
             const range = this.meQuillRef.getSelection();
-            
+
             /* we need to save an optimize way of terms description */
             this.meQuillRef.clipboard.dangerouslyPasteHTML(range.index, `<img width="300px" src="${this.imageApiPath}${this.filename}" />`);
             this.form.get(this.controlName).patchValue(this.meQuillRef.root.innerHTML);

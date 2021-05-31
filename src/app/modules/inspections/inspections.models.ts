@@ -43,7 +43,7 @@ export interface IInspectionReportItem {
   runStart?: string;
 }
 export interface IInspectionBarReport {
-  bar_data: Array<{ count: number, date: string; }>,
+  bar_data: Array<{ count: number, date: string, inspection_checklist_run_count?: number }>,
   end_date?: string;
   start_date?: string;
   total_checked?: number;

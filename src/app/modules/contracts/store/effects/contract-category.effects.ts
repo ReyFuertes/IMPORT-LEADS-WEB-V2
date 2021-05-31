@@ -14,7 +14,7 @@ export class ContractCategoryEffect {
     ofType(addMultipleContractCategoryAction),
     switchMap(({ payload }) => this.contractCategorySrv.post(payload, 'multiple')
       .pipe(
-        map((created: any[]) => {
+        map((created: any) => {
           return addMultipleContractCategoryActionSuccess({ created });
         })
       ))

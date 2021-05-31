@@ -105,7 +105,7 @@ export class InspectionReportInspectionComponent extends GenericDestroyPageCompo
           const bar_data = res?.bar_data?.map(r => {
             return {
               x: new Date(r?.date),
-              y: r?.count
+              y: r?.inspection_checklist_run_count
             }
           });
           this.barChartData[0].data = bar_data;

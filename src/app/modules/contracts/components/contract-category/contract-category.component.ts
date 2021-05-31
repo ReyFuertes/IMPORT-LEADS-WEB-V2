@@ -73,7 +73,8 @@ export class ContractCategoryComponent extends GenericRowComponent implements On
           title: res.title,
           description: res.description,
           contract: { id: this.contractCategory?.contract?.id },
-          category: { id: this.contractCategory.category?.id }
+          category: { id: this.contractCategory.category?.id },
+          contract_category: { id: this.contractCategory?.id }
         }
         this.store.dispatch(saveCategoryTemplateAction({ payload }));
       }

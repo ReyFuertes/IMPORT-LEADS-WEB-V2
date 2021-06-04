@@ -15,38 +15,6 @@ export interface Tag {
   failureRate: number;
   aQLimit: string;
 }
-
-const ELEMENT_DATA: Tag[] = [
-  {
-    tag: 'Appearance',
-    failed: 2,
-    passed: 49,
-    failureRate: 4,
-    aQLimit: 'close',
-  },
-  {
-    tag: 'Materials',
-    failed: 1,
-    passed: 50,
-    failureRate: 2,
-    aQLimit: 'close',
-  },
-  {
-    tag: 'Packaging',
-    failed: 1,
-    passed: 50,
-    failureRate: 2,
-    aQLimit: 'close',
-  },
-  {
-    tag: 'Measurements',
-    failed: 3,
-    passed: 48,
-    failureRate: 6,
-    aQLimit: 'close',
-  }
-];
-
 @Component({
   selector: 'il-inspection-report-tags',
   templateUrl: './inspection-report-tags.component.html',

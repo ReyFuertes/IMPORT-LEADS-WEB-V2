@@ -20,7 +20,7 @@ import * as moment from 'moment';
 
 export class InspectionReportInspectionComponent extends GenericDestroyPageComponent implements OnInit, AfterViewInit {
   public barChartData: any[] = [{
-    label: "Inspections",
+    label: "Items",
     lineTension: 0,
     fillOpacity: 0.3,
     pointRadius: 5,
@@ -43,31 +43,39 @@ export class InspectionReportInspectionComponent extends GenericDestroyPageCompo
           fontSize: 12,
         },
         time: {
-          format: "HH:mm",
+          format: "HH.mm",
           unit: "hour",
           unitStepSize: 1,
           displayFormats: {
-            minute: "HH:mm",
-            hour: "HH:mm",
+            minute: "HH.mm",
+            hour: "HH.mm",
             min: "00:00",
             max: "23:59"
           },
           min: "00:00",
           max: "23:59"
         },
-        scaleShowHorizontalLines: true,
+        scaleShowHorizontalLines: false,
         gridLines: {
           tickMarkLength: 15,
           display: false,
-          drawBorder: false
+          drawBorder: false,
+          lineWidth: 0
         },
         barPercentage: 2.0,
         categoryPercentage: 2.0,
       }],
       yAxes: [{
         ticks: {
-          beginAtZero: true
-        }
+          beginAtZero: true,
+          stepSize: 1,
+        },
+        gridLines: {
+          tickMarkLength: 15,
+          display: false,
+          drawBorder: false,
+          lineWidth: 0
+        },
       }]
     },
     maintainAspectRatio: false,

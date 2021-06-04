@@ -169,7 +169,7 @@ table {
   }
   @page {
     size: A4;
-    margin: 1.5cm;
+    margin: 1cm;
     @bottom-center {
       content: counter(page) "/" counter(pages);
     }

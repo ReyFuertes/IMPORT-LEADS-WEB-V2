@@ -69,7 +69,7 @@ export class TokenInterceptor extends GenericDestroyPageComponent implements Htt
         setTimeout(() => {
           if (!this.isInReportPage)
             this.loaderSrv.isLoading.next(false);
-        }, 3000);
+        }, 3002);
       })
     )
   }

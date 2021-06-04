@@ -32,7 +32,7 @@ const materialModules = [
 ];
 
 const routes: Routes = [
-  { path: 'iaad/login', component: LoginComponent }
+  { path: 'cilchina/login', component: LoginComponent }
 ];
 
 @NgModule({

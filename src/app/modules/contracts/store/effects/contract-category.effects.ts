@@ -12,9 +12,11 @@ import { appNotification } from 'src/app/store/actions/notification.action';
 export class ContractCategoryEffect {
   addMultipleContractCategoryAction$ = createEffect(() => this.actions$.pipe(
     ofType(addMultipleContractCategoryAction),
-    switchMap(({ payload }) => this.contractCategorySrv.post(payload, 'multiple')
+    switchMap(({ payload, contract }) => this.contractCategorySrv.post(payload, 'multiple')
       .pipe(
         map((created: any) => {
+          this.store.dispatch(loadContractCategoryAction({ id: contract?.id }));
+
           return addMultipleContractCategoryActionSuccess({ created });
         })
       ))

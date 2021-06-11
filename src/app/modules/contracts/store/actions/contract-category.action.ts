@@ -1,4 +1,4 @@
-import { IContractCategory, IContractTerm } from './../../contract.model';
+import { IContract, IContractCategory, IContractTerm } from './../../contract.model';
 import { createAction, props } from '@ngrx/store';
 
 export enum CategoryActionTypes {
@@ -22,7 +22,7 @@ export enum CategoryActionTypes {
 }
 export const addMultipleContractCategoryAction = createAction(
   CategoryActionTypes.addMultipleContractCategoryAction,
-  props<{ payload: IContractCategory }>()
+  props<{ payload: IContractCategory[], contract?: IContract }>()
 );
 export const addMultipleContractCategoryActionSuccess = createAction(
   CategoryActionTypes.addMultipleContractCategoryActionSuccess,

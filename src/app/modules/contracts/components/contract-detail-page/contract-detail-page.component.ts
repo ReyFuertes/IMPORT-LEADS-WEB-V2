@@ -317,23 +317,17 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       height: '455px',
       width: '700px'
     });
-    dialogRef.afterClosed().subscribe((payload: any) => {
-      if (payload) {
-
-        this.store.dispatch(addMultipleContractCategoryAction({
-          payload: {
-            ...payload,
-            contract: {
-              id: this.form.get('id').value,
-              contract_name: this.form.get('contract_name').value
-            }
-          }
-        }));
-
-        /* reload all contract category */
-        setTimeout(() => {
-          this.store.dispatch(loadContractCategoryAction({ id: this.form.get('id').value }));
-        }, 3002);
+    dialogRef.afterClosed().subscribe((_payload: any) => {
+      if (_payload) {
+        const contract: IContract = {
+          id: this.form.get('id').value,
+          contract_name: this.form.get('contract_name').value
+        };
+        const payload = _payload?.map(p => {
+          return { ...p, contract }
+        });
+        debugger
+        this.store.dispatch(addMultipleContractCategoryAction({ payload, contract }));
       }
     });
   }

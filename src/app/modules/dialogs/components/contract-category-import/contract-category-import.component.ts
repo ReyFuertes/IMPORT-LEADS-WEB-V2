@@ -18,7 +18,7 @@ export class ContractCategoryImportDialogComponent extends GenericDestroyPageCom
   public imgPath: string = environment.imgPath;
 
   public contractCategories: any[] = [];
-  public selectedCategory: any;
+  public selectedCategories: any;
 
   constructor(private store: Store<AppState>, public dialogRef: MatDialogRef<ContractCategoryImportDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,) {
@@ -38,6 +38,6 @@ export class ContractCategoryImportDialogComponent extends GenericDestroyPageCom
   }
 
   public onImport(): void {
-    this.dialogRef.close(this.selectedCategory);
+    this.dialogRef.close(this.selectedCategories);
   }
 }

@@ -50,6 +50,7 @@ import { ChartModule } from 'primeng/chart';
 import { NavigateGuard } from 'src/app/services/navigate.guard';
 import { InspectionReportEffect } from './store/effects/inspection-report.effect';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { InspectionReportTagsTermComponent } from './components/inspection-report-tags-term/inspection-report-tags-term.component';
 
 const routes: Routes = [{
   path: '',
@@ -131,7 +132,8 @@ const primeNgModules = [];
     InspectionActivePanelComponent,
     InspectionFinishedPanelComponent,
     InspectionRunCategoryComponent,
-    InspectionRunCategoryRowComponent
+    InspectionRunCategoryRowComponent,
+    InspectionReportTagsTermComponent
   ],
   providers: [
     ChecklistService,

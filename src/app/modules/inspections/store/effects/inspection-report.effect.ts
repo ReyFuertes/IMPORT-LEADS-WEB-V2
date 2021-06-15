@@ -6,7 +6,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { AppState } from 'src/app/store/app.reducer';
 import { IInspectionBarReport } from '../../inspections.models';
 import { InspectionReportService } from '../../inspections.service';
-import { inspectionOkCommentsReport, getInspectionOkCommentReportSuccessAction, getInspectorReportAction, getInspectorReportSuccessAction, inspectionBarChartReportAction, inspectionBarChartReportSuccessAction, inspectionProductsReportAction, inspectionProductsReportSuccessAction, getInspectionFailedCommentsReportAction, getInspectionFailedCommentReportSuccessAction, getTagsReportAction, getTagsReportSuccessAction, downloadProductionImagesAction, downloadProductionImagesSuccessAction } from '../actions/inspection-report.action';
+import { inspectionOkCommentsReport, getInspectionOkCommentReportSuccessAction, getInspectorReportAction, getInspectorReportSuccessAction, inspectionBarChartReportAction, inspectionBarChartReportSuccessAction, inspectionProductsReportAction, inspectionProductsReportSuccessAction, getInspectionFailedCommentsReportAction, getInspectionFailedCommentReportSuccessAction, getTagsReportAction, getTagsReportSuccessAction, downloadProductionImagesAction, downloadProductionImagesSuccessAction, getTagTermsReportAction, getTagTermsReportSuccessAction } from '../actions/inspection-report.action';
 import { environment } from 'src/environments/environment';
 
 @Injectable()
@@ -20,6 +20,17 @@ export class InspectionReportEffect {
           window.open(environment.apiDownloadsPath + response?.link);
 
           return downloadProductionImagesSuccessAction({ response });
+        })
+      )
+    })
+  ));
+
+  getTagTermsReportAction$ = createEffect(() => this.actions$.pipe(
+    ofType(getTagTermsReportAction),
+    switchMap(({ saved_checklist_id }) => {
+      return this.inspectionReportSrv.getById(saved_checklist_id, 'tag/terms').pipe(
+        map((response: any) => {
+          return getTagTermsReportSuccessAction({ response });
         })
       )
     })
@@ -91,10 +102,5 @@ export class InspectionReportEffect {
     })
   ));
 
-  constructor(
-    private router: Router,
-    private actions$: Actions,
-    private store: Store<AppState>,
-    private inspectionReportSrv: InspectionReportService,
-  ) { }
+  constructor(private actions$: Actions, private inspectionReportSrv: InspectionReportService) { }
 }

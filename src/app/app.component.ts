@@ -1,17 +1,17 @@
 import { getSuccessSelector } from './store/selectors/notification.selector';
 import { Observable } from 'rxjs';
-import { appNotification, INotification, removeNotification } from './store/actions/notification.action';
+import { INotification, removeNotification } from './store/actions/notification.action';
 import { AppState } from 'src/app/store/app.reducer';
 import { Component, ChangeDetectorRef, AfterViewInit, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { delay, takeUntil, filter } from 'rxjs/operators';
 import { initAppAction } from './store/actions/app.action';
 import { getIsLoggedInSelector } from './store/selectors/app.selector';
-import { LoaderService } from './services/loader.interceptor';
 import { environment } from 'src/environments/environment';
 import { GenericDestroyPageComponent } from './shared/generics/generic-destroy-page';
 import { NavigationEnd, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { LoaderService } from './services/http-token-interceptor';
 
 @Component({
   selector: 'app-root',

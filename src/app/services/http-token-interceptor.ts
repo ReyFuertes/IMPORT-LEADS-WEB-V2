@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Observable, throwError, from, TimeoutError } from 'rxjs';
+import { Observable, throwError, from, TimeoutError, BehaviorSubject } from 'rxjs';
 import { catchError, filter, finalize, map, takeUntil, tap } from 'rxjs/operators';
 import { NavigationEnd, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -8,8 +8,10 @@ import { AppState } from '../modules/contracts/store/reducers';
 import { logoutAction } from '../modules/auth/store/auth.action';
 import { appNotification } from '../store/actions/notification.action';
 import { GenericDestroyPageComponent } from '../shared/generics/generic-destroy-page';
-import { LoaderService } from './loader.interceptor';
-
+@Injectable({ providedIn: 'root' })
+export class LoaderService {
+  public isLoading = new BehaviorSubject(false);
+}
 @Injectable()
 export class TokenInterceptor extends GenericDestroyPageComponent implements HttpInterceptor {
   public durationInSeconds = 5;
@@ -31,47 +33,52 @@ export class TokenInterceptor extends GenericDestroyPageComponent implements Htt
       });
   }
 
+  removeRequest(req: HttpRequest<any>) {
+    const i = this.requests.indexOf(req);
+    if (i >= 0) {
+      this.requests.splice(i, 1);
+    }
+    this.loaderSrv.isLoading.next(this.requests.length > 0);
+  }
+
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.requests.push(request);
     this.loaderSrv.isLoading.next(true);
 
-    return next.handle(request).pipe(
-      map((event: HttpEvent<any>) => {
-        if (event instanceof HttpResponse) {
-          setTimeout(() => {
-            this.loaderSrv.isLoading.next(false);
-          }, 1000);
-        }
-        return event;
-      }),
-      catchError(error => {
-        if (error instanceof HttpErrorResponse && error.status === 401) {
-          from(this.handleUnauthorizedRequest(request));
-          return throwError(error);
-        }
+    return Observable.create(observer => {
+      const subscription = next.handle(request)
+        .subscribe(event => {
+          if (event instanceof HttpResponse) {
+            this.removeRequest(request);
+            observer.next(event);
+          }
+        }, error => {
 
-        /* Handle 500 error */
-        const hasError = error instanceof HttpErrorResponse && error.status === 500;
-        if (hasError && this.isInspectionPage || hasError && this.isInContractPage) {
-          from(this.handleHttpErrorRequest(request, 'Upload image request failed, please try again!'));
-          return throwError(error);
-        };
+          /* Handle 500 error */
+          const hasError = error instanceof HttpErrorResponse && error.status === 500;
+          if (hasError && this.isInspectionPage || hasError && this.isInContractPage) {
+            from(this.handleHttpErrorRequest(request, 'Upload image request failed, please try again!'));
+            return throwError(error);
+          };
 
-        /* Handle timeout error */
-        if (error instanceof TimeoutError) {
-          from(this.handleHttpErrorRequest(request, 'Timeout error, please try again!'));
-          return throwError(error);
-        };
+          /* Handle timeout error */
+          if (error instanceof TimeoutError) {
+            from(this.handleHttpErrorRequest(request, 'Timeout error, please try again!'));
+            return throwError(error);
+          };
 
-        return next.handle(request);
-      }), finalize(() => {
-        /* we need to remove the loader in 5 seconds after requests is processed, this prevent being stuck in cors or cancelled status request, except report page with download prod images */
-        setTimeout(() => {
-          if (!this.isInReportPage)
-            this.loaderSrv.isLoading.next(false);
-        }, 3000);
-      })
-    )
+          this.removeRequest(request);
+          
+          observer.error(error);
+        }, () => {
+          this.removeRequest(request);
+          observer.complete();
+        });
+      return () => {
+        this.removeRequest(request);
+        subscription.unsubscribe();
+      };
+    });
   }
 
   private async handleHttpErrorRequest(request: HttpRequest<any>, msg?: string) {

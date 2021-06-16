@@ -3,16 +3,12 @@ import { getActiveInspectionsSelector } from './../../store/selectors/inspection
 import { AppState } from './../../../contracts/store/reducers/index';
 import { Store, select } from '@ngrx/store';
 import { IActiveInspection } from './../../inspections.models';
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { getAllSavedChecklistSelector } from 'src/app/modules/contracts/store/selectors/saved-checklist.selector';
-import { ISavedChecklistItem } from 'src/app/modules/contracts/contract.model';
-import { takeUntil, tap } from 'rxjs/operators';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 import { loadSavedChecklistAction } from 'src/app/modules/contracts/store/actions/saved-checklist.action';
 import { loadFinishInspectionAction } from '../../store/actions/inspection.action';
-import { StorageService } from 'src/app/services/storage.service';
-import { LoaderService } from 'src/app/services/loader.interceptor';
 
 @Component({
   selector: 'il-inspection-page',
@@ -63,7 +59,7 @@ export class InspectionPageComponent extends GenericDestroyPageComponent impleme
   public $savedChecklists: Observable<IActiveInspection[]>;
   public activeInspections: IActiveInspection[];
 
-  constructor(private loaderSrv: LoaderService, private cdRef: ChangeDetectorRef, private store: Store<AppState>) {
+  constructor(private cdRef: ChangeDetectorRef, private store: Store<AppState>) {
     super();
     this.store.dispatch(loadSavedChecklistAction({}));
     this.store.dispatch(loadFinishInspectionAction());

@@ -3,12 +3,12 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { IContract, IContractCategory, IContractProduct, IContractTerm } from 'src/app/modules/contracts/contract.model';
 import { loadContractCategoryAction } from 'src/app/modules/contracts/store/actions/contract-category.action';
 import { loadContractProductsAction } from 'src/app/modules/contracts/store/actions/contract-product.action';
 import { getContractCategorySelector } from 'src/app/modules/contracts/store/selectors/contract-category.selector';
-import { getAllContractProductsSelector, getContractById } from 'src/app/modules/contracts/store/selectors/contracts.selector';
+import { getAllContractProductsSelector } from 'src/app/modules/contracts/store/selectors/contracts.selector';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { AppState } from 'src/app/store/app.reducer';
 import { environment } from 'src/environments/environment';
@@ -17,7 +17,7 @@ import { loadContractsAction } from 'src/app/modules/contracts/store/actions/con
 import { getReportContractById } from '../../store/selectors/report.selector';
 import * as html2pdf from 'html2pdf.js'
 import { CONTRACTSROUTE } from 'src/app/shared/constants/routes';
-import { LoaderService } from 'src/app/services/loader.interceptor';
+import { LoaderService } from 'src/app/services/http-token-interceptor';
 
 @Component({
   selector: 'il-contract-detail-report',
@@ -107,7 +107,6 @@ export class ContractDetailReportComponent extends GenericDestroyPageComponent i
     setTimeout(() => {
       this.loaderService.isLoading.next(false);
       this.isPrinting = false;
-      //this.router.navigateByUrl(`${this.contractsRoute}/${this.id}/detail`);
     }, 1000);
   }
 

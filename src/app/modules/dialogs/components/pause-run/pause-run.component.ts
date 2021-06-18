@@ -1,13 +1,12 @@
-import { ISimpleItem } from '../../../../shared/generics/generic.model';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormGroup, FormBuilder } from '@angular/forms';
 import { environment } from '../../../../../environments/environment';
-import { Component, OnInit, Inject, Input } from '@angular/core';
-import { InspectionRunPageComponent } from 'src/app/modules/inspections/components/inspection-run-page/inspection-run-page.component';
-import { IInspectionRun, IInspectionRunItem, RunStatusType } from 'src/app/modules/inspections/inspections.models';
+import { Component, Inject } from '@angular/core';
+import { IInspectionRun, RunStatusType } from 'src/app/modules/inspections/inspections.models';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/app.reducer';
 import { changeInspectionRuntimeStatusAction } from 'src/app/modules/inspections/store/actions/inspection.action';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'il-pause-run',
@@ -17,8 +16,10 @@ import { changeInspectionRuntimeStatusAction } from 'src/app/modules/inspections
 
 export class PauseOrRunDialogComponent {
   public svgPath: string = environment.svgPath;
+  public redirectUrl: string = '';
 
-  constructor(private store: Store<AppState>, public dialogRef: MatDialogRef<PauseOrRunDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: { ins: IInspectionRun }) {
+  constructor(private router: Router, private store: Store<AppState>, public dialogRef: MatDialogRef<PauseOrRunDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { ins: IInspectionRun, hasRedirect?: boolean, redirectUrl?: string }) {
   }
 
   public onStop(): void {
@@ -26,8 +27,14 @@ export class PauseOrRunDialogComponent {
       id: this.data.ins?.id,
       saved_checklist: this.data.ins?.saved_checklist,
       run_status: RunStatusType.stop
-    }
-    this.store.dispatch(changeInspectionRuntimeStatusAction({ payload }));
+    };
+
+    this.store.dispatch(changeInspectionRuntimeStatusAction({
+      payload,
+      hasRedirect: this.data?.hasRedirect,
+      redirectUrl: this.data?.hasRedirect ? this.data?.redirectUrl : null
+    }));
+    
     this.dialogRef.close(true);
   }
 

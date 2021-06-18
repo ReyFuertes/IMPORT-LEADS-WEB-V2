@@ -53,7 +53,6 @@ export class TokenInterceptor extends GenericDestroyPageComponent implements Htt
             observer.next(event);
           }
         }, error => {
-
           /* Handle 500 error */
           const hasError = error instanceof HttpErrorResponse && error.status === 500;
           if (hasError && this.isInspectionPage || hasError && this.isInContractPage) {

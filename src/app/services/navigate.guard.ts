@@ -1,31 +1,32 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { CanDeactivate, } from '@angular/router';
+import { CanDeactivate, NavigationEnd, Router, } from '@angular/router';
 import { InspectionRunPageComponent } from '../modules/inspections/components/inspection-run-page/inspection-run-page.component';
 import { MatDialog } from '@angular/material/dialog';
 import { GenericDestroyPageComponent } from '../shared/generics/generic-destroy-page';
 import { AppState } from '../store/app.reducer';
 import { select, Store } from '@ngrx/store';
-import { getIsPausedSelector } from '../modules/inspections/store/selectors/inspection.selector';
+import { getIsStopSelector } from '../modules/inspections/store/selectors/inspection.selector';
+import { debounceTime, filter } from 'rxjs/operators';
 
 @Injectable()
 export class NavigateGuard extends GenericDestroyPageComponent implements CanDeactivate<InspectionRunPageComponent> {
-  constructor(private store: Store<AppState>) {
+  constructor(private router: Router, private store: Store<AppState>) {
     super();
   }
 
   canDeactivate(component: InspectionRunPageComponent): Observable<boolean> | boolean {
-    let isPaused: boolean;
-    this.store.pipe(select(getIsPausedSelector)).subscribe(stat => isPaused = stat);
-    
-    let isPauseOrRun: any;
+    let isStop: boolean;
+    this.store.pipe(select(getIsStopSelector)).subscribe(stat => isStop = stat);
+
+    let isStopOrRun: any;
     try {
-      isPauseOrRun = component?.$pauseOrRun();
+      isStopOrRun = component?.$pauseOrRun();
     } catch (error) {
-      isPauseOrRun = true;
+      isStopOrRun = true;
     }
-    
+
     /* if the checklist run is paused then do not display the confirmation run/stop dialog */
-    return isPaused ? true : isPauseOrRun;
+    return isStop ? true : isStopOrRun;
   }
 }

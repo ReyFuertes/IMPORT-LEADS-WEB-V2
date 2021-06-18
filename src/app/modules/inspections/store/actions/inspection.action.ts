@@ -132,7 +132,7 @@ export const deleteAndNavigateToSuccessAction = createAction(
 );
 export const changeInspectionRuntimeStatusAction = createAction(
   InspectionActionTypes.changeInspectionRuntimeStatusAction,
-  props<{ payload: IInspectionRuntime }>()
+  props<{ payload: IInspectionRuntime, hasRedirect?: boolean, redirectUrl?: string }>()
 );
 export const changeInspectionRuntimeStatusSuccessAction = createAction(
   InspectionActionTypes.changeInspectionRuntimeStatusSuccessAction,

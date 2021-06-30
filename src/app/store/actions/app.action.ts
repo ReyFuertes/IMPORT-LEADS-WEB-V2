@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { IAccess } from 'src/app/models/user.model';
 import { IRole, IUser, IUserAccess } from 'src/app/modules/user-management/user-mgmt.model';
 import { IUserProfile } from 'src/app/modules/users/users.models';
+import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 
 export enum AppActionTypes {
   initAppAction = '[App] init',
@@ -21,7 +22,12 @@ export enum AppActionTypes {
   loadUserListSuccessAction = '[User] user list (success)',
   loadUserClientsAction = '[User] user clients',
   loadUserClientsSuccessAction = '[User] user clients (success)',
+  setDefaultLangAction = '[User] set default lang',
 }
+export const setDefaultLangAction = createAction(
+  AppActionTypes.setDefaultLangAction,
+  props<{ language: ISimpleItem }>()
+);
 export const loadUserClientsAction = createAction(
   AppActionTypes.loadUserClientsAction
 );

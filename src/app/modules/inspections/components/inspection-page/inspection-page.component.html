@@ -1,21 +1,21 @@
 <div class="template-container" fxLayout="column" fxLayoutGap="20px">
   <div>
     <div fxFlex>
-      <h2>Inspections</h2>
+      <h2>{{ 'Inspections' | translate }}</h2>
     </div>
     <div fxFlex="120px" fxLayoutAlign="end center">
       <il-sort (sortEmitter)="handleSortChanges($event)" [options]="sortOptions"></il-sort>
     </div>
   </div>
   <mat-tab-group fxFlexFill>
-    <mat-tab label="Active Inspections">
+    <mat-tab [label]="'Active Inspections' | translate">
       <ng-template matTabContent>
         <div fxLayout="column" fxLayoutAlign="start center">
           <il-inspection-active-panel [colsHeader]="activeCols" [activeInspections]="activeInspections"></il-inspection-active-panel>
         </div>
       </ng-template>
     </mat-tab>
-    <mat-tab label="Finished Inspections">
+    <mat-tab [label]="'Finished Inspections' | translate">
       <ng-template matTabContent>
         <div fxLayout="column" fxLayoutAlign="start center">
           <il-inspection-finished-panel [colsHeader]="finishedCols"></il-inspection-finished-panel>

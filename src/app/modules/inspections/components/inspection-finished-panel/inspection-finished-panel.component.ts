@@ -10,6 +10,8 @@ import { AppState } from 'src/app/store/app.reducer';
 import { takeUntil } from 'rxjs/operators';
 import { getFinishedInspectionsSelector } from '../../store/selectors/inspection.selector';
 import { INSPECTIONSRUNTEMPLATEROUTE, INSPECTIONSROUTE, INSPECTIONSRUNREPORTROUTE } from 'src/app/shared/constants/routes';
+import { TranslateService } from '@ngx-translate/core';
+import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 
 @Component({
   selector: 'il-inspection-finished-panel',
@@ -27,7 +29,7 @@ export class InspectionFinishedPanelComponent extends GenericRowComponent implem
   public imgPath: string = environment.imgPath;
   public menus: Menu[];
 
-  constructor(private store: Store<AppState>, private cdRef: ChangeDetectorRef, private router: Router) {
+  constructor(public translateService: TranslateService, private store: Store<AppState>, private cdRef: ChangeDetectorRef, private router: Router) {
     super();
   }
 
@@ -61,6 +63,12 @@ export class InspectionFinishedPanelComponent extends GenericRowComponent implem
   }
 
   ngAfterViewInit(): void {
+    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
+        }
+      });
     this.cdRef.detectChanges();
   }
 

@@ -1,13 +1,13 @@
 import { IContractTerm, IContractCategoryTerm } from './../../contract.model';
 import { loadContractCategoryAction } from '../../store/actions/contract-category.action';
 import { AppState } from '../../../../store/app.reducer';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { ICategory } from '../../contract.model';
 import { ContractCategoryTitleDialogComponent } from '../../../dialogs/components/contract-category-title/contract-category-title-dialog.component';
 import { ContractCategoryDialogComponent } from '../../../dialogs/components/contract-category/contract-category-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from '../../../../../environments/environment';
-import { Component, OnInit, Input, OnChanges, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, Output, EventEmitter, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 import { IContractCategory } from '../../contract.model';
 import { updateCategoryAction } from '../../store/actions/category.action';
@@ -15,6 +15,8 @@ import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
 import { takeUntil } from 'rxjs/operators';
 import { CategoryTemplateDialogComponent } from 'src/app/modules/dialogs/components/category-template/category-template-dialog.component';
 import { saveCategoryTemplateAction } from '../../store/actions/Category-template.action';
+import { TranslateService } from '@ngx-translate/core';
+import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 
 @Component({
   selector: 'il-contract-category',
@@ -36,11 +38,19 @@ export class ContractCategoryComponent extends GenericRowComponent implements On
   @Output() public removeProductSpecEmitter = new EventEmitter<number>();
   @Output() public categoryTermEmitter = new EventEmitter<IContractCategoryTerm>();
 
-  constructor(private store: Store<AppState>, public dialog: MatDialog) {
+  constructor(private cdRef: ChangeDetectorRef, public translateService: TranslateService, private store: Store<AppState>, public dialog: MatDialog) {
     super();
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
+          this.cdRef.detectChanges();
+        }
+      });
+  }
 
   public onToggleTerm(event: IContractCategoryTerm): void {
     this.categoryTermEmitter.emit(event);

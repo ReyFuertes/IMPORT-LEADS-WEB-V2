@@ -10,12 +10,12 @@
       </div>
       <div fxFlex="50px" class="pnl-actions" fxLayoutAlign="center center">
         <div class="menu-icon" *ngIf="hoveredIndex === i && selectedIndex !== i" fxLayoutGap="10px">
-          <img (click)="selectedIndex = i" [src]="svgPath + 'edit-icon-blue.svg'" matTooltip="Edit question" />
-          <img *appHasRole="'admin'" [src]="svgPath + 'delete-icon-red.svg'" (click)="onDelete(item?.id)" matTooltip="Delete question">
+          <img (click)="selectedIndex = i" [src]="svgPath + 'edit-icon-blue.svg'" [matTooltip]="'Edit question' | translate" />
+          <img *appHasRole="'admin'" [src]="svgPath + 'delete-icon-red.svg'" (click)="onDelete(item?.id)" [matTooltip]="'Delete question' | translate">
         </div>
         <div class="menu-icon" *ngIf="hoveredIndex === i && selectedIndex === i" fxLayoutGap="10px">
-          <img [src]="svgPath + 'close-icon-blue.svg'" (click)="onClose()" matTooltip="Close" matTooltip="Close" />
-          <img [src]="svgPath + 'save-icon-blue.svg'" (click)="onSave()" matTooltip="Save question" matTooltip="Save question">
+          <img [src]="svgPath + 'close-icon-blue.svg'" (click)="onClose()" [matTooltip]="'Close' | translate" />
+          <img [src]="svgPath + 'save-icon-blue.svg'" (click)="onSave()" [matTooltip]="'Save question' | translate">
         </div>
       </div>
     </div>

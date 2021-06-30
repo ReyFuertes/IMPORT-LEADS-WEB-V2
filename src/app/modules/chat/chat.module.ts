@@ -35,6 +35,9 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { createTranslateLoader } from 'src/app/app.module';
+import { HttpClient } from '@angular/common/http';
 
 const routes: Routes = [
   {
@@ -85,7 +88,14 @@ const materialModules = [
     ...primeNgModules,
     ...materialModules,
     DialogModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    })
   ],
   exports: [],
   declarations: [

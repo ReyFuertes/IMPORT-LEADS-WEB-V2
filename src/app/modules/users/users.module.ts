@@ -44,6 +44,9 @@ import { reducers } from './store/reducers';
 import { UserProfileEffects } from './store/effects/user-profile.effects';
 import { UserChangePasswordComponent } from './components/user-change-password/user-change-password.component';
 import { UserEffects } from './store/effects/user.effects';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { createTranslateLoader } from 'src/app/app.module';
+import { HttpClient } from '@angular/common/http';
 
 const routes: Routes = [
   {
@@ -109,7 +112,14 @@ const materialModules = [
     DialogModule,
     RouterModule.forChild(routes),
     StoreModule.forFeature('usersModule', reducers),
-    EffectsModule.forFeature([UserProfileEffects, UserEffects])
+    EffectsModule.forFeature([UserProfileEffects, UserEffects]),
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    })
   ],
   exports: [],
   declarations: [

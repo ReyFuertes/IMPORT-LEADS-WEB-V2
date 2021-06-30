@@ -4,6 +4,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ChatUser } from '../../chat.models';
 import { environment } from '../../../../../environments/environment';
 import { ChatDetailDialogComponent } from 'src/app/modules/dialogs/components/chat-detail/chat-detail-dialog.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'il-chat-user-list',
@@ -15,7 +16,7 @@ export class ChatUserListComponent implements OnInit {
   @Input()
   public chatUsers: ChatUser;
   public selectedItem: number = -1;
-  constructor(public dialog: MatDialog) { }
+  constructor(public translateService: TranslateService, public dialog: MatDialog) { }
   ngOnInit() {
   }
 

@@ -71,6 +71,9 @@ import { MatRadioModule } from '@angular/material/radio';
 import { SafePipe } from './pipes/html';
 import { PageNotFoundComponent } from './components/pageNotFound/pageNotFound.component';
 import { MatCardModule } from '@angular/material/card';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { createTranslateLoader } from '../app.module';
+import { HttpClient } from '@angular/common/http';
 
 const materialModules = [
   MatListModule,
@@ -158,7 +161,14 @@ const directives = [
     ...primeNgModules,
     RouterModule,
     NgxFileDropModule,
-    QuillModule.forRoot()
+    QuillModule.forRoot(),
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    })
   ],
   exports: [...sharedComponents, ...directives],
   declarations: [...sharedComponents, ...directives, customCurrencyPipe],

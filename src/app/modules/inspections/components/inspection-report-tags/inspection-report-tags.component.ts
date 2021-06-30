@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
 import { ChartOptions, ChartType, ChartDataSets, Chart } from 'chart.js';
 import { Label, Color } from 'ng2-charts';
 import { takeUntil } from 'rxjs/operators';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { AppState } from 'src/app/store/app.reducer';
+import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 import { getTagsReportAction, getTagsReportSuccessAction } from '../../store/actions/inspection-report.action';
 import { getTagsReportSelector } from '../../store/selectors/inspection-report.selector';
 export interface Tag {
@@ -29,7 +31,7 @@ export class InspectionReportTagsComponent extends GenericDestroyPageComponent i
   public dataSource: any;
   public totalTags: any;
 
-  constructor(private route: ActivatedRoute, private store: Store<AppState>) {
+  constructor(public translateService: TranslateService, private route: ActivatedRoute, private store: Store<AppState>) {
     super();
 
     const saved_checklist_id = this.route.snapshot.paramMap.get('id') || null;
@@ -51,7 +53,7 @@ export class InspectionReportTagsComponent extends GenericDestroyPageComponent i
           this.totalTags = String(res?.length > 0 ? res?.length : 0);
 
           const failure_rates: any[] = this.dataSource?.map(o => o?.failure_rate);
-          
+
           let totalFailureRate: any;
           let avgFailureRate: any;
           if (failure_rates?.length > 0) {
@@ -66,6 +68,13 @@ export class InspectionReportTagsComponent extends GenericDestroyPageComponent i
             { title: 'Total amount of tags', value: this.totalTags },
             { title: 'Average failure rate', value: `${parseFloat(String(Math.abs(avgFailureRate))).toFixed(2)}%` }
           ];
+        }
+      });
+
+    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
         }
       });
   }

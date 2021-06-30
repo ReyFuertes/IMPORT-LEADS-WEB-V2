@@ -5,6 +5,10 @@ import { takeUntil, take } from 'rxjs/operators';
 import * as _ from 'lodash';
 import { GenericControl } from '../../generics/generic-control';
 import { ISimpleItem } from '../../generics/generic.model';
+import { TranslateService } from '@ngx-translate/core';
+import { select, Store } from '@ngrx/store';
+import { AppState } from 'src/app/store/app.reducer';
+import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 
 @Component({
   selector: 'il-dropdown-multi-select',
@@ -24,7 +28,7 @@ export class DropdownMultiSelectComponent extends GenericControl<ISimpleItem> im
 
   private newDataList: any;
 
-  constructor() {
+  constructor(private store: Store<AppState>, private cdRef: ChangeDetectorRef, public translateService: TranslateService) {
     super();
   }
 
@@ -41,7 +45,14 @@ export class DropdownMultiSelectComponent extends GenericControl<ISimpleItem> im
         .subscribe(() => {
           this.filterdata();
         });
-    }
+    };
+    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
+          this.cdRef.detectChanges();
+        }
+      });
   }
 
   private filterdata(): void {

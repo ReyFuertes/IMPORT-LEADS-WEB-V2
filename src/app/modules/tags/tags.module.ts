@@ -34,6 +34,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TagsReducer } from './store/reducers/tags.reducer';
 import { TagQuestionsEffects } from './store/effects/tag-question.effects';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { createTranslateLoader } from 'src/app/app.module';
+import { HttpClient } from '@angular/common/http';
 
 const routes: Routes = [
   {
@@ -86,7 +89,14 @@ const materialModules = [
     DialogModule,
     RouterModule.forChild(routes),
     StoreModule.forFeature('tag', TagsReducer),
-    EffectsModule.forFeature([TagsEffect, TagQuestionsEffects])
+    EffectsModule.forFeature([TagsEffect, TagQuestionsEffects]),
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    })
   ],
   exports: [],
   declarations: [

@@ -1,15 +1,12 @@
 <div fxLayout="column" fxLayoutGap="10px">
   <div>
     <div fxFlex>
-      <h2>Tags</h2>
+      <h2>{{ 'Tags' | translate }}</h2>
     </div>
     <div fxFlex="120px" fxLayoutAlign="end center">
       <il-sort></il-sort>
     </div>
   </div>
   <il-tag-expansion-panel [items]="$items | async"></il-tag-expansion-panel>
-  <!-- <div class="action-btn">
-    <button mat-button color="primary" class="mat-elevation-z4" (click)="onAddTag()"><mat-icon>add</mat-icon></button>
-  </div> -->
 </div>
 

@@ -9,11 +9,11 @@
     </div>
     <div class="action-item delete" (click)="onDeleteContract()" fxLayoutAlign="start center" fxLayoutGap="5px">
       <img [src]="svgPath + 'delete-icon-red.svg'" />
-      <span matTooltip="Delete Contract">Delete Contract</span>
+      <span matTooltip="Delete Contract">{{ 'Delete Contract' | translate }}</span>
     </div>
     <div class="action-item delete" (click)="onReport()" fxLayoutAlign="start center" fxLayoutGap="5px">
       <img [src]="svgPath + 'print-icon.svg'" />
-      <span matTooltip="Report">Report</span>
+      <span matTooltip="Report">{{ 'Report' | translate }}</span>
     </div>
   </div>
   <mat-card>
@@ -23,21 +23,21 @@
           <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
             <div class="img-box" [style.background-image]="getVenueImage(contract)">
             </div>
-            <h2>Contract</h2>
+            <h2>{{ 'Contract' | translate }}</h2>
           </div>
           <!-- contract details -->
           <div fxLayout="row">
             <div fxFlex="60" class="detail-container" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="40px">
               <div fxFlex>
-                <div>Company</div>
+                <div>{{ 'Company' | translate }}</div>
                 <div>{{ contract?.venue?.name }}</div>
               </div>
               <div fxFlex="35">
-                <div>Responsible Person</div>
+                <div>{{ 'Responsible Person' | translate }}</div>
                 <div>{{ contract?.user?.username || 'None' }}</div>
               </div>
               <div fxFlex="12">
-                <div>Contract Date</div>
+                <div>{{ 'Contract Date' | translate }}</div>
                 <div>{{ contract?.created_at | date: 'dd/MM/yyyy'}}</div>
               </div>
             </div>
@@ -76,7 +76,7 @@
 
   <p-sidebar class="il-rightnav-bottom" [(visible)]="showRightNav" position="right" [showCloseIcon]="false">
     <div fxlayout="row" fxLayoutAlign="center center" fxFlexFill>
-      <button type="button" (click)="onSaveChecklist()" [disabled]="!isChecklistValid" mat-flat-button class="il-button primary">Save</button>
+      <button type="button" (click)="onSaveChecklist()" [disabled]="!isChecklistValid" mat-flat-button class="il-button primary">{{ 'Save' | translate }}</button>
     </div>
   </p-sidebar>
 </div>

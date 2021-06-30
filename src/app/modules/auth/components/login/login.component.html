@@ -7,24 +7,24 @@
         <div class="content" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="5px">
           <div>
             <div fxLayout="column">
-              <label>Email</label>
-              <il-input fxFlex="50" [form]="form" hasBorder="true" isFloatLabel="true" controlName="username" placeholder="Enter Username or Email"></il-input>
+              <label>{{ 'Email' | translate }}</label>
+              <il-input fxFlex="50" [form]="form" hasBorder="true" isFloatLabel="true" controlName="username" [placeholder]="'Enter Username or Email' | translate"></il-input>
             </div>
             <div fxLayout="column">
-              <label>Password</label>
+              <label>{{ 'Password' | translate }}</label>
               <il-input class="password" inputType="password" fxFlex="50" [form]="form" hasBorder="true" isFloatLabel="true" controlName="password" placeholder="Password"></il-input>
             </div>
           </div>
           <div fxLayoutAlign="start center">
-            <p-checkbox label="Remember Me"></p-checkbox>
+            <p-checkbox [label]="'Remember Me' | translate"></p-checkbox>
           </div>
           <button [disabled]="!form.valid" (click)="onSubmit()" mat-flat-button class="il-button primary large" fxLayoutGap="5px">
             <div class="btn-div" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
               <i *ngIf="($isLogging | async) && !($isLoginFailed | async)" class="pi pi-spin pi-spinner" style="font-size: 2em"></i>
-              <div>LOGIN</div>
+              <div>{{ 'LOGIN' | translate }}</div>
             </div>
           </button>
-          <div class="error"><span *ngIf="loginError">Login Failed</span>
+          <div class="error"><span *ngIf="loginError">{{ 'Login Failed' | translate }}</span>
           </div>
         </div>
       </div>

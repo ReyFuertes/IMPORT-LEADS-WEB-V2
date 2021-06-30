@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -9,6 +9,11 @@ import { AppState } from 'src/app/store/app.reducer';
 import { takeUntil } from 'rxjs/operators';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { updateProfileAction } from '../../store/actions/user-profile.actions';
+import { ISimpleItem } from 'src/app/shared/generics/generic.model';
+import { TranslateService } from '@ngx-translate/core';
+import { StorageService } from 'src/app/services/storage.service';
+import { setDefaultLangAction } from 'src/app/store/actions/app.action';
+import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 
 @Component({
   selector: 'il-user-setting-details',
@@ -19,8 +24,15 @@ export class UserSettingDetailsComponent extends GenericDestroyPageComponent imp
   public svgPath: string = environment.svgPath;
   public form: FormGroup;
   public $detail: Observable<IUserProfile>;
+  public languages: ISimpleItem[] = [{
+    label: 'English',
+    value: 'en'
+  }, {
+    label: 'Chinese',
+    value: 'cn'
+  }];
 
-  constructor(private store: Store<AppState>, public fb: FormBuilder) {
+  constructor(private cdRef: ChangeDetectorRef, public storageSrv: StorageService, public translateService: TranslateService, private store: Store<AppState>, public fb: FormBuilder) {
     super();
 
     this.form = this.fb.group({
@@ -39,8 +51,17 @@ export class UserSettingDetailsComponent extends GenericDestroyPageComponent imp
       qqid: [null],
       self_intro: [null],
       twitter: [null],
-      wechatid: [null]
+      wechatid: [null],
+      language: [null]
     });
+
+    this.form.get('language').valueChanges
+      .pipe(takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        translateService.use(language);
+        storageSrv.set('lang', language);
+        this.store.dispatch(setDefaultLangAction({ language }));
+      });
   }
 
   ngOnInit() {
@@ -55,7 +76,15 @@ export class UserSettingDetailsComponent extends GenericDestroyPageComponent imp
           company_name: res?.company_name,
           company_address: res?.company_address
         });
-      })
+      });
+
+    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
+          this.cdRef.detectChanges();
+        }
+      });
   }
 
   public updateProfile(): void {

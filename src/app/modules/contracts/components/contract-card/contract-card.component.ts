@@ -10,6 +10,8 @@ import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-des
 import { IVenue } from 'src/app/modules/venues/venues.models';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CONTRACTSROUTE } from 'src/app/shared/constants/routes';
+import { TranslateService } from '@ngx-translate/core';
+import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 
 @Component({
   selector: 'il-contract-card',
@@ -25,7 +27,7 @@ export class ContractCardComponent extends GenericDestroyPageComponent implement
 
   @Input() public contract: IContract;
 
-  constructor(private cdRef: ChangeDetectorRef, private sanitizer: DomSanitizer, private store: Store<AppState>, private router: Router) {
+  constructor(public translateService: TranslateService, private cdRef: ChangeDetectorRef, private sanitizer: DomSanitizer, private store: Store<AppState>, private router: Router) {
     super();
   }
 
@@ -60,6 +62,13 @@ export class ContractCardComponent extends GenericDestroyPageComponent implement
   }
 
   public ngAfterViewInit(): void {
+    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
+          this.cdRef.detectChanges();
+        }
+      });
     this.cdRef.detectChanges();
   }
 }

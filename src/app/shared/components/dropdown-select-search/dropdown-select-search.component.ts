@@ -5,6 +5,10 @@ import { ISimpleItem } from '../../generics/generic.model';
 import { GenericControl } from '../../generics/generic-control';
 import { Component, OnInit, ChangeDetectorRef, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
 import { FormControl, FormBuilder } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
+import { select, Store } from '@ngrx/store';
+import { AppState } from 'src/app/store/app.reducer';
+import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 
 @Component({
   selector: 'il-dropdown-select-search',
@@ -17,7 +21,7 @@ export class DropdownSelectSearchComponent extends GenericControl<ISimpleItem> i
   public $filteredData = new ReplaySubject<any>();
   private newList: ISimpleItem[];
 
-  constructor(private cdRef: ChangeDetectorRef) {
+  constructor(private store: Store<AppState>, private cdRef: ChangeDetectorRef, public translateService: TranslateService) {
     super();
   }
 
@@ -33,7 +37,13 @@ export class DropdownSelectSearchComponent extends GenericControl<ISimpleItem> i
   }
 
   ngAfterViewInit(): void {
-
+    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+    .subscribe(language => {
+      if (language) {
+        this.translateService.use(language);
+        this.cdRef.detectChanges();
+      }
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

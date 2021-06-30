@@ -1,7 +1,7 @@
 <div fxLayout="column">
   <div class="header">
     <div fxFlex>
-      <h2>Agreements</h2>
+      <h2>{{ 'Agreements' | translate }}</h2>
     </div>
     <div fxFlex="15" fxLayoutAlign="end center">
       <il-sort (sortEmitter)="handleSortChanges($event)" [options]="sortOptions" *ngIf="hasRecords"></il-sort>
@@ -16,7 +16,7 @@
 </div>
 
 <ng-template #noRecords>
-  <div class="no-records" fxLayout="row" fxLayoutAlign="center center">No Records</div>
+  <div class="no-records" fxLayout="row" fxLayoutAlign="center center">{{ 'No Records' | translate }}</div>
 </ng-template>
 
 <div class="fab-buttons">

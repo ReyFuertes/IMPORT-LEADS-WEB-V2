@@ -40,6 +40,9 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { VenuesReducer } from './store/venues.reducer';
 import { VenuesEffects } from './store/venues.effects';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { createTranslateLoader } from 'src/app/app.module';
+import { HttpClient } from '@angular/common/http';
 
 const routes: Routes = [
   {
@@ -92,7 +95,14 @@ const materialModules = [
     DialogModule,
     RouterModule.forChild(routes),
     StoreModule.forFeature('venues', VenuesReducer),
-    EffectsModule.forFeature([VenuesEffects, VenueProductsEffect])
+    EffectsModule.forFeature([VenuesEffects, VenueProductsEffect]),
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    })
   ],
   exports: [],
   declarations: [

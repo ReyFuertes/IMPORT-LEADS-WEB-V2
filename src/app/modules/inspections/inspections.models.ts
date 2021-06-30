@@ -54,7 +54,8 @@ export interface IInspectionBarReport {
   start_date?: string;
   total_checked?: number;
   inspection_time?: any;
-  average_duration_per_item?: any
+  average_duration_per_item?: any;
+  table_data?: any;
 }
 export interface IInspectionChecklistImage {
   id?: string;

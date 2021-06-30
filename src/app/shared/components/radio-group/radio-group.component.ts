@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { ISimpleItem } from '../../generics/generic.model';
 
 @Component({
@@ -13,7 +14,7 @@ export class RadioGroupComponent implements OnChanges {
 
   @Output() public valueEmitter = new EventEmitter<any>();
 
-  constructor() { }
+  constructor(public translateService: TranslateService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.selected?.currentValue) {

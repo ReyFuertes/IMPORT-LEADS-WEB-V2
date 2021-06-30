@@ -3,7 +3,7 @@
     <mat-list-item class="brand" role="listitem">
       <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
         <img [src]="svgPath + 'logo.svg'" />
-        <span class="cap-case">import leads</span>
+        <span class="cap-case">{{'import leads' | translate }}</span>
       </div>
     </mat-list-item>
   </mat-list>
@@ -12,7 +12,7 @@
       false}" role="listitem">
       <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
         <img [src]="svgPath + menu?.icon" />
-        <span>{{ menu?.name }}</span>
+        <span>{{ menu?.name | translate }}</span>
       </div>
     </mat-list-item>
   </mat-list>

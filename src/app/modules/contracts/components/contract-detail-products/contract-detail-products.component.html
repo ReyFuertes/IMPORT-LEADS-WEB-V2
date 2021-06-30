@@ -3,7 +3,7 @@
     <div class="img-box">
       <img [src]="svgPath + 'doc-icon-blue.svg'" />
     </div>
-    <h2>Products</h2>
+    <h2>{{ 'Products' | translate }}</h2>
   </div>
 
   <div class="cp-container" fxLayout="column" fxLayoutGap="10px">
@@ -85,10 +85,10 @@
       <div class="form-value" *ngIf="isAddState && !inCheckListing" fxFlex="180px" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
         <ng-container>
           <button matTooltip="Save" [disabled]="!form.valid" *ngIf="!isEditProduct" mat-flat-button class="il-button primary" (click)="onAdd()">
-            <span>Save Product</span>
+            <span>{{ 'Save Product' | translate }}</span>
           </button>
           <button matTooltip="Save" [disabled]="!form.valid" *ngIf="isEditProduct" mat-flat-button class="il-button primary" (click)="onSave()">
-            <span>Update Product</span>
+            <span>{{ 'Update Product' | translate }}</span>
           </button>
           <div fxFlex="50px" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
             <!-- <mat-checkbox matTooltip="Remove Child Product" [checked]="hasSubProducts" [disabled]="!form.valid" (change)="onShowSubProduct()"></mat-checkbox> -->
@@ -100,7 +100,7 @@
       <div *ngIf="!inCheckListing" class="view" fxFlex="50px" fxLayout="row" fxLayoutAlign="start center">
         <img *ngIf="isAddState" matTooltip="Show/Hide Panel" (click)="onView()" [src]="svgPath + 'close-icon-red.svg'" />
         <button *ngIf="!isAddState" matTooltip="Add" mat-flat-button class="il-button primary" (click)="onView()">
-          <span>Add Product</span>
+          <span>{{ 'Add Product' | translate }}</span>
         </button>
       </div>
     </div>

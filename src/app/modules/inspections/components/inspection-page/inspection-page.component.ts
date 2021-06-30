@@ -9,6 +9,8 @@ import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-des
 import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 import { loadSavedChecklistAction } from 'src/app/modules/contracts/store/actions/saved-checklist.action';
 import { loadFinishInspectionAction } from '../../store/actions/inspection.action';
+import { TranslateService } from '@ngx-translate/core';
+import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 
 @Component({
   selector: 'il-inspection-page',
@@ -59,7 +61,7 @@ export class InspectionPageComponent extends GenericDestroyPageComponent impleme
   public $savedChecklists: Observable<IActiveInspection[]>;
   public activeInspections: IActiveInspection[];
 
-  constructor(private cdRef: ChangeDetectorRef, private store: Store<AppState>) {
+  constructor(public translateService: TranslateService, private cdRef: ChangeDetectorRef, private store: Store<AppState>) {
     super();
     this.store.dispatch(loadSavedChecklistAction({}));
     this.store.dispatch(loadFinishInspectionAction());
@@ -72,6 +74,13 @@ export class InspectionPageComponent extends GenericDestroyPageComponent impleme
       });
 
     localStorage.removeItem('ic_sel_prod');
+
+    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
+        }
+      });
   }
 
   public handleSortChanges(event: any): void {

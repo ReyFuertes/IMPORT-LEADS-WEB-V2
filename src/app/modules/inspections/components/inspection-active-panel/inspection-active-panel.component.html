@@ -1,5 +1,5 @@
 <div class="col-header" fxLayoutAlign="center center" fxLayoutGap="10px">
-  <div *ngFor="let col of colsHeader" [fxFlex]="col?.value">{{ col?.label }}</div>
+  <div *ngFor="let col of colsHeader" [fxFlex]="col?.value">{{ col?.label | translate }}</div>
 </div>
 <div *ngIf="activeInspections" class="il-draggable-expansion">
   <mat-accordion cdkDropList (cdkDropListDropped)="drop($event)">
@@ -31,11 +31,11 @@
                 <button *ngFor="let menu of menus; let last = last; let i = index" [ngClass]="{'hidden': hideReportIfNoInspectionRun(item?.inspection_checklist_run, menu)}" (click)="menu?.action(item)" mat-menu-item fxLayout="row"
                   fxLayoutAlign="start center" fxLayoutGap="10px">
                   <img [ngClass]="{'w-18': last}" [src]="svgPath + menu?.icon" />
-                  <span>{{ item?.is_paused && i === 0 ? 'RESUME' : menu?.label }}</span>
+                  <span>{{ (item?.is_paused && i === 0 ? 'RESUME' : menu?.label) | translate }}</span>
                 </button>
               </ng-container>
               <button *ngIf="item?.isViewing" [disabled]="item?.run_count === 0" (click)="onView(item?.id)" mat-menu-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-                <span>{{ item?.run_count === 0 ? 'Not run yet': 'View' }}</span>
+                <span>{{ (item?.run_count === 0 ? 'Not run yet': 'View') | translate }}</span>
               </button>
             </mat-menu>
           </div>

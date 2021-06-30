@@ -2,16 +2,18 @@ import { ConfirmationComponent } from './../../../dialogs/components/confirmatio
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
 import { updateTagQuestion, addTagQuestion, deleteTagQuestion } from './../../store/actions/tag-question.action';
 import { AppState } from './../../../contracts/store/reducers/index';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { ITagQuestion } from './../../tags.model';
 import { environment } from './../../../../../environments/environment';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TagsQuestionDialogComponent } from 'src/app/modules/dialogs/components/tags-question/tags-question-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ITag } from '../../tags.model';
 import { takeUntil } from 'rxjs/operators';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
+import { TranslateService } from '@ngx-translate/core';
+import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 
 @Component({
   selector: 'il-tag-expansion-list',
@@ -31,11 +33,19 @@ export class TagExpansionListComponent extends GenericDestroyPageComponent imple
   public selectedItem: ITagQuestion;
 
 
-  constructor(private store: Store<AppState>, public dialog: MatDialog) {
+  constructor(public cdRef: ChangeDetectorRef, public translateService: TranslateService, private store: Store<AppState>, public dialog: MatDialog) {
     super();
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
+          this.cdRef.detectChanges();
+        }
+      });
+  }
 
   public dragStart: boolean = false;
   public drop(event: CdkDragDrop<string[]>): void {

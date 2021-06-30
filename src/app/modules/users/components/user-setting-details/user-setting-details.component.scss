@@ -15,3 +15,8 @@
 .il-button {
   @include il-button;
 }
+:host ::ng-deep {
+  il-dropdown-select {
+    max-width: 250px !important;
+  }
+}

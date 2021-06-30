@@ -1,11 +1,11 @@
 <div class="irr-container" fxLayout="column" fxLayoutGap="20px">
   <div fxLayout="row" fxLayoutAlign="start center">
     <div fxFlex="50">
-      <h1>Inspection run report</h1>
+      <h1>{{ 'Inspection run report' | translate }}</h1>
     </div>
     <div class="production-image" fxFlex="50" fxLayoutAlign="end center" fxLayoutGap="10px">
       <img [src]="svgPath + 'download-icon-blue.svg'" />
-      <span class="download" (click)="onDownload()">Download production images</span>
+      <span class="download" (click)="onDownload()">{{ 'Download production images' | translate }}</span>
     </div>
   </div>
 

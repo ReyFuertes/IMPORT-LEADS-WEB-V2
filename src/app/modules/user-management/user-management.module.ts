@@ -11,7 +11,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -33,6 +32,9 @@ import { UserMgmtEffects } from './store/user-mgmt.effects';
 import { UserDetailComponent } from './components/user-detail/user-detail.component';
 import { RolesService, UserAccessService, UserRolesService } from './user-mgmt.service';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { createTranslateLoader } from 'src/app/app.module';
+import { HttpClient } from '@angular/common/http';
 
 const routes: Routes = [
   {
@@ -92,7 +94,14 @@ const materialModules = [
     DialogModule,
     RouterModule.forChild(routes),
     StoreModule.forFeature('userMgmt', UserMgmtReducer),
-    EffectsModule.forFeature([UserMgmtEffects])
+    EffectsModule.forFeature([UserMgmtEffects]),
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    })
   ],
   exports: [],
   providers: [UserAccessService, RolesService, UserRolesService],

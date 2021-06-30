@@ -1,7 +1,7 @@
-import { addItemToChecklistTermsAction, clearAllSelectedTerms, removeItemFromChecklistProductsAction, clearChecklistProductsAction, addItemToChecklistItemsAction, processItemsToChecklistAction, removeTermFormChecklistAction, processItemsToChecklistEntitiesAction, removeItemFromEntitiesAction, clearChecklistSourceAction, clearEntitiesAction } from './../../store/actions/contract-checklist.action';
+import { addItemToChecklistTermsAction, clearAllSelectedTerms, clearChecklistProductsAction, processItemsToChecklistAction, removeTermFormChecklistAction, processItemsToChecklistEntitiesAction, removeItemFromEntitiesAction, clearEntitiesAction } from './../../store/actions/contract-checklist.action';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { reOrderImagesAction, deleteContractAction } from './../../store/actions/contracts.action';
-import { tap, take, map, takeUntil, debounceTime } from 'rxjs/operators';
+import { tap, takeUntil } from 'rxjs/operators';
 import { getContractCategorySelector } from './../../store/selectors/contract-category.selector';
 import { addContractCategoryAction, addMultipleContractCategoryAction, loadContractCategoryAction } from './../../store/actions/contract-category.action';
 import { ContractCategoryDialogComponent } from '../../../dialogs/components/contract-category/contract-category-dialog.component';
@@ -33,6 +33,8 @@ import { CONTRACTSROUTE } from 'src/app/shared/constants/routes';
 import { ContractImportTemplateDialogComponent } from 'src/app/modules/dialogs/components/contract-import-template-dialog/contract-import-template-dialog.component';
 import { StorageService } from 'src/app/services/storage.service';
 import { ContractAddDialogComponent } from 'src/app/modules/dialogs/components/contract-add-dialog/contract-add-dialog.component';
+import { TranslateService } from '@ngx-translate/core';
+import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 
 @Component({
   selector: 'il-contract-detail-page',
@@ -67,8 +69,9 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
   @Output() public openNavChange = new EventEmitter<boolean>();
   @ViewChild('scrollPnl', { static: false }) public scrollPnl: any;
 
-  constructor(private storageSrv: StorageService, private sanitizer: DomSanitizer, private router: Router, private store: Store<AppState>, private route: ActivatedRoute, public fb: FormBuilder, public dialog: MatDialog, cdRef: ChangeDetectorRef) {
+  constructor(public translateService: TranslateService, private storageSrv: StorageService, private sanitizer: DomSanitizer, private router: Router, private store: Store<AppState>, private route: ActivatedRoute, public fb: FormBuilder, public dialog: MatDialog, cdRef: ChangeDetectorRef) {
     super(cdRef);
+
     this.form = this.fb.group({
       id: [null],
       contract_name: [null],

@@ -1,15 +1,17 @@
 import { addVenueAction } from './../../store/venues.action';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { AppState } from './../../../../store/app.reducer';
 import { MatDialog } from '@angular/material/dialog';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
 import { moveItemInArray, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { IVenue } from './../../venues.models';
 import { environment } from './../../../../../environments/environment';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { deleteVenueAction } from '../../store/venues.action';
 import { takeUntil } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
+import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 @Component({
   selector: 'il-venue-address',
   templateUrl: './venue-address.component.html',
@@ -34,11 +36,19 @@ export class VenueAddressComponent extends GenericRowComponent implements OnInit
     this.dragStart = false;
   }
 
-  constructor(public dialog: MatDialog, private store: Store<AppState>) {
+  constructor(private cdRef: ChangeDetectorRef, public translateService: TranslateService, public dialog: MatDialog, private store: Store<AppState>) {
     super();
   }
 
-  ngOnInit() { }
+  ngOnInit() { 
+    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
+          this.cdRef.detectChanges();
+        }
+      });
+  }
 
   public dragStarted(event: any) {
     this.dragStart = event;

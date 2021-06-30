@@ -37,6 +37,9 @@ import { RunExistErrorDialogComponent } from './components/run-exist-error/run-e
 import { ImageViewerDialogComponent } from './components/image-viewer-dialog/image-viewer-dialog.component';
 import { MatBadgeModule } from '@angular/material/badge';
 import { CheckboxModule } from 'primeng/checkbox';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { createTranslateLoader } from 'src/app/app.module';
+import { HttpClient } from '@angular/common/http';
 
 const dialogComponents = [
   ContractAddDialogComponent,
@@ -89,7 +92,14 @@ const primeNgModules = [
     ...materialModules,
     ...primeNgModules,
     SharedModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    })
   ],
   exports: [...dialogComponents],
   declarations: [...dialogComponents],

@@ -1,6 +1,6 @@
 <div class="right-content" fxLayout="column" fxFlexFill>
   <div>
-    <div fxFlex>Create new Checklist</div>
+    <div fxFlex>{{ 'Create new Checklist' | translate }}</div>
     <div (click)="closeEmitter.emit(true)" fxFlex="15px">
       <img class="close-icon" [src]="svgPath + 'close-icon-gray-16x16.svg'" />
     </div>
@@ -11,8 +11,8 @@
       <mat-tab label="New Checklist">
         <div class="new-template" fxLayout="column" fxLayoutGap="10px">
           <div>
-            <il-dropdown-select [options]="($userList | async)" [form]="form" controlName="assignedTo" placeholder="Assigned To"></il-dropdown-select>
-            <il-datepicker [form]="form" controlName="desiredRunDate" [placeholder]="'Desired run date'"></il-datepicker>
+            <il-dropdown-select [options]="($userList | async)" [form]="form" controlName="assignedTo" [placeholder]="'Assigned To' | translate"></il-dropdown-select>
+            <il-datepicker [form]="form" controlName="desiredRunDate" [placeholder]="'Desired run date' | translate"></il-datepicker>
           </div>
           <!-- <div class="content" fxLayout="column" fxLayoutAlign="start start">
             <div fxLayout="row" fxLayoutAlign="center center">
@@ -30,7 +30,7 @@
           <div *ngIf="($savedChecklist | async) as savedChecklists" fxLayout="column" class="saved-checklist-list">
             <div *ngFor="let item of savedChecklists" (click)="getChecklist(item?.id)" class="temp-row" fxLayout="column" fxLayoutGap="5px">
               <div>{{ item?.checklist_name }}</div>
-              <div [matTooltip]="item?.user?.username">Inspector: {{ item?.user?.username }}</div>
+              <div [matTooltip]="item?.user?.username">{{ 'Inspector' | translate }}: {{ item?.user?.username }}</div>
               <div>Date: {{ item?.desired_run_date | date:"short" }}</div>
             </div>
           </div>

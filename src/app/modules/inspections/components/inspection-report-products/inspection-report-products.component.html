@@ -4,15 +4,15 @@
       <div class="detail" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
         <mat-list fxLayout>
           <mat-list-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-            <h5>Total items:</h5>
+            <h5>{{ 'Total items' | translate }}:</h5>
             <h2>{{dataSource?.total_items}}</h2>
           </mat-list-item>
           <mat-list-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-            <h5>Failed Items:</h5>
+            <h5>{{ 'Failed Items' | translate }}:</h5>
             <h2>{{dataSource?.total_failed_items}}</h2>
           </mat-list-item>
           <mat-list-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-            <h5>Pass Items:</h5>
+            <h5>{{ 'Pass Items' | translate }}:</h5>
             <h2>{{dataSource?.total_pass_items}}</h2>
           </mat-list-item>
         </mat-list>
@@ -21,22 +21,22 @@
 
     <table mat-table [dataSource]="dataSource?.products">
       <ng-container matColumnDef="product">
-        <th mat-header-cell *matHeaderCellDef> Product </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'Product' | translate }} </th>
         <td mat-cell *matCellDef="let items"> {{items?.product?.product_name}} </td>
       </ng-container>
 
       <ng-container matColumnDef="failed">
-        <th mat-header-cell *matHeaderCellDef> Failed </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'Failed' | translate }} </th>
         <td mat-cell *matCellDef="let items"> {{items?.failed_count}} </td>
       </ng-container>
 
       <ng-container matColumnDef="passed">
-        <th mat-header-cell *matHeaderCellDef> Passed </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'Passed' | translate }} </th>
         <td mat-cell *matCellDef="let items"> {{items?.passed_count}} </td>
       </ng-container>
 
             <ng-container matColumnDef="failure_rate">
-        <th mat-header-cell *matHeaderCellDef> Failure Rate </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'Failure Rate' | translate }} </th>
         <td mat-cell *matCellDef="let items"> {{ items?.failure_rate }} % </td>
       </ng-container>
 

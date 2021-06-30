@@ -2,15 +2,17 @@ import { updateTag, deleteTag } from './../../store/actions/tags.actions';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { ITag } from './../../tags.model';
 import { AppState } from 'src/app/store/app.reducer';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { TagsDialogComponent } from 'src/app/modules/dialogs/components/tags/tags-dialog.component';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { environment } from './../../../../../environments/environment';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
 import { MatDialog } from '@angular/material/dialog';
 import { addTag } from '../../store/actions/tags.actions';
 import { takeUntil } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
+import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 
 @Component({
   selector: 'il-tag-expansion-panel',
@@ -18,7 +20,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./tag-expansion-panel.component.scss']
 })
 
-export class TagExpansionPanelComponent extends GenericRowComponent implements OnInit {
+export class TagExpansionPanelComponent extends GenericRowComponent implements AfterViewInit {
   @Input() public items: ITag[];
 
   public svgPath: string = environment.svgPath;
@@ -27,11 +29,19 @@ export class TagExpansionPanelComponent extends GenericRowComponent implements O
   public selectedId: string;
   public selectedItem: ITag;
 
-  constructor(private store: Store<AppState>, public dialog: MatDialog) {
+  constructor(private cdRef: ChangeDetectorRef, public translateService: TranslateService, private store: Store<AppState>, public dialog: MatDialog) {
     super();
   }
 
-  ngOnInit() { }
+  ngAfterViewInit(): void {
+    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
+          this.cdRef.detectChanges();
+        }
+      });
+  }
 
   public dragStart: boolean = false;
   public drop(event: CdkDragDrop<string[]>): void {

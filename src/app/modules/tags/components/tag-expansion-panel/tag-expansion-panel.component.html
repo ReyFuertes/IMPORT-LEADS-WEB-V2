@@ -15,12 +15,12 @@
           </div>
           <div fxFlex="100px" class="pnl-actions" fxLayoutAlign="end center">
             <div class="menu-icon" *ngIf="hoveredIndex === i && selectedIndex !== i">
-              <img class="edit" [src]="svgPath + 'edit-icon-blue.svg'" matTooltip="Edit tag" />
-              <img *appHasRole="'admin'" class="delete" (click)="onDelete(item?.id)" [src]="svgPath + 'delete-icon-red.svg'" matTooltip="Delete tag">
+              <img class="edit" [src]="svgPath + 'edit-icon-blue.svg'" [matTooltip]="'Edit tag' | translate" />
+              <img *appHasRole="'admin'" class="delete" (click)="onDelete(item?.id)" [src]="svgPath + 'delete-icon-red.svg'" [matTooltip]="'Delete tag' | translate">
             </div>
             <div class="menu-icon" *ngIf="hoveredIndex === i && selectedIndex === i">
               <img class="close" [src]="svgPath + 'close-icon-blue.svg'" (click)="onClose()" matTooltip="Close" />
-              <img [src]="svgPath + 'save-icon-blue.svg'" (click)="onSave()" matTooltip="Save tag">
+              <img [src]="svgPath + 'save-icon-blue.svg'" (click)="onSave()" [matTooltip]="'Save tag' | translate">
             </div>
           </div>
         </div>

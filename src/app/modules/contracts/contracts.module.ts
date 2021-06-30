@@ -71,6 +71,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ContractTemplateEffect } from './store/effects/contract-template.effect';
 import { CategoryTemplateEffect } from './store/effects/category-template.effect';
 import { ContractTermTagEffect } from './store/effects/contract-term-tag.effect';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { createTranslateLoader } from 'src/app/app.module';
+import { HttpClient } from '@angular/common/http';
 
 const routes: Routes = [
   {
@@ -147,7 +150,14 @@ const materialModules = [
       ContractTemplateEffect,
       CategoryTemplateEffect,
       ContractTermTagEffect
-    ])
+    ]),
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    })
   ],
   exports: [],
   declarations: [

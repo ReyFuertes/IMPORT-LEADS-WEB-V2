@@ -1,10 +1,11 @@
 import { createReducer, on, Action } from "@ngrx/store";
-import { initAppSuccessAction, loadAccessSuccessAction, loadAllRolesSuccessAction, getUserAccessSuccessAction, getUserRoleSuccessAction, loadAppUserProfileSuccessAction, loadUserListSuccessAction, loadUserClientsSuccessAction } from '../actions/app.action';
+import { initAppSuccessAction, loadAccessSuccessAction, loadAllRolesSuccessAction, getUserAccessSuccessAction, getUserRoleSuccessAction, loadAppUserProfileSuccessAction, loadUserListSuccessAction, loadUserClientsSuccessAction, setDefaultLangAction } from '../actions/app.action';
 import { loginSuccessAction, logoutSuccessAction, isLoggingInAction, loginFailedAction } from 'src/app/modules/auth/store/auth.action';
 import { IAccess } from 'src/app/models/user.model';
 import { IRole, IUser } from 'src/app/modules/user-management/user-mgmt.model';
 import { IUserProfile } from "src/app/modules/users/users.models";
 import { updateProfileSuccessAction } from "src/app/modules/users/store/actions/user-profile.actions";
+import { ISimpleItem } from "src/app/shared/generics/generic.model";
 export interface InitAppState {
   token?: string,
   isLoggedIn?: boolean,
@@ -16,7 +17,8 @@ export interface InitAppState {
   userRoles?: string[],
   detail?: IUserProfile,
   userList?: IUser[]
-  userClients?: IUser[]
+  userClients?: IUser[],
+  language?: ISimpleItem
 }
 export const initialState: InitAppState = {
   token: null,
@@ -29,10 +31,14 @@ export const initialState: InitAppState = {
   userRoles: null,
   detail: null,
   userList: null,
-  userClients: null
+  userClients: null,
+  language: null
 };
 const initAppReducer = createReducer(
   initialState,
+  on(setDefaultLangAction, (state, action) => {
+    return Object.assign({}, state, { language: action.language });
+  }),
   on(loadUserClientsSuccessAction, (state, action) => {
     return Object.assign({}, state, { userClients: action.response });
   }),

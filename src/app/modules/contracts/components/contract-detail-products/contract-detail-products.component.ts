@@ -20,6 +20,8 @@ import { Subject, Observable, pipe, of } from 'rxjs';
 import * as _ from 'lodash';
 import { GenericDetailPageComponent } from 'src/app/shared/generics/generic-detail-page';
 import { sortByDesc } from 'src/app/shared/util/sort';
+import { TranslateService } from '@ngx-translate/core';
+import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 
 @Component({
   selector: 'il-contract-detail-products',
@@ -52,7 +54,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   @Input() public inCheckListing: boolean = false;
   @Input() public contract: IContract;
 
-  constructor(private store: Store<AppState>, private dialog: MatDialog, private fb: FormBuilder, private cdRef: ChangeDetectorRef) {
+  constructor(public translateService: TranslateService, private store: Store<AppState>, private dialog: MatDialog, private fb: FormBuilder, private cdRef: ChangeDetectorRef) {
     super();
 
     this.form = this.fb.group({
@@ -157,6 +159,14 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       takeUntil(this.$unsubscribe),
       tap(sp => this.selectedProduct = sp)
     ).subscribe();
+
+    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
+          this.cdRef.detectChanges();
+        }
+      });
   }
 
   public deSelectChange(item: ICommonIdPayload): void {

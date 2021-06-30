@@ -18,6 +18,8 @@ import { getReportContractById } from '../../store/selectors/report.selector';
 import * as html2pdf from 'html2pdf.js'
 import { CONTRACTSROUTE } from 'src/app/shared/constants/routes';
 import { LoaderService } from 'src/app/services/http-token-interceptor';
+import { TranslateService } from '@ngx-translate/core';
+import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 
 @Component({
   selector: 'il-contract-detail-report',
@@ -37,7 +39,7 @@ export class ContractDetailReportComponent extends GenericDestroyPageComponent i
   public contractsRoute = CONTRACTSROUTE;
   public apiContractsImagePath: string = environment.apiContractsImagePath;
 
-  constructor(private loaderService: LoaderService, private cdRef: ChangeDetectorRef, private sanitizer: DomSanitizer, private store: Store<AppState>,
+  constructor(public translateService: TranslateService, private loaderService: LoaderService, private cdRef: ChangeDetectorRef, private sanitizer: DomSanitizer, private store: Store<AppState>,
     private route: ActivatedRoute, private router: Router) {
     super();
     this.store.dispatch(loadContractsAction({}));
@@ -70,7 +72,13 @@ export class ContractDetailReportComponent extends GenericDestroyPageComponent i
   }
 
   ngAfterViewInit(): void {
-
+    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+    .subscribe(language => {
+      if (language) {
+        this.translateService.use(language);
+        this.cdRef.detectChanges();
+      }
+    });
   }
 
   public onExport(): void {

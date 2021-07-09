@@ -31,11 +31,11 @@
                 <button *ngFor="let menu of menus; let last = last; let i = index" [ngClass]="{'hidden': hideReportIfNoInspectionRun(item?.inspection_checklist_run, menu)}" (click)="menu?.action(item)" mat-menu-item fxLayout="row"
                   fxLayoutAlign="start center" fxLayoutGap="10px">
                   <img [ngClass]="{'w-18': last}" [src]="svgPath + menu?.icon" />
-                  <span>{{ (item?.is_paused && i === 0 ? 'RESUME' : menu?.label) | translate }}</span>
+                  <span translate>{{ (item?.is_paused && i === 0 ? 'RESUME' : menu?.label) }}</span>
                 </button>
               </ng-container>
               <button *ngIf="item?.isViewing" [disabled]="item?.run_count === 0" (click)="onView(item?.id)" mat-menu-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-                <span>{{ (item?.run_count === 0 ? 'Not run yet': 'View') | translate }}</span>
+                <span translate>{{ (item?.run_count === 0 ? 'Not run yet': 'View') }}</span>
               </button>
             </mat-menu>
           </div>

@@ -1,5 +1,5 @@
 <div>
-  <il-expandable-panel title="Failures ({{product_failure_count}})" [expanded]="true">
+  <il-expandable-panel title="{{ 'Failures' | translate }} ({{product_failure_count}})" [expanded]="true">
     <table *ngIf="dataSource?.length > 0" mat-table [dataSource]="dataSource">
 
       <ng-container matColumnDef="num">

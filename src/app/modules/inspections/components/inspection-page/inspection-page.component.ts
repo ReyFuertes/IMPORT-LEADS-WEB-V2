@@ -30,7 +30,7 @@ export class InspectionPageComponent extends GenericDestroyPageComponent impleme
     label: 'Contract Name',
     value: '35'
   }, {
-    label: 'Assigned to',
+    label: 'Assigned To',
     value: '35'
   }, {
     label: 'Configured Run Date',
@@ -46,7 +46,7 @@ export class InspectionPageComponent extends GenericDestroyPageComponent impleme
     label: 'Contract Name',
     value: '35'
   }, {
-    label: 'Assigned to',
+    label: 'Assigned To',
     value: '35'
   }, {
     label: 'Configured Run Date',

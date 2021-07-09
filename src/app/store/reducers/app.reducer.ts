@@ -18,7 +18,7 @@ export interface InitAppState {
   detail?: IUserProfile,
   userList?: IUser[]
   userClients?: IUser[],
-  language?: ISimpleItem
+  language?: string
 }
 export const initialState: InitAppState = {
   token: null,

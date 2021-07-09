@@ -1,8 +1,8 @@
 <div>
-  <il-expandable-panel title="Inspections" [expanded]="true">
+  <il-expandable-panel [title]="'Inspections' | translate" [expanded]="true">
     <div fxLayout="column" fxLayoutGap="20px">
       <div class="filter-date" fxLayout="row" fxLayoutAlign="end center">
-        <il-datepicker fxFlex="250px" [form]="form" controlName="date" placeholder="Inspection Date"></il-datepicker>
+        <il-datepicker fxFlex="250px" [form]="form" controlName="date" [placeholder]="'Inspection Date' | translate"></il-datepicker>
       </div>
       <div class="detail" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
         <mat-list fxLayout="row">

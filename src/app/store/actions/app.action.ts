@@ -26,7 +26,7 @@ export enum AppActionTypes {
 }
 export const setDefaultLangAction = createAction(
   AppActionTypes.setDefaultLangAction,
-  props<{ language: ISimpleItem }>()
+  props<{ language: string }>()
 );
 export const loadUserClientsAction = createAction(
   AppActionTypes.loadUserClientsAction

@@ -4,8 +4,8 @@ import { INotification, removeNotification } from './store/actions/notification.
 import { AppState } from 'src/app/store/app.reducer';
 import { Component, ChangeDetectorRef, AfterViewInit, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { delay, takeUntil, filter } from 'rxjs/operators';
-import { initAppAction } from './store/actions/app.action';
+import { delay, takeUntil, filter, debounceTime } from 'rxjs/operators';
+import { initAppAction, setDefaultLangAction } from './store/actions/app.action';
 import { getIsLoggedInSelector, getUserLangSelector } from './store/selectors/app.selector';
 import { environment } from 'src/environments/environment';
 import { GenericDestroyPageComponent } from './shared/generics/generic-destroy-page';
@@ -33,14 +33,6 @@ export class AppComponent extends GenericDestroyPageComponent implements OnInit,
     this.store.dispatch(initAppAction());
 
     this.translateService.addLangs(['en', 'cn']);
-
-    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
-      .subscribe(language => {
-        if (language) {
-          this.translateService.use(language);
-          this.cdRef.detectChanges();
-        }
-      });
   }
 
   ngOnInit(): void {
@@ -76,8 +68,21 @@ export class AppComponent extends GenericDestroyPageComponent implements OnInit,
   }
 
   ngAfterViewInit(): void {
-
-
+    this.store.pipe(select(getUserLangSelector),
+      debounceTime(1000),
+      takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
+          this.cdRef.detectChanges();
+        } else {
+          let userProfile = this.localStorageSrv.get('userp');
+          if (userProfile) {
+            userProfile = JSON.parse(userProfile);
+            this.translateService.use(userProfile?.language);
+          }
+        }
+      });
     this.cdRef.detectChanges();
   }
 }

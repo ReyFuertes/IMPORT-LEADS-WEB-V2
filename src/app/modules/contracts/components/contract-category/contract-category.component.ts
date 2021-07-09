@@ -43,13 +43,7 @@ export class ContractCategoryComponent extends GenericRowComponent implements On
   }
 
   ngOnInit() {
-    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
-      .subscribe(language => {
-        if (language) {
-          this.translateService.use(language);
-          this.cdRef.detectChanges();
-        }
-      });
+
   }
 
   public onToggleTerm(event: IContractCategoryTerm): void {
@@ -61,16 +55,6 @@ export class ContractCategoryComponent extends GenericRowComponent implements On
       this.contractCategory = changes.contract_category.currentValue;
     }
     this.inCheckListing = changes.inCheckListing.currentValue;
-  }
-
-  public addTitle(): void {
-    const dialogRef = this.dialog.open(ContractCategoryTitleDialogComponent);
-    dialogRef.afterClosed()
-      .pipe(takeUntil(this.$unsubscribe)).subscribe(result => {
-        if (result) {
-          //this.specification['title'] = result;
-        }
-      });
   }
 
   public saveCategoryAsTemplate(category: any): void {

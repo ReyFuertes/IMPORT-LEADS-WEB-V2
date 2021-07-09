@@ -5,7 +5,7 @@
   <div fxLayout="row" fxLayoutGap="15px">
     <div class="action-item" *ngFor="let option of options" (click)="option?.action()" fxLayoutAlign="start center" fxLayoutGap="5px">
       <img [src]="svgPath + option?.icon" />
-      <span [matTooltip]="option?.label">{{ option?.label }}</span>
+      <span [matTooltip]="option?.label" translate>{{ option?.label }}</span>
     </div>
     <div class="action-item delete" (click)="onDeleteContract()" fxLayoutAlign="start center" fxLayoutGap="5px">
       <img [src]="svgPath + 'delete-icon-red.svg'" />

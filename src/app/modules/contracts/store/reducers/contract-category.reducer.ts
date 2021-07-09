@@ -1,6 +1,4 @@
 import { addContractTermSuccessAction, updateContractTermSuccessAction } from './../actions/contract-term.actions';
-import { sortByDesc } from 'src/app/shared/util/sort';
-import { ContractModuleState } from './index';
 import { addContractCategoryActionSuccess, loadContractCategoryActionSuccess, deleteContractCategoryActionSuccess, selTermsForChecklistAction, loadAllContractCategoryActionSuccess } from './../actions/contract-category.action';
 import { IContractCategory, IContractCategoryReponse, IContractTerm } from './../../contract.model';
 import { createReducer, on, Action } from "@ngrx/store";

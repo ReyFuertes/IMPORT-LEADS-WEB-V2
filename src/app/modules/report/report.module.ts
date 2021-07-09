@@ -35,6 +35,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ContractProductsEffect } from '../contracts/store/effects/contract-products.effects';
 import { SafePipe } from 'src/app/shared/pipes/html';
 import { ContractCategoryEffect } from '../contracts/store/effects/contract-category.effects';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
+import { createTranslateLoader } from 'src/app/app.module';
 
 const primeNgModules = [
   SidebarModule,
@@ -94,7 +97,14 @@ const routes: Routes = [
       ContractsEffect,
       ContractProductsEffect,
       ContractCategoryEffect
-    ])
+    ]),
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    })
   ],
   exports: [],
   providers: [SafePipe],

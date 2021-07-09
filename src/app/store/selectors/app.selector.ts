@@ -6,7 +6,7 @@ import { sortByDesc } from 'src/app/shared/util/sort';
 export const selectedState = (state: AppState) => state.initApp;
 export const getUserLangSelector = createSelector(
   selectedState,
-  state => state?.language?.value
+  state => state?.language
 )
 export const getUserClientsSelector = createSelector(
   selectedState,

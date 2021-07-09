@@ -25,6 +25,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { updateContractTermTagAction } from '../../store/actions/contract-term-tag.action';
 import { TranslateService } from '@ngx-translate/core';
 import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
+import { ContractCategoryTitleDialogComponent } from 'src/app/modules/dialogs/components/contract-category-title/contract-category-title-dialog.component';
 
 @Component({
   selector: 'il-contract-category-table',
@@ -121,6 +122,16 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
         if (language) {
           this.translateService.use(language);
           this.cdRef.detectChanges();
+        }
+      });
+  }
+
+  public addTitle(): void {
+    const dialogRef = this.dialog.open(ContractCategoryTitleDialogComponent);
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.$unsubscribe)).subscribe(result => {
+        if (result) {
+          //this.specification['title'] = result;
         }
       });
   }

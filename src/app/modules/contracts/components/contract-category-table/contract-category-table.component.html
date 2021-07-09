@@ -58,15 +58,15 @@
     <div fxFlex [ngClass]="{'hidden': !actionState}" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="15px">
       <div matTooltip="Add a term" (click)="createTerm()" fxLayoutAlign="start center" fxLayoutGap="5px">
         <img [src]="svgPath + 'add-category-icon-blue.svg'" />
-        <span>{{ 'Add a term' | Transalate }}</span>
+        <span>{{ 'Add a term' | translate }}</span>
       </div>
-      <div matTooltip="Add a title" fxLayoutAlign="start center" fxLayoutGap="5px">
+      <div matTooltip="Add a title" (click)="addTitle()" fxLayoutAlign="start center" fxLayoutGap="5px">
         <img [src]="svgPath + 'add-title-icon-blue.svg'" />
-        <span>{{ 'Add a title' | Transalate }}</span>
+        <span>{{ 'Add a title' | translate }}</span>
       </div>
       <div matTooltip="Import Template" fxLayoutAlign="start center" fxLayoutGap="5px">
         <img [src]="svgPath + 'templates-icon-blue.svg'" />
-        <span>{{ 'Import template' | Transalate }}</span>
+        <span>{{ 'Import template' | translate }}</span>
       </div>
     </div>
     <div [ngClass]="{'hidden': !actionState}" fxFlex="10px" fxLayoutAlign="end center" fxLayoutGap="5px">
@@ -77,7 +77,7 @@
 
 <ng-template #detailBtnActions>
   <div class="btn-edit-actions" fxLayoutGap="10px">
-    <button type="button" mat-flat-button class="il-button default" (click)="onClose()">{{ 'Cancel' | Transalate }}</button>
-    <button type="button" mat-flat-button class="il-button primary" (click)="onSave();$event.stopImmediatePropagation()">{{ 'Save' | Transalate }}</button>
+    <button type="button" mat-flat-button class="il-button default" (click)="onClose()">{{ 'Cancel' | translate }}</button>
+    <button type="button" mat-flat-button class="il-button primary" (click)="onSave();$event.stopImmediatePropagation()">{{ 'Save' | translate }}</button>
   </div>
 </ng-template>

@@ -52,14 +52,19 @@ export class UserSettingDetailsComponent extends GenericDestroyPageComponent imp
       self_intro: [null],
       twitter: [null],
       wechatid: [null],
-      language: [null]
+      language: ['en']
     });
 
     this.form.get('language').valueChanges
       .pipe(takeUntil(this.$unsubscribe))
-      .subscribe(language => {
+      .subscribe(_language => {
+        let language: string;
+        if (language) {
+          language = _language;
+        } else {
+          language = this.languages[0]?.value;
+        }
         translateService.use(language);
-        storageSrv.set('lang', language);
         this.store.dispatch(setDefaultLangAction({ language }));
       });
   }
@@ -74,16 +79,10 @@ export class UserSettingDetailsComponent extends GenericDestroyPageComponent imp
           phone: res?.phone,
           email: res?.email,
           company_name: res?.company_name,
-          company_address: res?.company_address
-        });
-      });
-
-    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
-      .subscribe(language => {
-        if (language) {
-          this.translateService.use(language);
-          this.cdRef.detectChanges();
-        }
+          company_address: res?.company_address,
+          language: res?.language
+        }, { emitEvent: false });
+        this.store.dispatch(setDefaultLangAction({ language: res?.language }));
       });
   }
 

@@ -15,6 +15,7 @@ export interface IUserProfile {
   self_intro?: string;
   position?: string;
   image?: string;
+  language?: string;
 }
 
 export interface User {

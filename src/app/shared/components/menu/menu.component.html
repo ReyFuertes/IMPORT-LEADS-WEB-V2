@@ -1,6 +1,6 @@
 <div class="menu-container" fxLayoutGap="0" fxLayoutAlign="center center">
-  <span *ngIf="menu?.label === 'DATA'" matBadge="Demo" matBadgePosition="after" matBadgeColor="accent" translate> {{ menu?.label }}</span>
-  <span *ngIf="menu?.label !== 'DATA'" translate> {{ menu?.label }}</span>
+  <span *ngIf="menu?.label === 'DATA'" matBadge="Demo" matBadgePosition="after" matBadgeColor="accent" translate> {{ menu?.label | translate }}</span>
+  <span *ngIf="menu?.label !== 'DATA'" translate> {{ menu?.label | translate }}</span>
 
   <img *ngIf="hasChildren(menu)" [src]="svgPath + 'arrow-down-icon-black.svg'" (click)="$event.stopPropagation()" [matMenuTriggerFor]="subMenu">
 </div>

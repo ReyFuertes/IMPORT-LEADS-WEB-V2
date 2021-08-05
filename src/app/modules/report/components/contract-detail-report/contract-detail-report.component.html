@@ -8,26 +8,34 @@
   </mat-card>
 
   <!-- category -->
-  <div class="category-container" fxLayout="column" fxLayoutGap="20px">
-    <div class="category-item" *ngFor="let contractCategory of ($contractCategories | async)">
-      <div class="tab-header" fxLayout="row" fxLayoutGap="5px">
-        <div fxLayoutAlign="start center">
-          <span>{{ contractCategory?.category?.category_name }}</span>
-        </div>
-      </div>
-      <table *ngIf="contractCategory?.terms">
+  <div class="category-container" fxLayout="column">
+    <ng-container *ngFor="let contractCategory of ($contractCategories | async)">
+      <table class="table-category-title">
         <thead>
-          <th>{{ 'Term Name' | translate }}</th>
-          <th>{{ 'Term Description' | translate }}</th>
-        </thead>
-
-        <tbody>
-          <tr *ngFor="let term of contractCategory?.terms">
-            <td>{{ term?.term_name }}</td>
-            <td><div [innerHTML]="sanitizeHtml(term?.term_description)"></div></td>
+          <tr>
+            <th>{{ contractCategory?.category?.category_name }}</th>
           </tr>
+        </thead>
+      </table>
+      <table>
+        <thead>
+          <tr>
+            <th>{{ 'Term Name' | translate }}</th>
+            <th>{{ 'Term Description' | translate }}</th>
+          </tr>
+        </thead>
+      </table>
+      <table>
+        <tbody>
+          <ng-container *ngFor="let term of contractCategory?.terms">
+            <tr>
+              <td>{{ term?.term_name }}</td>
+              <td [innerHTML]="sanitizeHtml(term?.term_description)"></td>
+            </tr>
+          </ng-container>
         </tbody>
       </table>
-    </div>
+    </ng-container>
   </div>
 </div>
+ 

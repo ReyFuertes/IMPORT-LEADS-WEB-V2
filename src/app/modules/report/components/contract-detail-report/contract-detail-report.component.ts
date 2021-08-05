@@ -73,49 +73,12 @@ export class ContractDetailReportComponent extends GenericDestroyPageComponent i
 
   ngAfterViewInit(): void {
     this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
-    .subscribe(language => {
-      if (language) {
-        this.translateService.use(language);
-        this.cdRef.detectChanges();
-      }
-    });
-  }
-
-  public onExport(): void {
-    this.isPrinting = true;
-    this.loaderService.isLoading.next(true);
-
-    setTimeout(() => {
-      let element = document.querySelector('.contract-detail-report-container');
-
-      let opt = {
-        margin: 0.3,
-        filename: `contract-detail-${new Date().getTime()}`,
-        image: { type: 'jpeg', quality: 1 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' },
-        pagebreak: {
-          avoid: ['tab-header'],
-          // after: ['table'],
-          mode: 'avoid-all',
-          // avoid: ['tab-header', 'thead', 'th', 'tr', 'td', '.mat-row', 'img']
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
+          this.cdRef.detectChanges();
         }
-      };
-
-      /* remove br tags */
-      element.innerHTML = element.innerHTML.replace(/<br>/gi, "");
-      element.innerHTML = element.innerHTML.replace(/<br\s\/>/gi, "");
-      element.innerHTML = element.innerHTML.replace(/<br\/>/gi, "");
-      /* remove empty p tags */
-      const parsedElement = element.innerHTML.replace("/<p[^>]*><\\/p[^>]*>/", '');
-
-      html2pdf().set(opt).from(parsedElement).save();
-    }, 500);
-
-    setTimeout(() => {
-      this.loaderService.isLoading.next(false);
-      this.isPrinting = false;
-    }, 1000);
+      });
   }
 
   public fmtCol(str: string): string {
@@ -123,6 +86,14 @@ export class ContractDetailReportComponent extends GenericDestroyPageComponent i
   }
 
   public sanitizeHtml(html: any): any {
-    return this.sanitizer.bypassSecurityTrustHtml(html);
+    /* remove br tags */
+    let _html = html?.replace(/<br>/gi, "");
+    _html = _html?.replace(/<br\s\/>/gi, "");
+    _html = _html?.replace(/<br\/>/gi, "");
+    _html = _html?.replace("/<p[^>]*><\\/p[^>]*>/", '');
+    /* remove empty p tags */
+    const parsedElement = _html?.replace("/<p[^>]*><\\/p[^>]*>/", '');
+
+    return this.sanitizer.bypassSecurityTrustHtml(parsedElement || '');
   }
 }

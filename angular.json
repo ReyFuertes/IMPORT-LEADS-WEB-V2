@@ -126,10 +126,10 @@
               "browserTarget": "importleads:build:production"
             },
             "iaad": {
-              "browserTarget": "importleads:build:iaad"
+              "browserTarget": "importleads:buildiaad"
             },
             "iaad": {
-              "browserTarget": "importleads:build:iaad"
+              "browserTarget": "importleads:buildiaad"
             }
           }
         },
@@ -187,10 +187,10 @@
               "devServerTarget": "importleads:serve:production"
             },
             "iaad": {
-              "devServerTarget": "importleads:serve:iaad"
+              "devServerTarget": "importleads:serveiaad"
             },
             "iaad": {
-              "devServerTarget": "importleads:serve:iaad"
+              "devServerTarget": "importleads:serveiaad"
             }
           }
         },

@@ -31,7 +31,7 @@ export class ContractOverviewPageComponent extends GenericDestroyPageComponent i
     value: 'contract_name'
   }, {
     label: 'Sort by Date',
-    value: 'created_at'
+    value: 'delivery_date'
   }];
 
   public dragStart: boolean = false;

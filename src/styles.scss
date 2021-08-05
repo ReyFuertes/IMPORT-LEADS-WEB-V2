@@ -126,98 +126,147 @@ input:-webkit-autofill:active {
     height: auto !important;
     min-height: auto !important;
     background-color: $color-white;
-    height:99%; 
+    height:100%;
+    width: 100%;
   }
-  .production-image {
-    display: none !important;
-  }
-  il-topnav {
-    display: none !important;
-  }
-  .page-container {
-    margin: 0 !important;
-    padding: 0 !important;
-    h2, h5 {
-      font-size: 12px !important;
-      font-weight: 500 !important;
-      line-height: 15px !important;
+  // .production-image {
+  //   display: none !important;
+  // }
+  // il-topnav {
+  //   display: none !important;
+  // }
+  // .page-container {
+  //   margin: 0 !important;
+  //   padding: 0 !important;
+  //   h2, h5 {
+  //     font-size: 12px !important;
+  //     font-weight: 500 !important;
+  //     line-height: 15px !important;
+  //   }
+  // }
+  // il-inspection-report-inspector, il-inspection-report-inspections {
+  //   // width: 740px !important;
+  //   border-radius: 0 !important;
+  // }
+  // .mat-expansion-panel {
+  //   box-shadow: none !important;
+  //   border-radius: 0 !important;
+  // }
+  // .mat-expansion-panel-body {
+  //   background-color: $color-white !important;
+  // }
+  // mat-expansion-panel-header {
+  //   border: thin $color-gray-4 solid !important;
+  //   border-radius: 0 !important;
+  //   background-color: $color-gray-4 !important;
+  // }
+  // mat-expansion-panel,
+  // mat-expansion-panel-header {
+  //   border-radius: 0 !important;
+  // }
+  // .mat-expansion-panel-content, 
+  // .mat-expansion-panel-body,
+  // mat-expansion-panel, 
+  // mat-expansion-panel-header,
+  // mat-accordion,
+  // il-inspection-report-products,
+  // table,
+  // thead,
+  // tr,
+  // td,
+  // tbody {
+  //   overflow: visible;
+  // }
+  // .mat-expansion-indicator, mat-datepicker-toggle {
+  //   display: none !important;
+  // }
+  // tr.mat-row, tr.mat-footer-row {
+  //   height: 48px !important;
+  //   min-height: 48px !important;
+  // }
+  // .mat-cell, .mat-footer-cell {
+  //   font-size: 14px;
+  //   height: 48px !important;
+  //   min-height: 48px !important;
+  // }
+  // td.mat-cell {
+  //   padding: 5px !important;
+  //   &:first-child {
+  //     min-width: 170px !important;
+  //     width: 170px;
+  //     padding-left: 20px !important;
+  //   }
+  //   &:nth-child(2) {
+  //     min-width: 170px !important;
+  //     width: 170px !important;
+  //   }
+  //   &:nth-child(3) {
+  //     min-width: 220px !important;
+  //     width: 220px !important;
+  //   }
+  //   &:last-child {
+  //     min-width: 150px !important;
+  //     width: 100% !important;
+  //     padding: 20px !important;
+  //   }
+  //   img {
+  //     height: auto !important;
+  //     width: 100px !important;
+  //   }
+  // }
+  // #content {
+  //   width: 100%;
+  //   min-width: 100%;
+  //   max-width: 100%;
+  //   padding: 0;
+  // }
+  .contract-detail-report-container {
+    .table-category-title {
+      border: thin $color-gray-2 solid !important;
+      margin-top: 10px;
+      th {
+        background-color: $color-gray-3 !important;
+        font-weight: bold;
+      }
     }
-  }
-  il-inspection-report-inspector, il-inspection-report-inspections {
-    width: 740px !important;
-    border-radius: 0 !important;
-  }
-  .mat-expansion-panel {
-    box-shadow: none !important;
-    border-radius: 0 !important;
-  }
-  .mat-expansion-panel-body {
-    background-color: $color-white !important;
-  }
-  mat-expansion-panel-header {
-    border: thin $color-gray-4 solid !important;
-    border-radius: 0 !important;
-    background-color: $color-gray-4 !important;
-  }
-  mat-expansion-panel,
-  mat-expansion-panel-header {
-    border-radius: 0 !important;
-  }
-  .mat-expansion-panel-content, 
-  .mat-expansion-panel-body,
-  mat-expansion-panel, 
-  mat-expansion-panel-header,
-  mat-accordion,
-  il-inspection-report-products,
-  table,
-  thead,
-  tr,
-  td,
-  tbody {
-    overflow: visible;
-  }
-  .mat-expansion-indicator, mat-datepicker-toggle {
-    display: none !important;
-  }
-  tr.mat-row, tr.mat-footer-row {
-    height: 48px !important;
-    min-height: 48px !important;
-  }
-  .mat-cell, .mat-footer-cell {
-    font-size: 14px;
-    height: 48px !important;
-    min-height: 48px !important;
-  }
-  td.mat-cell {
-    padding: 5px !important;
-    &:first-child {
-      min-width: 170px !important;
-      width: 170px;
-      padding-left: 20px !important;
-    }
-    &:nth-child(2) {
-      min-width: 170px !important;
-      width: 170px !important;
-    }
-    &:nth-child(3) {
-      min-width: 220px !important;
-      width: 220px !important;
-    }
-    &:last-child {
-      min-width: 150px !important;
-      width: 100% !important;
-      padding: 20px !important;
-    }
-    img {
-      height: auto !important;
-      width: 100px !important;
-    }
-  }
-  @page {
-    size: A4;
-    margin: 1cm;
-    @bottom-center {
-      content: counter(page) "/" counter(pages);
+    table {
+      width: 100%;
+      min-width: 100%;
+      max-width: 100%;
+      margin-bottom: 0 !important;
+      thead {
+        page-break-inside: avoid !important;
+        height: 35px;
+        th {
+          &:first-child {
+            width: fit-content;
+            max-width: 100%;
+            min-width: 100%;
+          }
+        }
+      }
+      tbody {
+        overflow: visible;
+      }
+      th,
+      td {
+        position: relative;
+        padding: 5px !important;
+        border-top: thin $color-gray-3 solid;
+        border-bottom: none !important;
+        overflow: visible;
+        page-break-inside: avoid !important;
+        &:first-child {
+          width: fit-content;
+          max-width: 100%;
+          min-width: 100%;
+        }
+        &:nth-child(2) {
+          width: fit-content;
+          max-width: 100%;
+          min-width: 100%;
+        }
+      }
     }
   }
 }

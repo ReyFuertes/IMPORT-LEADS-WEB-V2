@@ -126,10 +126,10 @@
               "browserTarget": "importleads:build:production"
             },
             "cilchina": {
-              "browserTarget": "importleads:build:cilchina"
+              "browserTarget": "importleads:buildcilchina"
             },
             "cilchina": {
-              "browserTarget": "importleads:build:cilchina"
+              "browserTarget": "importleads:buildcilchina"
             }
           }
         },
@@ -187,10 +187,10 @@
               "devServerTarget": "importleads:serve:production"
             },
             "cilchina": {
-              "devServerTarget": "importleads:serve:cilchina"
+              "devServerTarget": "importleads:servecilchina"
             },
             "cilchina": {
-              "devServerTarget": "importleads:serve:cilchina"
+              "devServerTarget": "importleads:servecilchina"
             }
           }
         },

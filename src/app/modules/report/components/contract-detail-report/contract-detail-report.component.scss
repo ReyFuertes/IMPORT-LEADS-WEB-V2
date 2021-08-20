@@ -123,55 +123,16 @@ table {
   script, style { 
     display:none; 
   }
-  body {
-    padding: 0 !important;
-    margin: 0 !important;
-    height: auto !important;
-    min-height: auto !important;
-    background-color: $color-white;
-    height:99%; 
-  }
-  th {
-    padding: 5px !important;
-    border-top: thin $color-gray-3 solid;
-    border-bottom: none !important;
-    &:first-child {
-      width: 100px;
-      min-width: 100px;
-      max-width: 100px;
-    }
-    &:nth-child(2) {
-      width: 100% !important;
-      min-width: 100% !important;
-      max-width: 100% !important;
-    }
-  }
-  .category-item {
-    width: 740px !important;
-    border-radius: 0 !important;
-  }
-  td.mat-cell {
-    padding: 5px !important;
-    text-align: left !important;
-    &:first-child {
-      min-width: 150px !important;
-      width: 150px !important;
-      padding-left: 150px !important;
-    }
-  }
-  .mat-expansion-panel-content, 
-  mat-expansion-panel, 
-  mat-expansion-panel-header,
-  thead,
-  tr,
-  tbody {
-    overflow: visible;
-  }
-  @page {
-    size: A4;
-    margin: 1cm;
-    @bottom-center {
-      content: counter(page) "/" counter(pages);
-    }
-  }
+  // script, style { 
+  //   display:none; 
+  // }
+  // body {
+  //   padding: 0 !important;
+  //   margin: 0 !important;
+  //   height: auto !important;
+  //   min-height: auto !important;
+  //   background-color: $color-white;
+  //   height:99%; 
+  // }
+  
 }

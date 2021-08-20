@@ -16,9 +16,9 @@
         <div *ngIf="column === 'action'" [id]="i" fxFlex fxLayoutAlign="center center">
           <img [id]="i" class="ellipse" [matMenuTriggerFor]="menu" [src]="svgPath + 'dots-icon-blue.svg'" />
           <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="toDetail(item?.id)">Edit</button>
-            <button mat-menu-item (click)="onDelete(item?.id)">Delete</button>
-            <button *appHasRole="'admin'" mat-menu-item [routerLink]="viewPermissionRoute(item?.id)">View Permission</button>
+            <button mat-menu-item (click)="toDetail(item?.id)">{{ 'Edit' | translate }}</button>
+            <button mat-menu-item (click)="onDelete(item?.id)">{{ 'Delete' | translate }}</button>
+            <button *appHasRole="'admin'" mat-menu-item [routerLink]="viewPermissionRoute(item?.id)">{{ 'View Permission' | translate }}</button>
           </mat-menu>
         </div>
       </td>

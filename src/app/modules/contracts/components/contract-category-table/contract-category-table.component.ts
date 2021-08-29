@@ -205,7 +205,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   }
 
   public sanitizeHtml(html: any): any {
-    return this.sanitizer.bypassSecurityTrustHtml(html?.replace('<p><br></p>', '') || '');
+    return this.sanitizer.bypassSecurityTrustHtml(html);
   }
 
   public getDefaultTerm(str: string, prop: string, collapsed: boolean): string {
@@ -246,18 +246,18 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   ngOnChanges(changes: SimpleChanges): void {
     if (changes && changes.inCheckListing) {
       this.inCheckListing = changes.inCheckListing.currentValue;
-
-      if (!this.inCheckListing) {
-      }
     }
-
     if (changes?.contractCategory?.currentValue)
       this.dataSource = new MatTableDataSource<any>(changes.contractCategory.currentValue.terms);
   }
 
-  public mouseOver = (event: any, col: string) => this.selectedRow = `${event.id}${col}`;
+  public mouseOver(event: any, col: string): void {
+    this.selectedRow = `${event.id}${col}`
+  };
 
-  public mouseOut = () => this.selectedRow = null;
+  public mouseOut(): void {
+    this.selectedRow = null;
+  };
 
   public onTagUpdate(event: any, element: IContractTerm): void {
     if (event) {

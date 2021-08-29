@@ -1,0 +1,4 @@
+{
+  "appService.defaultWebAppToDeploy": "/subscriptions/d1c10f63-fccd-45cb-bcb3-8adaea9351e5/resourceGroups/import-leads-resource/providers/Microsoft.Web/sites/cil-china",
+  "appService.deploySubpath": "dist"
+}

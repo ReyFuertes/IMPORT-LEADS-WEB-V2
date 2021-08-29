@@ -2,6 +2,7 @@
   "name": "importleads",
   "version": "0.0.0",
   "scripts": {
+    "postinstall": "ngcc",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
@@ -83,7 +84,7 @@
     "resize-observer-polyfill": "^1.5.1",
     "ts-node": "~8.10.2",
     "tslint": "~6.1.0",
-    "typescript": "~3.8.3",
+    "typescript": "^3.8.3",
     "webpack-bundle-analyzer": "^3.6.1"
   }
 }

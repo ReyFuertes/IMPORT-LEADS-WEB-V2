@@ -24,7 +24,7 @@
         <tbody>
           <tr *ngFor="let term of contractCategory?.terms">
             <td>{{ term?.term_name }}</td>
-            <td><div [innerHTML]="sanitizeHtml(term?.term_description)"></div></td>
+            <td><div [innerHTML]="term?.term_description"></div></td>
           </tr>
         </tbody>
       </table>

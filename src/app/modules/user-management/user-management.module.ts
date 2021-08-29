@@ -33,6 +33,9 @@ import { UserMgmtEffects } from './store/user-mgmt.effects';
 import { UserDetailComponent } from './components/user-detail/user-detail.component';
 import { RolesService, UserAccessService, UserRolesService } from './user-mgmt.service';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { createTranslateLoader } from 'src/app/app.module';
+import { HttpClient } from '@angular/common/http';
 
 const routes: Routes = [
   {
@@ -92,7 +95,14 @@ const materialModules = [
     DialogModule,
     RouterModule.forChild(routes),
     StoreModule.forFeature('userMgmt', UserMgmtReducer),
-    EffectsModule.forFeature([UserMgmtEffects])
+    EffectsModule.forFeature([UserMgmtEffects]),
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    })
   ],
   exports: [],
   providers: [UserAccessService, RolesService, UserRolesService],

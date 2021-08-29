@@ -17,7 +17,9 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthReducer } from './store/auth.reducer';
 import { AuthEffect } from './store/auth.effect';
-import { AuthGuard } from 'src/app/services/auth.guard';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { createTranslateLoader } from 'src/app/app.module';
+import { HttpClient } from '@angular/common/http';
 
 const primengModules = [
   InputTextModule,
@@ -51,7 +53,14 @@ const routes: Routes = [
     ...materialModules,
     RouterModule.forChild(routes),
     StoreModule.forFeature('auth', AuthReducer),
-    EffectsModule.forFeature([AuthEffect])
+    EffectsModule.forFeature([AuthEffect]),
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    })
   ],
   exports: [
     AuthContainerComponent,

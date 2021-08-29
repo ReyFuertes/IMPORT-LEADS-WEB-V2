@@ -15,7 +15,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
-import { MatNativeDateModule } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
@@ -42,6 +41,9 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ProductsReducer } from './store/products.reducer';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ToastModule } from 'primeng/toast';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { createTranslateLoader } from 'src/app/app.module';
+import { HttpClient } from '@angular/common/http';
 
 
 const routes: Routes = [
@@ -103,7 +105,14 @@ const materialModules = [
     DialogModule,
     RouterModule.forChild(routes),
     StoreModule.forFeature('products', ProductsReducer),
-    EffectsModule.forFeature([ProductsEffect])
+    EffectsModule.forFeature([ProductsEffect]),
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    })
   ],
   exports: [],
   declarations: [

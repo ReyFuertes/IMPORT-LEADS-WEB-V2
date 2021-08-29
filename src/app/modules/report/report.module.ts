@@ -4,7 +4,6 @@ import { ReportContainerComponent } from './container/report-container.component
 import { SharedModule } from 'primeng/api';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { DialogModule } from '../dialogs/dialog.module';
 import { RouterModule, Routes } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -15,7 +14,6 @@ import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -35,6 +33,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ContractProductsEffect } from '../contracts/store/effects/contract-products.effects';
 import { SafePipe } from 'src/app/shared/pipes/html';
 import { ContractCategoryEffect } from '../contracts/store/effects/contract-category.effects';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { createTranslateLoader } from 'src/app/app.module';
+import { HttpClient } from '@angular/common/http';
 
 const primeNgModules = [
   SidebarModule,
@@ -94,7 +95,14 @@ const routes: Routes = [
       ContractsEffect,
       ContractProductsEffect,
       ContractCategoryEffect
-    ])
+    ]),
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    })
   ],
   exports: [],
   providers: [SafePipe],

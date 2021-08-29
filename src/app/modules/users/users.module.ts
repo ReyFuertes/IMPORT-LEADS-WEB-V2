@@ -11,13 +11,10 @@ import { CommonModule } from '@angular/common';
 import { UserOverviewPageComponent } from './components/user-overview-page/user-overview-page.component';
 import { UserExpansionPanelComponent } from './components/user-expansion-panel/user-expansion-panel.component';
 import { MatTableModule } from '@angular/material/table';
-import { MatSortModule } from '@angular/material/sort';
-import { MatNativeDateModule } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -44,6 +41,9 @@ import { reducers } from './store/reducers';
 import { UserProfileEffects } from './store/effects/user-profile.effects';
 import { UserChangePasswordComponent } from './components/user-change-password/user-change-password.component';
 import { UserEffects } from './store/effects/user.effects';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { createTranslateLoader } from 'src/app/app.module';
+import { HttpClient } from '@angular/common/http';
 
 const routes: Routes = [
   {
@@ -109,7 +109,14 @@ const materialModules = [
     DialogModule,
     RouterModule.forChild(routes),
     StoreModule.forFeature('usersModule', reducers),
-    EffectsModule.forFeature([UserProfileEffects, UserEffects])
+    EffectsModule.forFeature([UserProfileEffects, UserEffects]),
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    })
   ],
   exports: [],
   declarations: [

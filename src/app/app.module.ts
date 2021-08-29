@@ -8,12 +8,11 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { VenuesEffects } from './modules/venues/store/venues.effects';
 import { AuthModule } from './modules/auth/auth.module';
 import { TokenInterceptor } from './services/http-token-interceptor';
 import { AuthGuard } from './services/auth.guard';
-import { AuthEffect } from './modules/auth/store/auth.effect';
 import { InitAppEffect } from './store/effects/app.effect';
 import { LoaderService } from './services/loader.interceptor';
 import { BlockUIModule } from 'primeng/blockui';
@@ -24,6 +23,12 @@ import { UserMgmtEffects } from './modules/user-management/store/user-mgmt.effec
 import { NgxEchartsModule } from 'ngx-echarts';
 import { UserProfileEffects } from './modules/users/store/effects/user-profile.effects';
 import { ToastModule } from 'primeng/toast';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 const materialModules = [
   MatProgressSpinnerModule,
@@ -53,6 +58,13 @@ const primengModules = [
     BrowserAnimationsModule,
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts')
+    }),
+    TranslateModule .forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
     })
   ],
   providers: [

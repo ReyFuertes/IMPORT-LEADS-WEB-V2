@@ -50,6 +50,9 @@ import { ChartModule } from 'primeng/chart';
 import { NavigateGuard } from 'src/app/services/navigate.guard';
 import { InspectionReportEffect } from './store/effects/inspection-report.effect';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { createTranslateLoader } from 'src/app/app.module';
+import { HttpClient } from '@angular/common/http';
 
 const routes: Routes = [{
   path: '',
@@ -113,6 +116,13 @@ const primeNgModules = [];
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts'),
     }),
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    })
   ],
   exports: [],
   declarations: [

@@ -9,7 +9,7 @@
   </td>
   <td fxFlex="120px">
     <button *ngIf="isVerified(term?.comment?.verification) && !isViewing" (click)="showComment(term?.comment?.id)" class="il-button purple" mat-flat-button>
-      <span>Remarks</span>
+      <span>{{ 'Remarks' | translate }}</span>
     </button>
   </td>
 </tr>

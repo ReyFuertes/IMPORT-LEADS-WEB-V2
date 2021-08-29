@@ -88,31 +88,6 @@
                   "maximumError": "15mb"
                 }
               ]
-            },
-            "cilchina": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.cilchina.ts"
-                }
-              ],
-              "outputPath": "dist/cilchina/",
-              "optimization": false,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "extractCss": true,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "15mb",
-                  "maximumError": "15mb"
-                }
-              ]
             }
           }
         },
@@ -124,9 +99,6 @@
           "configurations": {
             "production": {
               "browserTarget": "importleads:build:production"
-            },
-            "cilchina": {
-              "browserTarget": "importleads:buildcilchina"
             },
             "cilchina": {
               "browserTarget": "importleads:buildcilchina"
@@ -185,9 +157,6 @@
           "configurations": {
             "production": {
               "devServerTarget": "importleads:serve:production"
-            },
-            "cilchina": {
-              "devServerTarget": "importleads:servecilchina"
             },
             "cilchina": {
               "devServerTarget": "importleads:servecilchina"

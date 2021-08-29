@@ -1,7 +1,12 @@
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
 import { environment } from '../../../../../environments/environment';
-import { Component, OnInit, Input, ViewChild, ElementRef, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, OnChanges, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { TranslateService } from '@ngx-translate/core';
+import { select, Store } from '@ngrx/store';
+import { AppState } from 'src/app/store/app.reducer';
+import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'il-contract-expansion-panel',
@@ -9,7 +14,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
   styleUrls: ['./contract-expansion-panel.component.scss']
 })
 
-export class ContractExpansionPanelComponent extends GenericRowComponent implements OnInit, OnChanges {
+export class ContractExpansionPanelComponent extends GenericRowComponent implements AfterViewInit, OnChanges {
   public svgPath: string = environment.svgPath;
   @Input()
   public panels: Array<{ title: string, description: string }>;
@@ -24,11 +29,19 @@ export class ContractExpansionPanelComponent extends GenericRowComponent impleme
   @Input()
   public inCheckListing: boolean = false;
 
-  constructor() {
+  constructor(private cdRef: ChangeDetectorRef, private store: Store<AppState>, public translateService: TranslateService) {
     super();
-   }
+  }
 
-  ngOnInit() {}
+  ngAfterViewInit(): void {
+    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
+          this.cdRef.detectChanges();
+        }
+      });
+  }
 
   ngOnChanges() {
     this.inCheckListing = this.inCheckListing;
@@ -62,7 +75,7 @@ export class ContractExpansionPanelComponent extends GenericRowComponent impleme
   }
 
   public mouseover(i: number, colIndctr: number): void {
-    if(this.inCheckListing) return;
+    if (this.inCheckListing) return;
     this.dragIndex = i;
     if (colIndctr === 0)
       this.isTitleHover = i;

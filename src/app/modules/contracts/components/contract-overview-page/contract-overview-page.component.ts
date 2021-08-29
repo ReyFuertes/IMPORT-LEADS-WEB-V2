@@ -9,10 +9,12 @@ import { IContract } from './../../contract.model';
 import { ContractAddDialogComponent } from 'src/app/modules/dialogs/components/contract-add-dialog/contract-add-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from './../../../../../environments/environment';
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Store, select } from '@ngrx/store';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
+import { TranslateService } from '@ngx-translate/core';
+import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 
 @Component({
   selector: 'il-contract-overview-page',
@@ -29,7 +31,7 @@ export class ContractOverviewPageComponent extends GenericDestroyPageComponent i
     value: 'contract_name'
   }, {
     label: 'Sort by Date',
-    value: 'created_at'
+    value: 'delivery_date'
   }];
 
   public dragStart: boolean = false;
@@ -38,7 +40,7 @@ export class ContractOverviewPageComponent extends GenericDestroyPageComponent i
     this.dragStart = false;
   }
 
-  constructor(public store: Store<ContractModuleState>, public dialog: MatDialog) {
+  constructor(private cdRef: ChangeDetectorRef, private _store: Store<AppState>, public translateService: TranslateService, public store: Store<ContractModuleState>, public dialog: MatDialog) {
     super();
 
     this.store.pipe(select(getAllContractsSelector),
@@ -48,7 +50,15 @@ export class ContractOverviewPageComponent extends GenericDestroyPageComponent i
       })).subscribe();
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this._store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
+          this.cdRef.detectChanges();
+        }
+      });
+  }
 
   public handleSortChanges(event: any): void {
     let orderBy: string;

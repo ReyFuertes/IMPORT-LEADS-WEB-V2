@@ -1,10 +1,9 @@
 <div fxLayout="column" fxLayoutGap="20px">
-  <h2 fxFlex>User Details</h2>
+  <h2 fxFlex>{{ 'User Details' | translate }}</h2>
   <mat-card>
     <div class="content" fxLayout="column" fxLayoutGap="30px">
-      <!-- user info -->
       <div fxLayout="column">
-        <h4>User Info</h4>
+        <h4>{{ 'User Info' | translate }}</h4>
         <div>
           <div fxLayout="row" fxFlex fxLayoutGap="20px">
             <il-input fxFlex="25" [isFloatLabel]="true" [form]="form" isFloatLabel="true" controlName="username" placeholder="Username"></il-input>
@@ -50,7 +49,7 @@
         </div>
         <div fxLayout="column">
           <div fxFlex fxLayout="column" fxLayoutGap="20px">
-            <h4>Company Details</h4>
+            <h4>{{ 'Company Details' | translate }}</h4>
             <div class="ctrl-container" fxLayout="column">
               <div fxLayout="row" fxLayoutGap="20px">
                 <il-input fxFlex="25" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true" controlName="company_name" inputMaxLen="50" placeholder="Company Name"></il-input>
@@ -64,7 +63,11 @@
       </div>
       <!-- actions -->
       <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="20px">
+<<<<<<< HEAD
         <button mat-flat-button class="il-button default medium" [routerLink]="userMngmtRoute">{{ 'Back' | translate }}</button>
+=======
+        <button mat-flat-button class="il-button default medium" [routerLink]="userMngmtRoute">{{ 'Back' | transate }}</button>
+>>>>>>> master
         <button [disabled]="!form.valid" mat-flat-button class="il-button primary medium" (click)="onSave()">{{ 'Update' | translate }}</button>
       </div>
     </div>

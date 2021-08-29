@@ -1,9 +1,7 @@
-import { ISimpleItem } from './../../../shared/generics/generic.model';
 import { loadProductsAction, loadProductsSuccessAction, addProductSuccessAction, deleteProductSuccessAction, updateProductSuccessAction } from './products.actions';
 import { IProduct } from './../products.model';
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
-import { sortByDesc } from 'src/app/shared/util/sort';
 
 export interface ContractProductsState extends EntityState<IProduct> {
 }

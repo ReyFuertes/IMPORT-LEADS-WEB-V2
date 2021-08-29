@@ -1,6 +1,12 @@
 import { environment } from './../../../../environments/environment';
 import { FormControlName, FormGroup } from '@angular/forms';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { select, Store } from '@ngrx/store';
+import { AppState } from 'src/app/store/app.reducer';
+import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
+import { takeUntil } from 'rxjs/operators';
+import { GenericDestroyPageComponent } from '../../generics/generic-destroy-page';
 
 @Component({
   selector: 'il-input-search',
@@ -8,7 +14,7 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./input-search.component.scss']
 })
 
-export class InputSearchComponent implements OnInit {
+export class InputSearchComponent extends GenericDestroyPageComponent implements OnInit {
   public svgPath: string = environment.svgPath;
   @Input()
   public placeholder: string;
@@ -18,7 +24,17 @@ export class InputSearchComponent implements OnInit {
   public form: FormGroup;
   @Input()
   public isFloatLabel: boolean = false;
-  constructor() { }
+  constructor(private store: Store<AppState>, private cdRef: ChangeDetectorRef, public translateService: TranslateService) {
+    super();
+  }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
+          this.cdRef.detectChanges();
+        }
+      });
+  }
 }

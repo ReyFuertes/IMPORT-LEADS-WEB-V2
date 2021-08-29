@@ -12,7 +12,7 @@
       <!-- desktop button -->
       <button [matMenuTriggerFor]="appMenu" class="il-button il-bordered-blue desk-nav-to" mat-flat-button>
         <img [src]="svgPath + 'enter-icon-blue.svg'" />
-        <span>Navigate to</span>
+        <span>{{ 'Navigate to' | translate }}</span>
       </button>
 
       <!-- ipad button -->
@@ -29,7 +29,7 @@
 
       <button [disabled]="isBtnActionDisabled || isFirstRecord || inspectionRun?.isViewing" (click)="onDeleteNavigateTo(inspectionRun)" class="il-button il-bordered-blue delete-current desk-delete-nav-to" mat-flat-button>
         <img [src]="svgPath + 'delete-icon-blue.svg'" />
-        <span>Delete current and go back </span>
+        <span>{{ 'Delete current and go back' | translate }}</span>
       </button>
 
       <!-- ipad button -->
@@ -42,26 +42,26 @@
       <button [disabled]="isBtnActionDisabled || isFirstRecord" (click)="onPrev(inspectionRun)" class="il-button il-bg-blue" mat-flat-button>
         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
           <img [src]="svgPath + 'arrow-left-icon-white.svg'" />
-          <span>Previous</span>
+          <span>{{ 'Previous' | translate }}</span>
         </div>
       </button>
       <button [disabled]="isBtnActionDisabled || isNext" (click)="onNext(inspectionRun)" class="il-button il-bg-blue" mat-flat-button>
         <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="5px">
-          <span>Next</span>
+          <span>{{ 'Next' | translate }}</span>
           <img [src]="svgPath + 'arrow-right-icon-white.svg'" />
         </div>
       </button>
       <button [disabled]="inspectionRun?.isViewing" (click)="isBtnActionDisabled ? onResume(inspectionRun) : onPause()" mat-flat-button class="il-button il-bg-green">
         <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
           <img [src]="svgPath + 'pause-icon-white.svg'" />
-          <span *ngIf="!isBtnActionDisabled">Pause run</span>
-          <span *ngIf="isBtnActionDisabled">Resume run</span>
+          <span *ngIf="!isBtnActionDisabled">{{ 'Pause run' | translate }}</span>
+          <span *ngIf="isBtnActionDisabled">{{ 'Resume run' | translate }}</span>
         </div>
       </button>
       <button (click)="!inspectionRun?.isViewing ? onStop() : onBack()" mat-flat-button class="il-button il-bg-red">
         <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
           <img [src]="svgPath + 'stop-icon-white.svg'" />
-          <span>Stop run</span>
+          <span>{{ 'Stop run' | translate }}</span>
         </div>
       </button>
     </div>
@@ -81,6 +81,6 @@
 
 <ng-template #selectedAProduct>
   <div fxLayout="row" fxLayoutAlign="center center">
-    <h3>Select a Product</h3>
+    <h3>{{ 'Select a Product' | translate }}</h3>
   </div>
 </ng-template>

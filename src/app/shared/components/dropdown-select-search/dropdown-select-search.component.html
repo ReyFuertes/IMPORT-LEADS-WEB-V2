@@ -1,9 +1,9 @@
 <div>
   <mat-form-field floatLabel="never">
-    <span *ngIf="!selectedItem" class="placeholder">{{placeholder}}</span>
+    <span *ngIf="!selectedItem" class="placeholder">{{placeholder | translate}}</span>
     <mat-select (selectionChange)="valueEmitter.emit($event?.value)" [(ngModel)]="selectedItem">
       <mat-option>
-        <ngx-mat-select-search [clearSearchInput]="'false'" [placeholderLabel]="'Search'" [formControl]="dataFilterForm" [noEntriesFoundLabel]="'No result'"></ngx-mat-select-search>
+        <ngx-mat-select-search [clearSearchInput]="'false'" [placeholderLabel]="'Search'" [formControl]="dataFilterForm" [noEntriesFoundLabel]="'No result' | translate"></ngx-mat-select-search>
       </mat-option>
       <mat-option *ngFor="let item of ($filteredData | async)" [value]="item?.value">
         {{ item?.label }}

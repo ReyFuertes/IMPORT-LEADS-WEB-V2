@@ -3,7 +3,13 @@ import { IUser } from '../user-management/user-mgmt.model';
 import { IContractProduct, IContractTerm, IContractCategory, ISavedChecklist } from '../contracts/contract.model';
 import { IVenue } from '../venues/venues.models';
 import { IProduct } from '../products/products.model';
-
+export interface Tag {
+  tag: string;
+  failed: number;
+  passed: number;
+  failureRate: number;
+  aQLimit: string;
+}
 export interface IInspectionCommentReport {
   comment?: string;
   contract_product?: any;
@@ -48,7 +54,8 @@ export interface IInspectionBarReport {
   start_date?: string;
   total_checked?: number;
   inspection_time?: any;
-  average_duration_per_item?: any
+  average_duration_per_item?: any;
+  table_data?: any;
 }
 export interface IInspectionChecklistImage {
   id?: string;

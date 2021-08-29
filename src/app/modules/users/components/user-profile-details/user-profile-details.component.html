@@ -2,11 +2,11 @@
   <div class="card-row" fxLayout="column" fxLayoutGap="20px">
     <div>
       <div fxFlex>
-        <h3>Personal Details</h3>
+        <h3>{{ 'Personal Details' | translate }}</h3>
       </div>
       <div fxFlex="200px" fxLayoutAlign="end center">
-        <button [routerLink]="inspectionRoute" mat-flat-button class="il-button default small">Close</button>
-        <button [disabled]="!form.valid" (click)="updateProfile()" mat-flat-button class="il-button primary small">Update</button>
+        <button [routerLink]="inspectionRoute" mat-flat-button class="il-button default small">{{ 'Close' | translate }}</button>
+        <button [disabled]="!form.valid" (click)="updateProfile()" mat-flat-button class="il-button primary small">{{ 'Update' | translate }}</button>
       </div>
     </div>
     <div fxLayout="row">
@@ -39,28 +39,6 @@
             </div>
           </div>
         </div>
-
-        <!-- <div fxFlex fxLayout="column" fxLayoutGap="20px">
-          <div>
-            <div fxFlex>
-              <h3>Company Details</h3>
-            </div>
-            <div (click)="isComDetailEditMode = !isComDetailEditMode" class="action-profile" fxFlex="120px" fxLayoutAlign="end center">
-            </div>
-          </div>
-          <div fxFlex class="item-container" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="40px">
-            <div fxFlex="20">
-              <il-input [form]="form" [isFloatLabel]="true" controlName="company_name" placeholder="Company Name"></il-input>
-
-            </div>
-            <div fxFlex="20">
-              <il-input [form]="form" [isFloatLabel]="true" controlName="company_linkedin" placeholder="Company Linked Profile"></il-input>
-            </div>
-            <div fxFlex="40">
-              <il-textarea [form]="form" [isFloatLabel]="true" controlName="company_address" placeholder="Address"></il-textarea>
-            </div>
-          </div>
-        </div> -->
       </div>
     </div>
   </div>

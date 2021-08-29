@@ -127,29 +127,13 @@ input:-webkit-autofill:active {
     height: auto !important;
     min-height: auto !important;
     background-color: $color-white;
-    height: 99%;
-  }
-  .production-image {
-    display: none !important;
-  }
-  il-topnav {
-    display: none !important;
-  }
-  .page-container {
-    margin: 0 !important;
-    padding: 0 !important;
-    h2,
-    h5 {
-      font-size: 12px !important;
-      font-weight: 500 !important;
-      line-height: 15px !important;
-    }
+    height:100%;
+    width: 100%;
   }
   .contract-detail-report-container {
     .table-category-title {
       border: thin $color-gray-2 solid !important;
       margin-top: 10px;
-
       th {
         background-color: $color-gray-3 !important;
         font-weight: bold;
@@ -163,7 +147,6 @@ input:-webkit-autofill:active {
       thead {
         page-break-inside: avoid !important;
         height: 35px;
-        overflow: visible;
         th {
           &:first-child {
             width: fit-content;

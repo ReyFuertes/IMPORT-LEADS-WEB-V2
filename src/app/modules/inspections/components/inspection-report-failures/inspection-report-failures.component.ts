@@ -10,6 +10,8 @@ import { getInspectionFailedCommentsReportSelector } from '../../store/selectors
 import * as _ from 'lodash';
 import { MatDialog } from '@angular/material/dialog';
 import { ImageViewerDialogComponent } from 'src/app/modules/dialogs/components/image-viewer-dialog/image-viewer-dialog.component';
+import { TranslateService } from '@ngx-translate/core';
+import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 
 @Component({
   selector: 'il-inspection-report-failures',
@@ -25,7 +27,7 @@ export class InspectionReportFailuresComponent extends GenericDestroyPageCompone
   public imgPath: string = environment.imgPath;
   public product_failure_count: number = 0;
 
-  constructor(private dialog: MatDialog, private route: ActivatedRoute, private store: Store<AppState>) {
+  constructor(public translateService: TranslateService, private dialog: MatDialog, private route: ActivatedRoute, private store: Store<AppState>) {
     super();
 
     const saved_checklist_id = this.route.snapshot.paramMap.get('id') || null;
@@ -41,6 +43,13 @@ export class InspectionReportFailuresComponent extends GenericDestroyPageCompone
         if (res) {
           this.dataSource = res?.data;
           this.product_failure_count = res?.product_failure_count || 0;
+        }
+      });
+
+    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
         }
       });
   }

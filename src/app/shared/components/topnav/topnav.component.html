@@ -8,7 +8,7 @@
         false}" fxFlex="25" *ngIf="menu?.children">
         <il-menu [menu]="menu"></il-menu>
       </div>
-      <div class="menu-box" [routerLink]="menu?.user_route" *ngIf="!menu?.children" fxFlex="25" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:false}">{{ menu?.label }}</div>
+      <div class="menu-box" [routerLink]="menu?.user_route" *ngIf="!menu?.children" fxFlex="25" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:false}">{{ menu?.label | translate }}</div>
     </ng-container>
   </div>
   <div fxFlex="20" fxLayoutAlign="end center" fxLayoutGap="40px">
@@ -19,12 +19,12 @@
       <span class="username" [matTooltip]="user?.username" [matMenuTriggerFor]="menu">{{ user?.username }}</span>
       <img class="arrow" [matMenuTriggerFor]="menu" [src]="svgPath + 'arrow-down-icon-black.svg'" />
       <mat-menu #menu="matMenu">
-        <button mat-menu-item [routerLink]="profileRoute">Profile</button>
-        <button *appHasRole="'admin'" mat-menu-item [routerLink]="settingsRoute">Settings</button>
-        <button mat-menu-item [routerLink]="changePasswordRoute">Change Password</button>
+        <button mat-menu-item [routerLink]="profileRoute">{{ 'Profile' | translate }}</button>
+        <button *appHasRole="'admin'" mat-menu-item [routerLink]="settingsRoute">{{ 'Settings' | translate }}</button>
+        <button mat-menu-item [routerLink]="changePasswordRoute">{{ 'Change Password' | translate }}</button>
         <!-- NOTE: THIS WILL BE DISPLAYED IN ADMIN LEVEL -->
-        <button *appHasRole="'admin'" mat-menu-item [routerLink]="userMngmntRoute">User Management</button>
-        <button mat-menu-item (click)="onLogout()">Logout</button>
+        <button *appHasRole="'admin'" mat-menu-item [routerLink]="userMngmntRoute">{{ 'User Management' | translate }}</button>
+        <button mat-menu-item (click)="onLogout()">{{ 'Logout' | translate }}</button>
       </mat-menu>
     </div>
   </div>

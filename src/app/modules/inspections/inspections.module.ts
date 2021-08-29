@@ -53,6 +53,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { createTranslateLoader } from 'src/app/app.module';
 import { HttpClient } from '@angular/common/http';
+import { InspectionReportTagsTermComponent } from './components/inspection-report-tags-term/inspection-report-tags-term.component';
 
 const routes: Routes = [{
   path: '',
@@ -141,7 +142,8 @@ const primeNgModules = [];
     InspectionActivePanelComponent,
     InspectionFinishedPanelComponent,
     InspectionRunCategoryComponent,
-    InspectionRunCategoryRowComponent
+    InspectionRunCategoryRowComponent,
+    InspectionReportTagsTermComponent
   ],
   providers: [
     ChecklistService,

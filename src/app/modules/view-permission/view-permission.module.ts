@@ -13,8 +13,8 @@ import { PickListModule } from 'primeng/picklist';
 import { UserViewEffects } from './store/view-permission.effects';
 import { UserViewReducer } from './store/view-permission.reducer';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { createTranslateLoader } from 'src/app/app.module';
 import { HttpClient } from '@angular/common/http';
+import { createTranslateLoader } from 'src/app/app.module';
 
 const primeNgModules = [
   PickListModule

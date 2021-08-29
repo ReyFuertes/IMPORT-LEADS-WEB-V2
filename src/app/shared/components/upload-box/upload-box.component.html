@@ -2,7 +2,7 @@
   <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
     <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
       <img [src]="svgPath + 'camera-icon-blue.svg'" />
-      <span>{{ disabled ? 'Image max count reached' : label}}</span>
+      <span>{{ (disabled ? 'Image max count reached' : 'Drop Image Here..') | translate}}</span>
     </div>
   </ng-template>
   <input hidden type="file" #uploader (change)="upload($event)" />

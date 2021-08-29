@@ -6,13 +6,14 @@
   background-color: $color-green !important;
 }
 .il-dialog {
-  height: 200px !important;
+  height: 175px !important;
   padding: 20px;
   > div {
     &:first-child {
       width: 100%;
       min-height: 20px;
-      height: 20px;
+      height: 50px;
+      margin: 20px !important;
     }
   }
   .content {

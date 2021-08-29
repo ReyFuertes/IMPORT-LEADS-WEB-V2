@@ -1,5 +1,6 @@
 import { environment } from './../../../../environments/environment';
 import { Component, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'il-sidebar',
@@ -51,7 +52,7 @@ export class SidebarComponent implements OnInit {
       route: 'dashboard/inspection-insights'
     }
   ];
-  constructor() { }
+  constructor() {  }
 
   ngOnInit() { }
 }

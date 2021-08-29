@@ -14,7 +14,9 @@ import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-des
 import { getSavedChecklistByIdAction } from '../../store/actions/saved-checklist.action';
 import { IUser, IUserMgmt } from 'src/app/modules/user-management/user-mgmt.model';
 import { getAllSimpleUsersSelector } from 'src/app/modules/user-management/store/user-mgmt.selectors';
-import { getUserListSelector } from 'src/app/store/selectors/app.selector';
+import { getUserLangSelector, getUserListSelector } from 'src/app/store/selectors/app.selector';
+import { TranslateService } from '@ngx-translate/core';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'il-contract-right-content',
@@ -31,13 +33,20 @@ export class ContractRightContentComponent extends GenericDestroyPageComponent i
   @Output() public closeEmitter = new EventEmitter<boolean>();
   @ViewChild('scrollPnl', { static: true }) public scrollPnl: any;
 
-  constructor(public dialog: MatDialog, private store: Store<AppState>) {
+  constructor(public translateService: TranslateService, public dialog: MatDialog, private store: Store<AppState>) {
     super();
   }
 
   ngOnInit() {
     this.$savedChecklist = this.store.pipe(select(getAllSavedChecklistSelector));
     this.$userList = this.store.pipe(select(getUserListSelector));
+
+    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
+        }
+      });
   }
 
   public getChecklist(id: string): void {

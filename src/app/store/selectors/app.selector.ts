@@ -4,6 +4,10 @@ import { IRole, IUser } from 'src/app/modules/user-management/user-mgmt.model';
 import { sortByDesc } from 'src/app/shared/util/sort';
 
 export const selectedState = (state: AppState) => state.initApp;
+export const getUserLangSelector = createSelector(
+  selectedState,
+  state => state?.language
+)
 export const getUserClientsSelector = createSelector(
   selectedState,
   state => state?.userClients?.map((uc: IUser) => {

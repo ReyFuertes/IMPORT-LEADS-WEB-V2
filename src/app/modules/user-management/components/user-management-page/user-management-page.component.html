@@ -1,11 +1,11 @@
 <div fxLayout="column" fxLayoutGap="20px">
   <div fxFlex>
-    <h2>User Management</h2>
+    <h2>{{ 'User Management' | translate }}</h2>
   </div>
   <mat-card>
     <div fxLayout="row" fxLayoutAlign="end center">
       <button matTooltip="Add" mat-flat-button class="il-button primary" (click)="onAdd()">
-        <span>Add User</span>
+        <span>{{ 'Add User' | translate }}</span>
       </button>
     </div>
     <il-user-table></il-user-table>

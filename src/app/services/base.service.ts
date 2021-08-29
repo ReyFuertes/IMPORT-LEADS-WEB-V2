@@ -1,4 +1,3 @@
-import { QueryParam } from './../models/generic.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
@@ -70,11 +69,14 @@ export abstract class BaseService<T> {
   }
 
   public getAll(param?: string): Observable<T[]> {
-    return this.http.get<T[]>(`${this.baseUrl}${this.entity}${this.fmtParam(param)}`, { headers: this.commonHeaders() });
+    return this.http.get<T[]>(`${this.baseUrl}${this.entity}${this.fmtParam(param)}`,
+      { headers: this.commonHeaders() })
+      .pipe(shareReplay());
   }
 
   public getById(id: string, addtnlParam?: string): Observable<T> {
-    return this.http.get<T>(`${this.baseUrl}${this.entity}/${id}${this.fmtParam(addtnlParam)}`, { headers: this.commonHeaders() });
+    return this.http.get<T>(`${this.baseUrl}${this.entity}/${id}${this.fmtParam(addtnlParam)}`, { headers: this.commonHeaders() })
+    .pipe(shareReplay());
   }
 
   public getBinaryById(id: string, addtnlParam?: string): Observable<T> {

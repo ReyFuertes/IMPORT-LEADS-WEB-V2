@@ -1,7 +1,8 @@
 import { IActiveInspection, IFinishedInspection, IInspectionRun, RunStatusType } from './../../inspections.models';
-import { loadActiveInspectionSuccessAction, loadInspectionRunSuccessAction, changeInspectionRuntimeStatusSuccessAction, setPauseInspectionStatusAction, loadInspectionDetailSuccessAction, loadFinishInspectionSuccessAction, inspectChecklistRunProductSuccessAction, getInspectionWithLastRunProductSuccessAction, runNextInspectionSuccessAction, copyInspectionSuccessAction, clearRunInspectionAction, runPrevInspectionSuccessAction, runNextInspectionAction, clearExistErrorAction } from '../actions/inspection.action';
+import { loadActiveInspectionSuccessAction, loadInspectionRunSuccessAction, changeInspectionRuntimeStatusSuccessAction, setPauseInspectionStatusAction, loadInspectionDetailSuccessAction, loadFinishInspectionSuccessAction, inspectChecklistRunProductSuccessAction, getInspectionWithLastRunProductSuccessAction, runNextInspectionSuccessAction, copyInspectionSuccessAction, clearRunInspectionAction, runPrevInspectionSuccessAction, runNextInspectionAction, clearExistErrorAction, deleteInspectionSuccessAction } from '../actions/inspection.action';
 import { createReducer, on, Action } from "@ngrx/store";
 import { saveInsChecklistCommentSuccessAction, updateInsChecklistCommentSuccessAction } from '../actions/inspection-checklist.action';
+import * as _ from 'lodash';
 export interface InspectionState {
   activeInspection?: IActiveInspection[],
   finishedInspections?: IFinishedInspection[],
@@ -22,6 +23,20 @@ export const initialState: InspectionState = {
 };
 const reducer = createReducer(
   initialState,
+  on(deleteInspectionSuccessAction, (state, action) => {
+    let inspections = Object.assign([], state.activeInspection);
+    _.remove(inspections, {
+      id: action.response.id
+    });
+    return Object.assign({}, state, { activeInspection: inspections });
+  }),
+  on(deleteInspectionSuccessAction, (state, action) => {
+    let inspections = Object.assign([], state.finishedInspections);
+    _.remove(inspections, {
+      id: action.response.id
+    });
+    return Object.assign({}, state, { finishedInspections: inspections });
+  }),
   on(clearExistErrorAction, (state) => {
     return Object.assign({}, state, { prevExistError: null });
   }),

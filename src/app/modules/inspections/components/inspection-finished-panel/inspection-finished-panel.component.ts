@@ -10,6 +10,11 @@ import { AppState } from 'src/app/store/app.reducer';
 import { takeUntil } from 'rxjs/operators';
 import { getFinishedInspectionsSelector } from '../../store/selectors/inspection.selector';
 import { INSPECTIONSRUNTEMPLATEROUTE, INSPECTIONSROUTE, INSPECTIONSRUNREPORTROUTE } from 'src/app/shared/constants/routes';
+import { TranslateService } from '@ngx-translate/core';
+import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
+import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
+import { deleteInspectionAction } from '../../store/actions/inspection.action';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'il-inspection-finished-panel',
@@ -27,7 +32,7 @@ export class InspectionFinishedPanelComponent extends GenericRowComponent implem
   public imgPath: string = environment.imgPath;
   public menus: Menu[];
 
-  constructor(private store: Store<AppState>, private cdRef: ChangeDetectorRef, private router: Router) {
+  constructor(private dialog: MatDialog, public translateService: TranslateService, private store: Store<AppState>, private cdRef: ChangeDetectorRef, private router: Router) {
     super();
   }
 
@@ -51,16 +56,32 @@ export class InspectionFinishedPanelComponent extends GenericRowComponent implem
         action: (item) => {
           this.router.navigateByUrl(`${INSPECTIONSROUTE}/${item?.id}/report`);
         }
-      },
-      {
+      },{
         label: 'DELETE',
-        value: 'DELETE',
-        icon: 'delete-icon-red.svg'
+        icon: 'delete-icon-red.svg',
+        action: ({ id }) => {
+          const dialogRef = this.dialog.open(ConfirmationComponent, {
+            width: '410px',
+            data: { action: 0 }
+          });
+          dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+            .subscribe(result => {
+              if (result) {
+                this.store.dispatch(deleteInspectionAction({ id }));
+              }
+            });
+        }
       }
     ];
   }
 
   ngAfterViewInit(): void {
+    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
+        }
+      });
     this.cdRef.detectChanges();
   }
 

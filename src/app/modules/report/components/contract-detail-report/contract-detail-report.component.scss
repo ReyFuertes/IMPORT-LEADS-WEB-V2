@@ -15,7 +15,6 @@
 .il-pill.small {
   margin-left: 0 !important;
 }
-
 .detail-container {
   margin-bottom: 0;
   > div {
@@ -114,25 +113,28 @@ table {
     padding: 10px;
     min-height: 35px;
     vertical-align: top;
+    &:first-child {
+      width: 30%;
+    }
   }
   thead, tbody {
     background-color: $color-white;
   }
 }
-@media print {
-  script, style { 
-    display:none; 
+:host ::ng-deep {
+  p {
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
   }
-  // script, style { 
-  //   display:none; 
-  // }
-  // body {
-  //   padding: 0 !important;
-  //   margin: 0 !important;
-  //   height: auto !important;
-  //   min-height: auto !important;
-  //   background-color: $color-white;
-  //   height:99%; 
-  // }
-  
+}
+@media print {
+  * {
+    font-size: 12px;
+  }
+  .table-category-title {
+    border: thin $color-gray-2 solid;
+    background-color: $color-gray-3 !important;
+    margin-top: 10px;
+    font-weight: bold;
+  }
 }

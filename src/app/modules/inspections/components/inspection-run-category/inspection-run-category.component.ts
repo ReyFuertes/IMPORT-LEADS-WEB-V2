@@ -8,6 +8,8 @@ import { getInspectionRunSelector } from '../../store/selectors/inspection.selec
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { takeUntil } from 'rxjs/operators';
 import { sortByDesc } from 'src/app/shared/util/sort';
+import { TranslateService } from '@ngx-translate/core';
+import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 
 @Component({
   selector: 'il-inspection-run-category',
@@ -24,7 +26,7 @@ export class InspectionRunCategoryComponent extends GenericDestroyPageComponent 
 
   @Input() public inspectionRun: any;
 
-  constructor(private store: Store<AppState>, private cdRef: ChangeDetectorRef, public dialog: MatDialog) {
+  constructor(public translateService: TranslateService, private store: Store<AppState>, private cdRef: ChangeDetectorRef, public dialog: MatDialog) {
     super();
   }
 
@@ -32,6 +34,13 @@ export class InspectionRunCategoryComponent extends GenericDestroyPageComponent 
     this.store.pipe(select(getInspectionRunSelector))
       .pipe(takeUntil(this.$unsubscribe)).subscribe((res: any) => {
         if (res) this.processItem(res);
+      });
+
+    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
+        }
       });
   }
 
@@ -49,13 +58,13 @@ export class InspectionRunCategoryComponent extends GenericDestroyPageComponent 
         saved_checklist: { id: inspectionRun?.saved_checklist?.id }
       }
     }).sort((a, b) => sortByDesc(a, b, 'position')); //make sure the terms are sorted by position
-    
+
     const grouped = _.groupBy(fmtTerms, (t: any) => {
       return t?.category?.category_name;
     });
-    
+
     this.dataSource = Object.keys(grouped)?.map(g => {
-      
+
       const flattenArr = _.flatten(Object.values(grouped));
       const terms = Object.values(flattenArr).filter(function (itm: any) {
         return g.indexOf(itm?.category?.category_name) > -1;

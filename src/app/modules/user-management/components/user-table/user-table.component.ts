@@ -1,17 +1,16 @@
-import { Component, OnInit, ViewChild, SimpleChanges, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, ViewChild, SimpleChanges, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { IDropdownSelect, ISimpleItem } from 'src/app/shared/generics/generic.model';
+import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { getTableUsersSelector } from '../../store/user-mgmt.selectors';
 import { Observable, of } from 'rxjs';
 import { IUserMgmt, IUserTableData, IUserAccess, IUser } from '../../user-mgmt.model';
 import { takeUntil, tap, take, debounceTime } from 'rxjs/operators';
-import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { environment } from 'src/environments/environment';
 import * as _ from 'lodash';
 import { Router } from '@angular/router';
-import { getAccessSelector, getAllRolesSelector } from 'src/app/store/selectors/app.selector';
+import { getAccessSelector, getAllRolesSelector, getUserLangSelector } from 'src/app/store/selectors/app.selector';
 import { saveUserAccessAction, loadAllUsersAction, saveUserRoleAction, deleteUserAction } from '../../store/user-mgmt.actions';
 import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
 import { splitToSentCase } from 'src/app/shared/util/format-value';
@@ -21,6 +20,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { USERMNGMNTROUTE, VIEWPERMISSIONROUTE } from 'src/app/shared/constants/routes';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'il-user-table',
@@ -60,7 +60,7 @@ export class UserTableComponent extends GenericContainer implements AfterViewIni
     return col === 'access' ? this.accessOptions : this.rolesOptions;
   }
 
-  constructor(private cdRef: ChangeDetectorRef, private dialog: MatDialog, private router: Router, private store: Store<AppState>) {
+  constructor(public translateService: TranslateService, private cdRef: ChangeDetectorRef, private dialog: MatDialog, private router: Router, private store: Store<AppState>) {
     super();
   }
 
@@ -95,6 +95,13 @@ export class UserTableComponent extends GenericContainer implements AfterViewIni
     this.store.pipe(select(getAllRolesSelector)).pipe(tap(res => {
       if (res) this.rolesOptions = res;
     })).subscribe();
+
+    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
+        }
+      });
 
     this.cdRef.detectChanges();
   }

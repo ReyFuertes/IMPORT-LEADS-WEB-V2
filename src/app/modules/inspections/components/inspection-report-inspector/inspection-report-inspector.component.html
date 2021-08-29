@@ -1,21 +1,21 @@
 <div>
-  <il-expandable-panel title="Inspector" [expanded]="true">
+  <il-expandable-panel [title]="'Inspector' | translate" [expanded]="true">
     <div class="content" fxLayout="column" fxLayoutGap="20px">
       <div class="detail" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
         <div fxFlex="15" fxLayout="column">
-          <div>Сontact Person</div>
+          <div>{{ 'Сontact Person' | translate }}</div>
           <div>{{ ($detail | async)?.contact_person }}</div>
         </div>
         <div fxFlex="15" fxLayout="column">
-          <div>Phone Number</div>
+          <div>{{ 'Phone Number' | translate }}</div>
           <div>{{ ($detail | async)?.phone }}</div>
         </div>
         <div fxFlex="25" fxLayout="column">
-          <div>Address</div>
+          <div>{{ 'Address' | translate }}</div>
           <div>{{ ($detail | async)?.address }}</div>
         </div>
         <div fxFlex fxLayout="column">
-          <div>Venue</div>
+          <div>{{ 'Venue' | translate }}</div>
           <div>{{ ($detail | async)?.venue }}</div>
         </div>
       </div>

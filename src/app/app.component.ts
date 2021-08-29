@@ -1,17 +1,19 @@
 import { getSuccessSelector } from './store/selectors/notification.selector';
 import { Observable } from 'rxjs';
-import { appNotification, INotification, removeNotification } from './store/actions/notification.action';
+import { INotification, removeNotification } from './store/actions/notification.action';
 import { AppState } from 'src/app/store/app.reducer';
 import { Component, ChangeDetectorRef, AfterViewInit, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { delay, takeUntil, filter } from 'rxjs/operators';
-import { initAppAction } from './store/actions/app.action';
-import { getIsLoggedInSelector } from './store/selectors/app.selector';
-import { LoaderService } from './services/loader.interceptor';
+import { delay, takeUntil, filter, debounceTime } from 'rxjs/operators';
+import { initAppAction, setDefaultLangAction } from './store/actions/app.action';
+import { getIsLoggedInSelector, getUserLangSelector } from './store/selectors/app.selector';
 import { environment } from 'src/environments/environment';
 import { GenericDestroyPageComponent } from './shared/generics/generic-destroy-page';
 import { NavigationEnd, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { LoaderService } from './services/http-token-interceptor';
+import { TranslateService } from '@ngx-translate/core';
+import { StorageService } from './services/storage.service';
 
 @Component({
   selector: 'app-root',
@@ -26,9 +28,11 @@ export class AppComponent extends GenericDestroyPageComponent implements OnInit,
   public svgPath: string = environment.svgPath;
   public hideTopNav: boolean = false;
 
-  constructor(private router: Router, public loaderSrv: LoaderService, private store: Store<AppState>, private cdRef: ChangeDetectorRef) {
+  constructor(private localStorageSrv: StorageService, public translateService: TranslateService, private router: Router, public loaderSrv: LoaderService, private store: Store<AppState>, private cdRef: ChangeDetectorRef) {
     super();
     this.store.dispatch(initAppAction());
+
+    this.translateService.addLangs(['en', 'cn']);
   }
 
   ngOnInit(): void {
@@ -54,7 +58,8 @@ export class AppComponent extends GenericDestroyPageComponent implements OnInit,
       takeUntil(this.$unsubscribe))
       .subscribe(res => {
         this.isLoggedIn = res;
-      })
+      });
+
   }
 
   public onClose(): void {
@@ -63,6 +68,21 @@ export class AppComponent extends GenericDestroyPageComponent implements OnInit,
   }
 
   ngAfterViewInit(): void {
+    this.store.pipe(select(getUserLangSelector),
+      debounceTime(1000),
+      takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
+          this.cdRef.detectChanges();
+        } else {
+          let userProfile = this.localStorageSrv.get('userp');
+          if (userProfile) {
+            userProfile = JSON.parse(userProfile);
+            this.translateService.use(userProfile?.language);
+          }
+        }
+      });
     this.cdRef.detectChanges();
   }
 }

@@ -1,25 +1,25 @@
 <div>
-  <il-expandable-panel title="Inspections" [expanded]="true">
+  <il-expandable-panel [title]="'Inspections' | translate" [expanded]="true">
     <div fxLayout="column" fxLayoutGap="20px">
       <div class="filter-date" fxLayout="row" fxLayoutAlign="end center">
-        <il-datepicker fxFlex="250px" [form]="form" controlName="date" placeholder="Inspection Date"></il-datepicker>
+        <il-datepicker fxFlex="250px" [form]="form" controlName="date" [placeholder]="'Inspection Date' | translate"></il-datepicker>
       </div>
       <div class="detail" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
         <mat-list fxLayout="row">
           <mat-list-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
-            <h5>Total items checked</h5>
+            <h5>{{ 'Total items checked' | translate }}</h5>
             <h2>{{ barChartSummary?.total_checked}}</h2>
           </mat-list-item>
           <mat-list-item fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="5px">
-            <h5>Total inspection time</h5>
+            <h5>{{ 'Total inspection time' | translate }}</h5>
             <h2> -- </h2>
           </mat-list-item>
           <mat-list-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
-            <h5>Start date</h5>
+            <h5>{{ 'Start date' | translate }}</h5>
             <h2>{{ barChartSummary?.start_date }}</h2>
           </mat-list-item>
           <mat-list-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
-            <h5>End date</h5>
+            <h5>{{ 'End date' | translate }}</h5>
             <h2>{{ barChartSummary?.end_date }}</h2>
           </mat-list-item>
         </mat-list>
@@ -35,29 +35,24 @@
 
     <table mat-table [dataSource]="dataSource">
       <ng-container matColumnDef="inspector">
-        <th mat-header-cell *matHeaderCellDef> Inspector </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'Inspector' | translate }} </th>
         <td mat-cell *matCellDef="let items"> {{items?.user?.username}} </td>
       </ng-container>
 
       <ng-container matColumnDef="date">
-        <th mat-header-cell *matHeaderCellDef> Date </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'Date' | translate }} </th>
         <td mat-cell *matCellDef="let items"> {{items?.date | date: 'dd/MM/yyyy HH:mm'}} </td>
       </ng-container>
 
       <ng-container matColumnDef="duration">
-        <th mat-header-cell *matHeaderCellDef> Duration </th>
-        <td mat-cell *matCellDef="let items"> </td>
+        <th mat-header-cell *matHeaderCellDef> {{ 'Duration' | translate }} </th>
+        <td mat-cell *matCellDef="let items"> {{ items.duration }} </td>
       </ng-container>
 
       <ng-container matColumnDef="item">
-        <th mat-header-cell *matHeaderCellDef> Items </th>
+        <th mat-header-cell *matHeaderCellDef> {{ 'Items' | translate }} </th>
         <td mat-cell *matCellDef="let items"> {{items?.count}} </td>
       </ng-container>
-
-      <!-- <ng-container matColumnDef="average">
-        <th mat-header-cell *matHeaderCellDef> Average duration per item </th>
-        <td mat-cell *matCellDef="let items"> 0 </td>
-      </ng-container> -->
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

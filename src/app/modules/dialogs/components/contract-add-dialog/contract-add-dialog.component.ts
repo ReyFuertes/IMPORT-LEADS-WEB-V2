@@ -8,7 +8,7 @@ import { GenericAddEditComponent } from '../../../../shared/generics/generic-ae'
 import { IContract, IProductImage } from '../../../contracts/contract.model';
 import { environment } from '../../../../../environments/environment';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AddEditState } from 'src/app/shared/generics/generic.model';
@@ -19,9 +19,9 @@ import { ActivatedRoute } from '@angular/router';
 import { convertBlobToBase64 } from 'src/app/shared/util/convert-to-blob';
 import * as _ from 'lodash';
 import { StorageService } from 'src/app/services/storage.service';
-import { getUserClientsSelector } from 'src/app/store/selectors/app.selector';
+import { getUserClientsSelector, getUserLangSelector } from 'src/app/store/selectors/app.selector';
 import { Observable } from 'rxjs';
-import { IUser } from 'src/app/modules/user-management/user-mgmt.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'il-contract-add-dialog',
@@ -41,9 +41,10 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
   public AddEditState = AddEditState;
   public $userClients: Observable<ISimpleItem[]>;
 
-  constructor(private storageSrv: StorageService, public fb: FormBuilder, public dialogRef: MatDialogRef<ContractAddDialogComponent>,
+  constructor(private cdRef: ChangeDetectorRef, public translateService: TranslateService, private storageSrv: StorageService, public fb: FormBuilder, public dialogRef: MatDialogRef<ContractAddDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: AddEditDialogState, private store: Store<AppState>, public route: ActivatedRoute) {
     super();
+
     this.form = this.fb.group({
       id: [null],
       contract_name: [null, Validators.required],
@@ -54,7 +55,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
       images: [null],
       user_client: [null]
     });
-    
+
     /* manually mark as valid if has value */
     this.form && this.form.get('venue').valueChanges
       .pipe(take(1),
@@ -106,6 +107,14 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
       });
 
     this.$userClients = this.store.pipe(select(getUserClientsSelector));
+
+    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
+          this.cdRef.detectChanges();
+        }
+      });
   }
 
   public get isUploadDisabled(): boolean {
@@ -131,7 +140,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
   public save = (item: IContract): void => {
     const files = new FormData();
     const { label, value } = this.venues.filter(v => v.value === this.form.get('venue').value)[0];
-    
+
     item.venue = { id: value, name: label };
     item.images = this.cnsFileObj(files);
 

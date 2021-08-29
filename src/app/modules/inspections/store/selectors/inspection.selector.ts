@@ -14,7 +14,7 @@ export const getInspectionDetailSelector = createSelector(
   selectContractModuleState,
   state => state?.inspection?.detail
 );
-export const getIsPausedSelector = createSelector(
+export const getIsStopSelector = createSelector(
   selectContractModuleState,
   state => state?.inspection?.isPaused
 );

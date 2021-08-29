@@ -13,6 +13,7 @@ import { sortByAsc, sortByDesc } from '../../util/sort';
 import { CHANGEPASSWORDROUTE, CONTRACTSROUTE, PROFILEROUTE, SETTINGSROUTE, USERMNGMNTROUTE, VIEWPERMISSIONROUTE } from 'src/app/shared/constants/routes';
 import { GenericDestroyPageComponent } from '../../generics/generic-destroy-page';
 import { StorageService } from 'src/app/services/storage.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'il-topnav',
@@ -40,7 +41,7 @@ export class TopNavComponent extends GenericDestroyPageComponent implements OnIn
   public changePasswordRoute = CHANGEPASSWORDROUTE;
   public viewPermissionRoute = VIEWPERMISSIONROUTE;
 
-  constructor(private storageSrv: StorageService, private cdRef: ChangeDetectorRef, private store: Store<AppState>) {
+  constructor(public translateService: TranslateService, private storageSrv: StorageService, private cdRef: ChangeDetectorRef, private store: Store<AppState>) {
     super();
   }
 

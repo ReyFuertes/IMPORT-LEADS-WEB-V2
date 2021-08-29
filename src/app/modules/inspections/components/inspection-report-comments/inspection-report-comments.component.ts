@@ -8,6 +8,7 @@ import { getInspectionOkCommentsReportSelector } from '../../store/selectors/ins
 import * as _ from 'lodash';
 import { MatDialog } from '@angular/material/dialog';
 import { ImageViewerDialogComponent } from 'src/app/modules/dialogs/components/image-viewer-dialog/image-viewer-dialog.component';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'il-inspection-report-comments',
   templateUrl: './inspection-report-comments.component.html',
@@ -22,7 +23,7 @@ export class InspectionReportCommentsComponent implements OnInit {
   public imgPath: string = environment.imgPath;
   public product_failure_count: number = 0;
 
-  constructor(private dialog: MatDialog, private route: ActivatedRoute, private store: Store<AppState>) {
+  constructor(public translateService: TranslateService, private dialog: MatDialog, private route: ActivatedRoute, private store: Store<AppState>) {
 
     const saved_checklist_id = this.route.snapshot.paramMap.get('id') || null;
     if (saved_checklist_id) {

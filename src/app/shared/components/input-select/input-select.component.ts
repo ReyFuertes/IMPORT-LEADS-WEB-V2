@@ -1,8 +1,13 @@
 import { ISimpleItem } from './../../generics/generic.model';
-import { Component, OnInit, Input, ViewChild, ElementRef, Output } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, Output, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, FormControlName } from '@angular/forms';
-import { map, startWith } from 'rxjs/operators';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
+import { GenericDestroyPageComponent } from '../../generics/generic-destroy-page';
+import { select, Store } from '@ngrx/store';
+import { AppState } from 'src/app/store/app.reducer';
+import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 
 @Component({
   selector: 'il-input-select',
@@ -10,7 +15,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./input-select.component.scss']
 })
 
-export class InputSelectComponent implements OnInit {
+export class InputSelectComponent extends GenericDestroyPageComponent implements AfterViewInit {
   @Input() public suggestions: ISimpleItem[];
   @Input() public controlName: any;
   @Input() public form: FormGroup;
@@ -19,9 +24,19 @@ export class InputSelectComponent implements OnInit {
 
   public filtered: ISimpleItem[] | any[];
 
-  constructor() { }
+  constructor(private cdRef: ChangeDetectorRef, private store: Store<AppState>, public translateService: TranslateService) {
+    super();
+   }
 
-  ngOnInit() { }
+   ngAfterViewInit(): void {
+    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+    .subscribe(language => {
+      if (language) {
+        this.translateService.use(language);
+        this.cdRef.detectChanges();
+      }
+    });
+   }
 
   public filter(event) {
     return this.filtered = this.filterArr(event.query, this.suggestions)

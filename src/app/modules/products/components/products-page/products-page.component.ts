@@ -11,6 +11,8 @@ import { IProduct } from './../../products.model';
 import { Component, OnInit, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import * as _ from 'lodash';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
+import { TranslateService } from '@ngx-translate/core';
+import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 
 @Component({
   selector: 'il-products-page',
@@ -21,7 +23,7 @@ import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-des
 export class ProductsPageComponent extends GenericDestroyPageComponent implements OnInit, AfterViewInit {
   public items: IProduct[];
 
-  constructor(private cdRef: ChangeDetectorRef, private dialog: MatDialog, private store: Store<AppState>) {
+  constructor(public translateService: TranslateService, private cdRef: ChangeDetectorRef, private dialog: MatDialog, private store: Store<AppState>) {
     super();
   }
 
@@ -33,6 +35,13 @@ export class ProductsPageComponent extends GenericDestroyPageComponent implement
   }
 
   ngAfterViewInit(): void {
+    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
+          this.cdRef.detectChanges();
+        }
+      });
     this.cdRef.detectChanges();
   }
 

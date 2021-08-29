@@ -2,31 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { ChartOptions, ChartType, ChartDataSets, Chart } from 'chart.js';
-import { Label, Color } from 'ng2-charts';
 import { takeUntil } from 'rxjs/operators';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { AppState } from 'src/app/store/app.reducer';
 import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
-import { getTagsReportAction, getTagsReportSuccessAction } from '../../store/actions/inspection-report.action';
-import { getTagsReportSelector } from '../../store/selectors/inspection-report.selector';
-export interface Tag {
-  tag: string;
-  failed: number;
-  passed: number;
-  failureRate: number;
-  aQLimit: string;
-}
+import { getTagsReportAction, getTagTermsReportAction } from '../../store/actions/inspection-report.action';
+import { getTagsReportSelector, getTagTermsReportSelector } from '../../store/selectors/inspection-report.selector';
+
 @Component({
-  selector: 'il-inspection-report-tags',
-  templateUrl: './inspection-report-tags.component.html',
-  styleUrls: ['./inspection-report-tags.component.scss']
+  selector: 'il-inspection-report-tags-term',
+  templateUrl: './inspection-report-tags-term.component.html',
+  styleUrls: ['./inspection-report-tags-term.component.scss']
 })
 
-export class InspectionReportTagsComponent extends GenericDestroyPageComponent implements OnInit {
-
-  public tagHeader: any[]
-
+export class InspectionReportTagsTermComponent extends GenericDestroyPageComponent implements OnInit {
+  public tagHeader: any[];
   public displayedColumns: string[] = ['tag', 'failed', 'passed', 'failureRate'];
   public dataSource: any;
   public totalTags: any;
@@ -36,7 +26,7 @@ export class InspectionReportTagsComponent extends GenericDestroyPageComponent i
 
     const saved_checklist_id = this.route.snapshot.paramMap.get('id') || null;
     if (saved_checklist_id) {
-      this.store.dispatch(getTagsReportAction({ saved_checklist_id }));
+      this.store.dispatch(getTagTermsReportAction({ saved_checklist_id }));
     }
   }
 
@@ -45,11 +35,12 @@ export class InspectionReportTagsComponent extends GenericDestroyPageComponent i
   }
 
   ngOnInit() {
-    this.store.pipe(select(getTagsReportSelector),
+    this.store.pipe(select(getTagTermsReportSelector),
       takeUntil(this.$unsubscribe))
       .subscribe((res: any) => {
         if (res) {
           this.dataSource = res;
+
           this.totalTags = String(res?.length > 0 ? res?.length : 0);
 
           const failure_rates: any[] = this.dataSource?.map(o => o?.failure_rate);

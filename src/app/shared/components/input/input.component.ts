@@ -1,5 +1,10 @@
 import { Component, OnInit, Input, Output, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControlName } from '@angular/forms';
+import { select, Store } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
+import { takeUntil } from 'rxjs/operators';
+import { AppState } from 'src/app/store/app.reducer';
+import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 import { GenericControl } from '../../generics/generic-control';
 import { ISimpleItem } from '../../generics/generic.model';
 
@@ -20,11 +25,17 @@ export class InputComponent extends GenericControl<ISimpleItem> implements OnCha
   @Input() public isCenter: boolean = false;
   @Input() public hasBorder: boolean = false;
 
-  constructor(private cdref: ChangeDetectorRef) {
+  constructor(private store: Store<AppState>, public translateService: TranslateService, private cdref: ChangeDetectorRef) {
     super();
   }
 
   ngAfterViewInit() {
+    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
+        }
+      });
     this.cdref.detectChanges();
   }
 

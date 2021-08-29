@@ -15,7 +15,17 @@ export enum InspectionReportActionTypes {
   getTagsReportSuccessAction = '[Inspection Report] get tag report (success)',
   downloadProductionImagesAction = '[Inspection Report] download production images',
   downloadProductionImagesSuccessAction = '[Inspection Report] download production images (success)',
+  getTagTermsReportAction = '[Inspection Report] get tag terms report',
+  getTagTermsReportSuccessAction = '[Inspection Report] get tag terms report (success)',
 }
+export const getTagTermsReportAction = createAction(
+  InspectionReportActionTypes.getTagTermsReportAction,
+  props<{ saved_checklist_id: string }>()
+);
+export const getTagTermsReportSuccessAction = createAction(
+  InspectionReportActionTypes.getTagTermsReportSuccessAction,
+  props<{ response: any }>()
+);
 export const downloadProductionImagesAction = createAction(
   InspectionReportActionTypes.downloadProductionImagesAction,
   props<{ saved_checklist_id: string }>()

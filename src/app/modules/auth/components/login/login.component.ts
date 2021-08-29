@@ -1,18 +1,20 @@
-import { tap, debounceTime } from 'rxjs/operators';
+import { tap, debounceTime, takeUntil } from 'rxjs/operators';
 import { environment } from './../../../../../environments/environment';
 import { AppState } from './../../../../store/app.reducer';
 import { Store, select } from '@ngrx/store';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { loginAction, isLoggingInAction } from '../../store/auth.action';
-import { getIsLoggingInSelector, getIsLoginFailedSelector } from 'src/app/store/selectors/app.selector';
+import { getIsLoggingInSelector, getIsLoginFailedSelector, getUserLangSelector } from 'src/app/store/selectors/app.selector';
 import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 import { textRegex } from 'src/app/shared/util/text';
 import { emailRegex } from 'src/app/shared/util/email';
 import { getLoginErrorSelector } from '../../store/auth.selector';
 import { appNotification } from 'src/app/store/actions/notification.action';
+import { TranslateService } from '@ngx-translate/core';
+import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 
 @Component({
   selector: 'il-login',
@@ -20,7 +22,7 @@ import { appNotification } from 'src/app/store/actions/notification.action';
   styleUrls: ['./login.component.scss']
 })
 
-export class LoginComponent implements OnInit {
+export class LoginComponent extends GenericDestroyPageComponent implements OnInit {
   public imgPath: string = environment.imgPath;
   public svgPath: string = environment.svgPath;
   public form: FormGroup;
@@ -29,7 +31,8 @@ export class LoginComponent implements OnInit {
   public hasError: boolean = false;
   public loginError: boolean = false;
 
-  constructor(private route: ActivatedRoute, private store: Store<AppState>, private fb: FormBuilder) {
+  constructor(private cdRef: ChangeDetectorRef, public translateService: TranslateService, private store: Store<AppState>, private fb: FormBuilder) {
+    super();
     this.form = this.fb.group({
       username: [null, Validators.compose([Validators.required, Validators.pattern(emailRegex.email)])],
       password: [null, Validators.required]
@@ -45,6 +48,14 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.$isLogging = this.store.pipe(select(getIsLoggingInSelector));
     this.$isLoginFailed = this.store.pipe(select(getIsLoginFailedSelector), debounceTime(1000));
+
+    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
+          this.cdRef.detectChanges();
+        }
+      });
   }
 
   public onSubmit(): void {

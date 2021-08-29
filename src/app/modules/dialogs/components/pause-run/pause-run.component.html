@@ -1,15 +1,15 @@
 <div class="il-dialog" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
-  <div fxLayoutAlign="end center" fxLayout="row">
+  <!-- <div fxLayoutAlign="end center" fxLayout="row">
     <div fxLayoutAlign="end center">
       <img (click)="dialogRef.close(false)" [src]="svgPath + 'close-icon-big-gray.svg'" />
     </div>
-  </div>
+  </div> -->
   <div class="content">
     <h2>Do you want to pause or run</h2>
   </div>
   <div class="footer" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
-    <button mat-flat-button class="il-button default large" (click)="dialogRef.close(false)">Cancel</button>
+    <button mat-flat-button class="il-button default large" (click)="dialogRef.close()">Cancel</button>
     <button mat-flat-button class="il-button large danger" (click)="onStop()">Stop</button>
-    <button mat-flat-button class="il-button large success primary" (click)="onPause()">Pause</button>
+    <!-- <button mat-flat-button class="il-button large success primary" (click)="onPause()">Pause</button> -->
   </div>
 </div>

@@ -1,5 +1,5 @@
 <div class="view-permission-container" fxLayout="column" fxLayoutGap="20px" fxFlexFill>
-  <h2>View Permission</h2>
+  <h2>{{ 'View Permission' | translate }}</h2>
   <p-pickList (onMoveToTarget)="handleOnMoveToTarget($event)" (onMoveToSource)="handleOnMoveToSource($event)" [source]="sourceProducts" [target]="targetProducts" [showSourceControls]="false" [showTargetControls]="false" sourceHeader="Available Contracts" targetHeader="Selected Contracts" dragdrop="true" [responsive]="true"
     [sourceStyle]="{'height':'100%'}" [targetStyle]="{'height':'100%'}" filterBy="name" sourceFilterPlaceholder="Search by name" targetFilterPlaceholder="Search by name">
     <ng-template let-product pTemplate="item">
@@ -8,11 +8,11 @@
           <h5 class="p-mb-2">{{product.name}}</h5>
           <div>
             <span> {{ 'Created by:' | translate }}</span>
-            <span class="product-category">arthur@cilchinasolution.com</span>
+            <span class="product-category">b.boterkooper@hotmail.com</span>
           </div>
         </div>
         <div class="product-list-action">
-          <h5>Related Venue</h5>
+          <h5>{{ 'Related Venue' | translate }}</h5>
           <span>The pen factory</span>
         </div>
       </div>

@@ -14,7 +14,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ISimpleItem } from '../../../../shared/generics/generic.model';
 import { environment } from '../../../../../environments/environment';
 import { trigger, transition, style, state, animate } from '@angular/animations';
-import { Component, OnInit, Input, OnChanges, SimpleChanges, AfterViewInit, ViewEncapsulation, EventEmitter, Output, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, AfterViewInit, ViewEncapsulation, EventEmitter, Output, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { map, tap, takeUntil } from 'rxjs/operators';
 import { IContractCategory } from '../../contract.model';
 import { deleteContractCategoryAction } from '../../store/actions/contract-category.action';
@@ -23,6 +23,9 @@ import { getChecklistSelector } from '../../store/selectors/contract-checklist.s
 import { appNotification } from 'src/app/store/actions/notification.action';
 import { DomSanitizer } from '@angular/platform-browser';
 import { updateContractTermTagAction } from '../../store/actions/contract-term-tag.action';
+import { TranslateService } from '@ngx-translate/core';
+import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
+import { ContractCategoryTitleDialogComponent } from 'src/app/modules/dialogs/components/contract-category-title/contract-category-title-dialog.component';
 
 @Component({
   selector: 'il-contract-category-table',
@@ -61,7 +64,7 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   @Input() public contractCategory: IContractCategory;
   @Output() public categoryTermEmitter = new EventEmitter<any>();
 
-  constructor(private sanitizer: DomSanitizer, private store: Store<AppState>, private dialog: MatDialog, private fb: FormBuilder) {
+  constructor(private cdRef: ChangeDetectorRef, public translateService: TranslateService, private sanitizer: DomSanitizer, private store: Store<AppState>, private dialog: MatDialog, private fb: FormBuilder) {
     super();
     this.form = this.fb.group({
       id: [null],
@@ -114,6 +117,23 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
 
   ngAfterViewInit(): void {
     this.dataSource = new MatTableDataSource<any>(this.contractCategory?.terms);
+    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
+          this.cdRef.detectChanges();
+        }
+      });
+  }
+
+  public addTitle(): void {
+    const dialogRef = this.dialog.open(ContractCategoryTitleDialogComponent);
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.$unsubscribe)).subscribe(result => {
+        if (result) {
+          //this.specification['title'] = result;
+        }
+      });
   }
 
   public onCategoryMoveDown(): void {

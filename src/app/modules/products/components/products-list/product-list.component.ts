@@ -57,7 +57,7 @@ export class ProductListComponent extends GenericRowComponent implements OnInit,
   }
 
   public colFunc(): void {
-    alert('No implementation yet!');
+    console.log('No implementation yet!');
   }
 
   public onDelete(item: IProduct): void {

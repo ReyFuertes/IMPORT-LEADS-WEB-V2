@@ -8,7 +8,7 @@ import { IContract, IContractCategory, IContractProduct, IContractTerm } from 's
 import { loadContractCategoryAction } from 'src/app/modules/contracts/store/actions/contract-category.action';
 import { loadContractProductsAction } from 'src/app/modules/contracts/store/actions/contract-product.action';
 import { getContractCategorySelector } from 'src/app/modules/contracts/store/selectors/contract-category.selector';
-import { getAllContractProductsSelector, getContractById } from 'src/app/modules/contracts/store/selectors/contracts.selector';
+import { getAllContractProductsSelector } from 'src/app/modules/contracts/store/selectors/contracts.selector';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { AppState } from 'src/app/store/app.reducer';
 import { environment } from 'src/environments/environment';
@@ -16,7 +16,9 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { loadContractsAction } from 'src/app/modules/contracts/store/actions/contracts.action';
 import { getReportContractById } from '../../store/selectors/report.selector';
 import { CONTRACTSROUTE } from 'src/app/shared/constants/routes';
-import { LoaderService } from 'src/app/services/loader.interceptor';
+import { LoaderService } from 'src/app/services/http-token-interceptor';
+import { TranslateService } from '@ngx-translate/core';
+import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 
 @Component({
   selector: 'il-contract-detail-report',
@@ -36,7 +38,7 @@ export class ContractDetailReportComponent extends GenericDestroyPageComponent i
   public contractsRoute = CONTRACTSROUTE;
   public apiContractsImagePath: string = environment.apiContractsImagePath;
 
-  constructor(private loaderService: LoaderService, private cdRef: ChangeDetectorRef, private sanitizer: DomSanitizer, private store: Store<AppState>,
+  constructor(public translateService: TranslateService, private loaderService: LoaderService, private cdRef: ChangeDetectorRef, private sanitizer: DomSanitizer, private store: Store<AppState>,
     private route: ActivatedRoute, private router: Router) {
     super();
     this.store.dispatch(loadContractsAction({}));
@@ -69,7 +71,13 @@ export class ContractDetailReportComponent extends GenericDestroyPageComponent i
   }
 
   ngAfterViewInit(): void {
-
+    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
+          this.cdRef.detectChanges();
+        }
+      });
   }
 
   public fmtCol(str: string): string {
@@ -77,7 +85,15 @@ export class ContractDetailReportComponent extends GenericDestroyPageComponent i
   }
 
   public sanitizeHtml(html: any): any {
-    return this.sanitizer.bypassSecurityTrustHtml(html);
+    /* remove br tags */
+    let _html = html?.replace(/<br>/gi, "");
+    _html = _html?.replace(/<br\s\/>/gi, "");
+    _html = _html?.replace(/<br\/>/gi, "");
+    _html = _html?.replace("/<p[^>]*><\\/p[^>]*>/", '');
+    /* remove empty p tags */
+    const parsedElement = _html?.replace("/<p[^>]*><\\/p[^>]*>/", '');
+
+    return this.sanitizer.bypassSecurityTrustHtml(parsedElement || '');
   }
 
   public hasTerms(terms: IContractTerm[]): boolean {

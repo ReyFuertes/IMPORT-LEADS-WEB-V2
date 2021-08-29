@@ -31,7 +31,6 @@ export class ProductsEffect {
       }),
       catchError((error) => {
         console.log('%c PRODUCT CANNOT BE DELETED! ', 'background: red; color: white');
-        console.log('Error: ',  error?.message)
         return of(deleteErrorAction());
       })
     ))

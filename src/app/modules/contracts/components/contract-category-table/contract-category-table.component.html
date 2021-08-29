@@ -2,7 +2,7 @@
   <table mat-table [dataSource]="dataSource">
     <!-- rows and columns -->
     <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay; let i = index">
-      <th mat-header-cell *matHeaderCellDef> {{column}}</th>
+      <th mat-header-cell *matHeaderCellDef> {{column | translate}}</th>
       <td mat-cell *matCellDef="let element" (mouseover)="mouseOver(element, column)" (mouseout)="mouseOut()">
         <!-- 1st and 2nd column -->
         <div *ngIf="i !== (columnsToDisplay.length - 1)" fxLayout="row" fxLayoutAlign="center start">
@@ -57,15 +57,15 @@
     <div fxFlex [ngClass]="{'hidden': !actionState}" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="15px">
       <div matTooltip="Add a term" (click)="createTerm()" fxLayoutAlign="start center" fxLayoutGap="5px">
         <img [src]="svgPath + 'add-category-icon-blue.svg'" />
-        <span>Add a term</span>
+        <span>{{ 'Add a term' | translate }}</span>
       </div>
-      <div matTooltip="Add a title" fxLayoutAlign="start center" fxLayoutGap="5px">
+      <!-- <div matTooltip="Add a title" (click)="addTitle()" fxLayoutAlign="start center" fxLayoutGap="5px">
         <img [src]="svgPath + 'add-title-icon-blue.svg'" />
-        <span>Add a title</span>
-      </div>
+        <span>{{ 'Add a title' | translate }}</span>
+      </div> -->
       <div matTooltip="Import Template" fxLayoutAlign="start center" fxLayoutGap="5px">
         <img [src]="svgPath + 'templates-icon-blue.svg'" />
-        <span>Import template</span>
+        <span>{{ 'Import template' | translate }}</span>
       </div>
     </div>
     <div [ngClass]="{'hidden': !actionState}" fxFlex="10px" fxLayoutAlign="end center" fxLayoutGap="5px">
@@ -76,7 +76,7 @@
 
 <ng-template #detailBtnActions>
   <div class="btn-edit-actions" fxLayoutGap="10px">
-    <button type="button" mat-flat-button class="il-button default" (click)="onClose()">Cancel</button>
-    <button type="button" mat-flat-button class="il-button primary" (click)="onSave();$event.stopImmediatePropagation()">Save</button>
+    <button type="button" mat-flat-button class="il-button default" (click)="onClose()">{{ 'Cancel' | translate }}</button>
+    <button type="button" mat-flat-button class="il-button primary" (click)="onSave();$event.stopImmediatePropagation()">{{ 'Save' | translate }}</button>
   </div>
 </ng-template>

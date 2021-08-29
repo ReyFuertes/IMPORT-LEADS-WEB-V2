@@ -1,21 +1,21 @@
-import { Component, OnInit, OnChanges, SimpleChanges, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChanges, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
-import { getAllRolesSelector, getAccessSelector } from 'src/app/store/selectors/app.selector';
+import { getAllRolesSelector, getAccessSelector, getUserLangSelector } from 'src/app/store/selectors/app.selector';
 import { environment } from 'src/environments/environment';
-import { saveUserAction, loadAllUsersAction } from '../../store/user-mgmt.actions';
+import { saveUserAction } from '../../store/user-mgmt.actions';
 import { ActivatedRoute } from '@angular/router';
 import { UserMgmtService } from '../../user-mgmt.service';
-import { tap, debounceTime, takeUntil } from 'rxjs/operators';
+import { tap, takeUntil } from 'rxjs/operators';
 import { IUser } from '../../user-mgmt.model';
 import { getUserByIdSelector } from '../../store/user-mgmt.selectors';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
-import { textRegex } from 'src/app/shared/util/text';
 import { emailRegex } from 'src/app/shared/util/email';
 import { USERMNGMNTROUTE } from 'src/app/shared/constants/routes';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'il-user-detail',
@@ -31,8 +31,9 @@ export class UserDetailComponent extends GenericDestroyPageComponent implements 
   public id: string;
   public userMngmtRoute = USERMNGMNTROUTE;
 
-  constructor(private userMgmtSrv: UserMgmtService, private route: ActivatedRoute, private store: Store<AppState>, private fb: FormBuilder) {
+  constructor(private cdRef: ChangeDetectorRef, public translateService: TranslateService, private route: ActivatedRoute, private store: Store<AppState>, private fb: FormBuilder) {
     super();
+
     this.form = this.fb.group({
       id: [null],
       username: [null, Validators.compose([Validators.required, Validators.pattern(emailRegex.email)])],
@@ -85,6 +86,14 @@ export class UserDetailComponent extends GenericDestroyPageComponent implements 
           })).subscribe();
       }
     });
+
+    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
+          this.cdRef.detectChanges();
+        }
+      });
   }
 
   public onSave(): void {

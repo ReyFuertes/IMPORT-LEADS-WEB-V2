@@ -12,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
 import { takeUntil } from 'rxjs/operators';
 import { INSPECTIONSRUNTEMPLATEROUTE, INSPECTIONSROUTE } from 'src/app/shared/constants/routes';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'il-inspection-active-panel',
@@ -68,7 +69,7 @@ export class InspectionActivePanelComponent extends GenericRowComponent implemen
   @Input() public activeInspections: IActiveInspection[];
   @Input() public isCategory: boolean = false;
 
-  constructor(private dialog: MatDialog, private cdRef: ChangeDetectorRef, private store: Store<AppState>, private router: Router) {
+  constructor(public translateService: TranslateService, private dialog: MatDialog, private cdRef: ChangeDetectorRef, private store: Store<AppState>, private router: Router) {
     super();
   }
 

@@ -2,8 +2,8 @@ import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { tap, map, switchMap, takeUntil, filter, catchError } from 'rxjs/operators';
-import { initAppAction, initAppSuccessAction, loadAccessAction, loadAccessSuccessAction, loadAllRolesAction, loadAllRolesSuccessAction, getUserAccessAction, getUserAccessSuccessAction, getUserRoleAction, getUserRoleSuccessAction, loadAppUserProfileAction, loadAppUserProfileSuccessAction, loadProfileErrorAction, loadUserListAction, loadUserListSuccessAction, loadUserClientsAction, loadUserClientsSuccessAction } from '../actions/app.action';
-import { loginFailedAction, logoutAction, logoutSuccessAction } from 'src/app/modules/auth/store/auth.action';
+import { initAppAction, initAppSuccessAction, loadAccessAction, loadAccessSuccessAction, loadAllRolesAction, loadAllRolesSuccessAction, getUserAccessAction, getUserAccessSuccessAction, getUserRoleAction, getUserRoleSuccessAction, loadAppUserProfileAction, loadAppUserProfileSuccessAction, loadProfileErrorAction, loadUserListAction, loadUserListSuccessAction, loadUserClientsAction, loadUserClientsSuccessAction, setDefaultLangAction } from '../actions/app.action';
+import { logoutAction, logoutSuccessAction } from 'src/app/modules/auth/store/auth.action';
 import { NavigationEnd, Router } from '@angular/router';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { loadVenuesAction } from 'src/app/modules/venues/store/venues.action';
@@ -125,7 +125,9 @@ export class InitAppEffect {
     switchMap(({ id }) => this.userProfileSrv.getById(id)
       .pipe(
         map((detail: IUserProfile) => {
+          this.storageSrv.set('userp', JSON.stringify(detail));
 
+          this.store.dispatch(setDefaultLangAction({ language: detail?.language }));
           return loadAppUserProfileSuccessAction({ detail });
         }),
         catchError((error: any) => {

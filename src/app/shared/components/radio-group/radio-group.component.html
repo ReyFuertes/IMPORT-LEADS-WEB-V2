@@ -1,3 +1,4 @@
 <mat-radio-group [disabled]="disabled" [(ngModel)]="selected" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
-  <mat-radio-button *ngFor="let option of options" (change)="onChange(option)" [value]="option?.value">{{ option?.label }}</mat-radio-button>
+  <mat-radio-button *ngFor="let option of options" (change)="onChange(option)" [value]="option?.value">
+    {{ option?.label | translate }}</mat-radio-button>
 </mat-radio-group>

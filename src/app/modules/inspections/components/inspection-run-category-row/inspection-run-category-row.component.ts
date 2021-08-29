@@ -6,7 +6,6 @@ import { InsChecklistTerm, IInspectionChecklistImage, IInspectionRunItem, Inspec
 import * as _ from 'lodash';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { select, Store } from '@ngrx/store';
-import { IContractTerm } from 'src/app/modules/contracts/contract.model';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { take, takeUntil, tap } from 'rxjs/operators';
 import { clearInsChecklistImageAction, deleteInsChecklistAction, saveInsChecklisImageAction, saveInsChecklistCommentAction, saveInsChecklistImageFilesAction, updateInsChecklistCommentAction } from '../../store/actions/inspection-checklist.action';
@@ -15,6 +14,8 @@ import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confir
 import { getInsChecklistImagesSelector } from '../../store/selectors/inspection-checklist.selector';
 import { getInspectionRunStatusSelector } from '../../store/selectors/inspection.selector';
 import { logToConsoleError } from 'src/app/shared/util/logger';
+import { TranslateService } from '@ngx-translate/core';
+import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 
 @Component({
   selector: 'il-inspection-run-category-row',
@@ -37,7 +38,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
   public runInspectionStatus: string;
   public rowUpdate: InsChecklistTerm;
 
-  constructor(private store: Store<AppState>, private cdRef: ChangeDetectorRef, public dialog: MatDialog) {
+  constructor(public translateService: TranslateService, private store: Store<AppState>, private cdRef: ChangeDetectorRef, public dialog: MatDialog) {
     super();
   }
 
@@ -59,6 +60,13 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
               contract_term: { id: this.term?.id }
             })
           });
+        }
+      });
+
+    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
         }
       });
   }
@@ -186,7 +194,7 @@ export class InspectionRunCategoryRowComponent extends GenericDestroyPageCompone
 
           /* upload image */
           let formData = new FormData();
-          if(source?.saved_checklist?.id) {
+          if (source?.saved_checklist?.id) {
             formData.set('saved_checklist_id', source?.saved_checklist?.id);
             this.cnsFileObj(formData);
             this.store.dispatch(saveInsChecklistImageFilesAction({ files: formData }));

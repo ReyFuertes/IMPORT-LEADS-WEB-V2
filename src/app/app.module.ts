@@ -14,7 +14,6 @@ import { AuthModule } from './modules/auth/auth.module';
 import { TokenInterceptor } from './services/http-token-interceptor';
 import { AuthGuard } from './services/auth.guard';
 import { InitAppEffect } from './store/effects/app.effect';
-import { LoaderService } from './services/loader.interceptor';
 import { BlockUIModule } from 'primeng/blockui';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -70,7 +69,6 @@ const primengModules = [
   providers: [
     AuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
-    LoaderService,
     AccessService
   ],
   bootstrap: [AppComponent]

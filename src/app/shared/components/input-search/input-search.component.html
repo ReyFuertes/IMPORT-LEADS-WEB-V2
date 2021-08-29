@@ -1,6 +1,6 @@
 <div *ngIf="form" [formGroup]="form">
   <mat-form-field [floatLabel]="isFloatLabel ? '' : 'never'">
     <div matPrefix fxLayoutAlign="center center"><img [src]="svgPath + 'search-icon-big-gray.svg'"></div>
-    <input matInput [placeholder]="placeholder" autocomplete="off" [formControlName]="controlName">
+    <input matInput [placeholder]="placeholder | translate" autocomplete="off" [formControlName]="controlName">
   </mat-form-field>
 </div>

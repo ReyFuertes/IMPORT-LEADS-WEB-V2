@@ -6,11 +6,11 @@
         <div [ngClass]="{'disabled': inCheckListing}" fxLayoutAlign="center center">
           <span>{{ contractCategory?.category?.category_name }}</span>
           <div  fxFlex fxLayoutAlign="end center" [ngClass]="{'hidden': inCheckListing}">
-          <img *ngIf="!inCheckListing" matTooltip="Edit Category Name" class="save-icon" (click)="UpdateCategoryName(contractCategory?.category)" [src]="svgPath + 'edit-icon-blue.svg'" />
+          <img *ngIf="!inCheckListing" [matTooltip]="'Edit Category Name' | translate" class="save-icon" (click)="UpdateCategoryName(contractCategory?.category)" [src]="svgPath + 'edit-icon-blue.svg'" />
         </div>
         </div>
       </div>
-      <img *ngIf="!inCheckListing" matTooltip="Update Category Name" class="save-icon" (click)="saveCategoryAsTemplate(contractCategory?.category)" [src]="svgPath + 'save-icon-blue.svg'" />
+      <img *ngIf="!inCheckListing" [matTooltip]="'Update Category Name' | translate" class="save-icon" (click)="saveCategoryAsTemplate(contractCategory?.category)" [src]="svgPath + 'save-icon-blue.svg'" />
     </div>
     <mat-tab-group class="il-tab">
       <mat-tab class="tab-1">

@@ -38,12 +38,12 @@
         <div fxFlex="100px" class="pnl-actions" fxLayout="row" fxLayoutAlign="end center">
           <il-ellipse-menu class="menu-ellipse" *ngIf="hoveredIndex !== i"></il-ellipse-menu>
           <div class="menu-icon" *ngIf="hoveredIndex === i && selectedIndex === null">
-            <img class="edit" [src]="svgPath + 'edit-icon-blue.svg'" matTooltip="Edit" />
+            <img class="edit" [src]="svgPath + 'edit-icon-blue.svg'" [matTooltip]="'Edit' | translate" />
             <img class="delete" [src]="svgPath + 'delete-icon-red.svg'" (click)="onDelete(item?.id)" matTooltip="Delete">
           </div>
           <div class="menu-icon" *ngIf="hoveredIndex === i && selectedIndex === i">
-            <img [src]="svgPath + 'close-icon-blue.svg'" class="no-expand" (click)="onClose()" matTooltip="Close" />
-            <img [src]="svgPath + 'save-icon-blue.svg'" class="no-expand" (click)="onSave()" matTooltip="Save">
+            <img [src]="svgPath + 'close-icon-blue.svg'" class="no-expand" (click)="onClose()" [matTooltip]="'Close' | translate" />
+            <img [src]="svgPath + 'save-icon-blue.svg'" class="no-expand" (click)="onSave()" [matTooltip]="'Save' | translate">
           </div>
         </div>
       </mat-expansion-panel-header>

@@ -1,4 +1,4 @@
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RoutesRecognized } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/core';
@@ -11,11 +11,14 @@ import { IInspectionRun, RunStatusType } from '../../inspections.models';
 import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 import * as _ from 'lodash';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
-import { debounceTime, take, takeUntil, tap } from 'rxjs/operators';
+import { filter, takeUntil, tap } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
 import { RunExistErrorDialogComponent } from 'src/app/modules/dialogs/components/run-exist-error/run-exist-error.component';
 import { INSPECTIONSROUTE, INSPECTIONSRUNREPORTROUTE } from 'src/app/shared/constants/routes';
+import { PauseOrRunDialogComponent } from 'src/app/modules/dialogs/components/pause-run/pause-run.component';
+import { TranslateService } from '@ngx-translate/core';
+import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 @Component({
   selector: 'il-inspection-run-page',
   templateUrl: './inspection-run-page.component.html',
@@ -36,8 +39,9 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   public id: string;
   public selProduct: ISimpleItem;
   public hideCategoryTerms: boolean = false;
+  public redirectUrl: string = '';
 
-  constructor(private route: ActivatedRoute, private dialog: MatDialog, private store: Store<AppState>, private cdRef: ChangeDetectorRef, private router: Router, private fb: FormBuilder) {
+  constructor(public translateService: TranslateService, private route: ActivatedRoute, private dialog: MatDialog, private store: Store<AppState>, private cdRef: ChangeDetectorRef, private router: Router, private fb: FormBuilder) {
     super();
 
     this.form = this.fb.group({
@@ -56,12 +60,16 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       takeUntil(this.$unsubscribe),
       tap((res: any) => {
         this.inspectionRunStatus = res;
-
         if (Number(this.inspectionRunStatus) === Number(RunStatusType.pause)) {
           this.store.dispatch(setPauseInspectionStatusAction({ status: true }));
         } else this.store.dispatch(setPauseInspectionStatusAction({ status: null }));
 
       })).subscribe();
+
+
+    this.router.events
+      .pipe(filter(e => e instanceof RoutesRecognized))
+      .subscribe((e: RoutesRecognized) => this.redirectUrl = e.url);
   }
 
   ngOnInit() {
@@ -123,6 +131,13 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
         })
       }
     })
+
+    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+      .subscribe(language => {
+        if (language) {
+          this.translateService.use(language);
+        }
+      });
   }
 
   public onSelectProductChange(event: string, isViewing: boolean = false): void {
@@ -137,7 +152,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
     }
     let newSelection: any;
     let changed: boolean = false;
-    
+
     if (this.selProduct?.value === event || this.selProduct === null) {
       this.selProduct = Object.assign({},
         this.products?.find(cp => cp?.value === event)
@@ -322,15 +337,25 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
     this.form.reset();
   }
 
+  private get isRunningInspection(): boolean {
+    return this.redirectUrl.includes('run')
+  }
+
   public $pauseOrRun(): Observable<boolean> {
-    /* TODO:  */
+    if (!this.permitToNavigate && !this.isRunningInspection) {
+      const dialogRef = this.dialog.open(PauseOrRunDialogComponent, {
+        width: '410px',
+        data: { ins: this.inspectionRun, hasRedirect: true, redirectUrl: this.redirectUrl }
+      });
 
-    // if (!this.permitToNavigate) {
-    //   const dialogRef = this.dialog.open(PauseOrRunDialogComponent, { width: '410px', data: { ins: this.inspectionRun } });
-    //   return dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe), debounceTime(1000))
-    // } else {
-
-    // }
+      const ret = dialogRef.afterClosed();
+      ret.subscribe((canNavigate: boolean) => {
+        if (canNavigate) {
+          this.permitToNavigate = true;
+        }
+      })
+      return ret;
+    } else { }
     return of(true);
   }
 

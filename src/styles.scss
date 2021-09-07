@@ -158,14 +158,27 @@ input:-webkit-autofill:active {
       tbody {
         overflow: visible;
       }
+      tr {
+        overflow: visible;
+        page-break-inside: avoid !important;
+      }
+      
       th,
       td {
-        position: relative;
-        padding: 5px !important;
         border-top: thin $color-gray-3 solid;
         border-bottom: none !important;
         overflow: visible;
         page-break-inside: avoid !important;
+        p {
+          overflow: visible;
+          page-break-inside: avoid !important;
+          page-break-after: avoid;
+          img {
+            overflow: visible;
+            page-break-inside: avoid !important;
+            page-break-after: avoid;
+          }
+        }
         &:first-child {
           width: fit-content;
           max-width: 100%;

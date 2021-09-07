@@ -71,7 +71,7 @@
                   "with": "src/environments/environment.cilchina.ts"
                 }
               ],
-              "outputPath": "dist/cilchina/",
+              "outputPath": "dist/",
               "optimization": false,
               "outputHashing": "all",
               "sourceMap": false,

@@ -5,7 +5,7 @@ import { AppState } from 'src/app/store/app.reducer';
 import { Component, ChangeDetectorRef, AfterViewInit, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { delay, takeUntil, filter, debounceTime } from 'rxjs/operators';
-import { initAppAction, setDefaultLangAction } from './store/actions/app.action';
+import { initAppAction } from './store/actions/app.action';
 import { getIsLoggedInSelector, getUserLangSelector } from './store/selectors/app.selector';
 import { environment } from 'src/environments/environment';
 import { GenericDestroyPageComponent } from './shared/generics/generic-destroy-page';

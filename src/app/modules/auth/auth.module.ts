@@ -34,7 +34,7 @@ const materialModules = [
 ];
 
 const routes: Routes = [
-  { path: 'cilchina/login', component: LoginComponent }
+  { path: 'login', component: LoginComponent }
 ];
 
 @NgModule({

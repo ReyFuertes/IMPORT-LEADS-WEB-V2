@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { CanDeactivate, NavigationEnd, Router, } from '@angular/router';
+import { CanDeactivate, Router, } from '@angular/router';
 import { InspectionRunPageComponent } from '../modules/inspections/components/inspection-run-page/inspection-run-page.component';
-import { MatDialog } from '@angular/material/dialog';
 import { GenericDestroyPageComponent } from '../shared/generics/generic-destroy-page';
 import { AppState } from '../store/app.reducer';
 import { select, Store } from '@ngrx/store';
 import { getIsStopSelector } from '../modules/inspections/store/selectors/inspection.selector';
-import { debounceTime, filter } from 'rxjs/operators';
 
 @Injectable()
 export class NavigateGuard extends GenericDestroyPageComponent implements CanDeactivate<InspectionRunPageComponent> {

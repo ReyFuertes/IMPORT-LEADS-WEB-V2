@@ -4,11 +4,11 @@ import { AuthGuard } from './services/auth.guard';
 import { PageNotFoundComponent } from './shared/components/pageNotFound/pageNotFound.component';
 
 const routes: Routes = [
-  { path: 'cilchina', redirectTo: 'cilchina/login', pathMatch: 'full' },
-  { path: '', redirectTo: 'cilchina/dashboard', pathMatch: 'full' },
-  { path: 'cilchina/dashboard', redirectTo: 'cilchina/dashboard/contracts', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: 'dashboard', redirectTo: 'dashboard/contracts', pathMatch: 'full' },
   {
-    path: 'cilchina/dashboard',
+    path: 'dashboard',
     canActivate: [AuthGuard],
     children: [
       { path: 'contracts', loadChildren: './modules/contracts/contracts.module#ContractsModule' },

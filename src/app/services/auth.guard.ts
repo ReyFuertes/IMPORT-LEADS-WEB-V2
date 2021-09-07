@@ -15,7 +15,7 @@ export class AuthGuard implements CanActivate {
       .pipe(
         tap(isLoggedIn => {
           if (!isLoggedIn) {
-            this.router.navigateByUrl('cilchina/login');
+            this.router.navigateByUrl('login');
           }
         })
       )

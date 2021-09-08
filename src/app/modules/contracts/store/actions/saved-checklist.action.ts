@@ -4,7 +4,7 @@ import { createAction, props } from '@ngrx/store';
 export enum SavedChecklistActionTypes {
   saveChecklistAction = '[Save Checklist] Save',
   saveChecklistSuccessAction = '[Save Checklist] Save (success)',
-  loadSavedChecklistAction = '[Load Checklist] Load saved',
+  loadSavedChecklistAction = '[Load Checklist] Load saved checklist',
   loadSavedChecklistSuccessAction = '[Load Checklist] Load saved (success)',
   getSavedChecklistByIdAction = '[Contract Checklist] get saved checklist by id',
   getSavedChecklistByIdSuccessAction = '[Contract Checklist] get saved checklist by id (success)',

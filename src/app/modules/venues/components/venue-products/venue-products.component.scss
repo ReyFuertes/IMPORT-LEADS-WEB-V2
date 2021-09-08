@@ -8,6 +8,12 @@
     height: 40px;
   }
 }
+.drag-icon {
+  width: 15px;
+  display: flex;
+  align-items: center;
+  align-content: center;
+}
 .row {
   border-bottom: thin $color-gray-3 solid;
   background-color: $color-white;
@@ -17,7 +23,7 @@
 }
 .col-header {
   font-size: 12px;
-  font-weight: normal;
+  font-weight: 500;
   width: 100%;
   height: 48px;
   margin-bottom: 0 !important;

@@ -8,9 +8,11 @@
       <div (keydown.Space)="$event.stopPropagation()" (keydown.Enter)="$event.stopPropagation()" (click)="onClickPnl(pnl, $event, i, item)" (mouseover)="mouseover(i)" (mouseleave)="mouseout()">
 
         <div fxFlex class="pnl-header" fxLayout="row" fxLayoutGap="10px">
-          <img cdkDragHandle [src]="svgPath + 'drag-icon.svg'" />
+          <div class="drag-icon">
+            <img cdkDragHandle [src]="svgPath + 'drag-icon.svg'" />
+          </div>
           <div class="venue-img" matTooltip="Change Image" fxLayoutAlign="start center">
-            <img (click)="uploader.click()" cdkDragHandle [src]="item?.image ? imageApiPath + item?.image?.filename : imgPath + 'no-image-40x40x.png'" />
+            <img (click)="uploader.click()" cdkDragHandle [src]="item?.image?.filename ? imageApiPath + item?.image?.filename : imgPath + 'no-image-40x40x.png'" />
             <input #uploader hidden name="file" type="file" (change)="uploadImage($event, item)" />
 
           </div>

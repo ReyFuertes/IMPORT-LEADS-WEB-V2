@@ -64,7 +64,7 @@ export class InspectionPageComponent extends GenericDestroyPageComponent impleme
   constructor(public translateService: TranslateService, private cdRef: ChangeDetectorRef, private store: Store<AppState>) {
     super();
     this.store.dispatch(loadSavedChecklistAction({}));
-    this.store.dispatch(loadFinishInspectionAction());
+    //this.store.dispatch(loadFinishInspectionAction());
   }
 
   ngOnInit() {
@@ -90,12 +90,12 @@ export class InspectionPageComponent extends GenericDestroyPageComponent impleme
 
     if (localAgreementSortBy === 'asc') orderBy = 'desc'
     else orderBy = 'asc';
-
+    debugger
     localStorage.setItem('agrmntSortBy', JSON.stringify(orderBy));
-    this.store.dispatch(loadSavedChecklistAction({ param: `?orderby=[${event?.value},${orderBy}]` }))
+    this.store.dispatch(loadSavedChecklistAction({ param: `?orderby=[${event?.value},${orderBy}]` }));
   }
 
   ngAfterViewInit(): void {
-    this.cdRef.detectChanges();
+    //this.cdRef.detectChanges();
   }
 }

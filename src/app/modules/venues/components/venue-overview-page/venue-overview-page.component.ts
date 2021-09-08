@@ -3,7 +3,7 @@ import { getVenuesSelector } from './../../store/venues.selector';
 import { Observable } from 'rxjs';
 import { AppState } from './../../../../store/app.reducer';
 import { Store, select } from '@ngrx/store';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { IVenue } from '../../venues.models';
 import { VenuesAddDialogComponent } from 'src/app/modules/dialogs/components/venues-add/venues-add-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,6 +17,13 @@ import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-des
 })
 
 export class VenueOverviewPageComponent extends GenericDestroyPageComponent implements OnInit {
+  @Input() public sortOptions = [{
+    label: 'Sort by Name',
+    value: 'name'
+  }, {
+    label: 'Sort by Date',
+    value: 'date'
+  }];
   public isProduct: boolean = true;
   public venues: IVenue[];
   public colAddress: Array<{ label: string, width?: any }> = [

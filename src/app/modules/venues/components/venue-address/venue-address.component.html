@@ -7,8 +7,12 @@
       <mat-expansion-panel-header (keydown.Space)="$event.stopImmediatePropagation()"
       (keydown.Enter)="$event.stopImmediatePropagation()" class="no-expand" (click)="onClickPnl(pnl, $event, i, item)"(mouseover)="mouseover(i)" (mouseleave)="mouseout()">
         <div class="pnl-header" fxLayout="row" fxLayoutGap="10px">
-          <img cdkDragHandle [src]="svgPath + 'drag-icon.svg'" />
-          <div class="venue-img" fxLayoutAlign="start center"><img cdkDragHandle [src]="imgPath + 'no-image-40x40x.png'" /></div>
+          <div class="drag-icon">
+            <img cdkDragHandle [src]="svgPath + 'drag-icon.svg'" />
+          </div>
+          <div class="venue-img" fxLayoutAlign="start center">
+            <img cdkDragHandle [src]="imgPath + 'no-image-40x40x.png'" />
+          </div>
           <div fxFlex="25" fxLayoutAlign="start center">
             <span *ngIf="selectedIndex !== i">{{item?.name}}</span>
             <mat-form-field *ngIf="selectedIndex === i" floatLabel="never">
@@ -34,7 +38,6 @@
             </mat-form-field>
           </div>
         </div>
-
         <div fxFlex="100px" class="pnl-actions" fxLayout="row" fxLayoutAlign="end center">
           <il-ellipse-menu class="menu-ellipse" *ngIf="hoveredIndex !== i"></il-ellipse-menu>
           <div class="menu-icon" *ngIf="hoveredIndex === i && selectedIndex === null">

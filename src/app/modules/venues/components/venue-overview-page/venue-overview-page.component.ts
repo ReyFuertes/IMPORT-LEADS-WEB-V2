@@ -1,4 +1,4 @@
-import { updateVenueAction, addVenueAction, uploadVenueImageAction } from './../../store/venues.action';
+import { updateVenueAction, addVenueAction, uploadVenueImageAction, loadVenuesAction } from './../../store/venues.action';
 import { getVenuesSelector } from './../../store/venues.selector';
 import { Observable } from 'rxjs';
 import { AppState } from './../../../../store/app.reducer';
@@ -74,6 +74,22 @@ export class VenueOverviewPageComponent extends GenericDestroyPageComponent impl
   }
 
   ngOnInit() { }
+
+  public get hasRecords(): boolean {
+    return this.venues?.length > 0;
+  }
+
+  public handleSortChanges(event: any): void {
+    let orderBy: string;
+    const localAgreementSortBy = JSON.parse(localStorage.getItem('agrmntSortBy')) || null;
+    orderBy = localAgreementSortBy || 'asc';
+
+    if (localAgreementSortBy === 'asc') orderBy = 'desc'
+    else orderBy = 'asc';
+   
+    localStorage.setItem('agrmntSortBy', JSON.stringify(orderBy));
+    this.store.dispatch(loadVenuesAction({ param: `?orderby=[${event?.value},${orderBy}]` }));
+  }
 
   public onProductClick() {
     this.isProduct = true;

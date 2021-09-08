@@ -32,7 +32,7 @@ export class AuthEffect {
             
             this.router.navigateByUrl(CONTRACTSROUTE);
 
-            this.store.dispatch(loadVenuesAction());
+            this.store.dispatch(loadVenuesAction({}));
             this.store.dispatch(loadAccessAction());
             this.store.dispatch(loadAllRolesAction());
 

@@ -93,7 +93,7 @@ export class InitAppEffect {
       .pipe(
         tap((res) => {
           if (res) {
-            this.store.dispatch(loadVenuesAction());
+            this.store.dispatch(loadVenuesAction({}));
             this.store.dispatch(loadAccessAction());
             this.store.dispatch(loadAllRolesAction());
 

@@ -41,7 +41,8 @@ export const addVenueSuccessAction = createAction(
   props<{ created: IVenue }>()
 );
 export const loadVenuesAction = createAction(
-  VenueActionTypes.loadVenuesAction
+  VenueActionTypes.loadVenuesAction,
+  props<{ param?: string }>()
 );
 export const loadVenuesSuccessAction = createAction(
   VenueActionTypes.loadVenuesSuccessAction,

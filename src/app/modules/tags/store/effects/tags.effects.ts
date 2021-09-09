@@ -1,20 +1,20 @@
 import { AppState } from './../../../../store/app.reducer';
 import { Store } from '@ngrx/store';
-import { loadTags, addTag, loadTagsSuccess, addTagSuccess, deleteTag, deleteTagSuccess, updateTag, updateTagSuccess } from '../actions/tags.actions';
+import { loadTagsAction, addTag, loadTagsSuccess, addTagSuccess, deleteTag, deleteTagSuccess, updateTag, updateTagSuccess } from '../actions/tags.actions';
 import { ITag } from './../../tags.model';
 import { TagsService } from './../../tags.service';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, mergeMap, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 
 @Injectable()
 export class TagsEffect {
   updateTag$ = createEffect(() => this.actions$.pipe(
     ofType(updateTag),
-    mergeMap(({ item }) => this.tagsService.patch(item)
+    switchMap(({ item }) => this.tagsService.patch(item)
       .pipe(
         // reload all products since the child parent cost value cannot be updated via state update
-        tap(() => this.store.dispatch(loadTags())),
+        tap(() => this.store.dispatch(loadTagsAction({}))),
         map((updated: ITag) => {
           return updateTagSuccess({ updated });
         })
@@ -23,7 +23,7 @@ export class TagsEffect {
 
   deleteTag$ = createEffect(() => this.actions$.pipe(
     ofType(deleteTag),
-    mergeMap(({ id }) => this.tagsService.delete(id)
+    switchMap(({ id }) => this.tagsService.delete(id)
       .pipe(
         map((deleted: ITag) => {
           return deleteTagSuccess({ deleted });
@@ -33,7 +33,7 @@ export class TagsEffect {
 
   addTag$ = createEffect(() => this.actions$.pipe(
     ofType(addTag),
-    mergeMap(({ item }) => this.tagsService.post(item)
+    switchMap(({ item }) => this.tagsService.post(item)
       .pipe(
         map((created: ITag) => {
           return addTagSuccess({ created });
@@ -41,9 +41,9 @@ export class TagsEffect {
       ))
   ));
 
-  loadTags$ = createEffect(() => this.actions$.pipe(
-    ofType(loadTags),
-    mergeMap(() => this.tagsService.getAll().pipe(
+  loadTagsAction$ = createEffect(() => this.actions$.pipe(
+    ofType(loadTagsAction),
+    switchMap(({ param }) => this.tagsService.getAll(param).pipe(
       map((items: ITag[]) => {
         return loadTagsSuccess({ items });
       })

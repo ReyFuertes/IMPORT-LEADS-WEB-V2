@@ -17,7 +17,7 @@ import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-des
 })
 
 export class VenueOverviewPageComponent extends GenericDestroyPageComponent implements OnInit {
-  @Input() public sortOptions = [{
+ public sortOptions = [{
     label: 'Sort by Name',
     value: 'name'
   }, {

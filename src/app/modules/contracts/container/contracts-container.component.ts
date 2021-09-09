@@ -1,4 +1,4 @@
-import { loadTags } from './../../tags/store/actions/tags.actions';
+import { loadTagsAction } from './../../tags/store/actions/tags.actions';
 import { loadContractsAction } from './../store/actions/contracts.action';
 import { AppState } from './../../../store/app.reducer';
 import { GenericContainer } from './../../../shared/generics/generic-container';
@@ -19,7 +19,7 @@ export class ContractsContainerComponent extends GenericContainer implements OnI
     super();
     this.store.dispatch(loadContractsAction(null));
     this.store.dispatch(loadProductsAction());
-    this.store.dispatch(loadTags());
+    this.store.dispatch(loadTagsAction());
     this.store.dispatch(loadSavedChecklistAction({}));
     //this.store.dispatch(loadAllContractCategoryAction());
   }

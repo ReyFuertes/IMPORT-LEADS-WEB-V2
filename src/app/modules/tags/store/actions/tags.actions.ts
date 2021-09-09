@@ -6,7 +6,7 @@ export enum TagsActionTypes {
   deleteTagSuccess = '[Tags] Delete (success)',
   addTag = '[Tags] Add',
   addTagSuccess = '[Tags] Add (success)',
-  loadTags = '[Tags] Load',
+  loadTagsAction = '[Tags] Load',
   loadTagsSuccess = '[Tags] Load (success)',
   updateTag = '[Tags] Update',
   updateTagSuccess = '[Tags] Update (success)',
@@ -35,8 +35,9 @@ export const addTagSuccess = createAction(
   TagsActionTypes.addTagSuccess,
   props<{ created: ITag }>()
 );
-export const loadTags = createAction(
-  TagsActionTypes.loadTags
+export const loadTagsAction = createAction(
+  TagsActionTypes.loadTagsAction,
+  props<{ param?: string }>()
 );
 export const loadTagsSuccess = createAction(
   TagsActionTypes.loadTagsSuccess,

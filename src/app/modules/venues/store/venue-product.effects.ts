@@ -13,7 +13,7 @@ export class VenueProductsEffect {
     ofType(removeVenueProduct),
     mergeMap(({ item }) =>
       this.venueProductsService.patch(item, 'remove')
-        .pipe(tap(() => this.store.dispatch(loadVenuesAction())))
+        .pipe(tap(() => this.store.dispatch(loadVenuesAction({}))))
     )), { dispatch: false });
 
   constructor(

@@ -4,14 +4,14 @@ import { VenueProductsService } from './../venue-product.service';
 import { removeVenueProduct } from './venue-product.action';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, mergeMap, tap, switchMap } from 'rxjs/operators';
+import { tap, switchMap } from 'rxjs/operators';
 import { loadVenuesAction } from './venues.action';
 
 @Injectable()
 export class VenueProductsEffect {
   removeVenueProduct$ = createEffect(() => this.actions$.pipe(
     ofType(removeVenueProduct),
-    mergeMap(({ item }) =>
+    switchMap(({ item }) =>
       this.venueProductsService.patch(item, 'remove')
         .pipe(tap(() => this.store.dispatch(loadVenuesAction({}))))
     )), { dispatch: false });

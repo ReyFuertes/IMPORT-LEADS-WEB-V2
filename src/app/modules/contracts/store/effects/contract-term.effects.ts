@@ -9,7 +9,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { addContractTermAction, addContractTermSuccessAction, deleteContractTermAction, deleteContractTermSuccess } from '../actions/contract-term.actions';
-import { appNotification } from 'src/app/store/actions/notification.action';
+import { appNotificationAction } from 'src/app/store/actions/notification.action';
 import { loadContractCategoryAction } from '../actions/contract-category.action';
 
 @Injectable()

@@ -1,12 +1,11 @@
-import { IInspectionChecklistImage, IInspectionRun } from './../../inspections.models';
+import { IInspectionChecklistImage } from './../../inspections.models';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import { InspectionChecklistCommentService, InspectionChecklistImageService, InspectionChecklistRunService, InspectionRuntimeService } from '../../inspections.service';
+import { InspectionChecklistCommentService, InspectionChecklistImageService, InspectionChecklistRunService } from '../../inspections.service';
 import { AppState } from '../../../contracts/store/reducers';
 import { deleteInsChecklistAction, getInsChecklistAction, getInsChecklistSuccessAction, saveInsChecklisImageAction, saveInsChecklisImageSuccessAction, saveInsChecklistCommentAction, saveInsChecklistCommentSuccessAction, updateInsChecklistCommentAction, updateInsChecklistCommentSuccessAction, saveInsChecklistImageFilesAction, updateInsChecklistImageFilesSuccessAction, removeInsChecklistImageAction, clearInsChecklistImageAction, getInspectionChecklistProductAction, getInspectionChecklistProductSuccessAction } from '../../store/actions/inspection-checklist.action';
-import { loadInspectionRunAction } from '../actions/inspection.action';
 import { UploadService } from 'src/app/services/upload.service';
 
 @Injectable()

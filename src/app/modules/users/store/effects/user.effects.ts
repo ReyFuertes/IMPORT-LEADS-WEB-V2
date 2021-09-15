@@ -1,12 +1,9 @@
-import { Store, select } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, mergeMap, tap, switchMap, take } from 'rxjs/operators';
-import { UserProfileService, UserService } from '../../users.service';
-import { IUserProfile } from '../../users.models';
-import { AppState } from 'src/app/modules/contracts/store/reducers';
-import { UploadService } from 'src/app/services/upload.service';
-import { changeUserPasswordAction, changeUserPasswordSuccessAction } from '../actions/user.actions';
+import { catchError, map, switchMap } from 'rxjs/operators';
+import { UserService } from '../../users.service';
+import { changeUserPasswordAction, changeUserPasswordFailedAction, changeUserPasswordSuccessAction } from '../actions/user.actions';
+import { of } from 'rxjs';
 
 @Injectable()
 export class UserEffects {
@@ -15,13 +12,12 @@ export class UserEffects {
     switchMap(({ payload }) => this.userSrv.patch(payload, 'change-password').pipe(
       map((response: any) => {
         return changeUserPasswordSuccessAction({ response });
+      }),
+      catchError(() => {
+        return of(changeUserPasswordFailedAction({ status: true }));
       })
     ))
   ));
 
-  constructor(
-    private store: Store<AppState>,
-    private actions$: Actions,
-    private userSrv: UserService,
-    private uploadSrv: UploadService) { }
+  constructor(private actions$: Actions, private userSrv: UserService) { }
 }

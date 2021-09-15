@@ -14,6 +14,7 @@ import { MessageService } from 'primeng/api';
 import { LoaderService } from './services/http-token-interceptor';
 import { TranslateService } from '@ngx-translate/core';
 import { StorageService } from './services/storage.service';
+import { REQUESTFAILED } from './shared/constants/messages';
 
 @Component({
   selector: 'app-root',
@@ -27,6 +28,7 @@ export class AppComponent extends GenericDestroyPageComponent implements OnInit,
   public isLoggedIn: boolean = false;
   public svgPath: string = environment.svgPath;
   public hideTopNav: boolean = false;
+  public requestFailedErrorMsg: string = REQUESTFAILED;
 
   constructor(private localStorageSrv: StorageService, public translateService: TranslateService, private router: Router, public loaderSrv: LoaderService, private store: Store<AppState>, private cdRef: ChangeDetectorRef) {
     super();

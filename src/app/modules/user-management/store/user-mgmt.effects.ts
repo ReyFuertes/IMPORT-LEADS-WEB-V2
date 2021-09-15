@@ -1,14 +1,12 @@
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, mergeMap, tap, switchMap, take, debounceTime } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { loadAllUsersAction, loadAllUsersSuccessAction, saveUserAccessAction, saveUserAccessSuccessAction, saveUserRoleAction, saveUserRoleSuccessAction, addUserAction, addUserSuccessAction, signUpUserAction, signUpUserSuccessAction, deleteUserAction, deleteUserSuccessAction, saveUserAction, saveUserSuccessAction } from './user-mgmt.actions';
 import { IUserAccess, IUserRole, IUser } from '../user-mgmt.model';
-import { UserAccessService, RolesService, UserRolesService, UserMgmtService } from '../user-mgmt.service';
+import { UserAccessService, UserRolesService, UserMgmtService } from '../user-mgmt.service';
 import { AuthService } from '../../auth/auth.service';
-import { appNotification } from 'src/app/store/actions/notification.action';
-import { getUserAccessAction } from 'src/app/store/actions/app.action';
 import { StorageService } from 'src/app/services/storage.service';
 
 @Injectable()

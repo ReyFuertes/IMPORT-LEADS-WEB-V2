@@ -7,7 +7,7 @@ import { PasswordMatch } from 'src/app/shared/util/text';
 import { AppState } from 'src/app/store/app.reducer';
 import { environment } from 'src/environments/environment';
 import { changeUserPasswordAction } from '../../store/actions/user.actions';
-import { getUserProfileSelector } from '../../store/selectors/user-profile.selector';
+import { getChangePasswordStatusSelector, getUserProfileSelector } from '../../store/selectors/user-profile.selector';
 
 @Component({
   selector: 'il-user-change-password',
@@ -17,6 +17,7 @@ import { getUserProfileSelector } from '../../store/selectors/user-profile.selec
 export class UserChangePasswordComponent extends GenericDestroyPageComponent implements OnInit {
   public svgPath: string = environment.svgPath;
   public form: FormGroup;
+  public errorStatus: boolean = false;
 
   constructor(private store: Store<AppState>, public fb: FormBuilder) {
     super();
@@ -35,16 +36,23 @@ export class UserChangePasswordComponent extends GenericDestroyPageComponent imp
     this.store.pipe(select(getUserProfileSelector),
       takeUntil(this.$unsubscribe)).subscribe(res => {
         this.form.patchValue({ id: res?.id });
-      })
+      });
+
+    this.store.pipe(select(getChangePasswordStatusSelector),
+      takeUntil(this.$unsubscribe))
+      .subscribe(res => {
+        this.errorStatus = res;
+        if (this.errorStatus) {
+          setTimeout(() => {
+            this.form.reset();
+          }, 1000);
+        }
+      });
   }
 
   public changePassword(): void {
     if (this.form.valid) {
       this.store.dispatch(changeUserPasswordAction({ payload: this.form.value }));
-
-      setTimeout(() => {
-        this.form.reset();
-      }, 1000);
     }
   }
 }

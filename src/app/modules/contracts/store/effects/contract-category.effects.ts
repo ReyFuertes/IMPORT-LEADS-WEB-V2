@@ -1,12 +1,11 @@
 import { AppState } from 'src/app/store/app.reducer';
 import { Store } from '@ngrx/store';
-import { addContractCategoryAction, addContractCategoryActionSuccess, loadContractCategoryAction, loadContractCategoryActionSuccess, deleteContractCategoryActionSuccess, deleteContractCategoryAction, updateContractCategoryAction, updateContractCategoryActionSuccess, moveUpContractCategoryAction, moveUpContractCategoryActionSuccess, moveDownContractCategoryActionSuccess, moveDownContractCategoryAction, loadAllContractCategoryAction, loadAllContractCategoryActionSuccess, addMultipleContractCategoryAction, addMultipleContractCategoryActionSuccess } from './../actions/contract-category.action';
+import { addContractCategoryAction, addContractCategoryActionSuccess, loadContractCategoryAction, loadContractCategoryActionSuccess, deleteContractCategoryActionSuccess, deleteContractCategoryAction, moveUpContractCategoryAction, moveUpContractCategoryActionSuccess, moveDownContractCategoryActionSuccess, moveDownContractCategoryAction, loadAllContractCategoryAction, loadAllContractCategoryActionSuccess, addMultipleContractCategoryAction, addMultipleContractCategoryActionSuccess } from './../actions/contract-category.action';
 import { ContractCategoryService } from './../../services/contract-category.service';
 import { IContractCategory } from './../../contract.model';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
-import { appNotification } from 'src/app/store/actions/notification.action';
+import { map, switchMap, tap } from 'rxjs/operators';
 
 @Injectable()
 export class ContractCategoryEffect {

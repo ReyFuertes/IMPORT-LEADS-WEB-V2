@@ -12,7 +12,7 @@ import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 import { textRegex } from 'src/app/shared/util/text';
 import { emailRegex } from 'src/app/shared/util/email';
 import { getLoginErrorSelector } from '../../store/auth.selector';
-import { appNotification } from 'src/app/store/actions/notification.action';
+import { appNotificationAction } from 'src/app/store/actions/notification.action';
 import { TranslateService } from '@ngx-translate/core';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 

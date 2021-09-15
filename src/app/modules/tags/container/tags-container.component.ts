@@ -13,6 +13,6 @@ import { Component, OnInit } from '@angular/core';
 export class TagsContainerComponent extends GenericContainer implements OnInit {
   constructor(private store: Store<AppState>) {
     super();
-    this.store.dispatch(loadTagsAction());
+    this.store.dispatch(loadTagsAction({}));
   }
 }

@@ -1,12 +1,18 @@
 import { createReducer, on, Action } from "@ngrx/store";
-import { changeUserPasswordSuccessAction } from '../actions/user.actions';
+import { changeUserPasswordFailedAction, changeUserPasswordSuccessAction } from "../actions/user.actions";
+export interface UserState {
+  errorStatus?: boolean
+}
 
-export interface UserState {}
-
-export const initialState: UserState = {};
+export const initialState: UserState = {
+  errorStatus: null
+};
 
 const userReducer = createReducer(
-  initialState
+  initialState,
+  on(changeUserPasswordFailedAction, (state, action) => {
+    return Object.assign({}, state, { errorStatus: action.status });
+  }),
 );
 export function UserReducer(state: UserState, action: Action) {
   return userReducer(state, action);

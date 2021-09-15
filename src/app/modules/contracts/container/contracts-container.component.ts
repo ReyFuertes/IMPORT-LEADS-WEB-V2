@@ -19,7 +19,7 @@ export class ContractsContainerComponent extends GenericContainer implements OnI
     super();
     this.store.dispatch(loadContractsAction(null));
     this.store.dispatch(loadProductsAction());
-    this.store.dispatch(loadTagsAction());
+    this.store.dispatch(loadTagsAction({}));
     this.store.dispatch(loadSavedChecklistAction({}));
     //this.store.dispatch(loadAllContractCategoryAction());
   }

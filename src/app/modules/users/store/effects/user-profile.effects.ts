@@ -1,7 +1,7 @@
 import { Store, select } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, mergeMap, tap, switchMap, take } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { loadUserProfileAction, loadUserProfileSuccessAction, uploadProfileImageAction, updateProfileAction, updateProfileSuccessAction } from '../actions/user-profile.actions';
 import { UserProfileService } from '../../users.service';
 import { IUserProfile } from '../../users.models';

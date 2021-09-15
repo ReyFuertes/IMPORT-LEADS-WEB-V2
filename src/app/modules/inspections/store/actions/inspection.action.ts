@@ -6,6 +6,7 @@ export enum InspectionActionTypes {
   loadActiveInspectionAction = '[Inspection Checklist] load active inspection',
   loadActiveInspectionSuccessAction = '[Inspection Checklist] load active inspection (success)',
   runInspectionAction = '[Inspection Run] run inspection',
+  runInspectionFailedAction = '[Inspection Run] run inspection (failed)',
   runInspectionSuccessAction = '[Inspection Run] run inspection (success)',
   createInspectionChecklistAction = '[Inspection Run] create inspection checklist',
   createInspectionChecklistSuccessAction = '[Inspection Run] create inspection checklist (success)',
@@ -68,7 +69,8 @@ export const inspectChecklistRunProductSuccessAction = createAction(
   props<{ response: any }>()
 );
 export const loadFinishInspectionAction = createAction(
-  InspectionActionTypes.loadFinishInspectionAction
+  InspectionActionTypes.loadFinishInspectionAction,
+  props<{ param?: string }>()
 );
 export const loadFinishInspectionSuccessAction = createAction(
   InspectionActionTypes.loadFinishInspectionSuccessAction,
@@ -177,12 +179,17 @@ export const runInspectionAction = createAction(
   InspectionActionTypes.runInspectionAction,
   props<{ payload: IInspectionRuntime }>()
 );
+export const runInspectionFailedAction = createAction(
+  InspectionActionTypes.runInspectionFailedAction,
+  props<{ errorStatus: boolean }>()
+);
 export const runInspectionSuccessAction = createAction(
   InspectionActionTypes.runInspectionSuccessAction,
   props<{ response: any }>()
 );
 export const loadActiveInspectionAction = createAction(
   InspectionActionTypes.loadActiveInspectionAction,
+  props<{ param?: string }>()
 );
 export const loadActiveInspectionSuccessAction = createAction(
   InspectionActionTypes.loadActiveInspectionSuccessAction,

@@ -13,7 +13,6 @@ import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 import { TranslateService } from '@ngx-translate/core';
 import { StorageService } from 'src/app/services/storage.service';
 import { setDefaultLangAction } from 'src/app/store/actions/app.action';
-import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 
 @Component({
   selector: 'il-user-setting-details',
@@ -22,6 +21,7 @@ import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 })
 export class UserSettingDetailsComponent extends GenericDestroyPageComponent implements OnInit {
   public svgPath: string = environment.svgPath;
+  public imgPath: string = environment.imgPath;
   public form: FormGroup;
   public $detail: Observable<IUserProfile>;
   public languages: ISimpleItem[] = [{

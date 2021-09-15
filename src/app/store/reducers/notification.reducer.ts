@@ -1,7 +1,7 @@
 import { on } from '@ngrx/store';
 import { Action } from '@ngrx/store';
 import { createReducer } from '@ngrx/store';
-import { INotification, removeNotification, appNotification } from '../actions/notification.action';
+import { INotification, removeNotification, appNotificationAction } from '../actions/notification.action';
 
 export interface NotificationState {
   notification: INotification,
@@ -14,7 +14,7 @@ const notificationReducer = createReducer(
   on(removeNotification, (state) => {
     return Object.assign({ ...state, notification: null });
   }),
-  on(appNotification, (state, action) => {
+  on(appNotificationAction, (state, action) => {
     return ({ ...state, notification: action.notification })
   }),
 );

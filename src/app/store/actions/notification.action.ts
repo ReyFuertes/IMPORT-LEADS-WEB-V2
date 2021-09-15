@@ -12,7 +12,7 @@ export enum NotificationActionTypes {
   notificationSuccess = '[Notification] Success',
   removeNotification = '[Notification] Remove',
 }
-export const appNotification = createAction(
+export const appNotificationAction = createAction(
   NotificationActionTypes.notificationSuccess,
   props<{ notification: INotification }>()
 );

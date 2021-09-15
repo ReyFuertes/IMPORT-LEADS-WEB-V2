@@ -7,7 +7,7 @@
       <il-sort (sortEmitter)="handleSortChanges($event)" [options]="sortOptions"></il-sort>
     </div>
   </div>
-  <mat-tab-group fxFlexFill>
+  <mat-tab-group (selectedTabChange)="onTabChange($event)" fxFlexFill>
     <mat-tab [label]="'Active Inspections' | translate">
       <ng-template matTabContent>
         <div fxLayout="column" fxLayoutAlign="start center">

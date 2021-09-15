@@ -11,7 +11,7 @@ export const initialState: SavedChecklistState = adapter.getInitialState({
 const reducer = createReducer(
   initialState,
   on(loadSavedChecklistSuccessAction, (state, action) => {
-    return ({ ...adapter.addAll(action.items, state) })
+    return ({ ...adapter.setAll(action.items, state) })
   }),
   on(saveChecklistSuccessAction, (state, action) => {
     return ({ ...adapter.addOne(action.created, state) })

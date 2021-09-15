@@ -8,9 +8,9 @@ import { takeUntil } from 'rxjs/operators';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 import { loadSavedChecklistAction } from 'src/app/modules/contracts/store/actions/saved-checklist.action';
-import { loadFinishInspectionAction } from '../../store/actions/inspection.action';
 import { TranslateService } from '@ngx-translate/core';
 import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
+import { loadActiveInspectionAction, loadFinishInspectionAction } from '../../store/actions/inspection.action';
 
 @Component({
   selector: 'il-inspection-page',
@@ -60,14 +60,16 @@ export class InspectionPageComponent extends GenericDestroyPageComponent impleme
   }];
   public $savedChecklists: Observable<IActiveInspection[]>;
   public activeInspections: IActiveInspection[];
+  public selectedIndex: number;
 
   constructor(public translateService: TranslateService, private cdRef: ChangeDetectorRef, private store: Store<AppState>) {
     super();
-    this.store.dispatch(loadSavedChecklistAction({}));
-    //this.store.dispatch(loadFinishInspectionAction());
   }
 
   ngOnInit() {
+    console.log('init')
+    this.store.dispatch(loadActiveInspectionAction({}));
+    this.store.dispatch(loadFinishInspectionAction({}));
     this.store.pipe(select(getActiveInspectionsSelector),
       takeUntil(this.$unsubscribe)).subscribe((res) => {
         if (res) this.activeInspections = res;
@@ -83,6 +85,10 @@ export class InspectionPageComponent extends GenericDestroyPageComponent impleme
       });
   }
 
+  public onTabChange(event: any): void {
+    this.selectedIndex = event?.index;
+  }
+
   public handleSortChanges(event: any): void {
     let orderBy: string;
     const localAgreementSortBy = JSON.parse(localStorage.getItem('agrmntSortBy')) || null;
@@ -90,9 +96,13 @@ export class InspectionPageComponent extends GenericDestroyPageComponent impleme
 
     if (localAgreementSortBy === 'asc') orderBy = 'desc'
     else orderBy = 'asc';
-   
+
     localStorage.setItem('agrmntSortBy', JSON.stringify(orderBy));
-    this.store.dispatch(loadSavedChecklistAction({ param: `?orderby=[${event?.value},${orderBy}]` }));
+    if (this.selectedIndex === 0) {
+      this.store.dispatch(loadActiveInspectionAction({ param: `?orderby=[${event?.value},${orderBy}]` }));
+    } else {
+      this.store.dispatch(loadFinishInspectionAction({ param: `?orderby=[${event?.value},${orderBy}]` }));
+    }
   }
 
   ngAfterViewInit(): void {

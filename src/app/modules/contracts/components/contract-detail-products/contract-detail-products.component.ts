@@ -369,7 +369,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       this.store.dispatch(updateContractProductAction({ payload }));
 
       /* reload checklist so it will be shown when checklisting */
-      this.store.dispatch(loadActiveInspectionAction());
+      this.store.dispatch(loadActiveInspectionAction({}));
     }
   }
 

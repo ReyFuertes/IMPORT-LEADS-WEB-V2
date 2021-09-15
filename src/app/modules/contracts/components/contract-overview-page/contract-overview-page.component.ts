@@ -69,7 +69,7 @@ export class ContractOverviewPageComponent extends GenericDestroyPageComponent i
     else orderBy = 'asc';
 
     localStorage.setItem('agrmntSortBy', JSON.stringify(orderBy));
-    this.store.dispatch(loadContractsAction({ param: `?orderby=[${event?.value},${orderBy}]` }))
+    //this.store.dispatch(loadContractsAction({ param: `?orderby=[${event?.value},${orderBy}]` }))
   }
 
   public get hasRecords(): boolean {

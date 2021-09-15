@@ -1,13 +1,13 @@
 import { AppState } from 'src/app/store/app.reducer';
 import { Store } from '@ngrx/store';
 import { IContractProduct } from './../../contract.model';
-import { mergeMap, map, tap, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { ContractProductService } from './../../services/contract-products.service';
 import { addContractProductsAction, addContractProductsSuccessAction, loadContractProductsAction, loadContractProductSuccessAction, deleteContractProduct, updateContractProductsSuccessAction, updateContractProductAction, removeSelectedProductAction } from './../actions/contract-product.action';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { zip, of } from 'rxjs';
-import { appNotification } from 'src/app/store/actions/notification.action';
+import { appNotificationAction } from 'src/app/store/actions/notification.action';
 
 @Injectable()
 export class ContractProductsEffect {

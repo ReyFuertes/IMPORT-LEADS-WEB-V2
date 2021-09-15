@@ -1,5 +1,5 @@
 import { IActiveInspection, IFinishedInspection, IInspectionRun, RunStatusType } from './../../inspections.models';
-import { loadActiveInspectionSuccessAction, loadInspectionRunSuccessAction, changeInspectionRuntimeStatusSuccessAction, setPauseInspectionStatusAction, loadInspectionDetailSuccessAction, loadFinishInspectionSuccessAction, inspectChecklistRunProductSuccessAction, getInspectionWithLastRunProductSuccessAction, runNextInspectionSuccessAction, copyInspectionSuccessAction, clearRunInspectionAction, runPrevInspectionSuccessAction, runNextInspectionAction, clearExistErrorAction, deleteInspectionSuccessAction } from '../actions/inspection.action';
+import { loadActiveInspectionSuccessAction, loadInspectionRunSuccessAction, changeInspectionRuntimeStatusSuccessAction, setPauseInspectionStatusAction, loadInspectionDetailSuccessAction, loadFinishInspectionSuccessAction, inspectChecklistRunProductSuccessAction, getInspectionWithLastRunProductSuccessAction, runNextInspectionSuccessAction, copyInspectionSuccessAction, clearRunInspectionAction, runPrevInspectionSuccessAction, clearExistErrorAction, deleteInspectionSuccessAction, runInspectionFailedAction } from '../actions/inspection.action';
 import { createReducer, on, Action } from "@ngrx/store";
 import { saveInsChecklistCommentSuccessAction, updateInsChecklistCommentSuccessAction } from '../actions/inspection-checklist.action';
 import * as _ from 'lodash';
@@ -9,8 +9,9 @@ export interface InspectionState {
   runInspection?: IInspectionRun,
   updatedRunInspection?: IInspectionRun
   isPaused?: boolean,
-  detail?: IActiveInspection;
-  prevExistError: boolean
+  detail?: IActiveInspection,
+  prevExistError: boolean,
+  runStatusError: boolean
 }
 export const initialState: InspectionState = {
   activeInspection: null,
@@ -19,10 +20,14 @@ export const initialState: InspectionState = {
   updatedRunInspection: null,
   isPaused: null,
   detail: null,
-  prevExistError: null
+  prevExistError: null,
+  runStatusError: null
 };
 const reducer = createReducer(
   initialState,
+  on(runInspectionFailedAction, (state, action) => {
+    return Object.assign({}, state, { runStatusError: action?.errorStatus });
+  }),
   on(deleteInspectionSuccessAction, (state, action) => {
     let inspections = Object.assign([], state.activeInspection);
     _.remove(inspections, {
@@ -41,7 +46,7 @@ const reducer = createReducer(
     return Object.assign({}, state, { prevExistError: null });
   }),
   on(runPrevInspectionSuccessAction, (state, action) => {
-    if(action?.response?.id) {
+    if (action?.response?.id) {
       const newState = Object.assign({}, state, {
         runInspection: action.response
       });

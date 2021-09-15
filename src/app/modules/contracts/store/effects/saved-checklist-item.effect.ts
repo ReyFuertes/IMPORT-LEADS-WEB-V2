@@ -1,7 +1,7 @@
 import { ISavedChecklistItem } from './../../contract.model';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { saveChecklistItemAction, saveChecklistItemSuccessAction } from '../actions/saved-checklist-item.action';
 import { SavedChecklistItemService } from '../../services/saved-checklist-item';
 
@@ -9,7 +9,7 @@ import { SavedChecklistItemService } from '../../services/saved-checklist-item';
 export class SavedChecklistItemEffect {
   saveChecklistItemAction$ = createEffect(() => this.actions$.pipe(
     ofType(saveChecklistItemAction),
-    mergeMap(({ payload }) => {
+    switchMap(({ payload }) => {
       return this.savedChecklistItemSrv.post(payload)
         .pipe(
           map((created: ISavedChecklistItem) => {

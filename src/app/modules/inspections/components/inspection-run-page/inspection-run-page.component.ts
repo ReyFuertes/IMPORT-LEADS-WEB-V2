@@ -76,10 +76,10 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
     this.store.pipe(select(getInspectionRunSelector))
       .pipe(takeUntil(this.$unsubscribe)).subscribe((res: any) => {
         if (res) {
-          const { saved_checklist, count, contract_product, saved_checklist_items, terms } = res;
+          const { saved_checklist, count, contract_product, saved_checklist_items } = res;
 
           if (res?.isLastRow === true) {
-            alert('Your in the last row of the record.');
+            //alert('Your in the last row of the record.');
           }
 
           this.runInspectionCount = count;

@@ -131,6 +131,8 @@ input:-webkit-autofill:active {
     width: 100%;
   }
   .contract-detail-report-container {
+    padding: 0 !important;
+    margin: 0 !important;
     .table-category-title {
       border: thin $color-gray-2 solid !important;
       margin-top: 10px;
@@ -138,6 +140,10 @@ input:-webkit-autofill:active {
         background-color: $color-gray-3 !important;
         font-weight: bold;
       }
+    }
+    .tab-header {
+      display: block;
+      page-break-inside: avoid !important;
     }
     table {
       width: 100%;
@@ -166,7 +172,6 @@ input:-webkit-autofill:active {
       th,
       td {
         border-top: thin $color-gray-3 solid;
-        border-bottom: none !important;
         overflow: visible;
         page-break-inside: avoid !important;
         p {

@@ -91,6 +91,7 @@ mat-icon {
 }
 img {
   width: 100%;
+  height: auto;
 }
 table {
   width: 100%;
@@ -131,10 +132,16 @@ table {
   * {
     font-size: 12px;
   }
+  .terms-table {
+    margin-bottom: 20px;
+  }
   .table-category-title {
     border: thin $color-gray-2 solid;
     background-color: $color-gray-3 !important;
     margin-top: 10px;
     font-weight: bold;
+  }
+  .table-head thead {
+    background-color: $color-gray-4;
   }
 }

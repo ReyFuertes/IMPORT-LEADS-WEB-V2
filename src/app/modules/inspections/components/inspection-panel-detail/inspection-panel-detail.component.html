@@ -1,24 +1,24 @@
-<div class="content" fxLayout="column" fxLayoutGap="20px">
+<div class="content" fxLayout="column" fxLayoutGap="10px">
   <div *ngIf="detail" class="detail" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
     <div fxFlex="15" fxLayout="column">
       <span>{{ 'Сontact Person' | translate }}</span>
-      <span>{{ detail?.venue?.contact }}</span>
+      <span>{{ (detail?.venue?.contact || 'None') | translate }}</span>
     </div>
     <div fxFlex="15" fxLayout="column">
       <span>{{ 'Phone Number' | translate }}</span>
-      <span>{{ detail?.venue?.phone }}</span>
+      <span>{{ (detail?.venue?.phone || 'None') | translate }}</span>
     </div>
     <div fxFlex="15" fxLayout="column">
       <span>{{ 'Venue' | translate }}</span>
-      <span>{{ detail?.venue?.name }}</span>
+      <span>{{ (detail?.venue?.name|| 'None') | translate }}</span>
     </div>
     <div fxFlex fxLayout="column">
       <span>{{ 'Address' | translate }}</span>
-      <span>{{ detail?.venue?.location }}</span>
+      <span>{{ (detail?.venue?.location|| 'None') | translate }}</span>
     </div>
   </div>
-  <div class="brief">
-    <span>{{ detail?.checklist_contract?.details }}</span>
+  <div *ngIf="detail?.checklist_contract?.details" class="brief">
+    <span>{{ (detail?.checklist_contract?.details || 'None') | translate }}</span>
   </div>
   <div class="product">
     <h4>{{ 'Products' | translate }}</h4>

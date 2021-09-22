@@ -55,6 +55,7 @@ export class InspectionEffect {
           /* refresh active inspections */
           setTimeout(() => {
             this.store.dispatch(loadSavedChecklistAction({}));
+            this.store.dispatch(loadActiveInspectionAction({}));
             this.store.dispatch(loadFinishInspectionAction({}));
           });
 

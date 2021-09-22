@@ -36,8 +36,14 @@ h2 {
   .mat-button-toggle-checked {
     background: $color-primary !important;
     color: $color-white !important;
+    border-radius: 0;
   }
   .mat-button-toggle-group {
     margin-left: 30px;
+    .mat-button-toggle {
+      &:first-child {
+        border-radius: 0;
+      }
+    }
   }
 }

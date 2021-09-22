@@ -10,25 +10,26 @@
   <!-- category -->
   <div class="category-container" fxLayout="column" fxLayoutGap="20px">
     <div class="category-item" *ngFor="let contractCategory of ($contractCategories | async)">
-        <div class="tab-header" fxLayout="row" fxLayoutGap="5px">
-          <div *ngIf="hasTerms(contractCategory?.terms)" fxLayoutAlign="start center">
-            <span>{{ contractCategory?.category?.category_name }}</span>
-          </div>
-        </div>
-        <table *ngIf="hasTerms(contractCategory?.terms)">
-          <thead>
-            <th>Term Name</th>
-            <th>Term Description</th>
-          </thead>
-  
-          <tbody>
-            <tr *ngFor="let term of contractCategory?.terms">
-              <td>{{ term?.term_name }}</td>
-              <td><div [innerHTML]="term?.term_description"></div></td>
-            </tr>
-          </tbody>
-        </table>
+      <table class="table-head" *ngIf="hasTerms(contractCategory?.terms)">
+        <thead>
+          <th colspan="2">{{ contractCategory?.category?.category_name }}</th>
+        </thead>
+      </table>
+      <table *ngIf="hasTerms(contractCategory?.terms)" class="terms-table">
+        <thead>
+          <th>Term Name</th>
+          <th>Term Description</th>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let term of contractCategory?.terms">
+            <td>{{ term?.term_name }}</td>
+            <td>
+              <div [innerHTML]="term?.term_description"></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
- 

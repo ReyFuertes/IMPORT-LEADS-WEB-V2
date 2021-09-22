@@ -67,7 +67,6 @@ export class InspectionPageComponent extends GenericDestroyPageComponent impleme
   }
 
   ngOnInit() {
-    console.log('init')
     this.store.dispatch(loadActiveInspectionAction({}));
     this.store.dispatch(loadFinishInspectionAction({}));
     this.store.pipe(select(getActiveInspectionsSelector),

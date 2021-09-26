@@ -1,6 +1,6 @@
 import { createReducer, on, Action } from "@ngrx/store";
 import { IInspectionChecklistImage } from '../../inspections.models';
-import { addInsChecklistImageAction, addInsChecklistImagesAction, removeInsChecklistImageAction, clearInsChecklistImageAction, saveInsChecklisImageSuccessAction } from '../actions/inspection-checklist.action';
+import { addInsChecklistImageAction, addInsChecklistImagesAction, deleteInsChecklistImageAction, clearInsChecklistImageAction, saveInsChecklisImageSuccessAction, removeInsChecklistImageAction } from '../actions/inspection-checklist.action';
 import * as _ from 'lodash';
 
 export interface InspectionChecklistState {
@@ -19,6 +19,16 @@ const reducer = createReducer(
     return Object.assign({}, state, { checklistImages: null });
   }),
   on(removeInsChecklistImageAction, (state, action) => {
+    const checklistImages = Object.assign([], state.checklistImages);
+    const index: number = checklistImages.indexOf(action.image);
+    
+    if (index !== -1) {
+      checklistImages.splice(index, 1);
+    }
+
+    return Object.assign({}, state, { checklistImages });
+  }),
+  on(deleteInsChecklistImageAction, (state, action) => {
     const checklistImages = Object.assign([], state.checklistImages);
     const index: number = checklistImages.indexOf(action.image);
     

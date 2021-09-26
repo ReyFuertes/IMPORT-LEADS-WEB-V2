@@ -11,7 +11,7 @@ import { IInspectionChecklistImage } from 'src/app/modules/inspections/inspectio
 import { convertBlobToBase64 } from 'src/app/shared/util/convert-to-blob';
 import { v4 as uuid } from 'uuid';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
-import { addInsChecklistImageAction, removeInsChecklistImageAction, addInsChecklistImagesAction, saveInsChecklistImageFilesAction, clearInsChecklistImageAction } from 'src/app/modules/inspections/store/actions/inspection-checklist.action';
+import { addInsChecklistImageAction, deleteInsChecklistImageAction, addInsChecklistImagesAction, saveInsChecklistImageFilesAction, clearInsChecklistImageAction, removeInsChecklistImageAction } from 'src/app/modules/inspections/store/actions/inspection-checklist.action';
 import { getInsChecklistImagesSelector } from 'src/app/modules/inspections/store/selectors/inspection-checklist.selector';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs';
@@ -138,6 +138,9 @@ export class InspectionCommentDialogComponent extends GenericDestroyPageComponen
   }
 
   public onRemoveCachedImage(image: IInspectionChecklistImage): void {
-    if (image) this.store.dispatch(removeInsChecklistImageAction({ image }));
+    if (image?.id) this.store.dispatch(deleteInsChecklistImageAction({ image }));
+    else {
+      this.store.dispatch(removeInsChecklistImageAction({ image }))
+    }
   }
 }

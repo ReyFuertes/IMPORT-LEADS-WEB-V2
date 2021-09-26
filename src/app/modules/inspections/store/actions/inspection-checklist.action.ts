@@ -15,6 +15,7 @@ export enum InspectionActionTypes {
   saveInsChecklisImageSuccessAction = '[Inspection Checklist] save checklist image (success)',
   saveInsChecklistImageFilesAction = '[Inspection Checklist] upload checklist image',
   updateInsChecklistImageFilesSuccessAction = '[Inspection Checklist] upload checklist image (success)',
+  deleteInsChecklistImageAction = '[Inspection Checklist] delete checklist image',
   removeInsChecklistImageAction = '[Inspection Checklist] remove checklist image',
   removeInsChecklistImageSuccessAction = '[Inspection Checklist] delete image checklist (success)',
   clearInsChecklistImageAction = '[Inspection Checklist] clear checklist image',
@@ -59,6 +60,10 @@ export const updateInsChecklistCommentAction = createAction(
 export const updateInsChecklistCommentSuccessAction = createAction(
   InspectionActionTypes.updateInsChecklistCommentSuccessAction,
   props<{ response: IInspectionChecklistComment }>()
+);
+export const deleteInsChecklistImageAction = createAction(
+  InspectionActionTypes.deleteInsChecklistImageAction,
+  props<{ image: IInspectionChecklistImage }>()
 );
 export const removeInsChecklistImageAction = createAction(
   InspectionActionTypes.removeInsChecklistImageAction,

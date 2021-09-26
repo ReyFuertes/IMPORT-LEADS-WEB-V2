@@ -5,7 +5,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { InspectionChecklistCommentService, InspectionChecklistImageService, InspectionChecklistRunService } from '../../inspections.service';
 import { AppState } from '../../../contracts/store/reducers';
-import { deleteInsChecklistAction, getInsChecklistAction, getInsChecklistSuccessAction, saveInsChecklisImageAction, saveInsChecklisImageSuccessAction, saveInsChecklistCommentAction, saveInsChecklistCommentSuccessAction, updateInsChecklistCommentAction, updateInsChecklistCommentSuccessAction, saveInsChecklistImageFilesAction, updateInsChecklistImageFilesSuccessAction, removeInsChecklistImageAction, clearInsChecklistImageAction, getInspectionChecklistProductAction, getInspectionChecklistProductSuccessAction } from '../../store/actions/inspection-checklist.action';
+import { deleteInsChecklistAction, getInsChecklistAction, getInsChecklistSuccessAction, saveInsChecklisImageAction, saveInsChecklisImageSuccessAction, saveInsChecklistCommentAction, saveInsChecklistCommentSuccessAction, updateInsChecklistCommentAction, updateInsChecklistCommentSuccessAction, saveInsChecklistImageFilesAction, updateInsChecklistImageFilesSuccessAction, deleteInsChecklistImageAction, clearInsChecklistImageAction, getInspectionChecklistProductAction, getInspectionChecklistProductSuccessAction } from '../../store/actions/inspection-checklist.action';
 import { UploadService } from 'src/app/services/upload.service';
 
 @Injectable()
@@ -21,8 +21,8 @@ export class InspectionChecklistEffect {
     })
   ));
 
-  removeInsChecklistImageAction$ = createEffect(() => this.actions$.pipe(
-    ofType(removeInsChecklistImageAction),
+  deleteInsChecklistImageAction$ = createEffect(() => this.actions$.pipe(
+    ofType(deleteInsChecklistImageAction),
     switchMap(({ image }) =>
       this.InsChecklistImageSrv.delete(image?.id)
     )), { dispatch: false });

@@ -17,8 +17,9 @@
   animation-duration: 0.5s;
 }
 .img-box {
-  background-size: contain !important;
+  background-size: cover;
   background-repeat: no-repeat;
+  background-position: center center;
 }
 img.ellipse {
   width: 30px !important;
@@ -44,6 +45,9 @@ img.ellipse {
   .img-box {
     height: 30px !important;
     width: 30px !important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
   }
   .contract-card {
     .col-table {

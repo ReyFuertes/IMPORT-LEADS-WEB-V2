@@ -6,6 +6,8 @@
     border-radius: 50%;
     border: thin $color-gray-3 solid;
     height: 40px;
+    object-fit: contain;
+    background-color: $color-gray-3;
   }
 }
 .drag-icon {

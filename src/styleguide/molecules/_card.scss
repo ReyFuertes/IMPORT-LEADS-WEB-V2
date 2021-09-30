@@ -66,5 +66,8 @@
     box-sizing: border-box;
     display: flex;
     border-radius: 2px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
   }
 }

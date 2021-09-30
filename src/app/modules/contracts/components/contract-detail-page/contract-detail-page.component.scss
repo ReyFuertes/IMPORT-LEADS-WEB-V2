@@ -7,7 +7,9 @@
   }
 }
 .img-box {
-  background-size: contain !important;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 .detail-container {
   margin-bottom: 0;

@@ -10,3 +10,9 @@ td.mat-cell {
   color: $color-black-1;
   text-transform: capitalize;
 }
+.is-child {
+  background-color: $color-gray-5;
+  span {
+    padding-left: 5px;
+  }
+}

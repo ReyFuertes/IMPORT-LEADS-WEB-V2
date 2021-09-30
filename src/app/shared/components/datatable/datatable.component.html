@@ -2,7 +2,7 @@
   <ng-container *ngFor="let col of cols; let i = index" [matColumnDef]="col">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ splitToSentCase(col) | titlecase }}
     </th>
-    <td mat-cell *matCellDef="let element">
+    <td mat-cell *matCellDef="let element" [ngClass]="{'is-child': !element?.parent?.value}">
       <div>
         <div [ngClass]="{'col-dialog': isColControl(i)}" fxLayoutAlign="start center">
           <span *ngIf="!isColControl(i) && selectedIndex !== element?.id">{{ element[col] }}</span>

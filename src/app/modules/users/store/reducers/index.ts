@@ -12,7 +12,7 @@ export const reducers: ActionReducerMap<UserModuleState> = {
   userProfile: UserProfileReducer
 };
 export interface AppState extends fromRoot.AppState {
-  contractsModule: UserModuleState;
+  usersModule: UserModuleState;
 }
 
 

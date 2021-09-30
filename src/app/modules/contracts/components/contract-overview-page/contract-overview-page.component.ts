@@ -27,11 +27,17 @@ export class ContractOverviewPageComponent extends GenericDestroyPageComponent i
   public contracts: IContract[] = [];
 
   @Input() public sortOptions = [{
+    label: 'Sort by Start Date',
+    value: 'contract.start_date'
+  }, {
+    label: 'Sort by End Date',
+    value: 'contract.delivery_date'
+  }, {
     label: 'Sort by Name',
     value: 'contract_name'
   }, {
-    label: 'Sort by Date',
-    value: 'delivery_date'
+    label: 'Sort by Venue',
+    value: 'venue.name'
   }];
 
   public dragStart: boolean = false;
@@ -69,7 +75,7 @@ export class ContractOverviewPageComponent extends GenericDestroyPageComponent i
     else orderBy = 'asc';
 
     localStorage.setItem('agrmntSortBy', JSON.stringify(orderBy));
-    //this.store.dispatch(loadContractsAction({ param: `?orderby=[${event?.value},${orderBy}]` }))
+    this.store.dispatch(loadContractsAction({ param: `?orderby=[${event?.value},${orderBy}]` }))
   }
 
   public get hasRecords(): boolean {

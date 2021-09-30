@@ -125,6 +125,9 @@ input:-webkit-autofill:active {
   align-items: center;
   font-size: 12px;
 }
+.gray-text {
+  color: $color-gray-2;
+}
 @media print {
   script,
   style {

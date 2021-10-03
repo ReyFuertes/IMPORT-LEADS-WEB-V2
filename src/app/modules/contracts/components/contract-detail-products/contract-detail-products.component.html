@@ -84,7 +84,7 @@
 
       <div class="form-value" *ngIf="isAddState && !inCheckListing" fxFlex="180px" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
         <ng-container>
-          <button matTooltip="Save" [disabled]="!form.valid" *ngIf="!isEditProduct" mat-flat-button class="il-button primary" (click)="onAdd()">
+          <button matTooltip="Save" [disabled]="isDisabled" *ngIf="!isEditProduct" mat-flat-button class="il-button primary" (click)="onAdd()">
             <span>{{ 'Save Product' | translate }}</span>
           </button>
           <button matTooltip="Save" [disabled]="!form.valid" *ngIf="isEditProduct" mat-flat-button class="il-button primary" (click)="onSave()">

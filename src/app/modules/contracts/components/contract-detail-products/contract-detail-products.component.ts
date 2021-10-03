@@ -75,22 +75,10 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
           const childsCost = children.reduce((sum, current) => parseFloat(sum) + parseFloat(current.cost), 0) || 0;
           const parentCost = this.form.get('cost').value;
 
-          /* if the value of input is less than the value of sub products cost total, mark as invalid error */
-          if (parseFloat(childsCost) !== parseFloat(parentCost)) {
-            this.form.controls['cost'].setErrors({ 'invalid': true });
+          if (parseFloat(childsCost) === parseFloat(parentCost)) {
+            this.isDisabled = false;
           } else {
-            if ((parseFloat(childsCost) !== parseFloat(parentCost)) && children.length > 0) {
-              this.isDisabled = true;
-            } else {
-              this.form.controls['cost'].setErrors(null);
-              this.isDisabled = false;
-            }
-          }
-
-          if (parseFloat(childsCost) > parseFloat(parentCost)) {
-            this.form.controls['cost'].setErrors({ 'invalid': true });
-          } else {
-            this.form.controls['cost'].setErrors(null);
+            this.isDisabled = true;
           }
 
           /* check if the sub product is edited then update the id */

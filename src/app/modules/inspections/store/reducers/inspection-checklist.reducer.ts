@@ -46,7 +46,7 @@ const reducer = createReducer(
   }),
   on(addInsChecklistImageAction, (state, action) => {
     let checklistImages = Object.assign([], state.checklistImages);
-    checklistImages.push(action.image);
+    checklistImages.unshift(action.image);
 
     return Object.assign({}, state, { checklistImages });
   }),

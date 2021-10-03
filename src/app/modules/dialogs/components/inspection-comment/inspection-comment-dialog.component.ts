@@ -68,7 +68,7 @@ export class InspectionCommentDialogComponent extends GenericDestroyPageComponen
             if (index !== -1) {
               this.cachedImages.splice(index, 1);
             } else {
-              this.cachedImages.push(img);
+              this.cachedImages.unshift(img);
             }
           });
           this.form.get('images').patchValue(this.cachedImages);
@@ -85,7 +85,7 @@ export class InspectionCommentDialogComponent extends GenericDestroyPageComponen
       file = event.target.files[0];
     }
 
-    this.files.push(file);
+    this.files.unshift(file);
 
     /* collect all drop images in base64 results */
     convertBlobToBase64(event)

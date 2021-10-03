@@ -96,7 +96,7 @@ export class InspectionActivePanelComponent extends GenericRowComponent implemen
   }
 
   public hideReportIfNoInspectionRun(run: any[], menu: any): boolean {
-    return run?.length === 0 && menu?.label === 'REPORT' ? true : false;
+    return (run?.length === 0 || run?.length === undefined) && menu?.label === 'REPORT' ? true : false;
   }
 
   public dragStarted(event: any): void {

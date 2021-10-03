@@ -3,7 +3,7 @@
     
     <input *ngIf="isNumberOnly" [ngClass]="{'errors': hasError}" [InputMaxLength]="inputMaxLen" matInput [formControlName]="controlName" numbersOnly currencyFormatter [placeholder]="placeholder | translate" autocomplete="off" [readonly]="isReadOnly">
 
-    <input *ngIf="!isNumberOnly" [ngClass]="{'errors': hasError}" [InputMaxLength]="inputMaxLen" matInput [formControlName]="controlName" [placeholder]="placeholder | translate" autocomplete="off" [type]="inputType" [readonly]="isReadOnly">
+    <input *ngIf="!isNumberOnly" [ngClass]="{'errors': hasError}" [InputMaxLength]="inputMaxLen" matInput [formControlName]="controlName" [placeholder]="placeholder | translate" autocomplete="off" [type]="inputType" [readonly]="isReadOnly" (click)="clearDefault()">
 
     <mat-error *ngIf="hasError" class="errors" align="end">{{ 'Invalid Field' | translate}}</mat-error>
   </mat-form-field>

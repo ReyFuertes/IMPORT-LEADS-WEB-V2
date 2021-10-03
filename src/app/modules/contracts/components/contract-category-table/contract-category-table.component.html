@@ -12,7 +12,7 @@
 
           <!-- edit term name -->
           <div *ngIf="selectedCol == getColUuid(element, column) && i === 0" fxLayout="column">
-            <il-input [form]="form" isFloatLabel="'true'" [controlName]="column" placeholder="Name"></il-input>
+            <il-input [form]="form" isFloatLabel="'true'" [controlName]="column"></il-input>
             <div *ngTemplateOutlet="detailBtnActions"></div>
           </div>
 

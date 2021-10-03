@@ -1,10 +1,10 @@
-import { Component, OnInit, Input, Output, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
-import { FormGroup, FormControlName } from '@angular/forms';
+import { Component, Input, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { takeUntil } from 'rxjs/operators';
 import { AppState } from 'src/app/store/app.reducer';
 import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
+import { DEFAULT_TERM_INPUT } from '../../constants/string';
 import { GenericControl } from '../../generics/generic-control';
 import { ISimpleItem } from '../../generics/generic.model';
 
@@ -37,6 +37,12 @@ export class InputComponent extends GenericControl<ISimpleItem> implements OnCha
         }
       });
     this.cdref.detectChanges();
+  }
+
+  public clearDefault(): void {
+    if(this.form.get(this.controlName).value === DEFAULT_TERM_INPUT) {
+      this.form.get(this.controlName).setValue(null);
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -1,6 +1,5 @@
 import { ISimpleItem } from './../../generics/generic.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
 import { environment } from './../../../../environments/environment';
 import { MatTableDataSource } from '@angular/material/table';

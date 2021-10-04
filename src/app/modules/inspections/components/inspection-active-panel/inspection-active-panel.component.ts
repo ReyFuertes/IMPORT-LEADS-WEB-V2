@@ -95,8 +95,8 @@ export class InspectionActivePanelComponent extends GenericRowComponent implemen
     this.store.dispatch(clearLoadAction());
   }
 
-  public hideReportIfNoInspectionRun(run: any[], menu: any): boolean {
-    return (run?.length === 0 || run?.length === undefined) && menu?.label === 'REPORT' ? true : false;
+  public hideReportIfNoInspectionRun(run: any, menu: any): boolean {
+    return (run?.run_count === 0) && menu?.label === 'REPORT' ? true : false;
   }
 
   public dragStarted(event: any): void {

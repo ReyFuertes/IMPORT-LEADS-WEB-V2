@@ -28,7 +28,7 @@
             <img [src]="svgPath + 'dots-icon-blue.svg'" [matMenuTriggerFor]="menu" />
             <mat-menu #menu="matMenu">
               <ng-container *ngIf="!item?.isViewing">
-                <button *ngFor="let menu of menus; let last = last; let i = index" [ngClass]="{'hidden': hideReportIfNoInspectionRun(item?.inspection_checklist_run, menu)}" (click)="menu?.action(item)" mat-menu-item fxLayout="row"
+                <button *ngFor="let menu of menus; let last = last; let i = index" [ngClass]="{'hidden': hideReportIfNoInspectionRun(item, menu)}" (click)="menu?.action(item)" mat-menu-item fxLayout="row"
                   fxLayoutAlign="start center" fxLayoutGap="10px">
                   <img [ngClass]="{'w-18': last}" [src]="svgPath + menu?.icon" />
                   <span translate>{{ (item?.is_paused && i === 0 ? 'RESUME' : menu?.label) }}</span>

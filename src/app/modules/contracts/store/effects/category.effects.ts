@@ -15,7 +15,6 @@ export class CategoryEffect {
       return this.categoryService.patch(payload)
         .pipe(
           map((updated: any) => {
-
             /* just refresh all contract categories, may not be idea but temporary solution */
             this.store.dispatch(loadContractCategoryAction({ id: contractCategory?.contract?.id }))
 

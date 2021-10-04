@@ -1,4 +1,4 @@
-import { ICategory } from './../../contract.model';
+import { ICategory, IContractCategory } from './../../contract.model';
 import { createAction, props } from '@ngrx/store';
 
 export enum CategoryActionTypes {
@@ -9,7 +9,7 @@ export enum CategoryActionTypes {
 }
 export const updateCategoryAction = createAction(
   CategoryActionTypes.updateCategoryAction,
-  props<{ payload: ICategory }>()
+  props<{ payload: ICategory, contractCategory?: IContractCategory }>()
 );
 export const updateCategorysSuccess = createAction(
   CategoryActionTypes.updateCategorySuccess,

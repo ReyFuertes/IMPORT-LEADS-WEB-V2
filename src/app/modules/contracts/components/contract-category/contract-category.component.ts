@@ -1,9 +1,8 @@
-import { IContractTerm, IContractCategoryTerm } from './../../contract.model';
+import { IContractCategoryTerm } from './../../contract.model';
 import { loadContractCategoryAction } from '../../store/actions/contract-category.action';
 import { AppState } from '../../../../store/app.reducer';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { ICategory } from '../../contract.model';
-import { ContractCategoryTitleDialogComponent } from '../../../dialogs/components/contract-category-title/contract-category-title-dialog.component';
 import { ContractCategoryDialogComponent } from '../../../dialogs/components/contract-category/contract-category-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from '../../../../../environments/environment';
@@ -12,11 +11,9 @@ import { ConfirmationService } from 'primeng/api';
 import { IContractCategory } from '../../contract.model';
 import { updateCategoryAction } from '../../store/actions/category.action';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
-import { takeUntil } from 'rxjs/operators';
 import { CategoryTemplateDialogComponent } from 'src/app/modules/dialogs/components/category-template/category-template-dialog.component';
 import { saveCategoryTemplateAction } from '../../store/actions/Category-template.action';
 import { TranslateService } from '@ngx-translate/core';
-import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 
 @Component({
   selector: 'il-contract-category',
@@ -42,15 +39,13 @@ export class ContractCategoryComponent extends GenericRowComponent implements On
     super();
   }
 
-  ngOnInit() {
-
-  }
+  public ngOnInit() {}
 
   public onToggleTerm(event: IContractCategoryTerm): void {
     this.categoryTermEmitter.emit(event);
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  public ngOnChanges(changes: SimpleChanges) {
     if (changes && changes.contract_category && changes.contract_category.currentValue) {
       this.contractCategory = changes.contract_category.currentValue;
     }
@@ -81,10 +76,7 @@ export class ContractCategoryComponent extends GenericRowComponent implements On
     });
     dialogRef.afterClosed().subscribe(payload => {
       if (payload) {
-        this.store.dispatch(updateCategoryAction({ payload }));
-
-        /* just refresh all contract categories, may not be idea but temporary solution */
-        this.store.dispatch(loadContractCategoryAction({ id: this.contractCategory.contract.id }))
+        this.store.dispatch(updateCategoryAction({ payload, contractCategory: this.contractCategory }));
       }
     });
   }

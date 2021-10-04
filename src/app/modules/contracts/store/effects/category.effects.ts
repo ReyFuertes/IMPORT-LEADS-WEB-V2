@@ -4,15 +4,21 @@ import { ICategory } from './../../contract.model';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, switchMap, tap } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { loadContractCategoryAction } from '../actions/contract-category.action';
 
 @Injectable()
 export class CategoryEffect {
   updateCategoryAction$ = createEffect(() => this.actions$.pipe(
     ofType(updateCategoryAction),
-    switchMap(({ payload }) => {
+    switchMap(({ payload, contractCategory }) => {
       return this.categoryService.patch(payload)
         .pipe(
           map((updated: any) => {
+
+            /* just refresh all contract categories, may not be idea but temporary solution */
+            this.store.dispatch(loadContractCategoryAction({ id: contractCategory?.contract?.id }))
+
             return updateCategorysSuccess({ updated });
           })
         )
@@ -29,6 +35,7 @@ export class CategoryEffect {
   ));
 
   constructor(
+    private store: Store,
     private actions$: Actions,
     private categoryService: CategoryService,
   ) { }

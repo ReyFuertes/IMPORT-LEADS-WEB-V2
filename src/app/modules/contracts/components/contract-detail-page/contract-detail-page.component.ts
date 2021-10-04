@@ -34,7 +34,6 @@ import { ContractImportTemplateDialogComponent } from 'src/app/modules/dialogs/c
 import { StorageService } from 'src/app/services/storage.service';
 import { ContractAddDialogComponent } from 'src/app/modules/dialogs/components/contract-add-dialog/contract-add-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
-import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 
 @Component({
   selector: 'il-contract-detail-page',

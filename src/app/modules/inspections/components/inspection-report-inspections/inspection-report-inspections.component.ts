@@ -102,6 +102,7 @@ export class InspectionReportInspectionComponent extends GenericDestroyPageCompo
   public hours = [];
   public barChartRawData: any;
   public filterDate: any;
+  public totalInspectionTime: string;
 
   constructor(public translationService: TranslateService, private fb: FormBuilder, private cdRef: ChangeDetectorRef, @Inject(PLATFORM_ID) private platformId: object, private route: ActivatedRoute, private store: Store<AppState>) {
     super();
@@ -123,8 +124,10 @@ export class InspectionReportInspectionComponent extends GenericDestroyPageCompo
           this.barChartSummary = Object.assign({}, res);
           this.filterDate = moment(this.barChartSummary?.start_date).format('YYYY-MM-DD');
 
-          const bar_data = this.filterDataSource(res?.bar_data);
+          const bar_data: any[] = this.filterDataSource(res?.bar_data);
 
+          this.totalInspectionTime = this.addTimes(res?.bar_data?.map(v => v.duration));
+          
           this.barChartData[0].data = Object.assign([], bar_data);
 
           this.dataSource = Object.assign([], res?.table_data);
@@ -145,6 +148,14 @@ export class InspectionReportInspectionComponent extends GenericDestroyPageCompo
       });
   }
 
+  private addTimes(times: any[]) {
+    let duration = 0;
+    times.forEach(time => {
+      duration = duration + moment.duration(time).as('milliseconds')
+    });
+    return moment.utc(duration).format("HH:mm")
+  }
+
   private filterDataSource(source: any): any {
     return Object.assign([], source)
       ?.filter(bd => moment(bd?.date).format('YYYY-MM-DD') === this.filterDate)
@@ -156,18 +167,7 @@ export class InspectionReportInspectionComponent extends GenericDestroyPageCompo
       });
   }
 
-  ngOnInit() {
-    // moment.locale(this.locale); // optional - can remove if you are only dealing with one locale
-    // for (let hour = 0; hour < 24; hour++) {
-    //   this.hours.push(moment({ hour }).format("HH:mm"));
-    //   this.hours.push(
-    //     moment({
-    //       hour,
-    //       minute: 30
-    //     }).format("HH:mm")
-    //   );
-    // }
-  }
+  ngOnInit() { }
 
   ngAfterViewInit(): void {
     this.cdRef.detectChanges();

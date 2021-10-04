@@ -1,17 +1,17 @@
 <div>
   <il-expandable-panel title="{{ 'Products' | translate }} ({{dataSource?.products?.length}})" [expanded]="true">
     <div fxLayout="column" fxLayoutGap="20px">
-      <div class="detail" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+      <div class="detail" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
         <mat-list fxLayout>
-          <mat-list-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+          <mat-list-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
             <h5>{{ 'Total items' | translate }}:</h5>
             <h2>{{dataSource?.total_items}}</h2>
           </mat-list-item>
-          <mat-list-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+          <mat-list-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
             <h5>{{ 'Failed Items' | translate }}:</h5>
             <h2>{{dataSource?.total_failed_items}}</h2>
           </mat-list-item>
-          <mat-list-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+          <mat-list-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
             <h5>{{ 'Pass Items' | translate }}:</h5>
             <h2>{{dataSource?.total_pass_items}}</h2>
           </mat-list-item>

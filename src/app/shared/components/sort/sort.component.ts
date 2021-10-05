@@ -1,5 +1,5 @@
 import { environment } from '../../../../environments/environment';
-import { Component, OnInit, EventEmitter, Input, Output, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output, AfterViewInit, ChangeDetectorRef, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { GenericDestroyPageComponent } from '../../generics/generic-destroy-page';
 import { select, Store } from '@ngrx/store';
@@ -13,11 +13,12 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./sort.component.scss']
 })
 
-export class SortComponent extends GenericDestroyPageComponent implements AfterViewInit {
+export class SortComponent extends GenericDestroyPageComponent implements AfterViewInit, OnChanges {
   public svgPath: string = environment.svgPath;
 
   @Output() public sortEmitter = new EventEmitter<any>();
   @Input() public options: Array<{ label: string, value: any }> = [];
+  @Input() public sortedBy: string;
 
   constructor(private store: Store<AppState>, private cdRef: ChangeDetectorRef, public translateService: TranslateService) {
     super();
@@ -31,6 +32,10 @@ export class SortComponent extends GenericDestroyPageComponent implements AfterV
           this.cdRef.detectChanges();
         }
       });
+  }
+
+  public ngOnChanges(changes: SimpleChanges): void {
+    this.sortedBy = changes.sortedBy.currentValue;
   }
 
   public onClick(option: any): void {

@@ -17,10 +17,14 @@ import { loadAllContractCategoryAction } from '../store/actions/contract-categor
 export class ContractsContainerComponent extends GenericContainer implements OnInit {
   constructor(private store: Store<AppState>) {
     super();
-    this.store.dispatch(loadContractsAction(null));
+    const hasSort = localStorage.getItem('agrmntSortBy');
+    if (hasSort) {
+      this.store.dispatch(loadContractsAction({ param: JSON.parse(hasSort) }));
+    } else {
+      this.store.dispatch(loadContractsAction({}));
+    }
     this.store.dispatch(loadProductsAction());
     this.store.dispatch(loadTagsAction({}));
     this.store.dispatch(loadSavedChecklistAction({}));
-    //this.store.dispatch(loadAllContractCategoryAction());
   }
 }

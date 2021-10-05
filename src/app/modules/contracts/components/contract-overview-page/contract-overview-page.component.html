@@ -3,8 +3,8 @@
     <div fxFlex>
       <h2>{{ 'Agreements' | translate }}</h2>
     </div>
-    <div fxFlex="15" fxLayoutAlign="end center">
-      <il-sort (sortEmitter)="handleSortChanges($event)" [options]="sortOptions" *ngIf="hasRecords"></il-sort>
+    <div fxFlex="30" fxLayoutAlign="end center">
+      <il-sort (sortEmitter)="handleSortChanges($event)" [sortedBy]="sortedBy" [options]="sortOptions" *ngIf="hasRecords"></il-sort>
     </div>
   </div>
   <div *ngIf="hasRecords; else noRecords" fxLayout="column" fxLayoutGap="20px" cdkDropList (cdkDropListDropped)="drop($event)">

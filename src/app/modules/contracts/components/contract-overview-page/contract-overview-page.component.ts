@@ -9,7 +9,7 @@ import { IContract } from './../../contract.model';
 import { ContractAddDialogComponent } from 'src/app/modules/dialogs/components/contract-add-dialog/contract-add-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from './../../../../../environments/environment';
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Store, select } from '@ngrx/store';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
@@ -22,9 +22,10 @@ import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
   styleUrls: ['./contract-overview-page.component.scss']
 })
 
-export class ContractOverviewPageComponent extends GenericDestroyPageComponent implements OnInit {
+export class ContractOverviewPageComponent extends GenericDestroyPageComponent implements OnInit, AfterViewInit {
   public svgPath: string = environment.svgPath;
   public contracts: IContract[] = [];
+  public sortedBy: any;
 
   @Input() public sortOptions = [{
     label: 'Sort by Start Date',
@@ -66,16 +67,39 @@ export class ContractOverviewPageComponent extends GenericDestroyPageComponent i
       });
   }
 
+  public ngAfterViewInit(): void {
+    this.setSortingToLocal();
+  }
+
+  private setSortingToLocal(): void {
+    const hasSort = localStorage.getItem('agrmntSortBy');
+    if (hasSort) {
+      const str = JSON.parse(hasSort)?.split('=');
+      const strSortedBy = str[1]?.replace(/[\[\]']+/g, '')?.split(',')[0]?.toUpperCase();
+
+      this.sortedBy = 'Sorted by: ' + strSortedBy?.replace('.', ' ')?.replace('_', ' ');
+      this.cdRef.detectChanges();
+    }
+  }
+
   public handleSortChanges(event: any): void {
     let orderBy: string;
-    const localAgreementSortBy = JSON.parse(localStorage.getItem('agrmntSortBy')) || null;
-    orderBy = localAgreementSortBy || 'asc';
-
-    if (localAgreementSortBy === 'asc') orderBy = 'desc'
-    else orderBy = 'asc';
-
-    localStorage.setItem('agrmntSortBy', JSON.stringify(orderBy));
-    this.store.dispatch(loadContractsAction({ param: `?orderby=[${event?.value},${orderBy}]` }))
+    let localAgreementSortBy: string;
+    debugger
+    const hasSort = localStorage.getItem('agrmntSortBy');
+    if (hasSort) {
+      const str = JSON.parse(hasSort)?.split('=');
+      orderBy = str[1]?.replace(/[\[\]']+/g, '')?.split(',')[1];
+    } else {
+      orderBy = 'ASC';
+    }
+    console.log(orderBy)
+    if (orderBy === 'ASC') orderBy = 'DESC'
+    else orderBy = 'ASC';
+ 
+    localStorage.setItem('agrmntSortBy', JSON.stringify(`?orderby=[${event?.value},${orderBy}]`));
+    this.store.dispatch(loadContractsAction({ param: `?orderby=[${event?.value},${orderBy}]` }));
+    this.setSortingToLocal();
   }
 
   public get hasRecords(): boolean {

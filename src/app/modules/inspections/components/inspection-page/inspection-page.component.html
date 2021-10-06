@@ -3,8 +3,8 @@
     <div fxFlex>
       <h2>{{ 'Inspections' | translate }}</h2>
     </div>
-    <div fxFlex="120px" fxLayoutAlign="end center">
-      <il-sort (sortEmitter)="handleSortChanges($event)" [options]="sortOptions"></il-sort>
+    <div fxFlex="30" fxLayoutAlign="end center">
+      <il-sort (sortEmitter)="handleSortChanges($event)" [sortedBy]="sortedBy" [options]="sortOptions"></il-sort>
     </div>
   </div>
   <mat-tab-group (selectedTabChange)="onTabChange($event)" fxFlexFill>

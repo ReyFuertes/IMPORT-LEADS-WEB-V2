@@ -60,7 +60,8 @@ export class InspectionPageComponent extends GenericDestroyPageComponent impleme
   }];
   public $savedChecklists: Observable<IActiveInspection[]>;
   public activeInspections: IActiveInspection[];
-  public selectedIndex: number;
+  public selectedIndex: number = 0;
+  public sortedBy: string;
 
   constructor(public translateService: TranslateService, private cdRef: ChangeDetectorRef, private store: Store<AppState>) {
     super();
@@ -84,27 +85,45 @@ export class InspectionPageComponent extends GenericDestroyPageComponent impleme
       });
   }
 
+  private setSortingToLocal(): void {
+    const hasSort = localStorage.getItem('venueSortBy');
+    if (hasSort) {
+      const str = JSON.parse(hasSort)?.split('=');
+      const strSortedBy = str[1]?.replace(/[\[\]']+/g, '')?.split(',')[0]?.toUpperCase();
+
+      this.sortedBy = 'Sorted by: ' + strSortedBy?.replace('.', ' ')?.replace('_', ' ');
+      this.cdRef.detectChanges();
+    }
+  }
+
   public onTabChange(event: any): void {
     this.selectedIndex = event?.index;
   }
 
   public handleSortChanges(event: any): void {
     let orderBy: string;
-    const localAgreementSortBy = JSON.parse(localStorage.getItem('agrmntSortBy')) || null;
-    orderBy = localAgreementSortBy || 'asc';
+    const hasSort = localStorage.getItem('inspectionSortBy');
+    if (hasSort) {
+      const str = JSON.parse(hasSort)?.split('=');
+      orderBy = str[1]?.replace(/[\[\]']+/g, '')?.split(',')[1];
+    } else {
+      orderBy = 'ASC';
+    }
 
-    if (localAgreementSortBy === 'asc') orderBy = 'desc'
-    else orderBy = 'asc';
-
-    localStorage.setItem('agrmntSortBy', JSON.stringify(orderBy));
+    if (orderBy === 'ASC') orderBy = 'DESC'
+    else orderBy = 'ASC';
+    
+    localStorage.setItem('inspectionSortBy', JSON.stringify(`?orderby=[${event?.value},${orderBy}]`));
     if (this.selectedIndex === 0) {
       this.store.dispatch(loadActiveInspectionAction({ param: `?orderby=[${event?.value},${orderBy}]` }));
     } else {
       this.store.dispatch(loadFinishInspectionAction({ param: `?orderby=[${event?.value},${orderBy}]` }));
     }
+    this.setSortingToLocal();
   }
 
   ngAfterViewInit(): void {
+    this.setSortingToLocal();
     this.cdRef.detectChanges();
   }
 }

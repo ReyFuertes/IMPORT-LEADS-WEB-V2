@@ -328,7 +328,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
         const payload = _payload?.map(p => {
           return { ...p, contract }
         });
-        debugger
+        
         this.store.dispatch(addMultipleContractCategoryAction({ payload, contract }));
       }
     });

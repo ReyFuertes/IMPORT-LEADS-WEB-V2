@@ -49,7 +49,7 @@ export class VenueOverviewPageComponent extends GenericDestroyPageComponent impl
     }
   ];
   public $venues: Observable<IVenue[]>;
-  public sortedBy: any;
+  public sortedBy: string;
 
   constructor(private cdRef: ChangeDetectorRef, private store: Store<AppState>, public dialog: MatDialog) {
     super();

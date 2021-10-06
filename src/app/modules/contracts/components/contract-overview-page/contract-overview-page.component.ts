@@ -84,8 +84,7 @@ export class ContractOverviewPageComponent extends GenericDestroyPageComponent i
 
   public handleSortChanges(event: any): void {
     let orderBy: string;
-    let localAgreementSortBy: string;
-    debugger
+
     const hasSort = localStorage.getItem('agrmntSortBy');
     if (hasSort) {
       const str = JSON.parse(hasSort)?.split('=');
@@ -93,7 +92,7 @@ export class ContractOverviewPageComponent extends GenericDestroyPageComponent i
     } else {
       orderBy = 'ASC';
     }
-    console.log(orderBy)
+
     if (orderBy === 'ASC') orderBy = 'DESC'
     else orderBy = 'ASC';
  

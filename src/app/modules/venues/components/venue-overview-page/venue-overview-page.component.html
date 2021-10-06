@@ -3,8 +3,8 @@
     <div fxFlex>
       <h2>Venues</h2>
     </div>
-    <div fxFlex="120px" fxLayoutAlign="end center">
-      <il-sort (sortEmitter)="handleSortChanges($event)" [options]="sortOptions" *ngIf="hasRecords"></il-sort>
+    <div fxFlex="30" fxLayoutAlign="end center">
+      <il-sort (sortEmitter)="handleSortChanges($event)" [sortedBy]="sortedBy" [options]="sortOptions" *ngIf="hasRecords"></il-sort>
     </div>
     <mat-button-toggle-group value="products" name="fontStyle" aria-label="Font Style" fxLayoutAlign="end center">
       <mat-button-toggle class="il-button il-bg-blue" value="products" (click)="isProduct = true">Venues</mat-button-toggle>

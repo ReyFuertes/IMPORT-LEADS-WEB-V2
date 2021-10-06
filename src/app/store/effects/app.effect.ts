@@ -93,7 +93,12 @@ export class InitAppEffect {
       .pipe(
         tap((res) => {
           if (res) {
-            this.store.dispatch(loadVenuesAction({}));
+            const hasSort = localStorage.getItem('venueSortBy');
+            let venueOrderby: string;
+            if (hasSort) {
+              venueOrderby = JSON.parse(hasSort);
+            }
+            this.store.dispatch(loadVenuesAction({ param: venueOrderby }));
             this.store.dispatch(loadAccessAction());
             this.store.dispatch(loadAllRolesAction());
 

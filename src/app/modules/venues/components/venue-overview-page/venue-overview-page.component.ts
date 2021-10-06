@@ -3,7 +3,7 @@ import { getVenuesSelector } from './../../store/venues.selector';
 import { Observable } from 'rxjs';
 import { AppState } from './../../../../store/app.reducer';
 import { Store, select } from '@ngrx/store';
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { IVenue } from '../../venues.models';
 import { VenuesAddDialogComponent } from 'src/app/modules/dialogs/components/venues-add/venues-add-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -16,7 +16,7 @@ import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-des
   styleUrls: ['./venue-overview-page.component.scss']
 })
 
-export class VenueOverviewPageComponent extends GenericDestroyPageComponent implements OnInit {
+export class VenueOverviewPageComponent extends GenericDestroyPageComponent implements OnInit, AfterViewInit {
  public sortOptions = [{
     label: 'Sort by Name',
     value: 'name'
@@ -48,10 +48,10 @@ export class VenueOverviewPageComponent extends GenericDestroyPageComponent impl
       width: '100px'
     }
   ];
-
   public $venues: Observable<IVenue[]>;
+  public sortedBy: any;
 
-  constructor(private store: Store<AppState>, public dialog: MatDialog) {
+  constructor(private cdRef: ChangeDetectorRef, private store: Store<AppState>, public dialog: MatDialog) {
     super();
     this.store.pipe(select(getVenuesSelector), takeUntil(this.$unsubscribe))
       .subscribe(venues => {
@@ -75,20 +75,41 @@ export class VenueOverviewPageComponent extends GenericDestroyPageComponent impl
 
   ngOnInit() { }
 
+  public ngAfterViewInit(): void {
+    this.setSortingToLocal();
+  }
+
   public get hasRecords(): boolean {
     return this.venues?.length > 0;
   }
 
+  private setSortingToLocal(): void {
+    const hasSort = localStorage.getItem('venueSortBy');
+    if (hasSort) {
+      const str = JSON.parse(hasSort)?.split('=');
+      const strSortedBy = str[1]?.replace(/[\[\]']+/g, '')?.split(',')[0]?.toUpperCase();
+
+      this.sortedBy = 'Sorted by: ' + strSortedBy?.replace('.', ' ')?.replace('_', ' ');
+      this.cdRef.detectChanges();
+    }
+  }
+
   public handleSortChanges(event: any): void {
     let orderBy: string;
-    const localAgreementSortBy = JSON.parse(localStorage.getItem('agrmntSortBy')) || null;
-    orderBy = localAgreementSortBy || 'asc';
+    const hasSort = localStorage.getItem('venueSortBy');
+    if (hasSort) {
+      const str = JSON.parse(hasSort)?.split('=');
+      orderBy = str[1]?.replace(/[\[\]']+/g, '')?.split(',')[1];
+    } else {
+      orderBy = 'ASC';
+    }
 
-    if (localAgreementSortBy === 'asc') orderBy = 'desc'
-    else orderBy = 'asc';
-   
-    localStorage.setItem('agrmntSortBy', JSON.stringify(orderBy));
+    if (orderBy === 'ASC') orderBy = 'DESC'
+    else orderBy = 'ASC';
+ 
+    localStorage.setItem('venueSortBy', JSON.stringify(`?orderby=[${event?.value},${orderBy}]`));
     this.store.dispatch(loadVenuesAction({ param: `?orderby=[${event?.value},${orderBy}]` }));
+    this.setSortingToLocal();
   }
 
   public onProductClick() {

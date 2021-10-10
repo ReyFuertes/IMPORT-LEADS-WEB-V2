@@ -12,9 +12,13 @@
             <img cdkDragHandle [src]="svgPath + 'drag-icon.svg'" />
           </div>
           <div class="venue-img" matTooltip="Change Image" fxLayoutAlign="start center">
-            <img (click)="uploader.click()" cdkDragHandle [src]="item?.image?.filename ? imageApiPath + item?.image?.filename : imgPath + 'no-image-40x40x.png'" />
+            <ng-container *ngIf="item?.image?.filename">
+              <div class="image" (click)="uploader.click()" [ngStyle]="{'background-image': 'url(' + imageApiPath + item?.image?.filename + ')'}"></div>
+            </ng-container>
+            <ng-container *ngIf="!item?.image?.filename">
+              <div (click)="uploader.click()" class="no-image" [ngStyle]="{'background-image': 'url(' + imgPath + 'no-image-40x40x.png' + ')'}"></div>
+            </ng-container>
             <input #uploader hidden name="file" type="file" (change)="uploadImage($event, item)" />
-
           </div>
           <div fxFlex="28" fxLayoutAlign="start center">
             <span *ngIf="selectedIndex !== i">{{item?.name}}</span>
@@ -65,5 +69,4 @@
       </div>
     </div>
   </div>
-
 </div>

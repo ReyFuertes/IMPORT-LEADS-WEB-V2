@@ -8,10 +8,11 @@
   cursor: pointer;
   img {
     width: 40px;
-    border-radius: 50%;
     border: thin $color-gray-3 solid;
     height: 40px;
-    object-fit: cover;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
     background-color: $color-gray-3;
   }
 }

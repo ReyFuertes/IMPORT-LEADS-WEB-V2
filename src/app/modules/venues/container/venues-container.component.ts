@@ -1,8 +1,5 @@
-import { AppState } from 'src/app/store/app.reducer';
 import { GenericContainer } from './../../../shared/generics/generic-container';
 import { Component, OnInit } from '@angular/core';
-import { Store, select } from '@ngrx/store';
-
 @Component({
   selector: 'il-venues-container',
   templateUrl: './venues-container.component.html',
@@ -10,7 +7,7 @@ import { Store, select } from '@ngrx/store';
 })
 
 export class VenuesContainerComponent extends GenericContainer implements OnInit {
-  constructor(private store: Store<AppState>) {
+  constructor() {
     super();
   }
 }

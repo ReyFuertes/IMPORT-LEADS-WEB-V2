@@ -1,4 +1,4 @@
-import { addVenueAction } from './../../store/venues.action';
+import { addVenueAction, updateVenueAction, uploadVenueImageAction } from './../../store/venues.action';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { select, Store } from '@ngrx/store';
 import { AppState } from './../../../../store/app.reducer';
@@ -9,9 +9,12 @@ import { IVenue } from './../../venues.models';
 import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { deleteVenueAction } from '../../store/venues.action';
-import { takeUntil } from 'rxjs/operators';
+import { map, take, takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
+import { convertBlobToBase64 } from 'src/app/shared/util/convert-to-blob';
+import * as _ from 'lodash';
+import { v4 as uuid } from 'uuid';
 @Component({
   selector: 'il-venue-address',
   templateUrl: './venue-address.component.html',
@@ -21,6 +24,7 @@ import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 export class VenueAddressComponent extends GenericRowComponent implements OnInit {
   public svgPath: string = environment.svgPath;
   public imgPath: string = environment.imgPath;
+  public imageApiPath: string = environment.apiImagePath;
   public hoveredIndex: number | null = null;
   public selectedIndex: number | null = null;
   public selectedItem: IVenue;
@@ -50,6 +54,36 @@ export class VenueAddressComponent extends GenericRowComponent implements OnInit
       });
   }
 
+  public uploadImage(event: any, item: IVenue): void {
+    const file: File = event.target.files[0];
+
+    const filename = `${uuid()}.${file.name.split('.').pop()}`;
+    convertBlobToBase64(file)
+      .pipe(take(1),
+        takeUntil(this.$unsubscribe),
+        map(() => {
+          return {
+            size: file.size,
+            mimetype: file.type
+          }
+        }))
+      .subscribe(b64 => {
+        if (b64) {
+          const dataFile = new FormData();
+          dataFile.append('file', file, filename);
+          this.store.dispatch(uploadVenueImageAction({ file: dataFile }));
+
+          item.image = _.pickBy({
+            filename,
+            mimetype: b64.mimetype,
+            size: b64.size,
+            id: item.image ? item.image.id : null
+          }, _.identity);
+          this.store.dispatch(updateVenueAction({ item }));
+        }
+      })
+  }
+
   public dragStarted(event: any) {
     this.dragStart = event;
   }
@@ -57,7 +91,6 @@ export class VenueAddressComponent extends GenericRowComponent implements OnInit
   public onEdit(item: IVenue, key: string, value: string): void {
     if (value)
       item[key] = value;
-
     this.selectedItem = item;
   }
 
@@ -80,11 +113,9 @@ export class VenueAddressComponent extends GenericRowComponent implements OnInit
   public onClickPnl(pnl: any, event: any, i: number, item: IVenue): void {
     if (item)
       this.selectedItem = item;
-
     if (event.target.classList.contains('no-expand')) {
       pnl.close();
     }
-
     if (event.target.classList.contains('delete')) {
       const dialogRef = this.dialog.open(ConfirmationComponent, {
         width: '410px',

@@ -1,12 +1,16 @@
 @import "src/styleguide/shared";
 .venue-img {
   cursor: pointer;
-  img {
+  .image, .no-image {
     width: 40px;
-    border-radius: 50%;
-    border: thin $color-gray-3 solid;
     height: 40px;
-    object-fit: cover;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent !important;
+    border: thin $color-gray-3 solid;
+  }
+  .no-image {
     background-color: $color-gray-3;
   }
 }

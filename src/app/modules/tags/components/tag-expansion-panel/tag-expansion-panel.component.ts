@@ -1,4 +1,4 @@
-import { updateTag, deleteTag } from './../../store/actions/tags.actions';
+import { updateTagAction, deleteTagAction } from './../../store/actions/tags.actions';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { ITag } from './../../tags.model';
 import { AppState } from 'src/app/store/app.reducer';
@@ -9,7 +9,7 @@ import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
 import { MatDialog } from '@angular/material/dialog';
-import { addTag } from '../../store/actions/tags.actions';
+import { addTagAction } from '../../store/actions/tags.actions';
 import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
@@ -59,7 +59,7 @@ export class TagExpansionPanelComponent extends GenericRowComponent implements A
       .subscribe(result => {
         if (result) {
           const item: ITag = { tag_name: result };
-          this.store.dispatch(addTag({ item }));
+          this.store.dispatch(addTagAction({ item }));
         }
       });
   }
@@ -83,7 +83,7 @@ export class TagExpansionPanelComponent extends GenericRowComponent implements A
   }
 
   public onSave(): void {
-    this.store.dispatch(updateTag({ item: this.selectedItem }));
+    this.store.dispatch(updateTagAction({ item: this.selectedItem }));
     this.selectedIndex = null;
   }
 
@@ -106,7 +106,7 @@ export class TagExpansionPanelComponent extends GenericRowComponent implements A
         .subscribe(result => {
           if (result) {
             setTimeout(() => {
-              this.store.dispatch(deleteTag({ id: this.selectedId }));
+              this.store.dispatch(deleteTagAction({ id: this.selectedId }));
             }, 100);
           }
         });

@@ -61,7 +61,6 @@ export class AppComponent extends GenericDestroyPageComponent implements OnInit,
       .subscribe(res => {
         this.isLoggedIn = res;
       });
-
   }
 
   public onClose(): void {

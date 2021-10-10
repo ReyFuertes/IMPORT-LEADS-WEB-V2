@@ -35,7 +35,7 @@ export class SortComponent extends GenericDestroyPageComponent implements AfterV
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
-    this.sortedBy = changes.sortedBy.currentValue;
+    this.sortedBy = changes?.sortedBy?.currentValue;
   }
 
   public onClick(option: any): void {

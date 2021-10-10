@@ -3,8 +3,8 @@
     <div fxFlex>
       <h2>{{ 'Tags' | translate }}</h2>
     </div>
-    <div fxFlex="120px" fxLayoutAlign="end center">
-      <il-sort (sortEmitter)="handleSortChanges($event)" [options]="sortOptions" *ngIf="($items | async)?.length > 0"></il-sort>
+    <div fxFlex="30" fxLayoutAlign="end center">
+      <il-sort (sortEmitter)="handleSortChanges($event)" [sortedBy]="sortedBy" [options]="sortOptions" *ngIf="($items | async)?.length > 0"></il-sort>
     </div>
   </div>
   <il-tag-expansion-panel [items]="$items | async"></il-tag-expansion-panel>

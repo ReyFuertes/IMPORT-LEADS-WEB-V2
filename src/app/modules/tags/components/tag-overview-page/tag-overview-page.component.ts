@@ -2,7 +2,7 @@ import { getTagsSelector } from './../../store/selectors/tags.selector';
 import { Observable } from 'rxjs';
 import { AppState } from './../../../../store/app.reducer';
 import { Store, select } from '@ngrx/store';
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ITag } from '../../tags.model';
 import { takeUntil } from 'rxjs/operators';
@@ -17,7 +17,7 @@ import { loadTagsAction } from '../../store/actions/tags.actions';
   styleUrls: ['./tag-overview-page.component.scss']
 })
 
-export class TagOverviewPageComponent extends GenericDestroyPageComponent implements OnInit {
+export class TagOverviewPageComponent extends GenericDestroyPageComponent implements OnInit, AfterViewInit {
   public sortOptions = [{
     label: 'Sort by Name',
     value: 'tag_name'
@@ -26,6 +26,8 @@ export class TagOverviewPageComponent extends GenericDestroyPageComponent implem
     value: 'date'
   }];
   public $items: Observable<ITag[]>;
+  public sortedBy: string;
+
   constructor(private cdRef: ChangeDetectorRef, public translateService: TranslateService, private store: Store<AppState>, public dialog: MatDialog) {
     super();
   }
@@ -41,15 +43,36 @@ export class TagOverviewPageComponent extends GenericDestroyPageComponent implem
       });
   }
 
+  public ngAfterViewInit(): void {
+    this.setSortingToLocal();
+  }
+
+  private setSortingToLocal(): void {
+    const hasSort = localStorage.getItem('tagsSortBy');
+    if (hasSort) {
+      const str = JSON.parse(hasSort)?.split('=');
+      const strSortedBy = str[1]?.replace(/[\[\]']+/g, '')?.split(',')[0]?.toUpperCase();
+
+      this.sortedBy = 'Sorted by: ' + strSortedBy?.replace('.', ' ')?.replace('_', ' ');
+      this.cdRef.detectChanges();
+    }
+  }
+
   public handleSortChanges(event: any): void {
     let orderBy: string;
-    const localAgreementSortBy = JSON.parse(localStorage.getItem('agrmntSortBy')) || null;
-    orderBy = localAgreementSortBy || 'asc';
+    const hasSort = localStorage.getItem('tagsSortBy');
+    if (hasSort) {
+      const str = JSON.parse(hasSort)?.split('=');
+      orderBy = str[1]?.replace(/[\[\]']+/g, '')?.split(',')[1];
+    } else {
+      orderBy = 'ASC';
+    }
 
-    if (localAgreementSortBy === 'asc') orderBy = 'desc'
-    else orderBy = 'asc';
-   
-    localStorage.setItem('agrmntSortBy', JSON.stringify(orderBy));
+    if (orderBy === 'ASC') orderBy = 'DESC'
+    else orderBy = 'ASC';
+ 
+    localStorage.setItem('tagsSortBy', JSON.stringify(`?orderby=[${event?.value},${orderBy}]`));
     this.store.dispatch(loadTagsAction({ param: `?orderby=[${event?.value},${orderBy}]` }));
+    this.setSortingToLocal();
   }
 }

@@ -89,13 +89,12 @@ export class InspectionEffect {
     ofType(copyInspectionAction),
     switchMap((payload: any) => {
       return this.inspectionChecklistRunSrv.post(payload, 'copy').pipe(
+        tap(() => localStorage.setItem('p_l_r_del', JSON.stringify(true))),
         map((response: any) => {
-
           localStorage.setItem('ic_sel_prod', JSON.stringify({
             value: payload?.contract_product?.id,
             _id: payload?.product?.id
           }));
-
           //redirect the inspection to the latest record
           this.router.navigateByUrl(`${INSPECTIONSROUTE}/${response?.id}/run`);
 
@@ -110,7 +109,6 @@ export class InspectionEffect {
     switchMap(({ id }) => {
       return this.inspectionChecklistRunSrv.post({ id }, 'remove-navigate-to').pipe(
         map((response: any) => {
-
           this.router.navigateByUrl(`${INSPECTIONSROUTE}/${response?.id}/run`);
           this.store.dispatch(loadInspectionRunAction({ id: response?.id }));
 
@@ -153,14 +151,13 @@ export class InspectionEffect {
     ofType(runPrevInspectionAction),
     switchMap(({ payload }) => {
       return this.inspectionChecklistRunSrv.post(payload, 'prev').pipe(
+        tap(() => localStorage.removeItem('p_l_r_del')),
         map((response: any) => {
-
           if (response?.id) {
             this.router.navigateByUrl(`${INSPECTIONSROUTE}/${response?.id}/run`);
           } else {
             this.store.dispatch(prevExistErrorAction())
           }
-
           return runPrevInspectionSuccessAction({ response });
         })
       )
@@ -170,9 +167,9 @@ export class InspectionEffect {
     ofType(runNextInspectionAction),
     switchMap(({ payload }) => {
       return this.inspectionChecklistRunSrv.post(payload, 'next').pipe(
+        tap(() => localStorage.removeItem('p_l_r_del')),
         map((response: any) => {
           this.router.navigateByUrl(`${INSPECTIONSROUTE}/${response?.id}/run`);
-
           return runNextInspectionSuccessAction({ response });
         })
       )

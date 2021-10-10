@@ -1,5 +1,5 @@
 import { updateTagQuestionSuccess, addTagQuestionSuccess, deleteTagQuestionSuccess } from './../actions/tag-question.action';
-import { loadTagsSuccess, addTagSuccess, deleteTagSuccess, updateTagSuccess } from '../actions/tags.actions';
+import { loadTagsSuccessAction, addTagSuccessAction, deleteTagSuccessAction, updateTagSuccessAction } from '../actions/tags.actions';
 import { ITag, ITagQuestion } from './../../tags.model';
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
@@ -46,16 +46,16 @@ const tagsReducer = createReducer(
     /* just return if it has changes or not, just to prevent the ui from refreshing */
     return adapter.updateOne({ id: action.updated.id, changes }, state);
   }),
-  on(updateTagSuccess, (state, action) => {
+  on(updateTagSuccessAction, (state, action) => {
     return adapter.updateOne({ id: action.updated.id, changes: action.updated }, state)
   }),
-  on(deleteTagSuccess, (state, action) => {
+  on(deleteTagSuccessAction, (state, action) => {
     return adapter.removeOne(action.deleted.id, state)
   }),
-  on(addTagSuccess, (state, action) => {
+  on(addTagSuccessAction, (state, action) => {
     return adapter.addOne(action.created, state)
   }),
-  on(loadTagsSuccess, (state, action) => {
+  on(loadTagsSuccessAction, (state, action) => {
     return ({ ...adapter.addAll(action.items, state) })
   })
 );
@@ -63,6 +63,6 @@ export function TagsReducer(state: TagsState, action: Action) {
   return tagsReducer(state, action);
 }
 export const getTags = (state: TagsState) => {
-  const contracts: ITag[] = state && state.entities ? Object.values(state.entities) : null;
-  return contracts && contracts.sort((a: ITag, b: ITag) => sortByDesc(a, b, 'created_at'));
+  const tags: ITag[] = state?.entities ? Object.values(state?.entities) : null;
+  return tags;
 };

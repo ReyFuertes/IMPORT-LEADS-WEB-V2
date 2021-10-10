@@ -1,6 +1,6 @@
 import { AppState } from './../../../../store/app.reducer';
 import { Store } from '@ngrx/store';
-import { loadTagsAction, addTag, loadTagsSuccess, addTagSuccess, deleteTag, deleteTagSuccess, updateTag, updateTagSuccess } from '../actions/tags.actions';
+import { loadTagsAction, addTagAction, loadTagsSuccessAction, addTagSuccessAction, deleteTagAction, deleteTagSuccessAction, updateTagAction, updateTagSuccessAction } from '../actions/tags.actions';
 import { ITag } from './../../tags.model';
 import { TagsService } from './../../tags.service';
 import { Injectable } from '@angular/core';
@@ -9,34 +9,34 @@ import { map, switchMap, tap } from 'rxjs/operators';
 
 @Injectable()
 export class TagsEffect {
-  updateTag$ = createEffect(() => this.actions$.pipe(
-    ofType(updateTag),
+  updateTagAction$ = createEffect(() => this.actions$.pipe(
+    ofType(updateTagAction),
     switchMap(({ item }) => this.tagsService.patch(item)
       .pipe(
         // reload all products since the child parent cost value cannot be updated via state update
         tap(() => this.store.dispatch(loadTagsAction({}))),
         map((updated: ITag) => {
-          return updateTagSuccess({ updated });
+          return updateTagSuccessAction({ updated });
         })
       ))
   ));
 
-  deleteTag$ = createEffect(() => this.actions$.pipe(
-    ofType(deleteTag),
+  deleteTagAction$ = createEffect(() => this.actions$.pipe(
+    ofType(deleteTagAction),
     switchMap(({ id }) => this.tagsService.delete(id)
       .pipe(
         map((deleted: ITag) => {
-          return deleteTagSuccess({ deleted });
+          return deleteTagSuccessAction({ deleted });
         })
       ))
   ));
 
-  addTag$ = createEffect(() => this.actions$.pipe(
-    ofType(addTag),
+  addTagAction$ = createEffect(() => this.actions$.pipe(
+    ofType(addTagAction),
     switchMap(({ item }) => this.tagsService.post(item)
       .pipe(
         map((created: ITag) => {
-          return addTagSuccess({ created });
+          return addTagSuccessAction({ created });
         })
       ))
   ));
@@ -45,7 +45,7 @@ export class TagsEffect {
     ofType(loadTagsAction),
     switchMap(({ param }) => this.tagsService.getAll(param).pipe(
       map((items: ITag[]) => {
-        return loadTagsSuccess({ items });
+        return loadTagsSuccessAction({ items });
       })
     ))
   ));

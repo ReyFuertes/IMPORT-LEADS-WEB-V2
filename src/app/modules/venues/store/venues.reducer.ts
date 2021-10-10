@@ -1,4 +1,3 @@
-import { removeVenueProductSuccess } from './venue-product.action';
 import { IVenue } from './../venues.models';
 import { loadVenuesAction, loadVenuesSuccessAction, addVenueSuccessAction, deleteVenueSuccessAction, updateVenueSuccessAction } from './venues.action';
 import { createReducer, on, Action } from "@ngrx/store";
@@ -26,7 +25,7 @@ const venuesReducer = createReducer(
     return ({ ...adapter.removeAll(state) })
   }),
   on(loadVenuesSuccessAction, (state, action) => {
-    return ({ ...adapter.addAll(action.items, state) })
+    return ({ ...adapter.setAll(action.items, state) })
   })
 );
 export function VenuesReducer(state: VenuesState, action: Action) {

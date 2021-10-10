@@ -65,7 +65,6 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
 
   constructor(public dialog: MatDialog, private store: Store<AppState>) {
     super();
-
   }
 
   ngOnInit() { }
@@ -103,7 +102,6 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
   public onEdit(item: IVenue, key: string, value: string): void {
     if (value)
       item[key] = value;
-
     this.selectedItem = item;
   }
 
@@ -153,16 +151,12 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
   }
 
   public onClickPnl(pnl: any, event: any, i: number, item: IVenue): void {
-    if (item && item.related_products && item.related_products.length === 0) {
-      //pnl.close();
-    }
+    if (item && item.related_products && item.related_products.length === 0) {}
 
     if (item)
       this.selectedItem = item;
 
-    if (event.target.classList.contains('no-expand')) {
-      //pnl.close();
-    }
+    if (event.target.classList.contains('no-expand')) { }
 
     if (event.target.classList.contains('delete')) {
       const dialogRef = this.dialog.open(ConfirmationComponent, {
@@ -178,17 +172,14 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
           }, 100);
         }
       });
-      //pnl.close();
     }
 
     if (event.target.classList.contains('edit')) {
       this.selectedIndex = i;
-      //pnl.close();
     }
 
     if (event.target.classList.contains('close')) {
       this.selectedIndex = null;
-      //pnl.close();
     }
   }
 

@@ -1,8 +1,6 @@
-import { ISimpleItem } from './../../../../shared/generics/generic.model';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormGroup, FormBuilder } from '@angular/forms';
 import { environment } from './../../../../../environments/environment';
-import { Component, OnInit, Inject, Input } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 
 @Component({
   selector: 'il-confirmation',
@@ -39,6 +37,9 @@ export class ConfirmationComponent {
   }, {
     label: 'Select Product',
     message: 'Select a product before going to the next record.'
+  }, {
+    label: 'Delete',
+    message: 'Do you want to delete last run item?'
   }];
 
   constructor(public dialogRef: MatDialogRef<ConfirmationComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -50,5 +51,9 @@ export class ConfirmationComponent {
 
   public get isCloseOnly(): boolean {
     return this.data?.isCloseOnlyOption ? true : false;
+  }
+
+  public get isYesNoLabels(): boolean {
+    return this.data?.yesNoLabels ? true : false;
   }
 }

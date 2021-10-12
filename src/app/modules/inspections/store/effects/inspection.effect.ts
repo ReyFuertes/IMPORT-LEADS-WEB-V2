@@ -1,5 +1,5 @@
 import { IActiveInspection, IInspectionRun, RunStatusType } from './../../inspections.models';
-import { loadActiveInspectionSuccessAction, runInspectionAction, runInspectionSuccessAction, createInspectionChecklistAction, createInspectionChecklistSuccessAction, loadInspectionRunAction, loadInspectionRunSuccessAction, runNextInspectionAction, runNextInspectionSuccessAction, runPrevInspectionAction, runPrevInspectionSuccessAction, changeInspectionRuntimeStatusAction, changeInspectionRuntimeStatusSuccessAction, deleteAndNavigateToAction, deleteAndNavigateToSuccessAction, copyInspectionAction, copyInspectionSuccessAction, navigateToInspectionAction, navigateToInspectionSuccessAction, deleteInspectionAction, deleteInspectionSuccessAction, loadInspectionDetailAction, loadInspectionDetailSuccessAction, finishInspectionSuccessAction, finishInspectionAction, loadFinishInspectionAction, loadFinishInspectionSuccessAction, inspectChecklistRunProductAction, inspectChecklistRunProductSuccessAction, getInspectionWithLastRunProductAction, getInspectionWithLastRunProductSuccessAction, prevExistErrorAction, runInspectionFailedAction, loadActiveInspectionAction } from '../actions/inspection.action';
+import { loadActiveInspectionSuccessAction, runInspectionAction, runInspectionSuccessAction, createInspectionChecklistAction, createInspectionChecklistSuccessAction, loadInspectionRunAction, loadInspectionRunSuccessAction, runNextInspectionAction, runNextInspectionSuccessAction, runPrevInspectionAction, runPrevInspectionSuccessAction, changeInspectionRuntimeStatusAction, changeInspectionRuntimeStatusSuccessAction, deleteAndNavigateToAction, deleteAndNavigateToSuccessAction, copyInspectionAction, copyInspectionSuccessAction, navigateToInspectionAction, navigateToInspectionSuccessAction, deleteInspectionAction, deleteInspectionSuccessAction, loadInspectionDetailAction, loadInspectionDetailSuccessAction, finishInspectionSuccessAction, finishInspectionAction, loadFinishInspectionAction, loadFinishInspectionSuccessAction, inspectChecklistRunProductAction, inspectChecklistRunProductSuccessAction, getInspectionWithLastRunProductAction, getInspectionWithLastRunProductSuccessAction, prevExistErrorAction, runInspectionFailedAction, loadActiveInspectionAction, deleteInspectChecklistRunAction } from '../actions/inspection.action';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
@@ -15,6 +15,18 @@ import { INSPECTIONSROUTE } from 'src/app/shared/constants/routes';
 
 @Injectable()
 export class InspectionEffect {
+  deleteInspectChecklistRunAction$ = createEffect(() => this.actions$.pipe(
+    ofType(deleteInspectChecklistRunAction),
+    switchMap(({ id }) => {
+      return this.inspectionChecklistRunSrv.delete(id).pipe(
+        tap(() => localStorage.removeItem('p_l_r_del')),
+        map((response: any) => {
+          return deleteAndNavigateToSuccessAction({ response });
+        })
+      )
+    })
+  ));
+
   inspectChecklistRunProductAction$ = createEffect(() => this.actions$.pipe(
     ofType(inspectChecklistRunProductAction),
     switchMap(({ payload }) => {
@@ -149,14 +161,27 @@ export class InspectionEffect {
   ));
   runPrevInspectionAction$ = createEffect(() => this.actions$.pipe(
     ofType(runPrevInspectionAction),
-    switchMap(({ payload }) => {
+    switchMap(({ payload, isDeleteNext }) => {
       return this.inspectionChecklistRunSrv.post(payload, 'prev').pipe(
-        tap(() => localStorage.removeItem('p_l_r_del')),
+        //tap(() => localStorage.removeItem('p_l_r_del')),
         map((response: any) => {
-          if (response?.id) {
+          if(isDeleteNext === true) {
+            this.store.dispatch(deleteInspectChecklistRunAction({ id: payload?.id }));
             this.router.navigateByUrl(`${INSPECTIONSROUTE}/${response?.id}/run`);
+            
+            const inspectionPayload = {
+              id: response?.id,
+              saved_checklist: { id: response?.saved_checklist?.id },
+              run_status: RunStatusType.stop
+            }
+            this.store.dispatch(changeInspectionRuntimeStatusAction({ payload: inspectionPayload }));
+
           } else {
-            this.store.dispatch(prevExistErrorAction())
+            if (response?.id) {
+              this.router.navigateByUrl(`${INSPECTIONSROUTE}/${response?.id}/run`);
+            } else {
+              this.store.dispatch(prevExistErrorAction())
+            }
           }
           return runPrevInspectionSuccessAction({ response });
         })
@@ -167,7 +192,7 @@ export class InspectionEffect {
     ofType(runNextInspectionAction),
     switchMap(({ payload }) => {
       return this.inspectionChecklistRunSrv.post(payload, 'next').pipe(
-        tap(() => localStorage.removeItem('p_l_r_del')),
+        //tap(() => localStorage.removeItem('p_l_r_del')),
         map((response: any) => {
           this.router.navigateByUrl(`${INSPECTIONSROUTE}/${response?.id}/run`);
           return runNextInspectionSuccessAction({ response });

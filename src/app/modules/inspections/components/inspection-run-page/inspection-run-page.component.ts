@@ -6,7 +6,7 @@ import { Observable, of } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { getInspectionRunSelector, getInspectionRunStatusSelector, getPrevExistErrorSelector, getUpdatedInspectionRunSelector } from '../../store/selectors/inspection.selector';
-import { runNextInspectionAction, runPrevInspectionAction, changeInspectionRuntimeStatusAction, deleteAndNavigateToAction, copyInspectionAction, navigateToInspectionAction, setPauseInspectionStatusAction, loadInspectionRunAction, inspectChecklistRunProductAction, clearRunInspectionAction, clearExistErrorAction } from '../../store/actions/inspection.action';
+import { runNextInspectionAction, runPrevInspectionAction, changeInspectionRuntimeStatusAction, deleteAndNavigateToAction, copyInspectionAction, navigateToInspectionAction, setPauseInspectionStatusAction, loadInspectionRunAction, inspectChecklistRunProductAction, clearRunInspectionAction, clearExistErrorAction, deleteInspectChecklistRunAction } from '../../store/actions/inspection.action';
 import { IInspectionRun, RunStatusType } from '../../inspections.models';
 import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 import * as _ from 'lodash';
@@ -203,7 +203,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       width: '410px',
       data: { action: 5 }
     });
-    dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+    dialogRef.afterClosed()
       .subscribe(result => {
         if (result) {
           this.store.dispatch(deleteAndNavigateToAction({ id: ins?.id }));
@@ -212,21 +212,41 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
   }
 
   public onStop(): void {
+    const deleteLastRow = JSON.parse(localStorage.getItem('p_l_r_del'));
+    if (deleteLastRow) {
+      const dialogRefDelete = this.dialog.open(ConfirmationComponent, {
+        width: '410px',
+        data: { action: 9, yesNoLabels: true }
+      });
+      dialogRefDelete.afterClosed()
+        .subscribe(result => {
+          if (result) {
+            this.onPrev(this.inspectionRun, true);
+          } else {
+            this.showStopConfirmation();
+          }
+        });
+    } else {
+      this.showStopConfirmation();
+    }
+  }
+
+  private showStopConfirmation(): void {
     const dialogRef = this.dialog.open(ConfirmationComponent, {
       width: '410px',
       data: { action: 4 }
     });
-    dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+    dialogRef.afterClosed()
       .subscribe(result => {
         if (result) {
-          this.triggerStop();
           this.permitToNavigate = true;
           this.isStopTriggered = true; /* fail safe for for line 70 */
+          this.updateInspectionRuntimeStatus();
         }
       });
   }
 
-  public triggerStop(): void {
+  private updateInspectionRuntimeStatus(): void {
     const payload = {
       id: this.inspectionRun?.id,
       saved_checklist: { id: this.inspectionRun?.saved_checklist.id },
@@ -269,7 +289,7 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
     this.store.dispatch(changeInspectionRuntimeStatusAction({ payload }));
   }
 
-  public onPrev(inspectionRun: IInspectionRun): void {
+  public onPrev(inspectionRun: IInspectionRun, isDeleteNext: boolean = false): void {
     this.permitToNavigate = true;
 
     this.store.dispatch(runPrevInspectionAction({
@@ -278,7 +298,8 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
         saved_checklist: { id: inspectionRun?.saved_checklist?.id },
         inspection: this.inspectionRun?.inspection,
         contract_product: { id: this.selProduct?._id },
-      }
+      },
+      isDeleteNext
     }));
   }
 

@@ -1,5 +1,4 @@
 import { createAction, props } from '@ngrx/store';
-import { IContractTerm } from 'src/app/modules/contracts/contract.model';
 import { IActiveInspection, IInspection, IInspectionRun, IInspectionRuntime } from '../../inspections.models';
 
 export enum InspectionActionTypes {
@@ -42,7 +41,17 @@ export enum InspectionActionTypes {
   clearRunInspectionAction = '[Inspection Run] clear run inspection',
   prevExistErrorAction = '[Inspection Run] run prev exist error',
   clearExistErrorAction = '[Inspection Run] clear prev exist error',
+  deleteInspectChecklistRunAction = '[Inspection Run] delete',
+  deleteInspectChecklistRunSuccessAction = '[Inspection Run] delete (success)',
 }
+export const deleteInspectChecklistRunAction = createAction(
+  InspectionActionTypes.deleteInspectChecklistRunAction,
+  props<{ id: string }>()
+);
+export const deleteInspectChecklistRunSuccessAction = createAction(
+  InspectionActionTypes.deleteInspectChecklistRunSuccessAction,
+  props<{ response: IInspectionRun }>()
+);
 export const clearExistErrorAction = createAction(
   InspectionActionTypes.clearExistErrorAction
 );
@@ -142,7 +151,7 @@ export const changeInspectionRuntimeStatusSuccessAction = createAction(
 );
 export const runPrevInspectionAction = createAction(
   InspectionActionTypes.runPrevInspectionAction,
-  props<{ payload: { id: string, saved_checklist: { id: string }, inspection: IInspection, contract_product: { id: string } } }>()
+  props<{ payload: { id: string, saved_checklist: { id: string }, inspection: IInspection, contract_product: { id: string } }, isDeleteNext?: boolean }>()
 );
 export const runPrevInspectionSuccessAction = createAction(
   InspectionActionTypes.runPrevInspectionSuccessAction,

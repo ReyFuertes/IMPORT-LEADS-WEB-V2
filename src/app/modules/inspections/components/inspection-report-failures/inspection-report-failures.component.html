@@ -1,4 +1,4 @@
-<div>
+<div [ngClass]="{'hide-in-report': product_failure_count === 0}">
   <il-expandable-panel title="{{ 'Failures' | translate }} ({{product_failure_count}})" [expanded]="true">
     <table *ngIf="dataSource?.length > 0" mat-table [dataSource]="dataSource">
 

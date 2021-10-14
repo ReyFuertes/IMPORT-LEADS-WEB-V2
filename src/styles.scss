@@ -133,6 +133,75 @@ input:-webkit-autofill:active {
   style {
     display: none;
   }
+  .hide-in-report {
+    display: none !important;
+  }
+  .page-container {
+    margin-top: 0 !important;
+    padding: 0 !important;
+  }
+  /* inspection report */
+  .irr-container {
+    .mat-expansion-panel {
+      box-shadow: none !important;
+    }
+    .mat-expansion-panel-header {
+      page-break-inside: avoid !important;
+      span.mat-expansion-indicator {
+        display: none !important;
+      }
+    }
+    il-expandable-panel {
+      page-break-inside: avoid !important;
+    }
+    il-inspection-report-failures {
+      page-break-inside: avoid !important;
+    }
+    mat-expansion-panel {
+      border-radius: 0 !important;
+      border: thin $color-gray-3 solid !important;
+      overflow: visible !important;
+    }
+    .mat-accordion {
+      border-radius: 0 !important;
+      overflow: visible !important;
+    }
+    table {
+      width: 100%;
+      min-width: 100%;
+      max-width: 100%;
+      margin-bottom: 0 !important;
+      thead {
+        page-break-inside: avoid !important;
+        height: 35px;
+        th {
+          &:first-child {
+            width: fit-content;
+            max-width: 100%;
+            min-width: 100%;
+          }
+        }
+      }
+      tbody {
+        overflow: hidden !important;
+      }
+      tr {
+        overflow: visible;
+        page-break-inside: avoid !important;
+      }
+
+    }
+  }
+  .router-outlet {
+    position: relative;
+
+  }
+  il-topnav {
+    display: none !important;
+  }
+  .production-image {
+    display: none !important;
+  }
   body {
     padding: 0 !important;
     margin: 0 !important;

@@ -1,4 +1,4 @@
-<div>
+<div [ngClass]="{'hide-in-report': totalTags === 0}">
   <il-expandable-panel title="{{ 'Tags' | translate }} ({{ totalTags }})" [expanded]="true">
     <div fxLayout="column" fxLayoutGap="20px">
       <div class="detail" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">

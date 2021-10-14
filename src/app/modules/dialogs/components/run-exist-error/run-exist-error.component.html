@@ -5,12 +5,12 @@
     </div>
   </div>
   <div class="content">
-    <h2>Product Doesnt Exist</h2>
+    <h2>{{ 'Product Doesnt Exist' | translate }}</h2>
   </div>
   <div class="footer">
     <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
-      <button mat-flat-button class="il-button default large" (click)="dialogRef.close(false)">Close</button>
-      <button mat-flat-button class="il-button large danger" (click)="dialogRef.close(true)">End Inspection</button>
+      <button mat-flat-button class="il-button default large" (click)="dialogRef.close(false)">{{ 'Close' | translate }}</button>
+      <button mat-flat-button class="il-button large danger" (click)="dialogRef.close(true)">{{ 'End Inspection' | translate }}</button>
     </div>
   </div>
 </div>

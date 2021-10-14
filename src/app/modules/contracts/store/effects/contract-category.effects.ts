@@ -1,6 +1,6 @@
 import { AppState } from 'src/app/store/app.reducer';
 import { Store } from '@ngrx/store';
-import { addContractCategoryAction, addContractCategoryActionSuccess, loadContractCategoryAction, loadContractCategoryActionSuccess, deleteContractCategoryActionSuccess, deleteContractCategoryAction, moveUpContractCategoryAction, moveUpContractCategoryActionSuccess, moveDownContractCategoryActionSuccess, moveDownContractCategoryAction, loadAllContractCategoryAction, loadAllContractCategoryActionSuccess, addMultipleContractCategoryAction, addMultipleContractCategoryActionSuccess } from './../actions/contract-category.action';
+import { addContractCategoryAction, addContractCategoryActionSuccess, loadContractCategoryAction, loadContractCategoryActionSuccess, deleteContractCategoryActionSuccess, deleteContractCategoryAction, moveUpContractCategoryAction, moveUpContractCategoryActionSuccess, moveDownContractCategoryActionSuccess, moveDownContractCategoryAction, loadAllContractCategoryAction, loadAllContractCategoryActionSuccess, addMultipleContractCategoryAction, addMultipleContractCategoryActionSuccess, importIntoContractCategoryAction } from './../actions/contract-category.action';
 import { ContractCategoryService } from './../../services/contract-category.service';
 import { IContractCategory } from './../../contract.model';
 import { Injectable } from '@angular/core';
@@ -9,6 +9,18 @@ import { map, switchMap, tap } from 'rxjs/operators';
 
 @Injectable()
 export class ContractCategoryEffect {
+  importIntoContractCategoryAction$ = createEffect(() => this.actions$.pipe(
+    ofType(importIntoContractCategoryAction),
+    switchMap(({ payload, contract }) => this.contractCategorySrv.post(payload, 'import-into')
+      .pipe(
+        map((created: any) => {
+          this.store.dispatch(loadContractCategoryAction({ id: contract?.id }));
+
+          return addMultipleContractCategoryActionSuccess({ created });
+        })
+      ))
+  ));
+
   addMultipleContractCategoryAction$ = createEffect(() => this.actions$.pipe(
     ofType(addMultipleContractCategoryAction),
     switchMap(({ payload, contract }) => this.contractCategorySrv.post(payload, 'multiple')

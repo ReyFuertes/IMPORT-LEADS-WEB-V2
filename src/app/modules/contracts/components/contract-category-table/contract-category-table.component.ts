@@ -1,7 +1,7 @@
 import { addContractTermAction, deleteContractTermAction, updateContractTermAction } from './../../store/actions/contract-term.actions';
-import { loadAllContractCategoryAction, loadContractCategoryAction, moveDownContractCategoryAction, moveUpContractCategoryAction, selTermsForChecklistAction } from './../../store/actions/contract-category.action';
+import { importIntoContractCategoryAction, loadAllContractCategoryAction, loadContractCategoryAction, moveDownContractCategoryAction, moveUpContractCategoryAction, selTermsForChecklistAction } from './../../store/actions/contract-category.action';
 import { MatTableDataSource } from '@angular/material/table';
-import { IContractTerm, IContractCategoryTerm, IContractChecklistItem, IContractProduct, IContractTermProduct } from './../../contract.model';
+import { IContractTerm, IContractCategoryTerm, IContractChecklistItem, IContractProduct, IContractTermProduct, IContract } from './../../contract.model';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { getTagsSelector } from '../../../tags/store/selectors/tags.selector';
 import { AppState } from '../../../../store/app.reducer';
@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 import { ContractCategoryTermDialogComponent } from '../../../dialogs/components/contract-category-term/contract-category-term-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ISimpleItem } from '../../../../shared/generics/generic.model';
+import { AddEditState, ISimpleItem } from '../../../../shared/generics/generic.model';
 import { environment } from '../../../../../environments/environment';
 import { trigger, transition, style, state, animate } from '@angular/animations';
 import { Component, OnInit, Input, OnChanges, SimpleChanges, AfterViewInit, ViewEncapsulation, EventEmitter, Output, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
@@ -26,6 +26,7 @@ import { updateContractTermTagAction } from '../../store/actions/contract-term-t
 import { TranslateService } from '@ngx-translate/core';
 import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 import { ContractCategoryTitleDialogComponent } from 'src/app/modules/dialogs/components/contract-category-title/contract-category-title-dialog.component';
+import { ContractCategoryImportDialogComponent } from 'src/app/modules/dialogs/components/contract-category-import/contract-category-import.component';
 
 @Component({
   selector: 'il-contract-category-table',
@@ -79,6 +80,30 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
         this.checkListProducts = res.checklistProducts || [];
         this.checklistTerms = res.checklistTerms || [];
       })).subscribe();
+  }
+
+  public onImportIntoCategory(): void {
+    const dialogRef = this.dialog.open(ContractCategoryImportDialogComponent, {
+      height: '455px',
+      width: '700px'
+    });
+    dialogRef.afterClosed().subscribe((_payload: any) => {
+      if (_payload) {
+        const payload = _payload?.map(p => {
+          return {
+            ...p,
+            contract: this.contractCategory?.contract,
+            destination: {
+              contract_category: p?.contract_category
+            },
+            current: {
+              contract_category: this.contractCategory,
+            }
+          }
+        });
+        this.store.dispatch(importIntoContractCategoryAction({ payload, contract: this.contractCategory?.contract }));
+      }
+    });
   }
 
   public onToggleTerms(term: IContractTerm, checked: boolean): void {

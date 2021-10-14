@@ -1,7 +1,8 @@
 export enum AddEditState {
   'Add' = 1,
   'Edit' = 2,
-  'Import' = 3
+  'Import' = 3,
+  'ImportWithTerms' = 4
 }
 export interface AddEditDialogState {
   id?: string;

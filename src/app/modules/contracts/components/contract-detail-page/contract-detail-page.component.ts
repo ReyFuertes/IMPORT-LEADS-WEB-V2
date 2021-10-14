@@ -273,8 +273,7 @@ export class ContractDetailPageComponent extends GenericPageDetailComponent<ICon
       width: '410px',
       data: { action: 0 }
     });
-    dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
-      .subscribe(result => {
+    dialogRef.afterClosed().subscribe(result => {
         if (result && this.form.get('id').value) {
           this.store.dispatch(deleteContractAction({ id: this.form.get('id').value }));
           setTimeout(() => {

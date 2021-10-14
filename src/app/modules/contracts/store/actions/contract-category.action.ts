@@ -19,7 +19,17 @@ export enum CategoryActionTypes {
   loadAllContractCategoryActionSuccess = '[Contract Category] load all contract (success)',
   addMultipleContractCategoryAction = '[Contract Category] Add multiple',
   addMultipleContractCategoryActionSuccess = '[Contract Category] Add multiple (success)',
+  importIntoContractCategoryAction = '[Contract Category] Import into contract category',
+  importIntoContractCategoryActionSuccess = '[Contract Category] Import into contract category (success)',
 }
+export const importIntoContractCategoryAction = createAction(
+  CategoryActionTypes.importIntoContractCategoryAction,
+  props<{ payload: IContractCategory[], contract?: IContract }>()
+);
+export const importIntoContractCategoryActionSuccess = createAction(
+  CategoryActionTypes.importIntoContractCategoryActionSuccess,
+  props<{ created: IContractCategory[] }>()
+);
 export const addMultipleContractCategoryAction = createAction(
   CategoryActionTypes.addMultipleContractCategoryAction,
   props<{ payload: IContractCategory[], contract?: IContract }>()

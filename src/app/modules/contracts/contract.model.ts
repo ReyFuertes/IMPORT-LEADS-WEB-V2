@@ -102,6 +102,7 @@ export interface IContractCategory extends ICoreModel {
   category?: ICategory;
   contract?: IContract;
   terms?: IContractTerm[];
+  contract_category?: IContractCategory
 }
 export interface ICategory extends ICoreModel {
   category_name: string;

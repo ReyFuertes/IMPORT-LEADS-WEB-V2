@@ -31,9 +31,7 @@ export class ContractCategoryImportDialogComponent extends GenericDestroyPageCom
     this.store.pipe(select(getCategoryTemplatesSelector),
       takeUntil(this.$unsubscribe))
       .subscribe(res => {
-        if (res) {
-          this.contractCategories = res;
-        }
+        if (res) this.contractCategories = res
       })
   }
 

@@ -14,6 +14,9 @@
     color: $color-black-1;
     cursor: not-allowed;
   }
+  div {
+    height: 100%;
+  }
 }
 @mixin il-bg-blue {
   background-color: $color-primary;

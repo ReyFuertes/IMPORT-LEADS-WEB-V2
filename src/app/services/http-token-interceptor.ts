@@ -22,15 +22,6 @@ export class TokenInterceptor extends GenericDestroyPageComponent implements Htt
 
   constructor(private loaderSrv: LoaderService, private store: Store<AppState>, private router: Router) {
     super();
-
-    this.router.events
-      .pipe(takeUntil(this.$unsubscribe),
-        filter(e => e instanceof NavigationEnd))
-      .subscribe((e: NavigationEnd) => {
-        this.isInspectionPage = e.urlAfterRedirects.includes('inspections');
-        this.isInContractPage = e.urlAfterRedirects.includes('contracts');
-        this.isInReportPage = e.urlAfterRedirects.includes('report');
-      });
   }
 
   removeRequest(req: HttpRequest<any>) {

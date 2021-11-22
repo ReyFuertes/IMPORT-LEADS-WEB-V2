@@ -48,6 +48,6 @@ export class InputComponent extends GenericControl<ISimpleItem> implements OnCha
   ngOnChanges(changes: SimpleChanges): void {
     if (changes && changes?.isReadOnly && changes?.isReadOnly?.currentValue) {
       this.isReadOnly = changes?.isReadOnly?.currentValue;
-    }
+    };
   }
 }

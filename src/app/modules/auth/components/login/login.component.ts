@@ -57,16 +57,13 @@ export class LoginComponent extends GenericDestroyPageComponent implements OnIni
         }
       });
   }
-
+  
   public onSubmit(): void {
     if (this.form.valid) {
       const { username, password } = this.form.value;
       this.store.dispatch(isLoggingInAction());
       this.store.dispatch(loginAction({
-        cred: {
-          username: String(username).toLowerCase(),
-          password
-        }
+        cred: { username: String(username).toLowerCase(), password }
       }));
     }
   }

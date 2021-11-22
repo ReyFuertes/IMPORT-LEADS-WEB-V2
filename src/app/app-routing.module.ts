@@ -26,7 +26,8 @@ const routes: Routes = [
     ],
   },
   { path: 'report', loadChildren: './modules/report/report.module#ReportModule' },
-  { path: '**', component: PageNotFoundComponent },
+  { path: '404', component: PageNotFoundComponent },
+  { path: '**', redirectTo: '/404' }
 ];
 
 @NgModule({

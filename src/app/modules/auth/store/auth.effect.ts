@@ -7,12 +7,11 @@ import { loginAction, loginSuccessAction, logoutAction, loginFailedAction } from
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
-import { appNotificationAction } from 'src/app/store/actions/notification.action';
 import { loadVenuesAction } from '../../venues/store/venues.action';
 import { loadAccessAction, loadAllRolesAction, getUserAccessAction, getUserRoleAction, loadAppUserProfileAction, loadUserListAction, loadUserClientsAction } from 'src/app/store/actions/app.action';
-import { loadAllUsersAction } from '../../user-management/store/user-mgmt.actions';
 import { CONTRACTSROUTE } from 'src/app/shared/constants/routes';
 import { StorageService } from 'src/app/services/storage.service';
+import { UserService } from '../../users/users.service';
 
 @Injectable()
 export class AuthEffect {
@@ -60,6 +59,7 @@ export class AuthEffect {
     private actions$: Actions,
     private router: Router,
     private authSrv: AuthService,
-    private storageSrv: StorageService
+    private storageSrv: StorageService,
+    private userService: UserService
   ) { }
 }

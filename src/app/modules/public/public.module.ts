@@ -1,25 +1,25 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthContainerComponent } from './container/auth-container.component';
-import { LoginComponent } from './components/login/login.component';
-import { Routes, RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
-import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { RouterModule, Routes } from '@angular/router';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { SharedModule } from 'src/app/shared/shared.module';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
-import { AuthReducer } from './store/auth.reducer';
-import { AuthEffect } from './store/auth.effect';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { createTranslateLoader } from 'src/app/app.module';
 import { HttpClient } from '@angular/common/http';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { PublicContainerComponent } from './container/public-container.component';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { PublicReducer } from './store/public.reducer';
+import { PublicEffect } from './store/public.effects';
 
 const primengModules = [
   InputTextModule,
@@ -34,13 +34,13 @@ const materialModules = [
 ];
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent },
+  { path: 'change-password/:id', component: ChangePasswordComponent }
 ];
 
 @NgModule({
   declarations: [
-    AuthContainerComponent,
-    LoginComponent
+    PublicContainerComponent,
+    ChangePasswordComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -52,8 +52,8 @@ const routes: Routes = [
     ...primengModules,
     ...materialModules,
     RouterModule.forChild(routes),
-    StoreModule.forFeature('auth', AuthReducer),
-    EffectsModule.forFeature([AuthEffect]),
+    StoreModule.forFeature('public', PublicReducer),
+    EffectsModule.forFeature([PublicEffect]),
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
@@ -63,9 +63,9 @@ const routes: Routes = [
     })
   ],
   exports: [
-    AuthContainerComponent,
-    LoginComponent
+    PublicContainerComponent,
+    ChangePasswordComponent
   ],
   providers: [],
 })
-export class AuthModule { }
+export class PublicModule { }

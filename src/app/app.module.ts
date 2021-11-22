@@ -24,6 +24,7 @@ import { UserProfileEffects } from './modules/users/store/effects/user-profile.e
 import { ToastModule } from 'primeng/toast';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { PublicModule } from './modules/public/public.module';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -51,6 +52,7 @@ const primengModules = [
     SharedModule,
     HttpClientModule,
     AuthModule,
+    PublicModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([VenuesEffects, InitAppEffect, UserMgmtEffects, UserProfileEffects]),
     AppRoutingModule,

@@ -7,15 +7,17 @@ import { AuthState, AuthReducer } from '../modules/auth/store/auth.reducer';
 import { InitAppState, InitAppReducer } from './reducers/app.reducer';
 import { UserMgmtState, UserMgmtReducer } from '../modules/user-management/store/user-mgmt.reducer';
 import { UserViewReducer, UserViewState } from '../modules/view-permission/store/view-permission.reducer';
+import { PublicReducer, PublicState } from '../modules/public/store/public.reducer';
 export interface AppState {
   initApp: InitAppState,
-  notification?: NotificationState,
-  venues?: VenuesState,
-  products?: ContractProductsState,
-  tags?: TagsState,
+  notification: NotificationState,
+  venues: VenuesState,
+  products: ContractProductsState,
+  tags: TagsState,
   auth: AuthState,
-  userMgmt?: UserMgmtState,
-  userView?: UserViewState
+  userMgmt: UserMgmtState,
+  userView: UserViewState,
+  public: PublicState
 }
 export const reducers: ActionReducerMap<AppState> = {
   initApp: InitAppReducer,
@@ -25,5 +27,6 @@ export const reducers: ActionReducerMap<AppState> = {
   tags: TagsReducer,
   auth: AuthReducer,
   userMgmt: UserMgmtReducer,
-  userView: UserViewReducer
+  userView: UserViewReducer,
+  public: PublicReducer
 };

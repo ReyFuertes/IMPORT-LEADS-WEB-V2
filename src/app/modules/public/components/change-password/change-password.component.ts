@@ -10,8 +10,8 @@ import { passwordValidator } from 'src/app/shared/util/validator';
 import { AppState } from 'src/app/store/app.reducer';
 import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 import { environment } from 'src/environments/environment';
-import { isUserExistForChangePasswordAction } from '../../store/public.actions';
-import { getPublicEmailSelector } from '../../store/public.selectors';
+import { ChangePublicUserPasswordAction } from '../../store/public.actions';
+import { getPublicEmailTokenSelector } from '../../store/public.selectors';
 
 @Component({
   selector: 'il-auth-change-password',
@@ -30,22 +30,17 @@ export class ChangePasswordComponent extends GenericDestroyPageComponent impleme
       username: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required, Validators.minLength(6)]],
       confirm_password: [null, [Validators.required, Validators.minLength(6)]],
+      token: [null, Validators.required]
     }, {
       validator: passwordValidator('password', 'confirm_password')
     });
-
-    this.id = this.route.snapshot.paramMap.get('id') || null;
-    if (this.id) {
-      this.store.dispatch(isUserExistForChangePasswordAction({ id: this.id }));
-    } else {
-      this.router.navigateByUrl('404');
-    }
   }
 
   ngOnInit(): void {
-    this.store.pipe(select(getPublicEmailSelector), debounceTime(1000)).subscribe(email => {
-      if (email) {
-        this.form.get('username').patchValue(email);
+    this.store.pipe(select(getPublicEmailTokenSelector), debounceTime(1500)).subscribe(emailToken => {
+      if (emailToken?.email && emailToken?.token) {
+        this.form.get('username').patchValue(emailToken?.email);
+        this.form.get('token').patchValue(emailToken?.token);
       } else {
         this.router.navigateByUrl('404');
       }
@@ -61,7 +56,9 @@ export class ChangePasswordComponent extends GenericDestroyPageComponent impleme
 
   public onSubmit(): void {
     if (this.form.valid) {
-      console.log(this.form.value)
+      this.store.dispatch(ChangePublicUserPasswordAction({
+        payload: this.form.value
+      }))
     }
   }
 }

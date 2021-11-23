@@ -34,7 +34,11 @@ const materialModules = [
 ];
 
 const routes: Routes = [
-  { path: 'change-password/:id', component: ChangePasswordComponent }
+  {
+    path: 'change-password/:id',
+    component: PublicContainerComponent,
+    children: [{ path: '', component: ChangePasswordComponent }]
+  }
 ];
 
 @NgModule({

@@ -2,15 +2,15 @@ import { createReducer, on, Action } from "@ngrx/store";
 import { isUserExistForChangePasswordSuccessAction } from "./public.actions";
 
 export interface PublicState {
-  email: string
+  emailToken?: { email: string, token: string }
 }
 export const initialState: PublicState = {
-  email: null
+  emailToken: null
 };
 const publicReducer = createReducer(
   initialState,
   on(isUserExistForChangePasswordSuccessAction, (state, action) => {
-    return Object.assign({}, state, { email: action.response });
+    return Object.assign({}, state, { emailToken: action.response });
   })
 );
 export function PublicReducer(state: PublicState, action: Action) {

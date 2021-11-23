@@ -1,11 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/store/app.reducer';
+import { isUserExistForChangePasswordAction } from '../store/public.actions';
 @Component({
   selector: 'il-public-container',
   templateUrl: './public-container.component.html'
 })
 export class PublicContainerComponent implements OnInit {
-  constructor() { }
+  public id: string;
+
+  constructor(private router: Router, private route: ActivatedRoute, private cdRef: ChangeDetectorRef, private store: Store<AppState>) {
+    this.id = this.route.snapshot.paramMap.get('id') || null;
+    if (this.id) {
+      this.store.dispatch(isUserExistForChangePasswordAction({ id: this.id }));
+    } else {
+      this.router.navigateByUrl('404');
+    }
+  }
 
   ngOnInit(): void { }
 }

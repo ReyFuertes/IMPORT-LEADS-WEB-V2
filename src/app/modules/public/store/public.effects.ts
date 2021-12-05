@@ -8,7 +8,6 @@ import { ChangePublicUserPasswordAction, ChangePublicUserPasswordSuccessAction, 
 
 @Injectable()
 export class PublicEffect {
-  
   changePublicUserPasswordAction$ = createEffect(() => this.actions$.pipe(
     ofType(ChangePublicUserPasswordAction),
     switchMap(({ payload }) => this.userService.patch(payload, 'public/change-password').pipe(

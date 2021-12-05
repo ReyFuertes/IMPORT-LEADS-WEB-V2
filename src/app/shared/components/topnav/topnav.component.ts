@@ -49,9 +49,7 @@ export class TopNavComponent extends GenericDestroyPageComponent implements OnIn
     this.store.pipe(select(getUserAccessSelector),
       takeUntil(this.$unsubscribe)).subscribe(res => {
         if (res) {
-          /* process user access menus */
           this.accessMenus.push(...res);
-         
           this.$menus = this.store.pipe(select(getAccessSelector), map(m => {
             /* filter the parent menus */
             let parentMenuMatches = m?.filter(
@@ -66,7 +64,6 @@ export class TopNavComponent extends GenericDestroyPageComponent implements OnIn
               parent.children = children.sort((a, b) => sortByAsc(a, b, 'position'));
 
             });
-
             return parentMenuMatches;
           }));
         }
@@ -76,16 +73,13 @@ export class TopNavComponent extends GenericDestroyPageComponent implements OnIn
       takeUntil(this.$unsubscribe))
       .subscribe(res => {
         if (res) {
-
           const user = Object.assign({}, res, {
             username: `${res?.firstname} ${res?.lastname}`
           });
-
           const localUser = JSON.parse(this.storageSrv.get('at')) || null;
           if (localUser) {
             this.user = localUser.user;
           }
-
           this.user = user || localUser.user;
 
           this.cdRef.detectChanges();

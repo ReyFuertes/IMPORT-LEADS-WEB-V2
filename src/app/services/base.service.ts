@@ -70,13 +70,11 @@ export abstract class BaseService<T> {
 
   public getAll(param?: string): Observable<T[]> {
     return this.http.get<T[]>(`${this.baseUrl}${this.entity}${this.fmtParam(param)}`,
-      { headers: this.commonHeaders() })
-      .pipe(shareReplay());
+      { headers: this.commonHeaders() });
   }
 
   public getById(id: string, addtnlParam?: string): Observable<T> {
-    return this.http.get<T>(`${this.baseUrl}${this.entity}/${id}${this.fmtParam(addtnlParam)}`, { headers: this.commonHeaders() })
-    .pipe(shareReplay());
+    return this.http.get<T>(`${this.baseUrl}${this.entity}/${id}${this.fmtParam(addtnlParam)}`, { headers: this.commonHeaders() });
   }
 
   public getBinaryById(id: string, addtnlParam?: string): Observable<T> {

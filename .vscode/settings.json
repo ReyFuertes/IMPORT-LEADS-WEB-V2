@@ -1,0 +1,8 @@
+{
+  "appService.defaultWebAppToDeploy": "/subscriptions/d1c10f63-fccd-45cb-bcb3-8adaea9351e5/resourceGroups/iaad-resource-group/providers/Microsoft.Web/sites/cil-china-client",
+  "appService.deploySubpath": "dist",
+  "appService.zipIgnorePattern": [
+    "node_modules{,/**}",
+    ".vscode{,/**}"
+  ]
+}

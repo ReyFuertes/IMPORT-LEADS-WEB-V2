@@ -24,7 +24,7 @@ table {
   margin-right: 5px;
 }
 .has-border {
-  border-top: thin $color-gray-3 solid !important;
+  border-bottom: thin $color-gray-3 solid !important;
 }
 .mat-column-expandedDetail {
   background-color: $color-gray-5;
@@ -47,7 +47,7 @@ table {
     span:first-child {
       font-weight: 500;
       font-size: 12px;
-      color: $color-gray-1;
+      color: $color-black-1;
     }
     span:nth-child(2) {
       font-size: 13px;

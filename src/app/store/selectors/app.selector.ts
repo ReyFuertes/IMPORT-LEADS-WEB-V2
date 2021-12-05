@@ -58,7 +58,7 @@ export const getAccessSelector = createSelector(
       value: String(a.id),
       parent: a.parent,
       children,
-      user_route: a.user_route
+      access_route: a.access_route
     }
   }).sort((a, b) => sortByDesc(a, b, 'position'))
 );

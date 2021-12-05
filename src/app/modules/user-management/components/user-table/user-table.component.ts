@@ -65,7 +65,7 @@ export class UserTableComponent extends GenericContainer implements AfterViewIni
   }
 
   private setData(data: any): void {
-    if(data?.length > 0) {
+    if (data?.length > 0) {
       this.dataSource = new MatTableDataSource<any>(data);
 
       this.dataSource.paginator = this.paginator;
@@ -112,6 +112,10 @@ export class UserTableComponent extends GenericContainer implements AfterViewIni
     }
   }
 
+  public isExcludedCols(col: string): boolean {
+    return ['user', 'database_name'].includes(col);
+  }
+
   public toDetail(id: string): void {
     this.router.navigateByUrl(`${USERMNGMNTROUTE}/${id}/detail`);
   }
@@ -123,14 +127,14 @@ export class UserTableComponent extends GenericContainer implements AfterViewIni
     } else if (col === 'user_role') {
       return this.fmt(_item, 'user_role', 'role', 'role_name');
     } else {
-      return item[col];
+      return item[col] || '';
     }
   }
 
   public fmt(item: IUser, col: string, propIdx: string, propName: string) {
     const _item = Object.assign({}, item);
     const ret = _item[col]?.map(a => a[propIdx] && a[propIdx][propName]).join(', ');
-    return ret;
+    return ret || '';
   }
 
   public onDelete(id: string): void {

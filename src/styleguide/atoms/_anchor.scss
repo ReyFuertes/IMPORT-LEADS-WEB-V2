@@ -1,0 +1,63 @@
+@mixin anchor {
+  border-radius: 2px;
+  font-size: 12px;
+  font-weight: normal;
+  min-width: 112px;
+  height: 35px !important;
+  line-height: 32px;
+  border-radius: 2px;
+  width: fit-content !important;
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.8 !important;
+    background-color: $color-gray-3;
+    color: $color-black-1;
+    cursor: not-allowed;
+  }
+  div {
+    height: 100%;
+  }
+}
+@mixin il-anchor {
+  &.default {
+    @include anchor;
+    color: $color-primary;
+    background-color: $color-gray-4;
+  }
+  &.primary {
+    @include anchor;
+    background-color: $color-primary !important;
+    color: $color-white !important;
+  }
+  &.danger {
+    @include anchor;
+    background-color: $color-red;
+    color: $color-white;
+  }
+  &.large {
+    min-width: 176px;
+    width: fit-content;
+    height: 40px !important;
+    font-size: 14px;
+  }
+  &.small {
+    min-width: 80px;
+    width: fit-content;
+    height: 32px !important;
+    font-size: 14px;
+  }
+  &.purple {
+    background-color: $color-purple;
+    color: $color-white;
+    border-radius: 2px;
+    height: 32px;
+    line-height: 25px;
+    padding: 0 10px;
+    font-size: 12px;
+    font-weight: 500;
+    width: 100%;
+    span {
+      line-height: 30px;
+    }
+  }
+}

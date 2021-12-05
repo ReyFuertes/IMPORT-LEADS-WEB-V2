@@ -1,20 +1,16 @@
 import { tap, debounceTime, takeUntil } from 'rxjs/operators';
-import { environment } from './../../../../../environments/environment';
 import { AppState } from './../../../../store/app.reducer';
 import { Store, select } from '@ngrx/store';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { loginAction, isLoggingInAction } from '../../store/auth.action';
 import { getIsLoggingInSelector, getIsLoginFailedSelector, getUserLangSelector } from 'src/app/store/selectors/app.selector';
-import { ISimpleItem } from 'src/app/shared/generics/generic.model';
-import { textRegex } from 'src/app/shared/util/text';
 import { emailRegex } from 'src/app/shared/util/email';
 import { getLoginErrorSelector } from '../../store/auth.selector';
-import { appNotificationAction } from 'src/app/store/actions/notification.action';
 import { TranslateService } from '@ngx-translate/core';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'il-login',

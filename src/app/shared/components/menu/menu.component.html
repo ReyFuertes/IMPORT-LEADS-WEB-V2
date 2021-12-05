@@ -5,5 +5,5 @@
   <img *ngIf="hasChildren(menu)" [src]="svgPath + 'arrow-down-icon-black.svg'" (click)="$event.stopPropagation()" [matMenuTriggerFor]="subMenu">
 </div>
 <mat-menu #subMenu="matMenu">
-  <button class="sub-menu-item" *ngFor="let submenu of menu?.children" [routerLink]="submenu?.user_route" mat-menu-item translate>{{ submenu?.access_name }}</button>
+  <button class="sub-menu-item" *ngFor="let submenu of menu?.children" [routerLink]="submenu?.access_route" mat-menu-item translate>{{ submenu?.access_name }}</button>
 </mat-menu>

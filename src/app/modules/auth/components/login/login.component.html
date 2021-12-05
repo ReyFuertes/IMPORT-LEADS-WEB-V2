@@ -21,7 +21,7 @@
           <button [disabled]="!form.valid" (click)="onSubmit()" mat-flat-button class="il-button primary large" fxLayoutGap="5px">
             <div class="btn-div" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
               <i *ngIf="($isLogging | async) && !($isLoginFailed | async)" class="pi pi-spin pi-spinner" style="font-size: 2em"></i>
-              <div>{{ 'LOGIN' | translate }}</div>
+              <div fxLayout="row" fxLayoutAlign="center center">{{ 'LOGIN' | translate }}</div>
             </div>
           </button>
           <div class="error"><span *ngIf="loginError">{{ 'Login Failed' | translate }}</span>

@@ -19,8 +19,8 @@ export class MenuComponent extends GenericDestroyPageComponent implements OnInit
   @Input()
   public menu: {
     label: string, children?: Array<{
-      label: string, user_route?: string
-    }>, user_route?: string
+      label: string, access_route?: string
+    }>, access_route?: string
   };
   constructor(private cdRef: ChangeDetectorRef, private store: Store<AppState>, public translateService: TranslateService) {
     super();

@@ -29,12 +29,14 @@
       <td [ngClass]="{'has-border': item == expandedElement}" mat-cell *matCellDef="let item" [attr.colspan]="columnsToDisplay.length">
         <div class="tbl-el-detail" [@detailExpand]="item == expandedElement ? 'expanded' : 'collapsed'">
           <div fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="10px" class="tbl-el-diagram">
-            <div *ngFor="let col of cols" fxFlex="30">
-              <span>{{ fmtToTitlecase(col) | uppercase }}</span>
-              <span>{{ fmtItem(item, col) | titlecase }}</span>
-            </div>
+            <ng-container *ngFor="let col of cols">
+              <div *ngIf="!isExcludedCols(col)" fxFlex="30">
+                <span>{{ fmtToTitlecase(col) | uppercase }}</span>
+                <span>{{ fmtItem(item, col) }}</span>
+              </div>
+            </ng-container>
             <div fxFlex="30">
-              <span>{{ 'Self Intro' | translate }}</span>
+              <span>{{ 'SELF INTRO' | translate }}</span>
               <span>{{item?.self_intro}}</span>
             </div>
           </div>

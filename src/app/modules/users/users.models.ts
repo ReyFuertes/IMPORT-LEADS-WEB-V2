@@ -1,3 +1,11 @@
+import { IUser, IUserAccess, IUserRole } from "../user-management/user-mgmt.model";
+
+export interface IUserProfileResponse extends IUserProfile {
+  user: IUser;
+  user_access: IUserAccess[];
+  user_role: IUserRole[]
+
+}
 export interface IUserProfile {
   id?: string;
   firstname?: string;
@@ -24,10 +32,10 @@ export interface User {
   firstname?: string;
   lastname?: string;
   position: string;
-  role: UserRole;
   company: string;
   phone?: string;
   image?: string;
+  roles: UserRole[];
   access?: UserAccess[];
 }
 

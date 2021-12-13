@@ -1,7 +1,7 @@
 <div fxLayout="column" fxLayoutGap="20px">
   <h2 fxFlex>{{ 'User Details' | translate }}</h2>
   <mat-card>
-    <div class="content" fxLayout="column" fxLayoutGap="30px">
+    <div *ngIf="form" class="content" fxLayout="column" fxLayoutGap="30px">
       <div fxLayout="column">
         <h4>{{ 'User Info' | translate }}</h4>
         <div>
@@ -12,7 +12,7 @@
             <il-dropdown-multi-select fxFlex="25" [isFloatLabel]="true" [form]="form" controlName="user_access" placeHolder="Access" [options]="($access | async)">
             </il-dropdown-multi-select>
             <!-- this can only be viewed by admin -->
-            <il-dropdown-multi-select fxFlex="25" inputMaxLen="50" [isFloatLabel]="true" [form]="form" controlName="user_role" placeHolder="Role" [options]="($roles | async)">
+            <il-dropdown-multi-select fxFlex="25" inputMaxLen="50" [isFloatLabel]="true" [form]="form" controlName="user_roles" placeHolder="Role" [options]="($roles | async)">
             </il-dropdown-multi-select>
           </div>
         </div>
@@ -21,7 +21,7 @@
       <!-- user profile -->
       <div fxLayout="column" fxLayoutGap="20px">
         <div fxLayout="column">
-          <div fxFlex fxLayout="column" fxLayoutGap="20px">
+          <div fxFlex fxLayout="column" fxLayoutGap="10px">
             <h4>User Profile</h4>
             <div fxFlex fxLayout="column" fxLayoutAlign="start start">
               <div class="ctrl-container" fxLayout="row" fxLayoutGap="40px">
@@ -38,7 +38,7 @@
                 <il-input fxFlex="25" inputMaxLen="50" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true" controlName="twitter" placeholder="Twitter"></il-input>
               </div>
 
-              <div class="ctrl-container" fxLayout="row" fxLayoutGap="40px">
+              <div class="ctrl-container" fxLayout="row wrap" fxLayoutGap="40px">
                 <il-input fxFlex="25" inputMaxLen="50" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true" controlName="wechatid" placeholder="WeChat ID"></il-input>
                 <il-input fxFlex="25" inputMaxLen="50" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true" controlName="qqid" placeholder="QQid"></il-input>
                 <il-input fxFlex="25" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true" controlName="position" inputMaxLen="25" placeholder="Position"></il-input>
@@ -48,7 +48,7 @@
           </div>
         </div>
         <div fxLayout="column">
-          <div fxFlex fxLayout="column" fxLayoutGap="20px">
+          <div fxFlex fxLayout="column" fxLayoutGap="10px">
             <h4>{{ 'Company Details' | translate }}</h4>
             <div class="ctrl-container" fxLayout="column">
               <div fxLayout="row" fxLayoutGap="20px">

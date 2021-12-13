@@ -4,11 +4,11 @@ import { Observable } from 'rxjs';
 import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
-import { getAllRolesSelector, getAccessSelector, getUserLangSelector } from 'src/app/store/selectors/app.selector';
+import { getAllRolesSelector, getAllAccessSelector, getUserLangSelector } from 'src/app/store/selectors/app.selector';
 import { environment } from 'src/environments/environment';
 import { saveUserAction } from '../../store/user-mgmt.actions';
 import { ActivatedRoute } from '@angular/router';
-import { UserMgmtService } from '../../user-mgmt.service';
+import { UserManagementService } from '../../user-mgmt.service';
 import { tap, takeUntil } from 'rxjs/operators';
 import { IUser } from '../../user-mgmt.model';
 import { getUserByIdSelector } from '../../store/user-mgmt.selectors';
@@ -16,6 +16,8 @@ import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-des
 import { emailRegex } from 'src/app/shared/util/email';
 import { USERMNGMNTROUTE } from 'src/app/shared/constants/routes';
 import { TranslateService } from '@ngx-translate/core';
+import { IUserProfile, IUserProfileResponse } from 'src/app/modules/users/users.models';
+import { loadAppUserProfileAction } from 'src/app/store/actions/app.action';
 
 @Component({
   selector: 'il-user-detail',
@@ -30,6 +32,7 @@ export class UserDetailComponent extends GenericDestroyPageComponent implements 
   public $access: Observable<ISimpleItem[]>;
   public id: string;
   public userMngmtRoute = USERMNGMNTROUTE;
+  public fmtUserAccess: any;
 
   constructor(private cdRef: ChangeDetectorRef, public translateService: TranslateService, private route: ActivatedRoute, private store: Store<AppState>, private fb: FormBuilder) {
     super();
@@ -38,7 +41,7 @@ export class UserDetailComponent extends GenericDestroyPageComponent implements 
       id: [null],
       username: [null, Validators.compose([Validators.required, Validators.pattern(emailRegex.email)])],
       user_access: [null],
-      user_role: [null],
+      user_roles: [null],
       password: [null, Validators.required],
       user_profile: this.fb.group({
         firstname: [null, Validators.required],
@@ -58,35 +61,29 @@ export class UserDetailComponent extends GenericDestroyPageComponent implements 
       })
     });
 
+    this.id = this.route.snapshot.paramMap.get('id') || null;
+    if (this.id) {
+      this.store.pipe(select(getUserByIdSelector(this.id)))
+        .pipe(takeUntil(this.$unsubscribe)).subscribe((userProfile: IUserProfileResponse) => {
+          if (userProfile) {
+            const formValues = {
+              ...userProfile?.user,
+              user_profile: userProfile,
+              user_access: userProfile?.user_access?.map((uc: any) => uc?.value),
+              user_roles: userProfile?.user_role?.map((uc: any) => uc?.value),
+            };
+            this.form.patchValue(formValues, { emitEvent: false });
+          }
+        });
+    }
   }
 
   ngOnInit(): void {
-    this.$access = this.store.pipe(select(getAccessSelector));
+    this.$access = this.store.pipe(select(getAllAccessSelector));
     this.$roles = this.store.pipe(select(getAllRolesSelector));
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.id = this.route.snapshot.paramMap.get('id');
-      if (this.id) {
-        this.store.pipe(select(getUserByIdSelector(this.id)))
-          .pipe(takeUntil(this.$unsubscribe), tap((user: IUser) => {
-
-            let userAccess = user && user.user_access.map(u => {
-              return String(u.access.id)
-            });
-            let userRoles = user && user.user_role.map(u => {
-
-              return String(u.role.id)
-            });
-            let formUser = Object.assign({}, user, { user_access: userAccess }, { user_role: userRoles });
-
-            this.form.patchValue(formUser);
-
-          })).subscribe();
-      }
-    });
-
     this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
       .subscribe(language => {
         if (language) {
@@ -107,8 +104,6 @@ export class UserDetailComponent extends GenericDestroyPageComponent implements 
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes && changes.form && changes.form.currentValue) {
-      this.form = changes.form.currentValue;
-    }
+    this.form = changes?.form?.currentValue;
   }
 }

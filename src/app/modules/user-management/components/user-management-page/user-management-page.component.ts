@@ -17,10 +17,10 @@ import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 export class UserManagementPageComponent extends GenericDestroyPageComponent implements OnInit {
   constructor(private cdRef: ChangeDetectorRef, public translateService: TranslateService, private store: Store<AppState>, private dialog: MatDialog) {
     super();
+    this.store.dispatch(loadAllUsersAction());
   }
 
   ngOnInit(): void { 
-    this.store.dispatch(loadAllUsersAction());
     this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
       .subscribe(language => {
         if (language) {

@@ -10,7 +10,7 @@ import { takeUntil, tap, take, debounceTime } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import * as _ from 'lodash';
 import { Router } from '@angular/router';
-import { getAccessSelector, getAllRolesSelector, getUserLangSelector } from 'src/app/store/selectors/app.selector';
+import { getAllAccessSelector, getAllRolesSelector, getUserLangSelector } from 'src/app/store/selectors/app.selector';
 import { saveUserAccessAction, saveUserRoleAction, deleteUserAction } from '../../store/user-mgmt.actions';
 import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
 import { splitToSentCase } from 'src/app/shared/util/format-value';
@@ -39,7 +39,7 @@ export class UserTableComponent extends GenericContainer implements AfterViewIni
   public imgPath: string = environment.imgPath;
   public svgPath: string = environment.svgPath;
   public dataSource: any;
-  public columnsToDisplay = ['username', 'position', 'role', 'company_name', 'phone', 'access', 'action'];
+  public columnsToDisplay = ['email', 'position', 'role', 'company_name', 'phone', 'access', 'action'];
   public expandedElement: IUserMgmt | null;
   public accessOptions: ISimpleItem[];
   public noExpandCols: number[] = [2, 5, 6];
@@ -67,7 +67,6 @@ export class UserTableComponent extends GenericContainer implements AfterViewIni
   private setData(data: any): void {
     if (data?.length > 0) {
       this.dataSource = new MatTableDataSource<any>(data);
-
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     }
@@ -75,7 +74,6 @@ export class UserTableComponent extends GenericContainer implements AfterViewIni
 
   ngAfterViewInit(): void {
     this.$users = this.store.pipe(select(getTableUsersSelector));
-
     this.$users.pipe(debounceTime(100), takeUntil(this.$unsubscribe),
       tap((res) => {
         const _res = res.filter(i => i !== undefined);
@@ -87,10 +85,17 @@ export class UserTableComponent extends GenericContainer implements AfterViewIni
         }
       })).subscribe();
 
-    this.store.pipe(select(getAccessSelector))
-      .pipe(tap(res => {
-        if (res) this.accessOptions = res;
-      })).subscribe();
+    this.store.pipe(select(getAllAccessSelector))
+      .pipe(takeUntil(this.$unsubscribe)).subscribe(res => {
+        if (res) {
+          this.accessOptions = res?.map(value => {
+            return {
+              value: value?.value,
+              label: value?.label
+            }
+          });
+        }
+      });
 
     this.store.pipe(select(getAllRolesSelector)).pipe(tap(res => {
       if (res) this.rolesOptions = res;
@@ -156,14 +161,10 @@ export class UserTableComponent extends GenericContainer implements AfterViewIni
     let ret: any[];
     switch (col) {
       case 'access':
-        ret = values
-          && values.user_access.length > 0
-          && values.user_access.map(i => i.access && i.access.id) || [];
+        ret = values?.user_access?.map(i => i?.value) || [];
         return ret;
       case 'role':
-        ret = values
-          && values.user_role.length > 0
-          && values.user_role.map(i => i.role && i.role.id) || [];
+        ret = values?.user_role?.map(i => i?.value) || [];
     }
     return ret;
   }

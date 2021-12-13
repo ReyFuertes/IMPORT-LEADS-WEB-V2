@@ -24,8 +24,9 @@ export class ChangePasswordComponent extends GenericDestroyPageComponent impleme
   public form: FormGroup;
   public id: string;
   public changePasswordSuccessful: boolean;
+  public isChangedPassword: boolean = false;
 
-  constructor(private router: Router, private route: ActivatedRoute, private cdRef: ChangeDetectorRef, private store: Store<AppState>, public translateService: TranslateService, private fb: FormBuilder) {
+  constructor(private cdRef: ChangeDetectorRef, private store: Store<AppState>, public translateService: TranslateService, private fb: FormBuilder) {
     super();
     this.form = this.fb.group({
       username: [null, [Validators.required, Validators.email]],
@@ -39,15 +40,16 @@ export class ChangePasswordComponent extends GenericDestroyPageComponent impleme
   }
 
   ngOnInit(): void {
-    this.store.pipe(select(getPublicEmailTokenSelector), debounceTime(1500)).subscribe(emailToken => {
-      if (emailToken?.email && emailToken?.token) {
-        this.form.get('username').patchValue(emailToken?.email);
-        this.form.get('token').patchValue(emailToken?.token);
-        this.form.get('website_url').patchValue(emailToken?.website_url);
-      } else {
-        this.router.navigateByUrl('404');
-      }
-    });
+    this.store.pipe(select(getPublicEmailTokenSelector), takeUntil(this.$unsubscribe))
+      .subscribe(emailToken => {
+        if (emailToken?.email && emailToken?.token) {
+          this.form.get('username').patchValue(emailToken?.email, { emitEvent: false });
+          this.form.get('token').patchValue(emailToken?.token, { emitEvent: false });
+          this.form.get('website_url').patchValue(emailToken?.website_url, { emitEvent: false });
+        }
+        this.isChangedPassword = !!emailToken?.email;
+        this.cdRef.detectChanges();
+      });
     this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
       .subscribe(language => {
         if (language) {
@@ -58,6 +60,7 @@ export class ChangePasswordComponent extends GenericDestroyPageComponent impleme
 
     this.store.pipe(select(getIsPasswordChangedSelector), takeUntil(this.$unsubscribe))
       .subscribe(isPasswordChanged => this.changePasswordSuccessful = isPasswordChanged);
+
   }
 
   public done(): void {

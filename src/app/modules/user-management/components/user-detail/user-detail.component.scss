@@ -16,6 +16,9 @@
   @include il-button;
 }
 :host ::ng-deep {
+  .mat-card {
+    padding: 40px;
+  }
   il-dropdown-select {
     max-width: 250px !important;
   }

@@ -12,14 +12,14 @@
         <input #uploader hidden name="file" type="file" (change)="uploadImage($event)" />
       </div>
       <div fxFlex="80" fxLayout="column">
-        <il-input [form]="form" isFloatLabel="true" [controlName]="'name'" placeholder="Name" [isRequired]="true"></il-input>
-        <il-input [form]="form" isFloatLabel="true" [controlName]="'location'" placeholder="Location" [isRequired]="true"></il-input>
+        <il-input [form]="form" isFloatLabel="true" [controlName]="'name'" [placeholder]="'Name' | translate" [isRequired]="true"></il-input>
+        <il-input [form]="form" isFloatLabel="true" [controlName]="'location'" [placeholder]="'Location' | translate" [isRequired]="true"></il-input>
         <div class="pill-container" fxLayout="row wrap" fxLayoutGap="5px">
           <il-pill *ngFor="let item of selectedItems" [item]="item" (removeEmitter)="onRemove($event)">
           </il-pill>
         </div>
-        <il-input fxFlex [form]="form" isFloatLabel="true" [controlName]="'contact'" placeholder="'Contact Person' | translate"></il-input>
-        <il-input fxFlex [form]="form" isFloatLabel="true" [controlName]="'phone'" placeholder="'Phone' | translate"></il-input>
+        <il-input fxFlex [form]="form" isFloatLabel="true" [controlName]="'contact'" [placeholder]="'Contact Person' | translate"></il-input>
+        <il-input fxFlex [form]="form" isFloatLabel="true" [controlName]="'phone'" [placeholder]="'Phone' | translate"></il-input>
       </div>
     </div>
   </div>

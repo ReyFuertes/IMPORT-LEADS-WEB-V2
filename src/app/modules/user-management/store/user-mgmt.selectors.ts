@@ -33,18 +33,18 @@ export const getCreatingUserSelector = createSelector(
 export const getTableUsersSelector = createSelector(
   selectedState,
   state => {
-    const fmtUsers = Object.values(state.entities) || [];
-    const users = fmtUsers.map((u: IUserMgmt) => {
+    const users = Object.values(state.entities) || [];
+    const fmtUsers = users.map((u: IUserMgmt) => {
       //if (!u.user_profile) return;
       let ret: IUserTableData = Object.assign({}, {
         ...u?.user_profile,
         ...u,
         _id: u.id,
-        name: u?.user_profile?.firstname + ' ' + u?.user_profile?.lastname
+        name: (u?.user_profile?.firstname + ' ' + u?.user_profile?.lastname)
       });
       delete ret?.user_profile;
       return ret;
     });
-    return users;
+    return fmtUsers;
   }
 );

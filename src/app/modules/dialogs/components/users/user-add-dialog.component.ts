@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 import { take, takeUntil, tap } from 'rxjs/operators';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { Store, select } from '@ngrx/store';
-import { getAccessSelector, getAllRolesSelector } from 'src/app/store/selectors/app.selector';
+import { getAllAccessSelector, getAllRolesSelector } from 'src/app/store/selectors/app.selector';
 import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 import { Observable } from 'rxjs';
 import { addUserAction, signUpUserAction } from 'src/app/modules/user-management/store/user-mgmt.actions';
@@ -47,7 +47,7 @@ export class UserAddDialogComponent extends GenericDestroyPageComponent implemen
         if (res) this.form.controls['user_role'].setErrors(null);
       });
 
-    this.$access = this.store.pipe(select(getAccessSelector));
+    this.$access = this.store.pipe(select(getAllAccessSelector));
     this.$roles = this.store.pipe(select(getAllRolesSelector))
   }
 

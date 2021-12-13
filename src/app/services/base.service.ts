@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import * as _ from 'lodash';
 import { Directive } from '@angular/core';
 import { StorageService } from './storage.service';
-import { shareReplay } from 'rxjs/operators';
 
 @Directive()
 export abstract class BaseService<T> {
@@ -18,8 +17,11 @@ export abstract class BaseService<T> {
   }
 
   private getToken(): string {
-    return JSON.parse(this.storageSrv.get('at') || null) ?
-      JSON.parse(this.storageSrv.get('at')).accessToken : null;
+    let token = this.storageSrv.get('at');
+    if(token) {
+      token = JSON.parse(this.storageSrv.get('at')).accessToken;
+    }
+    return token;
   }
 
   protected commonHeaders(): HttpHeaders {

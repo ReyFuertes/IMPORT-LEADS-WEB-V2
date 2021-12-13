@@ -6,7 +6,7 @@ import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { logoutAction } from 'src/app/modules/auth/store/auth.action';
 import { IUser } from 'src/app/modules/user-management/user-mgmt.model';
 import { Observable } from 'rxjs';
-import { getAccessSelector, getAppUserProfileSelector, getUserAccessSelector } from 'src/app/store/selectors/app.selector';
+import { getAllAccessSelector, getAppUserProfileSelector, getUserAccessSelector } from 'src/app/store/selectors/app.selector';
 import { ISimpleItem } from '../../generics/generic.model';
 import { debounceTime, map, takeUntil } from 'rxjs/operators';
 import { sortByAsc, sortByDesc } from '../../util/sort';
@@ -50,7 +50,7 @@ export class TopNavComponent extends GenericDestroyPageComponent implements OnIn
       takeUntil(this.$unsubscribe)).subscribe(res => {
         if (res) {
           this.accessMenus.push(...res);
-          this.$menus = this.store.pipe(select(getAccessSelector), map(m => {
+          this.$menus = this.store.pipe(select(getAllAccessSelector), map(m => {
             /* filter the parent menus */
             let parentMenuMatches = m?.filter(
               m => !m.parent

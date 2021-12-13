@@ -29,7 +29,6 @@ export class HasRoleDirective extends GenericDestroyPageComponent implements OnI
     this.store.pipe(select(getUserRolesSelector),
       takeUntil(this.$unsubscribe)
     ).subscribe(roles => {
-    
       // If he doesn't have any roles, we clear the viewContainerRef
       if (!roles) {
         this.viewContainerRef.clear();

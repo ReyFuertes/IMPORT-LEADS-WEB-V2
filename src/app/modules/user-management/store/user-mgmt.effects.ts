@@ -5,7 +5,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { AppState } from 'src/app/modules/contracts/store/reducers';
 import { loadAllUsersAction, loadAllUsersSuccessAction, saveUserAccessAction, saveUserAccessSuccessAction, saveUserRoleAction, saveUserRoleSuccessAction, addUserAction, addUserSuccessAction, signUpUserAction, signUpUserSuccessAction, deleteUserAction, deleteUserSuccessAction, saveUserAction, saveUserSuccessAction } from './user-mgmt.actions';
 import { IUserAccess, IUserRole, IUser } from '../user-mgmt.model';
-import { UserAccessService, UserRolesService, UserMgmtService } from '../user-mgmt.service';
+import { UserAccessService, UserRolesService, UserManagementService } from '../user-mgmt.service';
 import { AuthService } from '../../auth/auth.service';
 import { StorageService } from 'src/app/services/storage.service';
 
@@ -14,7 +14,7 @@ export class UserMgmtEffects {
   saveUserAction$ = createEffect(() => this.actions$.pipe(
     ofType(saveUserAction),
     switchMap(({ payload }) => {
-      return this.userMgmtSrv.patch(payload).pipe(
+      return this.userManagementService.patch(payload).pipe(
         map((response: IUser) => {
           return saveUserSuccessAction({ response });
         })
@@ -23,7 +23,7 @@ export class UserMgmtEffects {
   ));
   deleteUserAction$ = createEffect(() => this.actions$.pipe(
     ofType(deleteUserAction),
-    switchMap(({ id }) => this.userMgmtSrv.delete(id)
+    switchMap(({ id }) => this.userManagementService.delete(id)
       .pipe(
         map((deleted: IUser) => {
           return deleteUserSuccessAction({ deleted });
@@ -43,7 +43,7 @@ export class UserMgmtEffects {
   addUserAction$ = createEffect(() => this.actions$.pipe(
     ofType(addUserAction),
     switchMap(({ payload }) => {
-      return this.userMgmtSrv.post(payload).pipe(
+      return this.userManagementService.post(payload).pipe(
         map((response: IUser) => {
 
           this.store.dispatch(loadAllUsersAction());
@@ -70,16 +70,13 @@ export class UserMgmtEffects {
     ofType(saveUserAccessAction),
     switchMap(({ payload }) => this.userAccessSrv.post(payload).pipe(
       map((response: IUserAccess[]) => {
-
-        const at = JSON.parse(this.storageSrv.get('at')) || null;
-
         return saveUserAccessSuccessAction({ response });
       })
     ))
   ));
   loadAllUsersAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadAllUsersAction),
-    switchMap(() => this.userMgmtSrv.getAll().pipe(
+    switchMap(() => this.userManagementService.getAll().pipe(
       map((users: IUser[]) => {
         return loadAllUsersSuccessAction({ users });
       })
@@ -89,7 +86,7 @@ export class UserMgmtEffects {
   constructor(
     private store: Store<AppState>,
     private actions$: Actions,
-    private userMgmtSrv: UserMgmtService,
+    private userManagementService: UserManagementService,
     private userAccessSrv: UserAccessService,
     private userRoleSrv: UserRolesService,
     private storageSrv: StorageService,

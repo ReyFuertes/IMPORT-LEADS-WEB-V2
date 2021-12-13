@@ -74,6 +74,8 @@ import { MatCardModule } from '@angular/material/card';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { createTranslateLoader } from '../app.module';
 import { HttpClient } from '@angular/common/http';
+import { DropdownMultiSelectNGComponent } from './components/dropdown-multi-select-ng/dropdown-multi-select-ng.component';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 const materialModules = [
   MatListModule,
@@ -104,6 +106,7 @@ const primeNgModules = [
   AutoCompleteModule,
   DropdownModule,
   InputSwitchModule,
+  MultiSelectModule
 ];
 
 const sharedComponents = [
@@ -140,7 +143,8 @@ const sharedComponents = [
   InputSwitchComponent,
   HasRoleDirective,
   RadioGroupComponent,
-  PageNotFoundComponent
+  PageNotFoundComponent,
+  DropdownMultiSelectNGComponent
 ];
 
 const directives = [

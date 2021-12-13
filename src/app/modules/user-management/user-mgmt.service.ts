@@ -5,7 +5,7 @@ import { IUserMgmt, IUserAccess, IRole } from './user-mgmt.model';
 import { StorageService } from 'src/app/services/storage.service';
 
 @Injectable({ providedIn: 'root' })
-export class UserMgmtService extends BaseService<IUserMgmt> {
+export class UserManagementService extends BaseService<IUserMgmt> {
   constructor(http: HttpClient, storageSrv: StorageService) {
     super(http, 'user', storageSrv);
   }

@@ -35,6 +35,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { createTranslateLoader } from 'src/app/app.module';
 import { HttpClient } from '@angular/common/http';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 const routes: Routes = [
   {
@@ -51,7 +52,8 @@ const routes: Routes = [
 ];
 
 const primeNgModules = [
-  InputSwitchModule
+  InputSwitchModule,
+  MultiSelectModule
 ];
 
 const materialModules = [

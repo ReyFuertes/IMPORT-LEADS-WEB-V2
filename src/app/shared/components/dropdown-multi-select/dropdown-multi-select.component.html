@@ -1,8 +1,8 @@
 <div *ngIf="form" [formGroup]="form">
   <mat-form-field [floatLabel]="isFloatLabel == true ? '' : 'never'">
-    <mat-select multiple="true" #multiSelect [placeholder]="placeHolder | translate" [formControlName]="controlName">
-      <mat-option *ngFor="let item of ($filteredData | async)" [value]="item?.value">
-        {{ item.label | titlecase }}
+    <mat-select multiple [placeholder]="placeholder | translate" [formControlName]="controlName">
+      <mat-option *ngFor="let option of options" [value]="option.value">
+        {{ option?.label | titlecase }}
       </mat-option>
     </mat-select>
   </mat-form-field>

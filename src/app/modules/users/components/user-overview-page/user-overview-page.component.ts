@@ -9,150 +9,149 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./user-overview-page.component.scss']
 })
 export class UserOverviewPageComponent implements OnInit {
-  public users: User[] = [
+  public users: any[] = [{
+    id: 1,
+    name: 'Jane Doe',
+    position: 'CEO',
+    role:
     {
-      id: 1,
-      name: 'Jane Doe',
-      position: 'CEO',
-      role:
-      {
-        value: '1',
-        label: 'Admin'
-      },
-      company: 'CIL China',
-      phone: '+86 10 0000 0000',
-      image: 'https://dummyimage.com/28x28/c7c5c7/f5f5f5.png',
-      access: [
-        {
-          id: 1,
-          title: 'Contracts'
-        },
-        {
-          id: 2,
-          title: 'Inspections'
-        },
-        {
-          id: 3,
-          title: 'Executing Inspections'
-        },
-        {
-          id: 4,
-          title: 'Data Pages'
-        },
-        {
-          id: 5,
-          title: 'Platform Settings'
-        },
-        {
-          id: 6,
-          title: 'Chat'
-        }
-      ]
+      value: '1',
+      label: 'Admin'
     },
-    {
-      id: 2,
-      name: 'John Doe',
-      position: 'Inspector',
-      role:
+    company: 'CIL China',
+    phone: '+86 10 0000 0000',
+    image: 'https://dummyimage.com/28x28/c7c5c7/f5f5f5.png',
+    access: [
       {
-        value: '2',
-        label: 'Inspector'
+        id: 1,
+        title: 'Contracts'
       },
-      company: 'CIL China',
-      phone: '+86 10 0000 0000',
-      image: 'https://dummyimage.com/28x28/c7c5c7/f5f5f5.png',
-      access: [
-        {
-          id: 1,
-          title: 'Contracts'
-        },
-        {
-          id: 2,
-          title: 'Inspections'
-        },
-        {
-          id: 6,
-          title: 'Chat'
-        }
-      ]
+      {
+        id: 2,
+        title: 'Inspections'
+      },
+      {
+        id: 3,
+        title: 'Executing Inspections'
+      },
+      {
+        id: 4,
+        title: 'Data Pages'
+      },
+      {
+        id: 5,
+        title: 'Platform Settings'
+      },
+      {
+        id: 6,
+        title: 'Chat'
+      }
+    ]
+  },
+  {
+    id: 2,
+    name: 'John Doe',
+    position: 'Inspector',
+    role:
+    {
+      value: '2',
+      label: 'Inspector'
     },
-    {
-      id: 3,
-      name: 'Koen',
-      position: 'Manager',
-      role:
+    company: 'CIL China',
+    phone: '+86 10 0000 0000',
+    image: 'https://dummyimage.com/28x28/c7c5c7/f5f5f5.png',
+    access: [
       {
-        value: '3',
-        label: 'Manager'
+        id: 1,
+        title: 'Contracts'
       },
-      company: 'CIL China',
-      phone: '+86 10 0000 0000',
-      image: 'https://dummyimage.com/28x28/c7c5c7/f5f5f5.png',
-      access: [
-        {
-          id: 1,
-          title: 'Contracts'
-        },
-        {
-          id: 2,
-          title: 'Inspections'
-        },
-        {
-          id: 4,
-          title: 'Data Pages'
-        },
-        {
-          id: 6,
-          title: 'Chat'
-        }
-      ]
+      {
+        id: 2,
+        title: 'Inspections'
+      },
+      {
+        id: 6,
+        title: 'Chat'
+      }
+    ]
+  },
+  {
+    id: 3,
+    name: 'Koen',
+    position: 'Manager',
+    role:
+    {
+      value: '3',
+      label: 'Manager'
     },
-    {
-      id: 4,
-      name: 'Mary Jan',
-      position: 'Inspector',
-      role:
+    company: 'CIL China',
+    phone: '+86 10 0000 0000',
+    image: 'https://dummyimage.com/28x28/c7c5c7/f5f5f5.png',
+    access: [
       {
-        value: 2,
-        label: 'Inspector'
+        id: 1,
+        title: 'Contracts'
       },
-      company: 'CIL China',
-      phone: '+86 10 0000 0000',
-      image: 'https://dummyimage.com/28x28/c7c5c7/f5f5f5.png',
-      access: [
-        {
-          id: 2,
-          title: 'Inspections'
-        },
-        {
-          id: 6,
-          title: 'Chat'
-        }
-      ]
+      {
+        id: 2,
+        title: 'Inspections'
+      },
+      {
+        id: 4,
+        title: 'Data Pages'
+      },
+      {
+        id: 6,
+        title: 'Chat'
+      }
+    ]
+  },
+  {
+    id: 4,
+    name: 'Mary Jan',
+    position: 'Inspector',
+    role:
+    {
+      value: 2,
+      label: 'Inspector'
     },
-    {
-      id: 5,
-      name: 'Tammy Li',
-      position: 'Inspector',
-      role:
+    company: 'CIL China',
+    phone: '+86 10 0000 0000',
+    image: 'https://dummyimage.com/28x28/c7c5c7/f5f5f5.png',
+    access: [
       {
-        value: 2,
-        label: 'Inspector'
+        id: 2,
+        title: 'Inspections'
       },
-      company: 'CIL China',
-      phone: '+86 10 0000 0000',
-      image: 'https://dummyimage.com/28x28/c7c5c7/f5f5f5.png',
-      access: [
-        {
-          id: 2,
-          title: 'Inspections'
-        },
-        {
-          id: 6,
-          title: 'Chat'
-        }
-      ]
-    }
+      {
+        id: 6,
+        title: 'Chat'
+      }
+    ]
+  },
+  {
+    id: 5,
+    name: 'Tammy Li',
+    position: 'Inspector',
+    role:
+    {
+      value: 2,
+      label: 'Inspector'
+    },
+    company: 'CIL China',
+    phone: '+86 10 0000 0000',
+    image: 'https://dummyimage.com/28x28/c7c5c7/f5f5f5.png',
+    access: [
+      {
+        id: 2,
+        title: 'Inspections'
+      },
+      {
+        id: 6,
+        title: 'Chat'
+      }
+    ]
+  }
   ];
   public ctColsUsers: Array<{ label: string, width?: any }> = [
     {
@@ -186,7 +185,7 @@ export class UserOverviewPageComponent implements OnInit {
   ];
   constructor(public dialog: MatDialog) { }
 
-  ngOnInit() {  }
+  ngOnInit() { }
 
   public onAddUser(): void {
     const dialogRef = this.dialog.open(UserAddDialogComponent, { height: '595px' });

@@ -46,7 +46,7 @@ export const getAllRolesSelector = createSelector(
     return roles;
   }
 );
-export const getAccessSelector = createSelector(
+export const getAllAccessSelector = createSelector(
   selectedState,
   state => state?.access?.map(a => {
     const children = state?.access?.filter(c => {

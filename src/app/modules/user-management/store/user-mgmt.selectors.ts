@@ -33,8 +33,8 @@ export const getCreatingUserSelector = createSelector(
 export const getTableUsersSelector = createSelector(
   selectedState,
   state => {
-    const fmtUsers = Object.values(state.entities) || [];
-    const users = fmtUsers.map((u: IUserMgmt) => {
+    const users = Object.values(state.entities) || [];
+    const fmtUsers = users.map((u: IUserMgmt) => {
       //if (!u.user_profile) return;
       let ret: IUserTableData = Object.assign({}, {
         ...u?.user_profile,
@@ -45,6 +45,6 @@ export const getTableUsersSelector = createSelector(
       delete ret?.user_profile;
       return ret;
     });
-    return users;
+    return fmtUsers;
   }
 );

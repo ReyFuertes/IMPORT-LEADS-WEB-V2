@@ -1,0 +1,10 @@
+<div *ngIf="form" [formGroup]="form" fxLayout="column" fxLayoutAlign="start start">
+  <label>{{ label }}</label>
+  <p-multiSelect appendTo="body" [filter]="filter" [selectedItemsLabel]="'{0} selected'" [maxSelectedLabels]="maxSelectedLabels" [options]="options" [formControlName]="controlName" [defaultLabel]="placeholder">
+    <ng-template let-option pTemplate="item">
+      <div class="option-item">
+        <div>{{option?.label | titlecase}}</div>
+      </div>
+    </ng-template>
+  </p-multiSelect>
+</div>

@@ -26,7 +26,6 @@ export const getCachedImages = createSelector(
 export const getContractById = (id: string) => createSelector(
   selectContractModuleState,
   (state: ContractModuleState) => {
-    
     return state.contract.entities[id];
   }
 );

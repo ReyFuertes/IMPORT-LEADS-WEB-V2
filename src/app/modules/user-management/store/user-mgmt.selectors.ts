@@ -40,7 +40,7 @@ export const getTableUsersSelector = createSelector(
         ...u?.user_profile,
         ...u,
         _id: u.id,
-        name: u?.user_profile?.firstname + ' ' + u?.user_profile?.lastname
+        name: (u?.user_profile?.firstname + ' ' + u?.user_profile?.lastname)
       });
       delete ret?.user_profile;
       return ret;

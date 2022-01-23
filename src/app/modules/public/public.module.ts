@@ -7,7 +7,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule, Routes } from '@angular/router';
-import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { ConfirmChangePasswordComponent } from './components/confirm-change-password/confirm-change-password.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -35,16 +35,16 @@ const materialModules = [
 
 const routes: Routes = [
   {
-    path: 'change-password/:id',
+    path: 'confirm-change-password/:id',
     component: PublicContainerComponent,
-    children: [{ path: '', component: ChangePasswordComponent }]
+    children: [{ path: '', component: ConfirmChangePasswordComponent }]
   }
 ];
 
 @NgModule({
   declarations: [
     PublicContainerComponent,
-    ChangePasswordComponent
+    ConfirmChangePasswordComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -68,7 +68,7 @@ const routes: Routes = [
   ],
   exports: [
     PublicContainerComponent,
-    ChangePasswordComponent
+    ConfirmChangePasswordComponent
   ],
   providers: [],
 })

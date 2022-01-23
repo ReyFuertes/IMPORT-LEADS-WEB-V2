@@ -45,10 +45,10 @@ export class AppComponent extends GenericDestroyPageComponent implements OnInit,
         const hasAgreements = e.urlAfterRedirects.includes('agreement');
         const hasReport = e.urlAfterRedirects.includes('report');
         const inLoginPage = e.urlAfterRedirects.includes('login');
-        const isChangePasswordPage = e.urlAfterRedirects.includes('change-password');
+        const isConfirmChangePasswordPage = e.urlAfterRedirects.includes('confirm-change-password');
         const isPage404 = e.urlAfterRedirects.includes('404');
 
-        if (hasAgreements && hasReport || inLoginPage || isChangePasswordPage || isPage404) {
+        if (hasAgreements && hasReport || inLoginPage || isConfirmChangePasswordPage || isPage404) {
           this.hideTopNav = true;
         } else {
           this.hideTopNav = false;

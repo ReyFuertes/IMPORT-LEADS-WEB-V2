@@ -14,11 +14,11 @@ import { ChangePublicUserPasswordAction } from '../../store/public.actions';
 import { getIsPasswordChangedSelector, getPublicEmailTokenSelector } from '../../store/public.selectors';
 
 @Component({
-  selector: 'il-auth-change-password',
-  templateUrl: './change-password.component.html',
-  styleUrls: ['./change-password.component.scss']
+  selector: 'il-confirm-change-password',
+  templateUrl: './confirm-change-password.component.html',
+  styleUrls: ['./confirm-change-password.component.scss']
 })
-export class ChangePasswordComponent extends GenericDestroyPageComponent implements OnInit {
+export class ConfirmChangePasswordComponent extends GenericDestroyPageComponent implements OnInit {
   public imgPath: string = environment.imgPath;
   public svgPath: string = environment.svgPath;
   public form: FormGroup;

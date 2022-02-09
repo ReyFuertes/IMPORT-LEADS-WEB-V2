@@ -27,7 +27,6 @@ export class PublicEffect {
   ));
 
   constructor(
-    private store: Store<AppState>,
     private actions$: Actions,
     private userService: UserService
   ) { }

@@ -62,5 +62,6 @@ export interface IUserTableData {
   name?: string;
   user_profile?: IUserProfile;
   access?: IAccess[];
+  user?: IUser;
 }
 

@@ -178,7 +178,7 @@ export class UserTableComponent extends GenericContainer implements AfterViewIni
 
         const payload = _.pickBy({
           id: userAccess ? userAccess.id : null,
-          user: { id: item._id },
+          user: { id: item.user.id },
           access: { id: event.value }
         }, _.identity);
 
@@ -193,7 +193,7 @@ export class UserTableComponent extends GenericContainer implements AfterViewIni
               id: event.value,
               role_name: event.label
             },
-            user: { id: item._id }
+            user: { id: item.user.id }
           }
         }));
         break;

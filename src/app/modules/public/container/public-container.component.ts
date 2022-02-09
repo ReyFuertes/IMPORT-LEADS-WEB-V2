@@ -10,12 +10,10 @@ import { isUserExistForChangePasswordAction } from '../store/public.actions';
 export class PublicContainerComponent implements OnInit {
   public id: string;
 
-  constructor(private router: Router, private route: ActivatedRoute, private cdRef: ChangeDetectorRef, private store: Store<AppState>) {
+  constructor(private route: ActivatedRoute, private store: Store<AppState>) {
     this.id = this.route.snapshot.paramMap.get('id') || null;
     if (this.id) {
       this.store.dispatch(isUserExistForChangePasswordAction({ id: this.id }));
-    } else {
-      this.router.navigateByUrl('404');
     }
   }
 

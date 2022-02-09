@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
@@ -18,7 +18,7 @@ import { getIsPasswordChangedSelector, getPublicEmailTokenSelector } from '../..
   templateUrl: './confirm-change-password.component.html',
   styleUrls: ['./confirm-change-password.component.scss']
 })
-export class ConfirmChangePasswordComponent extends GenericDestroyPageComponent implements OnInit {
+export class ConfirmChangePasswordComponent extends GenericDestroyPageComponent implements OnInit, AfterViewInit {
   public imgPath: string = environment.imgPath;
   public svgPath: string = environment.svgPath;
   public form: FormGroup;
@@ -26,7 +26,7 @@ export class ConfirmChangePasswordComponent extends GenericDestroyPageComponent 
   public changePasswordSuccessful: boolean;
   public isChangedPassword: boolean = false;
 
-  constructor(private cdRef: ChangeDetectorRef, private store: Store<AppState>, public translateService: TranslateService, private fb: FormBuilder) {
+  constructor(private router: Router, private cdRef: ChangeDetectorRef, private store: Store<AppState>, public translateService: TranslateService, private fb: FormBuilder) {
     super();
     this.form = this.fb.group({
       username: [null, [Validators.required, Validators.email]],
@@ -40,16 +40,7 @@ export class ConfirmChangePasswordComponent extends GenericDestroyPageComponent 
   }
 
   ngOnInit(): void {
-    this.store.pipe(select(getPublicEmailTokenSelector), takeUntil(this.$unsubscribe))
-      .subscribe(emailToken => {
-        if (emailToken?.email && emailToken?.token) {
-          this.form.get('username').patchValue(emailToken?.email, { emitEvent: false });
-          this.form.get('token').patchValue(emailToken?.token, { emitEvent: false });
-          this.form.get('website_url').patchValue(emailToken?.website_url, { emitEvent: false });
-        }
-        this.isChangedPassword = !!emailToken?.email;
-        this.cdRef.detectChanges();
-      });
+   
     this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
       .subscribe(language => {
         if (language) {
@@ -57,10 +48,21 @@ export class ConfirmChangePasswordComponent extends GenericDestroyPageComponent 
           this.cdRef.detectChanges();
         }
       });
+  }
 
+  ngAfterViewInit(): void {
+    this.store.pipe(select(getPublicEmailTokenSelector), takeUntil(this.$unsubscribe))
+    .subscribe(emailToken => {
+      if (emailToken?.email && emailToken?.token) {
+        this.form.get('username').patchValue(emailToken?.email, { emitEvent: false });
+        this.form.get('token').patchValue(emailToken?.token, { emitEvent: false });
+        this.form.get('website_url').patchValue(emailToken?.website_url, { emitEvent: false });
+      }
+      this.isChangedPassword = !!emailToken?.email;
+      this.cdRef.detectChanges();
+    });
     this.store.pipe(select(getIsPasswordChangedSelector), takeUntil(this.$unsubscribe))
-      .subscribe(isPasswordChanged => this.changePasswordSuccessful = isPasswordChanged);
-
+    .subscribe(isPasswordChanged => this.changePasswordSuccessful = isPasswordChanged);
   }
 
   public done(): void {

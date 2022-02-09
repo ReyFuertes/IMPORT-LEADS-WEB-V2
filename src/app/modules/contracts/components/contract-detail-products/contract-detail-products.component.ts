@@ -15,8 +15,8 @@ import { ISimpleItem } from './../../../../shared/generics/generic.model';
 import { environment } from './../../../../../environments/environment';
 import { Component, OnInit, Input, ChangeDetectorRef, AfterViewInit, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
-import { take, takeUntil, tap, debounceTime } from 'rxjs/operators';
-import { Subject, Observable, pipe, of } from 'rxjs';
+import { takeUntil, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import * as _ from 'lodash';
 import { GenericDetailPageComponent } from 'src/app/shared/generics/generic-detail-page';
 import { sortByDesc } from 'src/app/shared/util/sort';
@@ -67,7 +67,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       cp_id: [null]
     });
 
-    /* get the sub total of all productSet */
+    //get the sub total of all productSet
     this.form.get('sub_products').valueChanges
       .pipe(takeUntil(this.$unsubscribe))
       .subscribe(children => {
@@ -81,7 +81,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
             this.isDisabled = true;
           }
 
-          /* check if the sub product is edited then update the id */
+          //check if the sub product is edited then update the id
           this.formSubProdsArr = this.form.get('sub_products') as FormArray;
           let match: boolean = false;
           this.$products.subscribe((products: IProduct[]) => {
@@ -96,11 +96,26 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
                 } else {
                   match = false;
                   delete p.id;
-                  return
+                  return;
                 }
               });
             });
           })
+        }
+      });
+
+    //validate value when changing cost price in the parent
+    this.form.get('cost').valueChanges.pipe(takeUntil(this.$unsubscribe))
+      .subscribe(costValue => {
+        this.formSubProdsArr = this.form.get('sub_products') as FormArray;
+        const childsCost = this.formSubProdsArr.value?.reduce((sum, current) => parseFloat(sum) + parseFloat(current?.cost), 0) || 0;
+
+        if (parseFloat(childsCost) === parseFloat(costValue)) {
+          this.isDisabled = false;
+        } else if(parseFloat(childsCost) === 0) { //if product doesnt have children
+          this.isDisabled = false;
+        } else {
+          this.isDisabled = true;
         }
       });
 

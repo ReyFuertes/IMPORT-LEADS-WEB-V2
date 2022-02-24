@@ -1,8 +1,6 @@
-import { AppState } from './../../../store/app.reducer';
-import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, tap, catchError, switchMap } from 'rxjs/operators';
+import { map, switchMap, retry } from 'rxjs/operators';
 import { UserService } from '../../users/users.service';
 import { ChangePublicUserPasswordAction, ChangePublicUserPasswordSuccessAction, isUserExistForChangePasswordAction, isUserExistForChangePasswordSuccessAction } from './public.actions';
 
@@ -23,7 +21,8 @@ export class PublicEffect {
       map((response: any) => {
         return isUserExistForChangePasswordSuccessAction({ response });
       })
-    ))
+    )),
+    retry(3)
   ));
 
   constructor(

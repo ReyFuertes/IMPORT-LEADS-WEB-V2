@@ -89,7 +89,6 @@ export class UserSettingDetailsComponent extends GenericDestroyPageComponent imp
   public updateProfile(): void {
     const payload = this.form?.value;
     if (payload) {
-      /* update profile data */
       this.store.dispatch(updateProfileAction({ payload }));
     }
   }

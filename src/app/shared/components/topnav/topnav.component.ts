@@ -73,11 +73,15 @@ export class TopNavComponent extends GenericDestroyPageComponent implements OnIn
       takeUntil(this.$unsubscribe))
       .subscribe(res => {
         if (res) {
-          const user = Object.assign({}, res, {
-            username: `${res?.firstname} ${res?.lastname}`
-          });
-          const localUser = JSON.parse(this.storageSrv.get('at')) || null;
+          const user = Object.assign({}, res, { username: res?.email });
+          if (res?.firstname !== null || res?.lastname !== null) {
+            Object.assign(user, { fullname: `${res?.firstname} ${res?.lastname}` });
+          } else {
+            Object.assign(user, { fullname: res?.email });
+          }
+          let localUser = this.storageSrv.get('at') || null;
           if (localUser) {
+            localUser = JSON.parse(this.storageSrv.get('at'));
             this.user = localUser.user;
           }
           this.user = user || localUser.user;

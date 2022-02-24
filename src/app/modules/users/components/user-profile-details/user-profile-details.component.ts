@@ -75,8 +75,6 @@ export class UserProfileDetailsComponent extends GenericDestroyPageComponent imp
     const payload = this.form.value;
     if (payload) {
       delete payload.image;
-
-      /* update profile data */
       this.store.dispatch(updateProfileAction({ payload }));
 
       setTimeout(() => {

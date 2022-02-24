@@ -10,14 +10,11 @@ import { getUserProfileSelector } from '../../store/selectors/user-profile.selec
   templateUrl: './user-profile-page.component.html',
   styleUrls: ['./user-profile-page.component.scss']
 })
-export class UserProfilePageComponent implements OnInit {
-  public username: string = 'Tammy Li';
+export class UserProfilePageComponent {
+  public username: string = '';
   public $detail: Observable<IUserProfile>;
 
   constructor(private store: Store<AppState>) {
     this.$detail = this.store.pipe(select(getUserProfileSelector));
   }
-
-  ngOnInit() { }
-
 }

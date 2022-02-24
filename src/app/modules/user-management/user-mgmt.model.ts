@@ -15,6 +15,7 @@ export interface IUser {
   user_access?: IUserAccess[];
   user_profile?: IUserProfile;
   image?: string;
+  fullname?: string;
 }
 export interface IUserRole {
   id?: string;

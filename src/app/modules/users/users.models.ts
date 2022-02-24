@@ -24,6 +24,7 @@ export interface IUserProfile {
   position?: string;
   image?: string;
   language?: string;
+  name?: string;
 }
 
 export interface User {

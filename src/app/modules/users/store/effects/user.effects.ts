@@ -4,6 +4,8 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 import { UserService } from '../../users.service';
 import { changeUserPasswordAction, changeUserPasswordFailedAction, changeUserPasswordSuccessAction } from '../actions/user.actions';
 import { of } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/store/app.reducer';
 
 @Injectable()
 export class UserEffects {
@@ -19,5 +21,5 @@ export class UserEffects {
     ))
   ));
 
-  constructor(private actions$: Actions, private userSrv: UserService) { }
+  constructor(private store: Store<AppState>, private actions$: Actions, private userSrv: UserService) { }
 }

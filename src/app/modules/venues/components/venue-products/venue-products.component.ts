@@ -5,21 +5,22 @@ import { ConfirmationComponent } from './../../../dialogs/components/confirmatio
 import { MatDialog } from '@angular/material/dialog';
 import { addVenueAction, deleteVenueAction, uploadVenueImageAction, updateVenueAction } from './../../store/venues.action';
 import { AppState } from './../../../../store/app.reducer';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { environment } from '../../../../../environments/environment';
-import { Component, OnInit, Input, HostListener, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, HostListener, Output, EventEmitter, ChangeDetectorRef, OnChanges, SimpleChanges } from '@angular/core';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
 import { convertBlobToBase64 } from 'src/app/shared/util/convert-to-blob';
 import { v4 as uuid } from 'uuid';
 import * as _ from 'lodash';
+import { getVenuesSelector } from '../../store/venues.selector';
 @Component({
   selector: 'il-venue-products',
   templateUrl: './venue-products.component.html',
   styleUrls: ['./venue-products.component.scss']
 })
 
-export class VenueProductsComponent extends GenericRowComponent implements OnInit {
+export class VenueProductsComponent extends GenericRowComponent implements OnChanges {
   @Input() public items: IVenue[];
   @Input() public isProduct: boolean;
   @Output() public valueEmitter = new EventEmitter<IVenue>();
@@ -29,45 +30,38 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
   public imageApiPath: string = environment.apiImagePath;
   public hoveredIndex: number | null = null;
   public selectedIndex: number | null = null;
-  public rates = new Array(5);
   public selectedItem: IVenue;
   public selectedId: string;
   public dragStart: boolean = false;
   public base64Image: any;
-  public colsHeader: Array<{ label: string, width?: any }> = [
-    {
-      label: 'Venue name',
-      width: 31
-    },
-    {
-      label: 'Location',
-      width: 50
-    },
-    {
-      label: 'Contracts',
-      width: '100px'
-    },
-    {
-      label: 'Avg. pass/fail',
-      width: '100px'
-    },
-    {
-      label: '',
-      width: '60px'
-    }
-  ];;
-
+  public colsHeader: Array<{ label: string, width?: any }> = [{
+    label: 'Venue name',
+    width: 31
+  }, {
+    label: 'Location',
+    width: 50
+  }, {
+    label: 'Contracts',
+    width: '100px'
+  }, {
+    label: 'Avg. pass/fail',
+    width: '100px'
+  }, {
+    label: '',
+    width: '60px'
+  }];
 
   public drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.items, event.previousIndex, event.currentIndex);
     this.dragStart = false;
   }
 
-  constructor(public dialog: MatDialog, private store: Store<AppState>) {
+  constructor(private cdRef: ChangeDetectorRef, public dialog: MatDialog, private store: Store<AppState>) {
     super();
   }
 
-  ngOnInit() { }
+  ngOnChanges(changes: SimpleChanges): void {
+  }
 
   public uploadImage(event: any, item: IVenue): void {
     const file: File = event.target.files[0];
@@ -99,10 +93,17 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
       })
   }
 
-  public onEdit(item: IVenue, key: string, value: string): void {
-    if (value)
-      item[key] = value;
-    this.selectedItem = item;
+  public onEdit(item: any, key: string, value: string): void {
+    if (value) {
+      try {
+        item[key] = value;
+      } catch (error) {
+        const _item = Object.assign({}, item);
+        _item[key] = value;
+        item = _item;
+      }
+    }
+    setTimeout(() => this.selectedItem = item, 100);
   }
 
   public onSpace(pnl: any, event: any): void {
@@ -113,7 +114,7 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
 
   public onSave(): void {
     if (this.selectedItem) {
-      this.store.dispatch(addVenueAction({ item: this.selectedItem }));
+      this.store.dispatch(updateVenueAction({ item: this.selectedItem }));
       this.selectedItem = null;
       this.reset();
     }
@@ -128,11 +129,9 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
   public onRemoveProduct(item: any): void {
     const dialogRef = this.dialog.open(ConfirmationComponent, {
       width: '410px',
-      data: {
-        action: 0
-      }
+      data: { action: 0 }
     });
-    dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+    dialogRef.afterClosed()
       .subscribe(result => {
         if (result) {
           setTimeout(() => {
@@ -151,7 +150,7 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
   }
 
   public onClickPnl(pnl: any, event: any, i: number, item: IVenue): void {
-    if (item && item.related_products && item.related_products.length === 0) {}
+    if (item && item.related_products && item.related_products.length === 0) { }
 
     if (item)
       this.selectedItem = item;
@@ -165,7 +164,7 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
           action: 0
         }
       });
-      dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe)).subscribe(result => {
+      dialogRef.afterClosed().subscribe(result => {
         if (result) {
           setTimeout(() => {
             this.store.dispatch(deleteVenueAction({ id: this.selectedId }));
@@ -181,6 +180,17 @@ export class VenueProductsComponent extends GenericRowComponent implements OnIni
     if (event.target.classList.contains('close')) {
       this.selectedIndex = null;
     }
+  }
+
+  public close(): void {
+    super.onClose();
+
+    this.store.pipe(select(getVenuesSelector), takeUntil(this.$unsubscribe))
+      .subscribe(venues => {
+        if(this.items) {
+          Object.assign(this.items, venues);
+        }
+      });
   }
 
   private reset(): void {

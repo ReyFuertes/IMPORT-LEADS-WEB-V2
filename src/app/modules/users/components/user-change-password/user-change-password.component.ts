@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
-import { takeUntil } from 'rxjs/operators';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { PasswordMatch } from 'src/app/shared/util/text';
 import { AppState } from 'src/app/store/app.reducer';
@@ -33,7 +33,8 @@ export class UserChangePasswordComponent extends GenericDestroyPageComponent imp
     });
 
     this.store.pipe(select(getChangePasswordStatusSelector),
-      takeUntil(this.$unsubscribe))
+      takeUntil(this.$unsubscribe),
+      debounceTime(1500))
       .subscribe(res => {
         this.errorStatus = res;
         setTimeout(() => {
@@ -45,7 +46,7 @@ export class UserChangePasswordComponent extends GenericDestroyPageComponent imp
             this.form.controls[control].setErrors(null);
           });
           this.errorStatus = null;
-        }, 5000);
+        });
       });
   }
 

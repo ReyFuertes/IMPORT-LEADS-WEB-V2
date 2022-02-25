@@ -32,27 +32,12 @@
               <input matInput (input)="onEdit(item, 'location', $event?.target.value)" (click)="$event.stopPropagation()" [value]="item?.location">
             </mat-form-field>
           </div>
-          <!-- <div fxFlex="21" fxLayoutAlign="start center">
-            <ng-container *ngIf="item?.related_products && item?.related_products.length > 0">
-              <il-pill *ngFor="let product of item?.related_products | slice:0:1; let i = index;" [item]="{ value: product?._id, label: product?.product_name }" [hasRemoveIcon]="false"
-                (removeEmitter)="onRemoveProduct({ id: $event, venue_id: item?.id })">
-              </il-pill>
-            </ng-container>
-          </div> -->
           <div fxFlex="100px" fxLayoutAlign="center center">
             <span *ngIf="selectedIndex !== i">{{item?.contract_count || 0}}</span>
           </div>
-          <!-- <div fxFlex="100px" fxLayoutAlign="center center">
-            <span>{{item?.inspections}}</span>
-          </div> -->
           <div fxFlex="100px" fxLayoutAlign="center center">
             <span class="gray-text">{{item?.avg_pass_fail}} %</span>
           </div>
-          <!-- <div fxFlex="100px" fxLayoutAlign="start center">
-            <span>
-              <il-star-rating [rating]="item?.rating"></il-star-rating>
-            </span>
-          </div> -->
         </div>
 
         <div fxFlex="100px" class="pnl-actions" fxLayoutAlign="end center">
@@ -62,7 +47,7 @@
             <img *appHasRole="'admin'" class="delete" [src]="svgPath + 'delete-icon-red.svg'" (click)="onDelete(item?.id)" matTooltip="Delete">
           </div>
           <div class="menu-icon" *ngIf="hoveredIndex === i && selectedIndex === i">
-            <img [src]="svgPath + 'close-icon-blue.svg'" class="no-expand" (click)="onClose()" [matTooltip]="'Close' | translate" />
+            <img [src]="svgPath + 'close-icon-blue.svg'" class="no-expand" (click)="close()" [matTooltip]="'Close' | translate" />
             <img [src]="svgPath + 'save-icon-blue.svg'" class="no-expand" (click)="onSave()" [matTooltip]="'Save' | translate">
           </div>
         </div>

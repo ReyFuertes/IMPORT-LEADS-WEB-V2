@@ -32,7 +32,7 @@ export const initialState: InitAppState = {
   detail: null,
   userList: null,
   userClients: null,
-  language: null
+  language: 'en'
 };
 const initAppReducer = createReducer(
   initialState,

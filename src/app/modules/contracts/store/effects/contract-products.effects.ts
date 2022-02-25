@@ -6,8 +6,6 @@ import { ContractProductService } from './../../services/contract-products.servi
 import { addContractProductsAction, addContractProductsSuccessAction, loadContractProductsAction, loadContractProductSuccessAction, deleteContractProduct, updateContractProductsSuccessAction, updateContractProductAction, removeSelectedProductAction } from './../actions/contract-product.action';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { zip, of } from 'rxjs';
-import { appNotificationAction } from 'src/app/store/actions/notification.action';
 
 @Injectable()
 export class ContractProductsEffect {

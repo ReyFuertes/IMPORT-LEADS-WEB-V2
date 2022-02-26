@@ -130,7 +130,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       })).subscribe();
   }
 
-  public get hasAdminManagerRole(): any {
+  public get hasAdminManagerRole(): string[] {
     return ['admin', 'manager'];
   }
 
@@ -139,17 +139,17 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
     /* product suggestions */
     this.$products = this.store.pipe(select(getProductsSelector), takeUntil(this.$unsubscribe));
-    this.$products.subscribe(p => {
-      if (p) {
-        const parent = p.filter(o => o.parent).filter(Boolean);
-        const child = p.map(p => {
+    this.$products.subscribe(product => {
+      if (product) {
+        const parent = product.filter(o => o.parent).filter(Boolean);
+        const child = product.map(p => {
           return { id: p.id, product_name: p.product_name }
         });
 
         /* get all suggestions */
         this.suggestions = child.map(cp => {
-          const _parents = parent.filter(_p => _p.parent.id === cp.id)
-            .map(_p => ` - (${_p.product_name})`);
+          const _parents = parent.filter(value => value.parent.id === cp.id)
+            .map(value => ` - (${value.product_name})`);
           return {
             value: cp.id,
             label: cp.product_name + _parents.join(' ')
@@ -160,8 +160,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
     /* listen to selected products */
     this.store.pipe(select(getSelectedProductsSelector),
       takeUntil(this.$unsubscribe),
-      tap(sp => this.selectedProduct = sp)
-    ).subscribe();
+    ).subscribe(sp => this.selectedProduct = sp);
 
     this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
       .subscribe(language => {
@@ -285,9 +284,8 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   }
 
   private isProductHasChecklist(id: string): boolean {
-    return id && this.checklistEntities
-      && this.checklistEntities.filter(e => (e.contract_product
-        && e.contract_product.product.id === id)).shift()
+    return id && this.checklistEntities?.find(e => (e.contract_product
+        && e.contract_product.product.id === id))
       ? true : false;
   }
 
@@ -299,10 +297,8 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   }
 
   public isChecklistProductSelected(id: string): boolean {
-    return this.inCheckListing
-      && this.checklistProducts
-      && this.checklistProducts.length > 0
-      && this.checklistProducts.filter(c => c.id === id).shift() ? true : false;
+    return this.checklistProducts?.length > 0
+      && this.checklistProducts.find(c => c.id === id) ? true : false;
   }
 
   public isProductSelected(id: string): boolean {
@@ -317,18 +313,18 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   /* when selecting product in checklist state */
   public isSubProductChecklistSelected(id: string): boolean {
     return this.inCheckListing
-      && this.checklistProducts
-      && this.checklistProducts.length > 0
+      && this.checklistProducts?.length > 0
       && this.checklistProducts.filter(c => c.id === id).shift() ? true : false;
   }
   /* when selecting product in checklist state
     we are matching the subproduct by using childid 
   */
   public isSubProductChecklistRelated(sub: any, contract_product_id: string): boolean {
-    return this.checklistEntities?.filter(c => {
+    const isRelated = this.checklistEntities?.find(c => {
       return (c.contract_product?.product?.id === sub?.id /* if the product is the same */
         && c.contract_product?.id === contract_product_id) /* if product has the same checklists */
-    }).shift() ? true : false;
+    }) ? true : false;
+    return isRelated;
   }
 
   public fmtToSimpleItem(p: IProduct, contract_product_id: string): ISimpleItem {
@@ -398,8 +394,8 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
         productId = sp?.product_name?.value;
         productName = sp?.product_name?.label
       } else {
-        productName = sp['product_name'];
-        productId = sp['id'];
+        productName = sp?.product?.product_name;
+        productId = sp?.product?.id;
       }
       const ret = _.pickBy({
         id: productId,

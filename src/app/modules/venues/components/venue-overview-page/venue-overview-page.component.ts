@@ -1,9 +1,9 @@
-import { updateVenueAction, addVenueAction, uploadVenueImageAction, loadVenuesAction } from './../../store/venues.action';
+import { addVenueAction, uploadVenueImageAction, loadVenuesAction } from './../../store/venues.action';
 import { getVenuesSelector } from './../../store/venues.selector';
 import { Observable } from 'rxjs';
 import { AppState } from './../../../../store/app.reducer';
 import { Store, select } from '@ngrx/store';
-import { AfterViewInit, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IVenue } from '../../venues.models';
 import { VenuesAddDialogComponent } from 'src/app/modules/dialogs/components/venues-add/venues-add-dialog.component';
 import { MatDialog } from '@angular/material/dialog';

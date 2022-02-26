@@ -1,19 +1,20 @@
 import { take, map, takeUntil } from 'rxjs/operators';
-import { IvenueProduct, IVenue, IRelatedProduct } from './../../venues.models';
+import { IVenue, IRelatedProduct } from './../../venues.models';
 import { removeVenueProduct } from './../../store/venue-product.action';
 import { ConfirmationComponent } from './../../../dialogs/components/confirmation/confirmation.component';
 import { MatDialog } from '@angular/material/dialog';
-import { addVenueAction, deleteVenueAction, uploadVenueImageAction, updateVenueAction } from './../../store/venues.action';
+import { deleteVenueAction, uploadVenueImageAction, updateVenueAction } from './../../store/venues.action';
 import { AppState } from './../../../../store/app.reducer';
 import { select, Store } from '@ngrx/store';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { environment } from '../../../../../environments/environment';
-import { Component, OnInit, Input, HostListener, Output, EventEmitter, ChangeDetectorRef, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectorRef, OnChanges, SimpleChanges } from '@angular/core';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
 import { convertBlobToBase64 } from 'src/app/shared/util/convert-to-blob';
 import { v4 as uuid } from 'uuid';
 import * as _ from 'lodash';
 import { getVenuesSelector } from '../../store/venues.selector';
+
 @Component({
   selector: 'il-venue-products',
   templateUrl: './venue-products.component.html',

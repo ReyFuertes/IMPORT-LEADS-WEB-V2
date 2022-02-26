@@ -38,8 +38,7 @@
           
           (click)="onEdit(sub)" 
           [reset]="!inCheckListing" 
-          [ngClass]="{sel: (isChecklistProductSelected(sub?.product?.id) 
-            || isSubProductChecklistSelected(sub?._id)),
+          [ngClass]="{sel: (isSubProductChecklistSelected(sub?._id)) || isChecklistProductSelected(sub?.product?.id) || isProductSelected(item?.product?.id),
             highlighted: isSubProductChecklistRelated(sub?.product, sub?.id)}"
           [enabled]="inCheckListing" 
           [item]="fmtSubToSimpleItem(sub?.product, sub?.id)" 

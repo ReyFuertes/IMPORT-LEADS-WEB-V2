@@ -17,8 +17,8 @@
           <img [id]="i" class="ellipse" [matMenuTriggerFor]="menu" [src]="svgPath + 'dots-icon-blue.svg'" />
           <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="toDetail(item?.id)">{{ 'Edit' | translate }}</button>
-            <button mat-menu-item (click)="onDelete(item?.id)">{{ 'Delete' | translate }}</button>
-            <button *appHasRole="'admin'" mat-menu-item [routerLink]="viewPermissionRoute(item?.id)">{{ 'View Permission' | translate }}</button>
+            <button mat-menu-item *ngIf="!isAdmin" (click)="onDelete(item)">{{ 'Delete' | translate }}</button>
+            <!-- <button *appHasRole="'admin'" mat-menu-item [routerLink]="viewPermissionRoute(item?.id)">{{ 'View Permission' | translate }}</button> -->
           </mat-menu>
         </div>
       </td>
@@ -32,7 +32,7 @@
             <ng-container *ngFor="let col of cols">
               <div *ngIf="!isExcludedCols(col)" fxFlex="30">
                 <span>{{ fmtToTitlecase(col) | uppercase }}</span>
-                <span>{{ fmtItem(item, col) }}</span>
+                <span>{{ fmtItem(item, col) | titlecase }}</span>
               </div>
             </ng-container>
             <div fxFlex="30">

@@ -26,6 +26,7 @@ export class UserMgmtEffects {
     switchMap(({ id }) => this.userManagementService.delete(id)
       .pipe(
         map((deleted: IUser) => {
+          this.store.dispatch(loadAllUsersAction()); // temporary fix
           return deleteUserSuccessAction({ deleted });
         })
       ))

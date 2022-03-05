@@ -25,6 +25,7 @@ export interface IUserProfile {
   image?: string;
   language?: string;
   name?: string;
+  user?: IUser;
 }
 
 export interface User {

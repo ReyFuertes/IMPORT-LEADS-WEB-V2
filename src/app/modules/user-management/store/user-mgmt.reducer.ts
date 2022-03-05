@@ -15,7 +15,7 @@ export const initialState: UserMgmtState = adapter.getInitialState({
 const userMgmtReducer = createReducer(
   initialState,
   on(deleteUserSuccessAction, (state, action) => {
-    return ({ ...adapter.removeOne(action.deleted.id, state) })
+    return adapter.removeOne(action.deleted.id, state)
   }),
   on(signUpUserSuccessAction, (state) => {
     return Object.assign({}, state, { creatingUser: null });

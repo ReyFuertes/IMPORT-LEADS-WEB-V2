@@ -81,7 +81,7 @@ const reducer = createReducer(
     return Object.assign({}, state, { checklistSource: null });
   }),
   on(loadChecklistSuccessAction, (state, action) => {
-    return ({ ...adapter.addAll(action.items, state) })
+    return ({ ...adapter.setAll(action.items, state) })
   }),
   on(clearAllSelectedTerms, (state) => {
     return Object.assign({}, state, { checklistTerms: null });

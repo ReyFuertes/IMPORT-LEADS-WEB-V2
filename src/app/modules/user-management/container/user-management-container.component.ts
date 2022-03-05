@@ -12,5 +12,6 @@ import { loadAllUsersAction } from '../store/user-mgmt.actions';
 export class UserManagementContainerComponent extends GenericContainer {
   constructor(private store: Store<AppState>) {
     super();
+    this.store.dispatch(loadAllUsersAction());
   }
 }

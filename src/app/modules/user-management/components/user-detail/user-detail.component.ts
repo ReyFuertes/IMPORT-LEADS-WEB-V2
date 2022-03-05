@@ -8,16 +8,13 @@ import { getAllRolesSelector, getAllAccessSelector, getUserLangSelector } from '
 import { environment } from 'src/environments/environment';
 import { saveUserAction } from '../../store/user-mgmt.actions';
 import { ActivatedRoute } from '@angular/router';
-import { UserManagementService } from '../../user-mgmt.service';
-import { tap, takeUntil } from 'rxjs/operators';
-import { IUser } from '../../user-mgmt.model';
+import { takeUntil } from 'rxjs/operators';
 import { getUserByIdSelector } from '../../store/user-mgmt.selectors';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { emailRegex } from 'src/app/shared/util/email';
 import { USERMNGMNTROUTE } from 'src/app/shared/constants/routes';
 import { TranslateService } from '@ngx-translate/core';
-import { IUserProfile, IUserProfileResponse } from 'src/app/modules/users/users.models';
-import { loadAppUserProfileAction } from 'src/app/store/actions/app.action';
+import { IUserProfileResponse } from 'src/app/modules/users/users.models';
 
 @Component({
   selector: 'il-user-detail',
@@ -79,6 +76,7 @@ export class UserDetailComponent extends GenericDestroyPageComponent implements 
   }
 
   ngOnInit(): void {
+    
     this.$access = this.store.pipe(select(getAllAccessSelector));
     this.$roles = this.store.pipe(select(getAllRolesSelector));
   }

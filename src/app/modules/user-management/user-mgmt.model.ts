@@ -16,6 +16,7 @@ export interface IUser {
   user_profile?: IUserProfile;
   image?: string;
   fullname?: string;
+  is_admin?: boolean;
 }
 export interface IUserRole {
   id?: string;
@@ -40,9 +41,10 @@ export interface IUserMgmt {
   contract?: IContract;
   user_access?: IUserAccess[] | any;
   user_role?: IRole[];
+  user?: IUser;
 }
 export interface IUserTableData {
-  _id: string;
+  _id?: string;
   id?: string;
   username?: string;
   firstname?: string;

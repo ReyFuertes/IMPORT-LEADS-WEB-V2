@@ -21,6 +21,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { USERMNGMNTROUTE, VIEWPERMISSIONROUTE } from 'src/app/shared/constants/routes';
 import { TranslateService } from '@ngx-translate/core';
+import { IUserProfile } from 'src/app/modules/users/users.models';
 
 @Component({
   selector: 'il-user-table',
@@ -128,21 +129,20 @@ export class UserTableComponent extends GenericContainer implements AfterViewIni
   public fmtItem(item: IUser, col?: string) {
     const _item = Object.assign({}, item);
     if (col === 'user_access') {
-      return this.fmt(_item, 'user_access', 'access', 'access_name');
+      return this.fmt(_item, 'user_access', 'label');
     } else if (col === 'user_role') {
-      return this.fmt(_item, 'user_role', 'role', 'role_name');
+      return this.fmt(_item, 'user_role', 'label');
     } else {
       return item[col] || '';
     }
   }
 
-  public fmt(item: IUser, col: string, propIdx: string, propName: string) {
-    const _item = Object.assign({}, item);
-    const ret = _item[col]?.map(a => a[propIdx] && a[propIdx][propName]).join(', ');
-    return ret || '';
+  public fmt(item: IUser, col: string, propName: string) {
+    const value = Object.assign({}, item);
+    return value[col]?.map(a => a?.label).join(', ') || '';
   }
 
-  public onDelete(id: string): void {
+  public onDelete(item: IUserProfile): void {
     const dialogRef = this.dialog.open(ConfirmationComponent, {
       width: '410px',
       data: { action: 0 }
@@ -150,11 +150,13 @@ export class UserTableComponent extends GenericContainer implements AfterViewIni
     dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
       .subscribe(result => {
         if (result) {
-          setTimeout(() => {
-            this.store.dispatch(deleteUserAction({ id }));
-          }, 200);
+          this.store.dispatch(deleteUserAction({ id: item?.user?.id }));
         }
       });
+  }
+
+  public isAdmin(profile: IUserProfile): boolean {
+    return profile?.user?.is_admin === true;
   }
 
   public fmtToIds(values: any, col: string): string[] {

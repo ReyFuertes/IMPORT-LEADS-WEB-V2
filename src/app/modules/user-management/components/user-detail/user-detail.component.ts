@@ -39,7 +39,7 @@ export class UserDetailComponent extends GenericDestroyPageComponent implements 
       username: [null, Validators.compose([Validators.required, Validators.pattern(emailRegex.email)])],
       user_access: [null],
       user_roles: [null],
-      password: [null, Validators.required],
+      // password: [null, Validators.required],
       user_profile: this.fb.group({
         firstname: [null, Validators.required],
         lastname: [null, Validators.required],

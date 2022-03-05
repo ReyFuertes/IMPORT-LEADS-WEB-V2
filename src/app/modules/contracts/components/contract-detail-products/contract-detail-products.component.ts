@@ -387,33 +387,33 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   }
 
   private fmtSubProducts(sp: any[]): any {
-    const ret = sp?.map(sp => {
+    const subProducts = sp?.map(sp => {
       let productName: string = '';
       let productId: string = '';
+ 
       if (typeof (sp?.product_name) === 'object') {
         productId = sp?.product_name?.value;
         productName = sp?.product_name?.label
       } else {
-        productName = sp?.product?.product_name;
+        productName = sp?.product_name || sp?.product?.product_name;
         productId = sp?.product?.id;
       }
-      const ret = _.pickBy({
+      const value = _.pickBy({
         id: productId,
         product_name: productName,
         qty: sp.qty,
         cost: sp.cost,
       }, _.identity);
-      return ret;
+      return value;
     }) || [];
-
-    return ret;
+    return subProducts;
   }
 
   private fmtPayload(formValue: IProduct): any {
     const { id, product_name, qty, cost, sub_products } = formValue;
 
     const pid: string = this.getId(product_name);
-    const ret = {
+    const fmtedProduct = {
       parent: _.pickBy({
         _id: id,
         id: pid ? pid : id,
@@ -423,8 +423,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       children: Object.assign([], this.fmtSubProducts(sub_products)),
       contract: { id: this.contract.id, contract_name: this.contract?.contract_name }
     }
-
-    return ret;
+    return fmtedProduct;
   }
 
   public onEdit(p: any): void {

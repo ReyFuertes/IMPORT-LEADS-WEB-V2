@@ -17,7 +17,7 @@
           <img [id]="i" class="ellipse" [matMenuTriggerFor]="menu" [src]="svgPath + 'dots-icon-blue.svg'" />
           <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="toDetail(item?.id)">{{ 'Edit' | translate }}</button>
-            <button mat-menu-item *ngIf="!isAdmin" (click)="onDelete(item)">{{ 'Delete' | translate }}</button>
+            <button mat-menu-item *ngIf="!isAdmin(item)" (click)="onDelete(item)">{{ 'Delete' | translate }}</button>
             <!-- <button *appHasRole="'admin'" mat-menu-item [routerLink]="viewPermissionRoute(item?.id)">{{ 'View Permission' | translate }}</button> -->
           </mat-menu>
         </div>

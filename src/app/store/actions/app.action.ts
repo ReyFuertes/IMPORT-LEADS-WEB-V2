@@ -23,7 +23,12 @@ export enum AppActionTypes {
   loadUserClientsAction = '[User] user clients',
   loadUserClientsSuccessAction = '[User] user clients (success)',
   setDefaultLangAction = '[User] set default lang',
+  loadChangePasswordErrorAction = '[User] change password error',
 }
+export const loadChangePasswordErrorAction = createAction(
+  AppActionTypes.loadChangePasswordErrorAction,
+  props<{ error: any }>()
+);
 export const setDefaultLangAction = createAction(
   AppActionTypes.setDefaultLangAction,
   props<{ language: string }>()

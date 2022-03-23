@@ -9,7 +9,7 @@
     line-height: 20px;
   }
   .mat-form-field.mat-form-field-invalid .mat-form-field-label {
-    color: $color-black-2;
+    color: $color-gray-1;
   }
   ::ng-deep {
     .read-only .mat-form-field-appearance-legacy .mat-form-field-underline {
@@ -25,7 +25,7 @@
     .mat-form-field-appearance-legacy .mat-form-field-label {
       font-size: 14px;
       padding-top: 5px;
-      color: $color-black-2;
+      color: $color-gray-1;
     }
   }
 }

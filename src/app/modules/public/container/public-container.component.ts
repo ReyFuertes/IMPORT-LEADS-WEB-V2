@@ -10,12 +10,12 @@ import { isUserExistForChangePasswordAction } from '../store/public.actions';
 export class PublicContainerComponent implements OnInit {
   public id: string;
 
-  constructor(private route: ActivatedRoute, private store: Store<AppState>) {
+  constructor(private route: ActivatedRoute, private store: Store<AppState>) {}
+
+  ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id') || null;
     if (this.id) {
       this.store.dispatch(isUserExistForChangePasswordAction({ id: this.id }));
     }
   }
-
-  ngOnInit(): void { }
 }

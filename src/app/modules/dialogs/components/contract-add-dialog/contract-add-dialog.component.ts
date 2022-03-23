@@ -57,20 +57,20 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
     });
 
     /* manually mark as valid if has value */
-    this.form && this.form.get('venue').valueChanges
+    this.form.get('venue')?.valueChanges
       .pipe(take(1),
         takeUntil(this.$unsubscribe))
       .subscribe(res => {
         if (res) this.form.controls['venue'].setErrors(null);
       })
 
-    this.state = data && data.state || null;
-    if (this.state === this.AddEditState.Edit && data.id) {
+    this.state = data?.state || null;
+    if (this.state === this.AddEditState.Edit && data?.id) {
       this.store.pipe(select(getContractById(data.id)),
         takeUntil(this.$unsubscribe))
         .subscribe(c => this.formToEntity(c));
 
-      this.modalTitle = 'Edit ' + data.formValues['contract_name'];
+      this.modalTitle = 'Edit ' + data?.formValues['contract_name'];
     } else this.modalTitle = 'Add '
 
   }
@@ -79,7 +79,6 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
     if (!item) return;
 
     const { id, contract_name, venue, start_date, delivery_date, details, images, user_client } = item;
-
     this.form.controls['id'].patchValue(id);
     this.form.controls['contract_name'].patchValue(contract_name);
     this.form.controls['venue'].patchValue(venue?.id);
@@ -92,7 +91,6 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
     this.store.dispatch(cacheImagesAction({ images: Object.assign([], images) }));
   }
   ngOnInit() {
-    /* we call these from state because the data that is stored/pushed in here is from dropped images */
     this.store.pipe(select(getCachedImages),
       takeUntil(this.$unsubscribe))
       .subscribe(result => {
@@ -107,7 +105,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
       });
 
     this.$userClients = this.store.pipe(select(getUserClientsSelector));
-
+    this.$userClients.subscribe(res => console.log(res))
     this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
       .subscribe(language => {
         if (language) {
@@ -139,7 +137,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
 
   public save = (item: IContract): void => {
     const files = new FormData();
-    const { label, value } = this.venues.filter(v => v.value === this.form.get('venue').value)[0];
+    const { label, value } = this.venues?.filter(v => v.value === this.form.get('venue').value)[0];
 
     item.venue = { id: value, name: label };
     item.images = this.cnsFileObj(files);
@@ -151,7 +149,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
       if (locaUser) {
         item.user = locaUser.user
       }
-      /* save/upload contract */
+ 
       this.store.dispatch(addContractAction({ item }));
     } else {
       this.store.dispatch(updateContractAction({ item }));
@@ -180,10 +178,10 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
       this.store.dispatch(cacheImagesAction({ images }));
     }
   }
-  /* when you drop an image this gets executed */
+ 
   public onImageChange(event: File): void {
     this.files.push(event);
-    /* collect all drop images in base64 results */
+
     convertBlobToBase64(event)
       .pipe(take(1),
         takeUntil(this.$unsubscribe),

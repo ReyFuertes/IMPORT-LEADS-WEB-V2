@@ -13,7 +13,7 @@ export const getUserClientsSelector = createSelector(
   state => state?.userClients?.map((uc: IUser) => {
     return {
       label: `${uc?.user_profile?.firstname} ${uc?.user_profile?.lastname}`,
-      value: uc.id
+      value: uc?.id
     };
   })
 );

@@ -7,6 +7,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter, AfterViewInit, ChangeDetectorRef, OnChanges, SimpleChanges } from '@angular/core';
 import { splitToSentCase } from '../../util/format-value';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationComponent } from 'src/app/modules/dialogs/components/confirmation/confirmation.component';
 
 @Component({
   selector: 'iv-datatable',
@@ -35,7 +37,7 @@ export class DatatableComponent extends GenericRowComponent implements OnInit, A
 
   public form: FormGroup;
 
-  constructor(private fb: FormBuilder, private cdRef: ChangeDetectorRef) {
+  constructor(private dialog: MatDialog, private fb: FormBuilder, private cdRef: ChangeDetectorRef) {
     super();
     this.form = this.fb.group({
       parent: [null]
@@ -81,6 +83,18 @@ export class DatatableComponent extends GenericRowComponent implements OnInit, A
       this.setData(this.formatItems(this.data));
     }
     this.cdRef.detectChanges();
+  }
+
+  public onDelete(event: any): void {
+    const dialogRef = this.dialog.open(ConfirmationComponent, {
+      width: '410px',
+      data: { action: 0 }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          super.onDelete(event);
+        }
+      });
   }
 
   public onTriggerFunc = (): void => this.colFunc();

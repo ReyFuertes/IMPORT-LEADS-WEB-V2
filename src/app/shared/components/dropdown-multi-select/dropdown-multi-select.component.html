@@ -1,6 +1,6 @@
 <div *ngIf="form" [formGroup]="form">
   <mat-form-field [floatLabel]="isFloatLabel == true ? '' : 'never'">
-    <mat-select multiple [placeholder]="placeholder | translate" [formControlName]="controlName">
+    <mat-select [disabled]="disabled" multiple [placeholder]="placeholder | translate" [formControlName]="controlName">
       <mat-option *ngFor="let option of options" [value]="option.value">
         {{ option?.label | titlecase }}
       </mat-option>

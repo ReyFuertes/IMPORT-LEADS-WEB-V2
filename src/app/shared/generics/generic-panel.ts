@@ -1,5 +1,6 @@
 import { Output, EventEmitter, HostListener, Directive } from '@angular/core';
 import { GenericDestroyPageComponent } from './generic-destroy-page';
+
 @Directive()
 export abstract class GenericRowComponent extends GenericDestroyPageComponent {
   public hoveredIndex: number | null = null;
@@ -41,12 +42,11 @@ export abstract class GenericRowComponent extends GenericDestroyPageComponent {
     }, 100);
   }
 
-  /* for table */
   public onDelete(event: any): void {
     this.deleteEmitter.emit(event);
     this.onClose();
   }
-  /* for table */
+
   public onSave(event: any): void {
     this.modValueEmitter.emit(event);
     this.onClose();

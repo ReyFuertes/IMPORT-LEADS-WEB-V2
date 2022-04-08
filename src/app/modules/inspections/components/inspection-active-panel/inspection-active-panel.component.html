@@ -27,14 +27,14 @@
           <div class="action-col" fxFlex="5" fxLayoutAlign="end center">
             <img [src]="svgPath + 'dots-icon-blue.svg'" [matMenuTriggerFor]="menu" />
             <mat-menu #menu="matMenu">
-              <ng-container *ngIf="!item?.isViewing">
+              <ng-container *ngIf="!item?.is_viewing">
                 <button *ngFor="let menu of menus; let last = last; let i = index" [ngClass]="{'hidden': hideReportIfNoInspectionRun(item, menu)}" (click)="menu?.action(item)" mat-menu-item fxLayout="row"
                   fxLayoutAlign="start center" fxLayoutGap="10px">
                   <img [ngClass]="{'w-18': last}" [src]="svgPath + menu?.icon" />
                   <span translate>{{ (item?.is_paused && i === 0 ? 'RESUME' : menu?.label) }}</span>
                 </button>
               </ng-container>
-              <button *ngIf="item?.isViewing" [disabled]="item?.run_count === 0" (click)="onView(item?.id)" mat-menu-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+              <button *ngIf="item?.is_viewing" [disabled]="item?.run_count === 0" (click)="onView(item?.id)" mat-menu-item fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
                 <span translate>{{ (item?.run_count === 0 ? 'Not run yet': 'View') }}</span>
               </button>
             </mat-menu>

@@ -44,34 +44,39 @@ import { UserEffects } from './store/effects/user.effects';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { createTranslateLoader } from 'src/app/app.module';
 import { HttpClient } from '@angular/common/http';
+import { TabViewModule } from 'primeng/tabview';
+import { UserSettingCategoryTemplateComponent } from './components/user-category-template/user-category-template.component';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { UserSettingEffects } from './store/effects/user-setting.effects';
+import { UserSettingCategoryComponent } from './components/user-setting-category/user-setting-category.component';
+import { DropdownModule } from 'primeng/dropdown';
 
-const routes: Routes = [
-  {
+const routes: Routes = [{
+  path: '',
+  component: UsersContainerComponent,
+  children: [{
     path: '',
-    component: UsersContainerComponent,
-    children: [
-      {
-        path: '',
-        component: UserOverviewPageComponent
-      },
-      {
-        path: 'profile',
-        component: UserProfilePageComponent
-      },
-      {
-        path: 'setting',
-        component: UserSettingPageComponent
-      },
-      {
-        path: 'change-password',
-        component: UserChangePasswordComponent
-      }
-    ]
-  }
-];
+    component: UserOverviewPageComponent
+  }, {
+    path: 'profile',
+    component: UserProfilePageComponent
+  }, {
+    path: 'setting',
+    component: UserSettingPageComponent
+  }, {
+    path: 'change-password',
+    component: UserChangePasswordComponent
+  }]
+}];
 
 const primeNgModules = [
-  InputSwitchModule
+  InputSwitchModule,
+  TabViewModule,
+  TableModule,
+  ButtonModule,
+  MatTooltipModule,
+  DropdownModule
 ];
 
 const materialModules = [
@@ -97,6 +102,7 @@ const materialModules = [
   MatSlideToggleModule,
   MatTableModule
 ];
+
 @NgModule({
   imports: [
     CommonModule,
@@ -109,7 +115,7 @@ const materialModules = [
     DialogModule,
     RouterModule.forChild(routes),
     StoreModule.forFeature('usersModule', reducers),
-    EffectsModule.forFeature([UserProfileEffects, UserEffects]),
+    EffectsModule.forFeature([UserProfileEffects, UserEffects, UserSettingEffects,]),
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
@@ -129,7 +135,9 @@ const materialModules = [
     UserProfileInspectionComponent,
     UserSettingPageComponent,
     UserSettingDetailsComponent,
-    UserChangePasswordComponent
+    UserChangePasswordComponent,
+    UserSettingCategoryTemplateComponent,
+    UserSettingCategoryComponent
   ],
   providers: [UserProfileService, UserService],
 })

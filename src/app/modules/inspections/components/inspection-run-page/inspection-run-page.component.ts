@@ -140,13 +140,13 @@ export class InspectionRunPageComponent extends GenericDestroyPageComponent impl
       });
   }
 
-  public onSelectProductChange(event: string, isViewing: boolean = false): void {
+  public onSelectProductChange(event: string, is_viewing: boolean = false): void {
     if (!event) {
       this.selProduct = null;
       return;
     };
 
-    if (isViewing) {
+    if (is_viewing) {
       alert('You are in viewing mode');
       return;
     }

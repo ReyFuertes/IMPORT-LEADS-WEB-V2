@@ -8,3 +8,14 @@ h2 {
 il-user-setting-details {
   margin-bottom: 40px !important;
 }
+:host ::ng-deep {
+  .p-tabview .p-tabview-nav li .p-tabview-nav-link {
+    padding: 0.5rem 1.8rem;
+  }
+  .p-tabview .p-tabview-panels {
+    padding: 10px 0;
+  }
+  .ui-tabview .ui-tabview-panels {
+    min-height: 350px;
+  }
+}

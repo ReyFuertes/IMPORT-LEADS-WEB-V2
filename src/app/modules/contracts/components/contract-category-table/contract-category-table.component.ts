@@ -188,21 +188,15 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       });
   }
 
-  public onDelete = (id: string): void => {
+  public onDeleteCategory(id: string) {
     const dialogRef = this.dialog.open(ConfirmationComponent, {
       width: '410px',
-      data: {
-        action: 0
-      }
+      data: { action: 0 }
     });
     dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
       .subscribe(result => {
         if (result) {
-          this.store.dispatch(deleteContractCategoryAction({ id }));
-
-          setTimeout(() => {
-            this.store.dispatch(loadContractCategoryAction({ id: this.contractCategory?.contract?.id }));
-          }, 1000);
+          this.store.dispatch(deleteContractCategoryAction({ id, contractId: this.contractCategory?.contract?.id }));
         }
       });
   }

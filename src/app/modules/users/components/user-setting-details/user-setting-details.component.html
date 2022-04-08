@@ -1,50 +1,55 @@
-<mat-card class="setting-card">
-  <div *ngIf="form" fxLayout="column">
-    <div class="card-row">
-      <div fxFlex fxLayout="column" fxLayoutGap="20px">
-        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-          <div class="img-box">
-            <img [src]="svgPath + 'user-icon-blue.svg'" />
-          </div>
-          <h2>{{ 'Personal Details' | translate }}</h2>
+<div *ngIf="form" fxLayout="column">
+  <div class="card-row">
+    <div fxFlex fxLayout="column" fxLayoutGap="10px">
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+        <div class="img-box">
+          <img [src]="svgPath + 'user-icon-blue.svg'" />
         </div>
-        <div class="details-container" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="32px">
-          <il-input fxFlex="25" [form]="form" isFloatLabel="true" controlName="firstname" placeholder="First Name"></il-input>
-          <il-input fxFlex="25" [form]="form" isFloatLabel="true" controlName="lastname" placeholder="Last Name"></il-input>
-          <il-input fxFlex="25" [form]="form" isFloatLabel="true" controlName="phone" placeholder="Phone Number"></il-input>
-          <il-input fxFlex="25" [form]="form" isFloatLabel="true" controlName="email" placeholder="Email" [inputType]="'email'"></il-input>
-        </div>
+        <h4>{{ 'Personal Details' | translate }}</h4>
       </div>
-    </div>
-    <div class="card-row">
-      <div fxFlex fxLayout="column" fxLayoutGap="20px">
-        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-          <div class="img-box">
-            <img [src]="svgPath + 'venues-icon-blue.svg'" />
-          </div>
-          <h2>{{ 'Company details' | translate }}</h2>
-        </div>
-        <div class="details-container" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="32px">
-          <il-input fxFlex="25" [form]="form" isFloatLabel="true" controlName="company_name" placeholder="Company Name"></il-input>
-          <il-input fxFlex="50" [form]="form" isFloatLabel="true" controlName="company_address" placeholder="Company Address"></il-input>
-        </div>
+      <div class="details-container" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="32px">
+        <il-input fxFlex="25" [form]="form" isFloatLabel="true" controlName="firstname" placeholder="First Name">
+        </il-input>
+        <il-input fxFlex="25" [form]="form" isFloatLabel="true" controlName="lastname" placeholder="Last Name">
+        </il-input>
+        <il-input fxFlex="25" [form]="form" isFloatLabel="true" controlName="phone" placeholder="Phone Number">
+        </il-input>
+        <il-input fxFlex="25" [form]="form" isFloatLabel="true" controlName="email" placeholder="Email"
+          [inputType]="'email'"></il-input>
       </div>
-    </div>
-    <div class="card-row">
-      <div fxFlex fxLayout="column" fxLayoutGap="20px">
-        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-          <div class="img-box">
-            <img [src]="imgPath + 'lang.png'" />
-          </div>
-          <h2>{{ 'Language' | translate }}</h2>
-        </div>
-        <div class="details-container" fxLayout="row" fxFlex="33" fxLayoutAlign="start center" fxLayoutGap="32px">
-          <il-dropdown-select fxFlex placeholder="Select language" [form]="form" controlName="language" [options]="languages"></il-dropdown-select>
-        </div>
-      </div>
-    </div>
-    <div class="action-btns" fxLayout="row" fxLayoutAlign="center center">
-      <button (click)="updateProfile()" mat-flat-button class="il-button primary large">Save settings</button>
     </div>
   </div>
-</mat-card>
+  <div class="card-row">
+    <div fxFlex fxLayout="column" fxLayoutGap="10px">
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+        <div class="img-box">
+          <img [src]="svgPath + 'venues-icon-blue.svg'" />
+        </div>
+        <h4>{{ 'Company details' | translate }}</h4>
+      </div>
+      <div class="details-container" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="32px">
+        <il-input fxFlex="25" [form]="form" isFloatLabel="true" controlName="company_name" placeholder="Company Name">
+        </il-input>
+        <il-input fxFlex="50" [form]="form" isFloatLabel="true" controlName="company_address"
+          placeholder="Company Address"></il-input>
+      </div>
+    </div>
+  </div>
+  <div class="card-row">
+    <div fxFlex fxLayout="column" fxLayoutGap="10px">
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+        <div class="img-box">
+          <img [src]="imgPath + 'lang.png'" />
+        </div>
+        <h4>{{ 'Language' | translate }}</h4>
+      </div>
+      <div class="details-container" fxLayout="row" fxFlex="33" fxLayoutAlign="start center" fxLayoutGap="32px">
+        <il-dropdown-select fxFlex placeholder="Select language" [form]="form" controlName="language"
+          [options]="languages"></il-dropdown-select>
+      </div>
+    </div>
+  </div>
+  <div class="action-btns" fxLayout="row" fxLayoutAlign="center center">
+    <button (click)="updateProfile()" mat-flat-button class="il-button primary large">Save settings</button>
+  </div>
+</div>

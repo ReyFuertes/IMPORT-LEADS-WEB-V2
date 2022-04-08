@@ -1,5 +1,5 @@
 import { addContractTermSuccessAction, updateContractTermSuccessAction } from './../actions/contract-term.actions';
-import { addContractCategoryActionSuccess, loadContractCategoryActionSuccess, deleteContractCategoryActionSuccess, selTermsForChecklistAction, loadAllContractCategoryActionSuccess } from './../actions/contract-category.action';
+import { addContractCategoryActionSuccess, loadContractCategoryActionSuccess, deleteContractCategoryActionSuccess, selTermsForChecklistAction, loadAllContractCategoryActionSuccess, deleteCategoryErrorAction } from './../actions/contract-category.action';
 import { IContractCategory, IContractCategoryReponse, IContractTerm } from './../../contract.model';
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
@@ -9,12 +9,14 @@ import { updateContractTermTagSuccessAction } from '../actions/contract-term-tag
 
 export interface ContractCategoryState extends EntityState<IContractCategory> {
   selTermsForChecklist: IContractTerm[];
-  contractCategories: IContractCategoryReponse[]
+  contractCategories: IContractCategoryReponse[];
+  deleteCategoryErrorMsg: string;
 }
 export const adapter: EntityAdapter<IContractCategory> = createEntityAdapter<IContractCategory>({});
 export const initialState: ContractCategoryState = adapter.getInitialState({
   selTermsForChecklist: null,
-  contractCategories: null
+  contractCategories: null,
+  deleteCategoryErrorMsg: null
 });
 
 const reducer = createReducer(
@@ -60,9 +62,9 @@ const reducer = createReducer(
   on(addContractTermSuccessAction, (state, action) => {
     let _entities = Object.values(state.entities);
 
-    const entities = _entities?.map(en => {
-      if (en?.id === action?.created?.contract_category?.id) {
-        let terms = Object.assign([], en.terms);
+    const entities = _entities?.map(entity => {
+      if (entity?.id === action?.created?.contract_category?.id) {
+        let terms = Object.assign([], entity?.terms);
 
         terms.push({
           id: action?.created?.id,
@@ -70,11 +72,11 @@ const reducer = createReducer(
           term_description: action?.created?.term_description
         });
 
-        en = Object.assign({}, en, {
+        entity = Object.assign({}, entity, {
           terms: terms
         });
       }
-      return en;
+      return entity;
     });
 
     return Object.assign({}, state, { entities });
@@ -101,8 +103,14 @@ const reducer = createReducer(
 
     return Object.assign({}, state, { entities });
   }),
+  on(deleteCategoryErrorAction, (state, action) => {
+    return Object.assign({}, state, { deleteCategoryErrorMsg: action?.error?.message });
+  }),
   on(deleteContractCategoryActionSuccess, (state, action) => {
     return adapter.removeOne(action?.deleted?.id, state)
+  }),
+  on(deleteContractCategoryActionSuccess, (state) => {
+    return Object.assign({}, state, { deleteCategoryErrorMsg: null });
   }),
   on(addContractCategoryActionSuccess, (state, action) => {
     return ({ ...adapter.addOne(action.created, state) })

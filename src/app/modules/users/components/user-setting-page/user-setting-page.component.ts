@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'il-user-setting-page',
@@ -6,10 +7,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user-setting-page.component.scss']
 })
 export class UserSettingPageComponent implements OnInit {
+  public activeIndex: number;
 
-  constructor() { }
+  constructor(private storageSrv: StorageService) {
+    const selectedIndex = this.storageSrv.get('settingsIndex');
+    if (selectedIndex) {
+      this.activeIndex = JSON.parse(selectedIndex) || 0;
+    }
+  }
 
-  ngOnInit() {
+  ngOnInit() { }
+
+  public handleChange(event: any): void {
+    this.storageSrv.set('settingsIndex', JSON.stringify(event?.index));
   }
 
 }

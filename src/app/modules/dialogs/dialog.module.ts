@@ -40,6 +40,8 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { createTranslateLoader } from 'src/app/app.module';
 import { HttpClient } from '@angular/common/http';
+import { ContractCategoryListDialogComponent } from './components/contract-category-list-dialog/contract-category-list-dialog.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 const dialogComponents = [
   ContractAddDialogComponent,
@@ -65,7 +67,8 @@ const dialogComponents = [
   ContractCategoryImportDialogComponent,
   CategoryTemplateDialogComponent,
   RunExistErrorDialogComponent,
-  ImageViewerDialogComponent
+  ImageViewerDialogComponent,
+  ContractCategoryListDialogComponent
 ];
 
 const materialModules = [
@@ -77,7 +80,8 @@ const materialModules = [
   MatDividerModule,
   ScrollingModule,
   TableModule,
-  MatBadgeModule
+  MatBadgeModule,
+  MatTooltipModule
 ];
 
 const primeNgModules = [

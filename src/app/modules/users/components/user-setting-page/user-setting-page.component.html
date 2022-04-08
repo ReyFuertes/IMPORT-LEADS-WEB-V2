@@ -1,4 +1,14 @@
 <div class="us-container" fxLayout="column" fxLayoutGap="24px">
   <h2>Settings</h2>
-  <il-user-setting-details></il-user-setting-details>
+  <p-tabView [(activeIndex)]="activeIndex" (onChange)="handleChange($event)">
+    <p-tabPanel header="Profile">
+      <il-user-setting-details></il-user-setting-details>
+    </p-tabPanel>
+    <p-tabPanel header="Category">
+      <il-user-setting-category></il-user-setting-category>
+    </p-tabPanel>
+    <p-tabPanel header="Template Category">
+      <il-user-category-template></il-user-category-template>
+    </p-tabPanel>
+  </p-tabView>
 </div>

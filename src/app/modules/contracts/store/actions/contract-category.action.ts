@@ -21,7 +21,12 @@ export enum CategoryActionTypes {
   addMultipleContractCategoryActionSuccess = '[Contract Category] Add multiple (success)',
   importIntoContractCategoryAction = '[Contract Category] Import into contract category',
   importIntoContractCategoryActionSuccess = '[Contract Category] Import into contract category (success)',
+  deleteCategoryErrorAction = '[Contract Category] delete category error',
 }
+export const deleteCategoryErrorAction = createAction(
+  CategoryActionTypes.deleteCategoryErrorAction,
+  props<{ error: any }>()
+);
 export const importIntoContractCategoryAction = createAction(
   CategoryActionTypes.importIntoContractCategoryAction,
   props<{ payload: IContractCategory[], contract?: IContract }>()
@@ -67,7 +72,7 @@ export const selTermsForChecklistAction = createAction(
 );
 export const deleteContractCategoryAction = createAction(
   CategoryActionTypes.deleteContractCategoryAction,
-  props<{ id: string }>()
+  props<{ id: string, contractId?: string }>()
 );
 export const deleteContractCategoryActionSuccess = createAction(
   CategoryActionTypes.deleteContractCategoryActionSuccess,

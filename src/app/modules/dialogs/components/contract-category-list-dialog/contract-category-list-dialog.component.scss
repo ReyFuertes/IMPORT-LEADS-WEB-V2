@@ -1,0 +1,25 @@
+@import "src/styleguide/shared";
+.pi-times.red {
+  color: $color-red;
+  cursor: pointer;
+}
+.header {
+  width: 100%;
+  padding: 20px;
+}
+.content {
+  height: 225px;
+  padding: 0 20px;
+}
+button {
+  min-width: 100px;
+  width: 107px !important;
+}
+span.category-name {
+  font-size: 18px;
+  text-transform: capitalize;
+}
+span.related {
+  font-size: 18px;
+  color: $color-black-2;
+}

@@ -75,6 +75,7 @@ import { createTranslateLoader } from '../app.module';
 import { HttpClient } from '@angular/common/http';
 import { DropdownMultiSelectNGComponent } from './components/dropdown-multi-select-ng/dropdown-multi-select-ng.component';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { DropdownSelectNgComponent } from './components/dropdown-select-ng/dropdown-select-ng.component';
 
 const materialModules = [
   MatListModule,
@@ -143,7 +144,8 @@ const sharedComponents = [
   HasRoleDirective,
   RadioGroupComponent,
   PageNotFoundComponent,
-  DropdownMultiSelectNGComponent
+  DropdownMultiSelectNGComponent,
+  DropdownSelectNgComponent
 ];
 
 const directives = [

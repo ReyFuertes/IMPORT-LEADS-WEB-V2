@@ -1,7 +1,12 @@
 import { ITag } from './../tags/tags.model';
 import { IProduct } from './../products/products.model';
-import { IRole, IUser } from '../user-management/user-mgmt.model';
+import {  IUser } from '../user-management/user-mgmt.model';
 
+export interface ICategoryContract {
+  id?: string;
+  category_name?: string;
+  contract?: IContract;
+}
 export interface ICategoryTemplate {
   id?: string;
   title?: string;

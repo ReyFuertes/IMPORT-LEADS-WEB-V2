@@ -1,0 +1,28 @@
+<div class="custom-table">
+  <p-table *ngIf="hasCategoryTemplates; else noRecords" [value]="categoryTemplates">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Template Name</th>
+        <th>Category Name</th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-categoryTemplate>
+      <tr>
+        <td>{{ categoryTemplate?.title }}</td>
+        <td>{{ categoryTemplate?.category?.category_name }}</td>
+        <td>
+          <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="20px">
+            <!-- <button class="il-button primary" mat-menu-item (click)="onEdit(categoryTemplate)">
+              <div fxLayout="row" fxLayoutAlign="center center">{{ 'EDIT' | translate }}</div>
+            </button> -->
+            <i matTooltip="Delete Category Template" class="pi pi-times" (click)="onDelete(categoryTemplate)"></i>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <ng-template #noRecords>
+    <div class="no-records" fxFlex fxLayoutAlign="center center">No records found</div>
+  </ng-template>
+</div>

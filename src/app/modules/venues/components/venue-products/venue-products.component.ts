@@ -61,8 +61,7 @@ export class VenueProductsComponent extends GenericRowComponent implements OnCha
     super();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-  }
+  ngOnChanges(changes: SimpleChanges): void { }
 
   public uploadImage(event: any, item: IVenue): void {
     const file: File = event.target.files[0];

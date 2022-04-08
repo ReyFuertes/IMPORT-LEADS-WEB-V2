@@ -18,6 +18,7 @@ export class UserProfileEffects {
       })
     ))
   ));
+  
   uploadProfileImageAction$ = createEffect(() => this.actions$.pipe(
     ofType(uploadProfileImageAction),
     switchMap(({ file }) => this.uploadSrv.upload(file, 'single'))

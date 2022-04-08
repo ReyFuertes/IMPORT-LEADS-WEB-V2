@@ -96,8 +96,7 @@ const reducer = createReducer(
     else return state
   }),
   on(removeTermFormChecklistAction, (state, action) => {
-    const items = state.checklistTerms
-      && state.checklistTerms.filter(t => t.term_id === action.term.term_id);
+    const items = state?.checklistTerms.filter(t => t.term_id === action?.term?.term_id);
 
     let checklistTerms: IContractTermProduct[] = Object.assign([], state.checklistTerms);
     if (items && items.length > 0) {
@@ -127,7 +126,7 @@ const reducer = createReducer(
   }),
   on(addItemToChecklistTermsAction, (state, action) => {
     const match = state.checklistTerms
-      && state.checklistTerms.filter(t => t.term_id === action.term.term_id).shift();
+      && state.checklistTerms.find(t => t?.term_id === action?.term?.term_id);
 
     let checklistTerms: IContractTermProduct[] = Object.assign([], state.checklistTerms);
     if (!match)

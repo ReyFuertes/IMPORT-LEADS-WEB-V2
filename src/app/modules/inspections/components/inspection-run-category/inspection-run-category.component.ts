@@ -44,8 +44,8 @@ export class InspectionRunCategoryComponent extends GenericDestroyPageComponent 
       });
   }
 
-  public get isViewing(): boolean {
-    return this.inspectionRun?.isViewing;
+  public get is_viewing(): boolean {
+    return this.inspectionRun?.is_viewing;
   }
 
   private processItem(inspectionRun: any): void {

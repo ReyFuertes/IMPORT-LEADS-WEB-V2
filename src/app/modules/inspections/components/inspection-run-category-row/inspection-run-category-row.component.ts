@@ -26,7 +26,7 @@ import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 export class InspectionRunCategoryRowComponent extends GenericDestroyPageComponent implements OnInit, OnChanges {
   @Input() public source: any;
   @Input() public term: any;
-  @Input() public isViewing: boolean;
+  @Input() public is_viewing: boolean;
 
   public verifOptions: ISimpleItem[] = [
     { label: 'Ok', value: 'ok' },

@@ -1,0 +1,35 @@
+.ui-tabview-nav li.ui-state-active {
+  border-bottom: 2px $color-blue solid !important;
+  border-right: 0 !important;
+  border-left: 0 !important;
+  border-top: 0 !important;
+  z-index: 999;
+}
+.ui-tabview-nav li a {
+  background-color: $color-white;
+  font-size: 0.8rem;
+  color: $color-black-0 !important;
+  padding: 1em !important;
+  color: $color-black-2;
+  min-width: 120px;
+  text-align: center;
+}
+.ui-tabview-nav li:not(.ui-state-active) {
+  border: none !important;
+}
+.ui-tabview .ui-tabview-panels {
+  border: 0 !important;
+  border-top: 2px #ccc solid !important;
+  position: relative;
+  top: -0.01rem;
+}
+.ui-tabview-nav li:focus {
+  box-shadow: none !important;
+}
+.ui-tabview.ui-tabview-top .ui-tabview-nav {
+  background-color: $color-white !important;
+}
+.ui-tabview {
+  padding: 15px;
+  background-color: $color-white;
+}

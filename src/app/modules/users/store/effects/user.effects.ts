@@ -20,6 +20,6 @@ export class UserEffects {
       })
     ))
   ));
-
+  
   constructor(private store: Store<AppState>, private actions$: Actions, private userSrv: UserService) { }
 }

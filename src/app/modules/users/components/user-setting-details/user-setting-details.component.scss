@@ -1,21 +1,21 @@
 @import "src/styleguide/shared";
-.setting-card {
-  padding: 0 0 30px 0;
-}
 .card-row {
-  padding: 32px;
   border-bottom: thin $color-gray-3 solid;
 }
 .details-container {
-  padding: 0 50px;
+  padding: 0 30px;
 }
 .action-btns {
-  margin-top: 20px
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
 .il-button {
   @include il-button;
 }
 :host ::ng-deep {
+  .card-row {
+    padding: 20px 5px;
+  }
   il-dropdown-select {
     max-width: 250px !important;
   }

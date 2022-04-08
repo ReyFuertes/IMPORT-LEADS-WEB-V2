@@ -39,7 +39,7 @@ img.ellipse {
 }
 @media (max-width: 768px), (max-width: 1024px) {
   .contract-name {
-    max-width: 30%;
+    max-width: 20%;
     font-weight: 400 !important;
   }
   .img-box {
@@ -51,7 +51,7 @@ img.ellipse {
   }
   .contract-card {
     .col-table {
-      max-width: 70% !important;
+      max-width: 100% !important;
     }
     .row-text {
       font-weight: 400 !important;

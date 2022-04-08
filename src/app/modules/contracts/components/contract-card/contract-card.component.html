@@ -5,8 +5,8 @@
       </div>
       <span class="row-text">{{ contract?.contract_name }}</span>
     </div>
-    <div class="col-table" fxLayoutAlign="start start" fxLayoutGap="20px">
-      <div fxFlex="12">
+    <div fxFlex class="col-table" fxLayoutAlign="start start" fxLayoutGap="20px">
+      <div fxFlex="15">
         <div class="col-text"> {{ 'Contract Date' | translate }}</div>
         <div class="row-text">{{ contract?.start_date | date: 'dd/MM/yyyy' }}</div>
       </div>
@@ -14,7 +14,7 @@
         <div class="col-text">{{ 'Created by' | translate }}</div>
         <div class="row-text">{{ contract?.user?.username }}</div>
       </div>
-      <div fxFlex>
+      <div fxFlex="25">
         <div class="col-text">{{ 'Related Venue' | translate }}</div>
         <div class="row-text">{{ contract?.venue?.name }}</div>
       </div>

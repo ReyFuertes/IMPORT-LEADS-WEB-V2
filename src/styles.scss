@@ -23,6 +23,7 @@ h4,
 h5 {
   font-weight: 400;
   margin: 0;
+  font-family: "Roboto", sans-serif;
 }
 h1 {
   font-size: 28px;
@@ -127,6 +128,10 @@ input:-webkit-autofill:active {
 }
 .gray-text {
   color: $color-gray-2;
+}
+.no-records {
+  min-height: 250px;
+  color: $color-black-3;
 }
 @media print {
   script,

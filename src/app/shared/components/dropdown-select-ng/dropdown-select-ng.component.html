@@ -1,0 +1,9 @@
+<div fxLayout="column" fxLayoutAlign="start start">
+  <p-dropdown appendTo="body" filter="true" [showClear]="showClear" [options]="options" [(ngModel)]="selectedItem" [placeholder]="placeholder">
+    <ng-template let-option pTemplate="item">
+      <div class="option-item">
+        <div>{{option?.label}}</div>
+      </div>
+    </ng-template>
+  </p-dropdown>
+</div>

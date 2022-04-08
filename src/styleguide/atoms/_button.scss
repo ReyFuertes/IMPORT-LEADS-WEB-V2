@@ -59,6 +59,11 @@
     @include btn;
     background-color: $color-red;
     color: $color-white;
+    &:hover {
+      background-color: $color-red;
+      color: $color-white;
+      opacity: 0.9;
+    }
   }
   &.large {
     min-width: 176px;

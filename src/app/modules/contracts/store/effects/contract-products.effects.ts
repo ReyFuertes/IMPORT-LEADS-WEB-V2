@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { IContractProduct } from './../../contract.model';
 import { map, switchMap } from 'rxjs/operators';
 import { ContractProductService } from './../../services/contract-products.service';
-import { addContractProductsAction, addContractProductsSuccessAction, loadContractProductsAction, loadContractProductSuccessAction, deleteContractProduct, updateContractProductsSuccessAction, updateContractProductAction, removeSelectedProductAction } from './../actions/contract-product.action';
+import { addContractProductsAction, addContractProductsSuccessAction, loadContractProductsAction, loadContractProductSuccessAction, deleteContractProductAction, updateContractProductsSuccessAction, updateContractProductAction, removeSelectedProductAction } from './../actions/contract-product.action';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
@@ -42,8 +42,8 @@ export class ContractProductsEffect {
           })
         ))
   ));
-  deleteContractProduct$ = createEffect(() => this.actions$.pipe(
-    ofType(deleteContractProduct),
+  deleteContractProductAction$ = createEffect(() => this.actions$.pipe(
+    ofType(deleteContractProductAction),
     switchMap(({ id }) => this.contractProductService.delete(id))),
     { dispatch: false });
 

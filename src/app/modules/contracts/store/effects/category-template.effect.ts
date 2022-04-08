@@ -11,7 +11,7 @@ import { ICategoryTemplate } from '../../contract.model';
 export class CategoryTemplateEffect {
   loadCategoryTemplatesAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadCategoryTemplatesAction),
-    switchMap(() => this.CategoryTemplateSrv.getAll().pipe(
+    switchMap(() => this.categoryTemplateService.getAll().pipe(
       map((response: any) => {
         return loadCategoryTemplatesSuccessAction({ response });
       })
@@ -20,7 +20,7 @@ export class CategoryTemplateEffect {
 
   saveCategoryTemplateAction$ = createEffect(() => this.actions$.pipe(
     ofType(saveCategoryTemplateAction),
-    switchMap(({ payload }) => this.CategoryTemplateSrv.post(payload).pipe(
+    switchMap(({ payload }) => this.categoryTemplateService.post(payload).pipe(
       map((response: ICategoryTemplate) => {
         return saveCategoryTemplateSuccessAction({ response });
       })
@@ -30,6 +30,6 @@ export class CategoryTemplateEffect {
   constructor(
     private store: Store<AppState>,
     private actions$: Actions,
-    private CategoryTemplateSrv: CategoryTemplateService
+    private categoryTemplateService: CategoryTemplateService
   ) { }
 }

@@ -5,7 +5,7 @@ import { getSelectedProductsSelector } from './../../store/selectors/contract-pr
 import { getProductsSelector } from './../../../products/store/products.selector';
 import { IProduct } from './../../../products/products.model';
 import { getAllContractProductsSelector } from './../../store/selectors/contracts.selector';
-import { addContractProductsAction, deleteContractProduct, updateContractProductAction, selectProductAction, removeSelectedProductAction, clearPreSelectProducts, loadContractProductsAction } from './../../store/actions/contract-product.action';
+import { addContractProductsAction, deleteContractProductAction, updateContractProductAction, selectProductAction, removeSelectedProductAction, clearPreSelectProducts, loadContractProductsAction } from './../../store/actions/contract-product.action';
 import { AppState } from 'src/app/store/app.reducer';
 import { Store, select } from '@ngrx/store';
 import { PillStateType, IContract, IContractProduct, IContractChecklistItem, ICommonIdPayload, IContractTermProduct, ProductStatusType } from './../../contract.model';
@@ -527,7 +527,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
             })
           /* remote product from the database */
           if (toRemove)
-            this.store.dispatch(deleteContractProduct({ id: toRemove._id || toRemove.id }));
+            this.store.dispatch(deleteContractProductAction({ id: toRemove._id || toRemove.id }));
 
           this.onResetForm();
         }
@@ -578,7 +578,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
           /* remote sub product from the database */
           if (toRemove) {
-            this.store.dispatch(deleteContractProduct({ id: toRemove._id || toRemove.id }));
+            this.store.dispatch(deleteContractProductAction({ id: toRemove._id || toRemove.id }));
             this.onResetForm();
           }
         }

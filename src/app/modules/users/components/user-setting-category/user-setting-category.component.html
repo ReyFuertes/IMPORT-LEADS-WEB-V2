@@ -1,0 +1,28 @@
+<div class="custom-table">
+  <p-table *ngIf="hasCategories; else noRecords" [value]="categoryWithContract">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Category Name</th>
+        <th>Contract</th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-category>
+      <tr>
+        <td>{{ category?.category_name }}</td>
+        <td>
+          <il-dropdown-select-ng [options]="contracts" placeholder="Select contract" [selectedItem]="category?.contract?.id"></il-dropdown-select-ng>
+        </td>
+        <td>
+          <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+            <i matTooltip="Contract Category List" class="pi pi-list" (click)="onView(category)"></i>
+            <i matTooltip="Delete Category" class="pi pi-times" (click)="onDelete(category)"></i>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <ng-template #noRecords>
+    <div class="no-records" fxFlex fxLayoutAlign="center center">No records found</div>
+  </ng-template>
+</div>

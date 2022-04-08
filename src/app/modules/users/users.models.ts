@@ -1,4 +1,10 @@
+import { IContract } from "../contracts/contract.model";
 import { IUser, IUserAccess, IUserRole } from "../user-management/user-mgmt.model";
+
+export interface IUserSettingsContractResponse {
+  id?: string;
+  contract?: IContract[];
+}
 
 export interface IUserProfileResponse extends IUserProfile {
   user: IUser;

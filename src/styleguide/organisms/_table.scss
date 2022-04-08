@@ -1,3 +1,31 @@
 tr.mat-header-row {
   height: 40px;
 }
+.custom-table {
+  .ui-table .ui-table-tbody > tr > td {
+    border-top: 0 !important;
+    border-left: 0 !important;
+    border-right: 0 !important;
+    border-bottom: none !important;
+  }
+  .ui-table .ui-table-thead > tr > th {
+    background-color: $color-gray-4;
+    font-size: 0.8rem;
+    color: $color-black-2;
+    border-top: 0 !important;
+    border-left: 0 !important;
+    border-right: 0 !important;
+    border-bottom: thin $color-gray-3 solid;
+    text-align: left;
+  }
+  .ui-paginator {
+    padding: 5px;
+    background-color: $color-white;
+    border: none;
+  }
+  .ui-paginator .ui-paginator-pages .ui-paginator-page.ui-state-active {
+    background-color: $color-blue-pale;
+    border-color: $color-blue-pale;
+    color: $color-black-1;
+  }
+}

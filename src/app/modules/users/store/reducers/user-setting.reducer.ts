@@ -1,6 +1,6 @@
 import { createReducer, on, Action } from "@ngrx/store";
 import { ICategory, ICategoryContract, ICategoryTemplate, IContract, IContractCategoryReponse } from "src/app/modules/contracts/contract.model";
-import { addContractToassociatedCategoryAction, deleteUserSettingTemplateCategorySuccessAction, deleteUserSettingCategoryTemplateSuccessAction, loadContractAsOptionSuccessAction, loadUserSettingCategoriesWithContractSuccessAction, loadUserSettingCategoryTemplateSuccessAction, loadUserSettingContractByCategoryIdSuccessAction } from "../actions/user-setting.action";
+import { addContractToassociatedCategoryAction, deleteUserSettingTemplateCategorySuccessAction, deleteUserSettingCategoryTemplateSuccessAction, loadContractAsOptionSuccessAction, loadUserSettingCategoryTemplateSuccessAction, loadUserSettingContractByCategoryIdSuccessAction } from "../actions/user-setting.action";
 import * as _ from 'lodash';
 
 export interface UserSettingState {
@@ -35,9 +35,9 @@ const userSettingReducer = createReducer(
   on(loadContractAsOptionSuccessAction, (state, action) => {
     return Object.assign({}, state, { contractAsOption: action.response });
   }),
-  on(loadUserSettingCategoriesWithContractSuccessAction, (state, action) => {
-    return Object.assign({}, state, { categoriesWithContract: action.response });
-  }),
+  // on(loadUserSettingCategoriesWithContractSuccessAction, (state, action) => {
+  //   return Object.assign({}, state, { categoriesWithContract: action.response });
+  // }),
   on(loadUserSettingContractByCategoryIdSuccessAction, (state, action) => {
     return Object.assign({}, state, { contractsByCategory: action.response });
   }),

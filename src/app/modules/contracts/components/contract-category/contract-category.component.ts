@@ -14,6 +14,7 @@ import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
 import { CategoryTemplateDialogComponent } from 'src/app/modules/dialogs/components/category-template/category-template-dialog.component';
 import { saveCategoryTemplateAction } from '../../store/actions/Category-template.action';
 import { TranslateService } from '@ngx-translate/core';
+import { saveContractCategoryTemplateAction } from '../../store/actions/contract-category-template.action';
 
 @Component({
   selector: 'il-contract-category',
@@ -35,11 +36,11 @@ export class ContractCategoryComponent extends GenericRowComponent implements On
   @Output() public removeProductSpecEmitter = new EventEmitter<number>();
   @Output() public categoryTermEmitter = new EventEmitter<IContractCategoryTerm>();
 
-  constructor(private cdRef: ChangeDetectorRef, public translateService: TranslateService, private store: Store<AppState>, public dialog: MatDialog) {
+  constructor(public translateService: TranslateService, private store: Store<AppState>, public dialog: MatDialog) {
     super();
   }
 
-  public ngOnInit() {}
+  public ngOnInit() { }
 
   public onToggleTerm(event: IContractCategoryTerm): void {
     this.categoryTermEmitter.emit(event);
@@ -56,11 +57,11 @@ export class ContractCategoryComponent extends GenericRowComponent implements On
     const dialogRef = this.dialog.open(CategoryTemplateDialogComponent, {
       data: { category }
     });
-    dialogRef.afterClosed().subscribe(res => {
-      if (res) {
+    dialogRef.afterClosed().subscribe(template => {
+      if (template) {
         const payload = {
-          title: res.title,
-          description: res.description,
+          title: template.title,
+          description: template.description,
           contract: { id: this.contractCategory?.contract?.id },
           category: { id: this.contractCategory.category?.id },
           contract_category: { id: this.contractCategory?.id }

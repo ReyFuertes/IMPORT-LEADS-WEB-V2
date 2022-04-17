@@ -1,0 +1,13 @@
+.ui-multiselect-panel .ui-multiselect-items .ui-multiselect-item {
+  display: flex !important;
+}
+.ui-multiselect {
+  width: 100%;
+  min-width: 250px;
+}
+.ui-multiselect-panel .ui-multiselect-items .ui-multiselect-item.ui-state-highlight {
+  background-color: $color-blue-1 !important;
+}
+.ui-multiselect-panel .ui-multiselect-items .ui-multiselect-item:focus {
+  box-shadow: none !important
+}

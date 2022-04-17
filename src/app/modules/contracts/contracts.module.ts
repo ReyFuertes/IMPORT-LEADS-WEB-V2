@@ -70,6 +70,7 @@ import { ContractTermTagEffect } from './store/effects/contract-term-tag.effect'
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { createTranslateLoader } from 'src/app/app.module';
 import { HttpClient } from '@angular/common/http';
+import { ContractCategoryTemplateEffect } from './store/effects/contract-category-template.effect';
 
 const routes: Routes = [
   {
@@ -145,7 +146,8 @@ const materialModules = [
       SavedChecklistEffect,
       ContractTemplateEffect,
       CategoryTemplateEffect,
-      ContractTermTagEffect
+      ContractTermTagEffect,
+      ContractCategoryTemplateEffect
     ]),
     TranslateModule.forChild({
       loader: {

@@ -1,6 +1,6 @@
 import { ISimpleItem } from './../../generics/generic.model';
 import { GenericControl } from './../../generics/generic-control';
-import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'il-dropdown-select-ng',
@@ -8,13 +8,14 @@ import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef } from '@ang
   styleUrls: ['./dropdown-select-ng.component.scss']
 })
 
-export class DropdownSelectNgComponent extends GenericControl<ISimpleItem> implements OnInit {
+export class DropdownSelectNgComponent extends GenericControl<ISimpleItem> {
   @Input() public showClear: boolean = false;
+
   constructor() {
     super();
   }
 
-  ngOnInit(): void {
-    console.log(this.selectedItem)
+  public onChange(event: any): void {
+    this.valueEmitter.emit(event?.value);
   }
 }

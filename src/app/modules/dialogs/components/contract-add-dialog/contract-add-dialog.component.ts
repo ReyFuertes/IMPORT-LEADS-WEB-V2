@@ -105,7 +105,6 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
       });
 
     this.$userClients = this.store.pipe(select(getUserClientsSelector));
-    this.$userClients.subscribe(res => console.log(res))
     this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
       .subscribe(language => {
         if (language) {

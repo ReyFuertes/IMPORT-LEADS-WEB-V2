@@ -1,18 +1,27 @@
 import { ITag } from './../tags/tags.model';
 import { IProduct } from './../products/products.model';
 import {  IUser } from '../user-management/user-mgmt.model';
+import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 
 export interface ICategoryContract {
   id?: string;
   category_name?: string;
   contract?: IContract;
 }
+export interface IContractCategoryTemplate {
+  id?: string;
+  contract?: any;
+  category?: ICategory;
+  contract_category?: IContractCategory;
+  category_template?: ICategoryTemplate;
+}
 export interface ICategoryTemplate {
   id?: string;
   title?: string;
   description?: string;
-  contract?: IContract;
+  contract?: any;
   category?: ICategory;
+  contract_category?: IContractCategory
 }
 export interface IContractTemplate {
   id?: string;
@@ -111,6 +120,7 @@ export interface IContractCategory extends ICoreModel {
 }
 export interface ICategory extends ICoreModel {
   category_name: string;
+  contracts?: any[]
 }
 export interface IContractProduct extends ICoreModel {
   _id?: string;
@@ -146,7 +156,7 @@ export enum PillStateType {
   reset = 1
 }
 export interface IContract extends ICoreModel {
-  contract_name: string;
+  contract_name?: string;
   venue?: any;
   start_date?: any;
   delivery_date?: any;

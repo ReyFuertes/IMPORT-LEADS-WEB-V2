@@ -1,22 +1,25 @@
 <div class="custom-table">
-  <p-table *ngIf="hasCategories; else noRecords" [value]="categoryWithContract">
+  <p-table *ngIf="hasRecords; else noRecords" [value]="contractCategoryTemplates">
     <ng-template pTemplate="header">
       <tr>
+        <th>Template Category Name</th>
         <th>Category Name</th>
         <th>Contract</th>
         <th></th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-category>
+    <ng-template pTemplate="body" let-template>
       <tr>
-        <td>{{ category?.category_name }}</td>
+        <td>{{ template?.category_template?.title }}</td>
+        <td>{{ template?.contract_category?.category?.category_name }}</td>
         <td>
-          <il-dropdown-select-ng [options]="contracts" placeholder="Select contract" [selectedItem]="category?.contract?.id"></il-dropdown-select-ng>
+          <il-dropdown-select-ng [selectedItemsLabel]="'{0} associated'" [options]="$contracts | async"
+            (valueEmitter)="handleValueChange(template, $event)" placeholder="Select contracts"
+            [selectedItem]="template?.contract"></il-dropdown-select-ng>
         </td>
         <td>
           <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-            <i matTooltip="Contract Category List" class="pi pi-list" (click)="onView(category)"></i>
-            <i matTooltip="Delete Category" class="pi pi-times" (click)="onDelete(category)"></i>
+            <i matTooltip="Delete Template Category" class="pi pi-times" (click)="onDelete(template)"></i>
           </div>
         </td>
       </tr>

@@ -51,6 +51,7 @@ import { ButtonModule } from 'primeng/button';
 import { UserSettingEffects } from './store/effects/user-setting.effects';
 import { UserSettingCategoryComponent } from './components/user-setting-category/user-setting-category.component';
 import { DropdownModule } from 'primeng/dropdown';
+import { ContractCategoryTemplateEffect } from '../contracts/store/effects/contract-category-template.effect';
 
 const routes: Routes = [{
   path: '',
@@ -115,7 +116,7 @@ const materialModules = [
     DialogModule,
     RouterModule.forChild(routes),
     StoreModule.forFeature('usersModule', reducers),
-    EffectsModule.forFeature([UserProfileEffects, UserEffects, UserSettingEffects,]),
+    EffectsModule.forFeature([UserProfileEffects, UserEffects, UserSettingEffects, ContractCategoryTemplateEffect]),
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,

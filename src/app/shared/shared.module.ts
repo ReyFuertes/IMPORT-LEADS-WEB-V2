@@ -76,6 +76,7 @@ import { HttpClient } from '@angular/common/http';
 import { DropdownMultiSelectNGComponent } from './components/dropdown-multi-select-ng/dropdown-multi-select-ng.component';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DropdownSelectNgComponent } from './components/dropdown-select-ng/dropdown-select-ng.component';
+import { DropdownMultiSelectNgModelComponent } from './components/dropdown-multi-select-ng-model/dropdown-multi-select-ng-model.component';
 
 const materialModules = [
   MatListModule,
@@ -145,7 +146,8 @@ const sharedComponents = [
   RadioGroupComponent,
   PageNotFoundComponent,
   DropdownMultiSelectNGComponent,
-  DropdownSelectNgComponent
+  DropdownSelectNgComponent,
+  DropdownMultiSelectNgModelComponent
 ];
 
 const directives = [

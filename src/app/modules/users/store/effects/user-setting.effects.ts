@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, finalize, map, switchMap } from 'rxjs/operators';
 import { ICategory, ICategoryContract, ICategoryTemplate, IContract } from 'src/app/modules/contracts/contract.model';
 import { CategoryTemplateService } from 'src/app/modules/contracts/services/category-template.service';
 import { ContractCategoryService } from 'src/app/modules/contracts/services/contract-category.service';
@@ -12,11 +12,26 @@ import { CategoryService } from 'src/app/services/category.service';
 import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 import { appNotificationAction } from 'src/app/store/actions/notification.action';
 import { IUserSettingsContractResponse } from '../../users.models';
-import { deleteUserSettingCategoryAction, deleteUserSettingCategorySuccessAction, deleteUserSettingCategoryTemplateAction, deleteUserSettingCategoryTemplateSuccessAction, loadContractAsOptionAction, loadContractAsOptionSuccessAction, loaduserSettingCategoriesWithContractAction, loaduserSettingCategoriesWithContractSuccessAction, loadUserSettingCategoryTemplateAction, loadUserSettingCategoryTemplateSuccessAction, loadUserSettingContractByCategoryIdAction, loadUserSettingContractByCategoryIdSuccessAction } from '../actions/user-setting.action';
+import { associateCategoryTemplateToContractAction, associateCategoryToContractFailedAction, associateTemplateCategoryToContractSuccessAction, deleteUserSettingTemplateCategoryAction, deleteUserSettingTemplateCategorySuccessAction, deleteUserSettingCategoryTemplateAction, deleteUserSettingCategoryTemplateSuccessAction, loadContractAsOptionAction, loadContractAsOptionSuccessAction, loadUserSettingCategoriesWithContractAction, loadUserSettingCategoriesWithContractSuccessAction, loadUserSettingCategoryTemplateAction, loadUserSettingCategoryTemplateSuccessAction, loadUserSettingContractByCategoryIdAction, loadUserSettingContractByCategoryIdSuccessAction } from '../actions/user-setting.action';
 import { AppState } from '../reducers';
 
 @Injectable()
 export class UserSettingEffects {
+  associateCategoryTemplateToContractAction$ = createEffect(() => this.actions$.pipe(
+    ofType(associateCategoryTemplateToContractAction),
+    switchMap(({ payload }) => this.categoryTemplateService.post(payload, 'associate').pipe(
+      map((response: any) => {
+        return associateTemplateCategoryToContractSuccessAction({ response });
+      }),
+      catchError(({ error }) => {
+        const { message } = error;
+        this.store.dispatch(appNotificationAction({ notification: { error: true, message  } }));
+
+        return of(associateCategoryToContractFailedAction({ error: message }))
+      })
+    ))
+  ));
+
   loadContractAsOptionAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadContractAsOptionAction),
     switchMap(() => this.contractService.getAll('option').pipe(
@@ -26,11 +41,11 @@ export class UserSettingEffects {
     ))
   ));
 
-  loaduserSettingCategoriesWithContractAction$ = createEffect(() => this.actions$.pipe(
-    ofType(loaduserSettingCategoriesWithContractAction),
+  loadUserSettingCategoriesWithContractAction$ = createEffect(() => this.actions$.pipe(
+    ofType(loadUserSettingCategoriesWithContractAction),
     switchMap(() => this.contractCategoryService.getAll('contract-with-category').pipe(
       map((response: ICategoryContract[]) => {
-        return loaduserSettingCategoriesWithContractSuccessAction({ response });
+        return loadUserSettingCategoriesWithContractSuccessAction({ response });
       })
     ))
   ));
@@ -44,11 +59,11 @@ export class UserSettingEffects {
     ))
   ));
 
-  deleteUserSettingCategoryAction$ = createEffect(() => this.actions$.pipe(
-    ofType(deleteUserSettingCategoryAction),
-    switchMap(({ id }) => this.categoryService.delete(id).pipe(
+  deleteUserSettingTemplateCategoryAction$ = createEffect(() => this.actions$.pipe(
+    ofType(deleteUserSettingTemplateCategoryAction),
+    switchMap(({ id }) => this.categoryTemplateService.delete(id).pipe(
       map((deleted: ICategory) => {
-        return deleteUserSettingCategorySuccessAction({ deleted });
+        return deleteUserSettingTemplateCategorySuccessAction({ deleted });
       }),
       catchError(({ error }) => {
         this.store.dispatch(appNotificationAction({ notification: { error: true, message: error?.message } }));
@@ -57,15 +72,6 @@ export class UserSettingEffects {
       })
     ))
   ));
-
-  // loaduserSettingCategoryAction$ = createEffect(() => this.actions$.pipe(
-  //   ofType(loaduserSettingCategoriesAction),
-  //   switchMap(() => this.categoryService.getAll().pipe(
-  //     map((response: ICategory[]) => {
-  //       return loaduserSettingCategoriesSuccessAction({ response });
-  //     })
-  //   ))
-  // ));
 
   deleteUserSettingCategoryTemplateAction$ = createEffect(() => this.actions$.pipe(
     ofType(deleteUserSettingCategoryTemplateAction),
@@ -78,7 +84,7 @@ export class UserSettingEffects {
 
   loadUserSettingCategoryTemplateAction$ = createEffect(() => this.actions$.pipe(
     ofType(loadUserSettingCategoryTemplateAction),
-    switchMap(() => this.categoryTemplateService.getAll().pipe(
+    switchMap(() => this.categoryTemplateService.getAll('contract-category').pipe(
       map((response: ICategoryTemplate[]) => {
         return loadUserSettingCategoryTemplateSuccessAction({ response });
       })

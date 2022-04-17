@@ -40,6 +40,12 @@ export class ConfirmationComponent {
   }, {
     label: 'Delete',
     message: 'Do you want to delete last run item?'
+  }, {
+    label: 'Yes',
+    message: 'Do you want to associate this category to a contract?'
+  }, {
+    label: 'Remove',
+    message: 'Do you want to remove this category to a contract?'
   }];
 
   constructor(public dialogRef: MatDialogRef<ConfirmationComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {

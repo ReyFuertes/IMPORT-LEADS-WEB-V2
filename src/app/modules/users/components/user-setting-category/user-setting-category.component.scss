@@ -7,3 +7,13 @@
   color: $color-black-2;
   cursor: pointer;
 }
+:host ::ng-deep {
+  .ui-dropdown, p-dropdown {
+    width: 100% !important;
+  }
+  .custom-table .ui-table .ui-table-thead > tr > th {
+    &:last-child {
+      width: 50px !important;
+    }
+  }
+}

@@ -36,7 +36,6 @@ export const removeItemFromEntitiesAction = createAction(
   CheckListActionTypes.removeItemFromEntitiesAction,
   props<{ item: IContractChecklistItem }>()
 );
-/* ADD ITEM TO CHECKLIST TERMS */
 export const processItemsToChecklistEntitiesAction = createAction(
   CheckListActionTypes.processItemsToChecklistEntitiesAction
 );
@@ -51,11 +50,9 @@ export const loadChecklistSuccessAction = createAction(
   CheckListActionTypes.loadChecklistSuccessAction,
   props<{ items: IContractChecklistItem[] }>()
 );
-/* CLEAR ALL CHECKLIST TERMS */
 export const clearAllSelectedTerms = createAction(
   CheckListActionTypes.clearAllSelectedTerms
 );
-/* ADD ITEM TO CHECKLIST TERMS */
 export const processItemsToChecklistAction = createAction(
   CheckListActionTypes.processItemsToChecklistAction
 );
@@ -63,30 +60,24 @@ export const addItemToChecklistItemsAction = createAction(
   CheckListActionTypes.addItemToChecklistItemsAction,
   props<{ item: IContractChecklistItem }>()
 );
-/* SET STATUS RESET*/
 export const resetUpdateStatusAction = createAction(
   CheckListActionTypes.resetUpdateStatusAction
 );
-/* SET STATUS TO MULTI UPDATE */
 export const setToMultiUpdateStatusAction = createAction(
   CheckListActionTypes.setToMultiUpdateStatusAction
 );
-/* ADD ITEM TO CHECKLIST OF PRODUCTS */
 export const addItemToChecklistProductsAction = createAction(
   CheckListActionTypes.addItemToChecklistProductsAction,
   props<{ item: ICommonIdPayload }>()
 );
-/* REMOVE ITEM TO CHECKLIST OF PRODUCTS */
 export const removeItemFromChecklistProductsAction = createAction(
   CheckListActionTypes.removeItemFromChecklistProductsAction,
   props<{ item: ICommonIdPayload }>()
 );
-/* ADD ITEM TO CHECKLIST OF SOURCE */
 export const addItemToSourceAction = createAction(
   CheckListActionTypes.addItemToSourceAction,
   props<{ item: ICommonIdPayload }>()
 );
-/* ADD ITEM TO CHECKLIST TERMS */
 export const addItemToChecklistTermsAction = createAction(
   CheckListActionTypes.addItemToChecklistTermsAction,
   props<{ term: IContractTermProduct }>()

@@ -16,5 +16,13 @@ export const getUserSettingCategoriesWithContractSelector = createSelector(
 );
 export const getUserSettingCategoryTemplatesSelector = createSelector(
   selectUserModuleState,
-  state => state?.userSetting?.categoryTemplates
+  state => state?.userSetting?.categoryTemplates?.map(template => {
+    return {
+      ...template,
+      contract: {
+        label: template?.contract?.contract_name,
+        value: template?.contract?.id
+      }
+    }
+  })
 );

@@ -1,0 +1,11 @@
+<div fxLayout="column" fxLayoutAlign="start start">
+  <p-multiSelect appendTo="body" optionLabel="label" (onChange)="handleValueChange()" [(ngModel)]="selectedItems"
+    [filter]="filter" [selectedItemsLabel]="selectedItemsLabel" [maxSelectedLabels]="maxSelectedLabels"
+    [options]="options" [defaultLabel]="placeholder">
+    <ng-template let-option pTemplate="item">
+      <div class="option-item">
+        <div>{{option?.label | titlecase}}</div>
+      </div>
+    </ng-template>
+  </p-multiSelect>
+</div>

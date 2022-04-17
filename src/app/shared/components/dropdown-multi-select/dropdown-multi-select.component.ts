@@ -37,6 +37,5 @@ export class DropdownMultiSelectComponent extends GenericControl<ISimpleItem> im
     this.controlName = changes?.controlName?.currentValue;
     this.form = changes?.form?.currentValue;
     this.options = changes?.options?.currentValue;
-    console.log(this.disabled)
   }
 }

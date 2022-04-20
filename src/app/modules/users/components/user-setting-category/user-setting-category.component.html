@@ -1,25 +1,21 @@
 <div class="custom-table">
-  <p-table *ngIf="hasRecords; else noRecords" [value]="contractCategoryTemplates">
+  <p-table *ngIf="hasRecords; else noRecords" [value]="categoriesWithContract" responsiveLayout="scroll"
+    [paginator]="true" [rows]="10" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [rowsPerPageOptions]="[10,25,50]">
     <ng-template pTemplate="header">
       <tr>
-        <th>Template Category Name</th>
         <th>Category Name</th>
-        <th>Contract</th>
+        <th>Associated Contract</th>
         <th></th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-template>
+    <ng-template pTemplate="body" let-contractCategory>
       <tr>
-        <td>{{ template?.category_template?.title }}</td>
-        <td>{{ template?.contract_category?.category?.category_name }}</td>
-        <td>
-          <il-dropdown-select-ng [selectedItemsLabel]="'{0} associated'" [options]="$contracts | async"
-            (valueEmitter)="handleValueChange(template, $event)" placeholder="Select contracts"
-            [selectedItem]="template?.contract"></il-dropdown-select-ng>
-        </td>
+        <td>{{ contractCategory?.category_name }}</td>
+        <td>{{ contractCategory?.contract?.label }}</td>
         <td>
           <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-            <i matTooltip="Delete Template Category" class="pi pi-times" (click)="onDelete(template)"></i>
+            <i matTooltip="Delete Category" class="pi pi-times" (click)="onDelete(contractCategory)"></i>
           </div>
         </td>
       </tr>

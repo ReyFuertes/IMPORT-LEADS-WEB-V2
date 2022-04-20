@@ -8,7 +8,22 @@ export enum CategoryActionTypes {
   updateCategorySuccessAction = '[Category] Update (success)',
   loadCategoryAction = '[Category] load',
   loadCategorySuccessAction = '[Category] load (success)',
+  deleteCategoryAction = '[Category] delete category',
+  deleteCategorySuccessAction = '[Category] delete category (success)',
+  deleteCategoryErrorAction = '[Contract Category] delete category error',
 }
+export const deleteCategoryErrorAction = createAction(
+  CategoryActionTypes.deleteCategoryErrorAction,
+  props<{ error: any }>()
+);
+export const deleteCategoryAction = createAction(
+  CategoryActionTypes.deleteCategoryAction,
+  props<{ id: string }>()
+);
+export const deleteCategorySuccessAction = createAction(
+  CategoryActionTypes.deleteCategorySuccessAction,
+  props<{ deleted: ICategory }>()
+);
 export const loadCategoryAction = createAction(
   CategoryActionTypes.loadCategoryAction
 );

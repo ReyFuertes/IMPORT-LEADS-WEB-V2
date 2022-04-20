@@ -1,6 +1,6 @@
 import { AppState } from 'src/app/store/app.reducer';
 import { Store } from '@ngrx/store';
-import { addContractCategoryAction, addContractCategoryActionSuccess, loadContractCategoryAction, loadContractCategoryActionSuccess, deleteContractCategoryActionSuccess, deleteContractCategoryAction, moveUpContractCategoryAction, moveUpContractCategoryActionSuccess, moveDownContractCategoryActionSuccess, moveDownContractCategoryAction, loadAllContractCategoryAction, loadAllContractCategoryActionSuccess, addMultipleContractCategoryAction, addMultipleContractCategoryActionSuccess, importIntoContractCategoryAction, deleteCategoryErrorAction } from './../actions/contract-category.action';
+import { addContractCategoryAction, addContractCategoryActionSuccess, loadContractCategoryAction, loadContractCategoryActionSuccess, deleteContractCategoryActionSuccess, deleteContractCategoryAction, moveUpContractCategoryAction, moveUpContractCategoryActionSuccess, moveDownContractCategoryActionSuccess, moveDownContractCategoryAction, loadAllContractCategoryAction, loadAllContractCategoryActionSuccess, addMultipleContractCategoryAction, addMultipleContractCategoryActionSuccess, importIntoContractCategoryAction, deleteContractCategoryErrorAction } from './../actions/contract-category.action';
 import { ContractCategoryService } from './../../services/contract-category.service';
 import { IContractCategory } from './../../contract.model';
 import { Injectable } from '@angular/core';
@@ -80,7 +80,7 @@ export class ContractCategoryEffect {
       catchError(({ error }) => {
         this.store.dispatch(appNotificationAction({ notification: { error: true, message: error?.message } }));
 
-        return of(deleteCategoryErrorAction({ error: error?.message }))
+        return of(deleteContractCategoryErrorAction({ error: error?.message }))
       })
     ))
   ));

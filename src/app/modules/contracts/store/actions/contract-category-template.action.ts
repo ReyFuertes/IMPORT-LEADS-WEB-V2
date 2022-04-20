@@ -11,7 +11,7 @@ export enum ContractCategoryTemplateActionTypes {
 }
 export const deleteContractCategoryTemplateAction = createAction(
   ContractCategoryTemplateActionTypes.deleteContractCategoryTemplateAction,
-  props<{ id: string, category_template_id: string, contract_category_id: string, contract_id: string }>()
+  props<{ id: string, category_template_id?: string, contract_category_id?: string, contract_id?: string }>()
 );
 export const deleteContractCategoryTemplateSuccessAction = createAction(
   ContractCategoryTemplateActionTypes.deleteContractCategoryTemplateSuccessAction,

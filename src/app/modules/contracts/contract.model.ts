@@ -6,7 +6,7 @@ import { ISimpleItem } from 'src/app/shared/generics/generic.model';
 export interface ICategoryContract {
   id?: string;
   category_name?: string;
-  contract?: IContract;
+  contract?: any;
 }
 export interface IContractCategoryTemplate {
   id?: string;

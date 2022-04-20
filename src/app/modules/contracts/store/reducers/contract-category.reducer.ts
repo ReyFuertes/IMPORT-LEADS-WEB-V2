@@ -1,5 +1,5 @@
 import { addContractTermSuccessAction, updateContractTermSuccessAction } from './../actions/contract-term.actions';
-import { addContractCategoryActionSuccess, loadContractCategoryActionSuccess, deleteContractCategoryActionSuccess, selTermsForChecklistAction, loadAllContractCategoryActionSuccess, deleteCategoryErrorAction } from './../actions/contract-category.action';
+import { addContractCategoryActionSuccess, loadContractCategoryActionSuccess, deleteContractCategoryActionSuccess, selTermsForChecklistAction, loadAllContractCategoryActionSuccess, deleteContractCategoryErrorAction } from './../actions/contract-category.action';
 import { IContractCategory, IContractCategoryReponse, IContractTerm } from './../../contract.model';
 import { createReducer, on, Action } from "@ngrx/store";
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
@@ -103,7 +103,7 @@ const reducer = createReducer(
 
     return Object.assign({}, state, { entities });
   }),
-  on(deleteCategoryErrorAction, (state, action) => {
+  on(deleteContractCategoryErrorAction, (state, action) => {
     return Object.assign({}, state, { deleteCategoryErrorMsg: action?.error?.message });
   }),
   on(deleteContractCategoryActionSuccess, (state, action) => {

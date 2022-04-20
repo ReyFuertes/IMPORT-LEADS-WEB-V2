@@ -1,22 +1,25 @@
 <div class="custom-table">
-  <p-table *ngIf="hasCategoryTemplates; else noRecords" [value]="categoryTemplates">
+  <p-table *ngIf="hasRecords; else noRecords" [value]="contractCategoryTemplates">
     <ng-template pTemplate="header">
       <tr>
-        <th>Template Name</th>
+        <th>Template Category Name</th>
         <th>Category Name</th>
+        <th>Contract</th>
         <th></th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-categoryTemplate>
+    <ng-template pTemplate="body" let-template>
       <tr>
-        <td>{{ categoryTemplate?.title }}</td>
-        <td>{{ categoryTemplate?.category?.category_name }}</td>
+        <td>{{ template?.category_template?.title }}</td>
+        <td>{{ template?.contract_category?.category?.category_name }}</td>
         <td>
-          <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="20px">
-            <!-- <button class="il-button primary" mat-menu-item (click)="onEdit(categoryTemplate)">
-              <div fxLayout="row" fxLayoutAlign="center center">{{ 'EDIT' | translate }}</div>
-            </button> -->
-            <i matTooltip="Delete Category Template" class="pi pi-times" (click)="onDelete(categoryTemplate)"></i>
+          <il-dropdown-select-ng [selectedItemsLabel]="'{0} associated'" [options]="$contracts | async"
+            (valueEmitter)="handleValueChange(template, $event)" placeholder="Select contracts"
+            [selectedItem]="template?.contract"></il-dropdown-select-ng>
+        </td>
+        <td>
+          <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+            <i matTooltip="Delete Template Category" class="pi pi-times" (click)="onDelete(template)"></i>
           </div>
         </td>
       </tr>

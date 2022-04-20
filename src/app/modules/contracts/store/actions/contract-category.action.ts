@@ -21,10 +21,10 @@ export enum CategoryActionTypes {
   addMultipleContractCategoryActionSuccess = '[Contract Category] Add multiple (success)',
   importIntoContractCategoryAction = '[Contract Category] Import into contract category',
   importIntoContractCategoryActionSuccess = '[Contract Category] Import into contract category (success)',
-  deleteCategoryErrorAction = '[Contract Category] delete category error',
+  deleteContractCategoryErrorAction = '[Contract Category] delete category error',
 }
-export const deleteCategoryErrorAction = createAction(
-  CategoryActionTypes.deleteCategoryErrorAction,
+export const deleteContractCategoryErrorAction = createAction(
+  CategoryActionTypes.deleteContractCategoryErrorAction,
   props<{ error: any }>()
 );
 export const importIntoContractCategoryAction = createAction(

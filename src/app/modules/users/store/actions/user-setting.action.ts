@@ -13,8 +13,8 @@ export enum UserSettingActionTypes {
   deleteCategoryErrorAction = '[User Setting] delete category error',
   loadUserSettingContractByCategoryIdAction = '[User Setting] load contracts by category id',
   loadUserSettingContractByCategoryIdSuccessAction = '[User Setting] load contracts by category id (success)',
-  // loadUserSettingCategoriesWithContractAction = '[User Setting] load categories with contract',
-  // loadUserSettingCategoriesWithContractSuccessAction = '[User Setting] load categories with contract (success)',
+  loadUserSettingCategoriesWithContractAction = '[User Setting] load categories with contract',
+  loadUserSettingCategoriesWithContractSuccessAction = '[User Setting] load categories with contract (success)',
   loadContractAsOptionAction = '[User Setting] load contract as option',
   loadContractAsOptionSuccessAction = '[User Setting] load contract as option (success)',
   associateCategoryTemplateToContractAction = '[User Setting] associate category to a contract',
@@ -45,13 +45,13 @@ export const loadContractAsOptionSuccessAction = createAction(
   UserSettingActionTypes.loadContractAsOptionSuccessAction,
   props<{ response: ISimpleItem[] }>()
 );
-// export const loadUserSettingCategoriesWithContractAction = createAction(
-//   UserSettingActionTypes.loadUserSettingCategoriesWithContractAction
-// );
-// export const loadUserSettingCategoriesWithContractSuccessAction = createAction(
-//   UserSettingActionTypes.loadUserSettingCategoriesWithContractSuccessAction,
-//   props<{ response: ICategoryContract[] }>()
-// );
+export const loadUserSettingCategoriesWithContractAction = createAction(
+  UserSettingActionTypes.loadUserSettingCategoriesWithContractAction
+);
+export const loadUserSettingCategoriesWithContractSuccessAction = createAction(
+  UserSettingActionTypes.loadUserSettingCategoriesWithContractSuccessAction,
+  props<{ response: ICategoryContract[] }>()
+);
 export const loadUserSettingContractByCategoryIdAction = createAction(
   UserSettingActionTypes.loadUserSettingContractByCategoryIdAction,
   props<{ id: string }>()

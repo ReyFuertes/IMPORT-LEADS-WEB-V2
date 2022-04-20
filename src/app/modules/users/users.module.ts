@@ -45,13 +45,13 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { createTranslateLoader } from 'src/app/app.module';
 import { HttpClient } from '@angular/common/http';
 import { TabViewModule } from 'primeng/tabview';
-import { UserSettingCategoryTemplateComponent } from './components/user-category-template/user-category-template.component';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { UserSettingEffects } from './store/effects/user-setting.effects';
-import { UserSettingCategoryComponent } from './components/user-setting-category/user-setting-category.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { ContractCategoryTemplateEffect } from '../contracts/store/effects/contract-category-template.effect';
+import { UserCategoryTemplateComponent } from './components/user-category-template/user-category-template.component';
+import { UserSettingCategoryComponent } from './components/user-setting-category/user-setting-category.component';
 
 const routes: Routes = [{
   path: '',
@@ -137,7 +137,7 @@ const materialModules = [
     UserSettingPageComponent,
     UserSettingDetailsComponent,
     UserChangePasswordComponent,
-    UserSettingCategoryTemplateComponent,
+    UserCategoryTemplateComponent,
     UserSettingCategoryComponent
   ],
   providers: [UserProfileService, UserService],

@@ -1,5 +1,10 @@
 @import "src/styleguide/shared";
 @import "src/styleguide/overrides";
+.pi-times {
+  cursor: pointer;
+  margin-right: 10px;
+  color: $color-gray-1;
+}
 .content {
   background-color: $color-white !important;
   padding: 0 40px !important;

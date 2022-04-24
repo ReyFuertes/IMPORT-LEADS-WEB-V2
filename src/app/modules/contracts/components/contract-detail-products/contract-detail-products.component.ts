@@ -67,40 +67,11 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       cp_id: [null]
     });
 
-    //get the sub total of all productSet
     this.form.get('sub_products').valueChanges
       .pipe(takeUntil(this.$unsubscribe))
-      .subscribe(children => {
-        if (children) {
-          const childsCost = children.reduce((sum, current) => parseFloat(sum) + parseFloat(current.cost), 0) || 0;
-          const parentCost = this.form.get('cost').value;
-
-          if (parseFloat(childsCost) === parseFloat(parentCost)) {
-            this.isDisabled = false;
-          } else {
-            this.isDisabled = true;
-          }
-
-          //check if the sub product is edited then update the id
-          this.formSubProdsArr = this.form.get('sub_products') as FormArray;
-          let match: boolean = false;
-          this.$products.subscribe((products: IProduct[]) => {
-            products.forEach(product => {
-              if (match) return;
-
-              this.formSubProdsArr.value.forEach(p => {
-                if (p.id === product.id || p.product_name === product.product_name) {
-                  match = true;
-                  p.id = product.id
-                  return;
-                } else {
-                  match = false;
-                  delete p.id;
-                  return;
-                }
-              });
-            });
-          })
+      .subscribe(subProducts => {
+        if (subProducts) {
+          this.calculateCost(subProducts);
         }
       });
 
@@ -112,7 +83,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
         if (parseFloat(childsCost) === parseFloat(costValue)) {
           this.isDisabled = false;
-        } else if(parseFloat(childsCost) === 0) { //if product doesnt have children
+        } else if (parseFloat(childsCost) === 0) { //if product doesnt have children
           this.isDisabled = false;
         } else {
           this.isDisabled = true;
@@ -128,6 +99,39 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
         this.checklistEntities = Object.values(res.entities) || [];
         this.checklistItems = res.checklistItems || [];
       })).subscribe();
+  }
+
+  public calculateCost(children: any): void {
+    const childsCost = children?.reduce((sum, current) => parseFloat(sum) + parseFloat(current.cost), 0) || 0;
+    const parentCost = this.form.get('cost').value;
+    
+    if (parseFloat(childsCost) === parseFloat(parentCost)) {
+      this.isDisabled = false;
+    } else if ((childsCost === 0) && parentCost) {
+      this.isDisabled = false;
+    } else {
+      this.isDisabled = true;
+    }
+
+    this.formSubProdsArr = this.form.get('sub_products') as FormArray;
+    let match: boolean = false;
+    this.$products.subscribe((products: IProduct[]) => {
+      products.forEach(product => {
+        if (match) return;
+
+        this.formSubProdsArr.value.forEach(p => {
+          if (p.id === product.id || p.product_name === product.product_name) {
+            match = true;
+            p.id = product.id
+            return;
+          } else {
+            match = false;
+            delete p.id;
+            return;
+          }
+        });
+      });
+    })
   }
 
   public get hasAdminManagerRole(): string[] {
@@ -285,7 +289,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
 
   private isProductHasChecklist(id: string): boolean {
     return id && this.checklistEntities?.find(e => (e.contract_product
-        && e.contract_product.product.id === id))
+      && e.contract_product.product.id === id))
       ? true : false;
   }
 
@@ -316,9 +320,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       && this.checklistProducts?.length > 0
       && this.checklistProducts.filter(c => c.id === id).shift() ? true : false;
   }
-  /* when selecting product in checklist state
-    we are matching the subproduct by using childid 
-  */
+  /* when selecting product in checklist state we are matching the subproduct by using childid */
   public isSubProductChecklistRelated(sub: any, contract_product_id: string): boolean {
     const isRelated = this.checklistEntities?.find(c => {
       return (c.contract_product?.product?.id === sub?.id /* if the product is the same */
@@ -390,7 +392,7 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
     const subProducts = sp?.map(sp => {
       let productName: string = '';
       let productId: string = '';
- 
+
       if (typeof (sp?.product_name) === 'object') {
         productId = sp?.product_name?.value;
         productName = sp?.product_name?.label
@@ -494,7 +496,6 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
   public onAddSubProduct(): void {
     this.formSubProdsArr = this.form.get('sub_products') as FormArray;
 
-    /* add placehold product */
     const result = this.createSubItem({
       product_name: ['', Validators.required],
       qty: [this.form.get('qty').value, Validators.required],
@@ -509,77 +510,71 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       width: '410px',
       data: { action: 0 }
     });
-    dialogRef.afterClosed()
-      .pipe(takeUntil(this.$unsubscribe))
-      .subscribe(result => {
-        if (result) {
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
 
-          let toRemove: IContractProduct;
-          this.$contractProducts
-            .pipe(takeUntil(this.$unsubscribe))
-            .subscribe(p => {
-              toRemove = p.filter(p => p.id === product.id)[0];
-              const index = p.indexOf(toRemove);
-              if (index > -1) {
-                p.splice(index, 1);
-              }
-              p.sort((a, b) => sortByDesc(a, b, 'created_at'));
-            })
-          /* remote product from the database */
-          if (toRemove)
-            this.store.dispatch(deleteContractProductAction({ id: toRemove._id || toRemove.id }));
-
-          this.onResetForm();
+        let toRemove: IContractProduct;
+        this.$contractProducts
+          .pipe(takeUntil(this.$unsubscribe))
+          .subscribe(p => {
+            toRemove = p.filter(p => p.id === product.id)[0];
+            const index = p.indexOf(toRemove);
+            if (index > -1) {
+              p.splice(index, 1);
+            }
+            p.sort((a, b) => sortByDesc(a, b, 'created_at'));
+          })
+        if (toRemove) {
+          this.store.dispatch(deleteContractProductAction({ id: toRemove._id || toRemove.id }));
         }
-      });
+        this.onResetForm();
+      }
+    });
   }
 
   public onRemoveSubProduct(product: IProduct, i?: number): void {
     const dialogRef = this.dialog.open(ConfirmationComponent, {
       width: '410px',
-      data: {
-        action: 0
-      }
+      data: { action: 0 }
     });
-    dialogRef.afterClosed().pipe(takeUntil(this.$unsubscribe))
+    dialogRef.afterClosed()
       .subscribe(result => {
         if (result) {
-          //remove item from form array
-          const item = this.form.get('sub_products') as FormArray;
-          item.removeAt(i);
+          const subProductFormArray = this.form.get('sub_products') as FormArray;
+          subProductFormArray.removeAt(i);
 
-          /* collect the contract product to be removed */
           let toRemove: any;
           this.$contractProducts
             .pipe(takeUntil(this.$unsubscribe))
             .subscribe(p => {
-
-              let parent = Object.assign([], p.find(t => t.sub_products.find(tg => tg.id === product.id)));
-              const sub_products = parent.sub_products.map(sp => {
-                if (sp.id === product.id) {
+              let parentProduct = Object.assign([], p.find(t => t?.sub_products?.find(tg => tg.id === product.id)));
+              const sub_products = parentProduct?.sub_products?.map(sp => {
+                if (sp?.id === product?.id) {
                   toRemove = sp;
                   return;
                 }
                 return sp;
               }).filter(i => Boolean(i));
 
-              const _p = Object.assign(parent, { sub_products });
+              let updateValue: any;
+              if (sub_products) {
+                updateValue = Object.assign(parentProduct, { sub_products });
 
-              const index = p.findIndex(p => p.id === _p.id);
-              if (index > -1) {
-                p.splice(index, 1);
+                const index = p.findIndex(p => p.id === updateValue?.id);
+                if (index > -1) {
+                  p.splice(index, 1);
+                }
+                p.push(updateValue);
+                p.sort((a, b) => sortByDesc(a, b, 'created_at'));
               }
-              p.push(_p);
-
-              p.sort((a, b) => sortByDesc(a, b, 'created_at'));
-
-              return;
             })
 
-          /* remote sub product from the database */
           if (toRemove) {
-            this.store.dispatch(deleteContractProductAction({ id: toRemove._id || toRemove.id }));
+            this.store.dispatch(deleteContractProductAction({ id: toRemove?._id || toRemove?.id }));
             this.onResetForm();
+          }
+          if (subProductFormArray?.value) {
+            this.calculateCost(subProductFormArray?.value);
           }
         }
       });

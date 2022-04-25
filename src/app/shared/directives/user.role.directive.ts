@@ -7,6 +7,7 @@ import { getUserRolesSelector } from 'src/app/store/selectors/app.selector';
 import { GenericDestroyPageComponent } from '../generics/generic-destroy-page';
 
 export enum Roles {
+  user = 0,
   admin = 1,
   manager = 2,
   inspector = 3

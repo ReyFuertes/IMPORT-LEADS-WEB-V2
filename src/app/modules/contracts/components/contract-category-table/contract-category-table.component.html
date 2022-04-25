@@ -49,27 +49,26 @@
   <!-- footer actions -->
   <div fxLayout="row" class="table-footer">
     <div [ngClass]="{'hidden': actionState, 'disabled': inCheckListing}" fxFlex fxLayoutAlign="center center" fxLayoutGap="15px">
-      <img matTooltip="Show Menu Actions" (click)="actionState = !actionState" [src]="svgPath + 'add-icon-gray.svg'" />
-      <img *ngIf="contractCategory" matTooltip="Delete Category" (click)="onDeleteCategory(contractCategory?.id)" [src]="svgPath + 'delete-icon-gray.svg'" />
-      <img matTooltip="Move up" (click)="onCategoryMoveUp()" [src]="svgPath + 'arrow_up.svg'" />
-      <img matTooltip="Move down" (click)="onCategoryMoveDown()" [src]="svgPath + 'arrow_down.svg'" />
+      <i matTooltip="Show Menu Actions" (click)="actionState = !actionState" class="pi pi-plus"></i>
+      <i *ngIf="contractCategory" matTooltip="Delete Category" (click)="onDeleteCategory(contractCategory?.id)" class="pi pi-trash"></i>
+      <ng-container>
+        <i matTooltip="Move up" (click)="onCategoryMoveUp()" class="pi pi-angle-up"></i>
+        <i matTooltip="Move down" (click)="onCategoryMoveDown()" class="pi pi-angle-down"></i>
+      </ng-container>
     </div>
     <div fxFlex [ngClass]="{'hidden': !actionState}" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="15px">
       <div matTooltip="Add a term" (click)="createTerm()" fxLayoutAlign="start center" fxLayoutGap="5px">
-        <img [src]="svgPath + 'add-category-icon-blue.svg'" />
+        <i class="pi pi-plus-circle"></i>
         <span>{{ 'Add a term' | translate }}</span>
       </div>
-      <!-- <div matTooltip="Add a title" (click)="addTitle()" fxLayoutAlign="start center" fxLayoutGap="5px">
-        <img [src]="svgPath + 'add-title-icon-blue.svg'" />
-        <span>{{ 'Add a title' | translate }}</span>
-      </div> -->
+
       <div matTooltip="Import Template" (click)="onImportIntoCategory()" fxLayoutAlign="start center" fxLayoutGap="5px">
-        <img [src]="svgPath + 'templates-icon-blue.svg'" />
+        <i class="pi pi-arrow-down"></i>
         <span>{{ 'Import template' | translate }}</span>
       </div>
     </div>
     <div [ngClass]="{'hidden': !actionState}" fxFlex="10px" fxLayoutAlign="end center" fxLayoutGap="5px">
-      <img matTooltip="Close menu action" class="close" (click)="actionState = !actionState" [src]="svgPath + 'close-icon-gray.svg'" />
+      <i matTooltip="Close menu action" class="close" (click)="actionState = !actionState" class="pi pi-times"></i>
     </div>
   </div>
 </div>

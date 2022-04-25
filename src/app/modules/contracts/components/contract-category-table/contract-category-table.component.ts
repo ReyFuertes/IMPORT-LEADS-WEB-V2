@@ -11,11 +11,11 @@ import { Observable } from 'rxjs';
 import { ContractCategoryTermDialogComponent } from '../../../dialogs/components/contract-category-term/contract-category-term-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { AddEditState, ISimpleItem } from '../../../../shared/generics/generic.model';
+import { ISimpleItem } from '../../../../shared/generics/generic.model';
 import { environment } from '../../../../../environments/environment';
 import { trigger, transition, style, state, animate } from '@angular/animations';
 import { Component, OnInit, Input, OnChanges, SimpleChanges, AfterViewInit, ViewEncapsulation, EventEmitter, Output, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
-import { map, tap, takeUntil } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { IContractCategory } from '../../contract.model';
 import { deleteContractCategoryAction } from '../../store/actions/contract-category.action';
 import { GenericRowComponent } from 'src/app/shared/generics/generic-panel';
@@ -25,7 +25,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { updateContractTermTagAction } from '../../store/actions/contract-term-tag.action';
 import { TranslateService } from '@ngx-translate/core';
 import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
-import { ContractCategoryTitleDialogComponent } from 'src/app/modules/dialogs/components/contract-category-title/contract-category-title-dialog.component';
 import { ContractCategoryImportDialogComponent } from 'src/app/modules/dialogs/components/contract-category-import/contract-category-import.component';
 
 @Component({
@@ -75,11 +74,11 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
     });
 
     this.store.pipe(select(getChecklistSelector)).pipe(
-      takeUntil(this.$unsubscribe),
-      tap(res => {
-        this.checkListProducts = res.checklistProducts || [];
-        this.checklistTerms = res.checklistTerms || [];
-      })).subscribe();
+      takeUntil(this.$unsubscribe))
+      .subscribe(({ checklistProducts, checklistTerms }) => {
+        this.checkListProducts = checklistProducts || [];
+        this.checklistTerms = checklistTerms || [];
+      });
   }
 
   public onImportIntoCategory(): void {
@@ -89,19 +88,22 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
     });
     dialogRef.afterClosed().subscribe((_payload: any) => {
       if (_payload) {
-        const payload = _payload?.map(p => {
+        const payload = _payload?.map(value => {
           return {
-            ...p,
+            ...value,
             contract: this.contractCategory?.contract,
             destination: {
-              contract_category: p?.contract_category
+              contract_category: value?.contract_category
             },
             current: {
               contract_category: this.contractCategory,
             }
           }
         });
-        this.store.dispatch(importIntoContractCategoryAction({ payload, contract: this.contractCategory?.contract }));
+        this.store.dispatch(importIntoContractCategoryAction({
+          payload,
+          contract: this.contractCategory?.contract
+        }));
       }
     });
   }
@@ -151,16 +153,6 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       });
   }
 
-  public addTitle(): void {
-    const dialogRef = this.dialog.open(ContractCategoryTitleDialogComponent);
-    dialogRef.afterClosed()
-      .pipe(takeUntil(this.$unsubscribe)).subscribe(result => {
-        if (result) {
-          //this.specification['title'] = result;
-        }
-      });
-  }
-
   public onCategoryMoveDown(): void {
     this.store.dispatch(moveDownContractCategoryAction({ payload: this.contractCategory }));
   }
@@ -182,8 +174,8 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       .subscribe(result => {
         if (result) {
           this.store.dispatch(deleteContractTermAction({ id }));
-          /* this is a bad solution, but due to time development i just needs this */
-          this.reloadContractCategory();
+
+          this.reloadContractCategory();/* this is a bad solution, but due to time development i just needs this */
         }
       });
   }
@@ -201,14 +193,19 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
       });
   }
 
-  public hasNoSelection(el: any): any {
-    return !el?.contract_tag?.id;
+  public get moveableLength(): boolean {
+    return this.checkListProducts?.length > 1;
   }
 
-  private reloadContractCategory = () =>
+  public hasNoSelection(selection: any): any {
+    return !selection?.contract_tag?.id;
+  }
+
+  private reloadContractCategory(): void {
     setTimeout(() => {
       this.store.dispatch(loadContractCategoryAction({ id: this.contractCategory?.contract?.id }))
     }, 1000);
+  }
 
   public createTerm(): void {
     const dialogRef = this.dialog.open(ContractCategoryTermDialogComponent, {
@@ -267,8 +264,8 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
   }
 
   public isHidden(element: IContractTerm): boolean {
-    return element && element.term_description == this.selectedCol
-      || element && element.term_name == this.selectedCol;
+    return element?.term_description == this.selectedCol
+      || element?.term_name == this.selectedCol;
   }
 
   public onClose(): void {
@@ -286,8 +283,9 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
     if (changes && changes.inCheckListing) {
       this.inCheckListing = changes.inCheckListing.currentValue;
     }
-    if (changes?.contractCategory?.currentValue)
+    if (changes?.contractCategory?.currentValue) {
       this.dataSource = new MatTableDataSource<any>(changes.contractCategory.currentValue.terms);
+    }
   }
 
   public mouseOver(event: any, col: string): void {
@@ -298,14 +296,14 @@ export class ContractCategoryTableComponent extends GenericRowComponent implemen
     this.selectedRow = null;
   };
 
-  public onTagUpdate(event: any, element: IContractTerm): void {
+  public onTagUpdate(event: any, term: IContractTerm): void {
     if (event) {
       this.store.dispatch(updateContractTermTagAction({
         payload: {
           ...{
-            id: element.id,
-            term_name: element.term_name,
-            term_description: element.term_description
+            id: term?.id,
+            term_name: term?.term_name,
+            term_description: term?.term_description
           }, contract_tag: { id: event }
         }
       }));

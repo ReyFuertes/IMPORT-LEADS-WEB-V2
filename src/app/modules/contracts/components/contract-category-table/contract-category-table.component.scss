@@ -5,8 +5,13 @@ il-editor {
 .edit-description {
   padding: 20px;
 }
-.mb-1 {
-  margin-bottom: 10px;
+.pi {
+  color: $color-gray-2;
+  cursor: pointer;
+  font-size: 1.1em;
+  &:hover {
+    color: $color-primary !important;
+  }
 }
 .write-term {
   color: $color-gray-2;
@@ -19,15 +24,24 @@ il-editor {
   span {
     font-size: 12px;
     font-weight: 500;
-    color: $color-primary;
+    color: $color-gray-1;
   }
   img {
     cursor: pointer;
     height: 20px;
   }
-  > div > div {
-    cursor: pointer;
-    width: fit-content;
+  > div {
+    &:nth-child(2) {
+      div:hover {
+        span, i {
+          color: $color-primary !important;
+        }
+      }
+    }
+    > div {
+      cursor: pointer;
+      width: fit-content;
+    }
   }
 }
 table {
@@ -58,7 +72,7 @@ table {
 :host ::ng-deep {
   .mat-form-field-appearance-legacy .mat-form-field-infix {
     padding: 1px;
-}
+  }
   p {
     padding-top: 0 !important;
     margin-top: 0 !important;

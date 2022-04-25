@@ -123,6 +123,9 @@ table {
   }
 }
 :host ::ng-deep {
+  .mat-card {
+    width: 100%;
+  }
   p {
     margin-top: 5px !important;
     margin-bottom: 5px !important;

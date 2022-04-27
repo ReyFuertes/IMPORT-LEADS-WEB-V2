@@ -31,7 +31,6 @@ import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 
 export class ContractDetailProductsComponent extends GenericDetailPageComponent implements OnInit, AfterViewInit, OnChanges {
   public svgPath: string = environment.svgPath;
-  public productsArray: FormArray;
   public formSubProdsArr: FormArray;
   public productPillsArr: IProduct[] = [];
   public form: FormGroup;
@@ -453,14 +452,14 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
       this.formSubProdsArr.clear();
     }
 
-    subProducts?.forEach(si => {
+    subProducts?.forEach(value => {
       const item = this.createSubItem({
-        _id: si._id,
-        id: si.id,
+        _id: value._id,
+        id: value.id,
         /* we use an object for passing values to suggestion control */
-        product_name: { label: si.product_name, value: si.id },
-        qty: si.qty,
-        cost: si.cost
+        product_name: { label: value.product_name, value: value.id },
+        qty: value.qty,
+        cost: value.cost
       });
       this.formSubProdsArr.push(item);
     });
@@ -600,7 +599,5 @@ export class ContractDetailProductsComponent extends GenericDetailPageComponent 
     const i = this.productPillsArr.findIndex(x => x.id === id);
     this.productPillsArr.splice(i);
   }
-
-  public subProductsArr = () => this.form.get('sub_products') as FormArray;
 }
 

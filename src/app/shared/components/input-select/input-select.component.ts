@@ -1,8 +1,7 @@
 import { ISimpleItem } from './../../generics/generic.model';
-import { Component, OnInit, Input, ViewChild, ElementRef, Output, AfterViewInit, ChangeDetectorRef } from '@angular/core';
-import { FormGroup, FormControl, FormControlName } from '@angular/forms';
-import { map, startWith, takeUntil } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Component, Input, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { GenericDestroyPageComponent } from '../../generics/generic-destroy-page';
 import { select, Store } from '@ngrx/store';
@@ -19,7 +18,7 @@ export class InputSelectComponent extends GenericDestroyPageComponent implements
   @Input() public suggestions: ISimpleItem[];
   @Input() public controlName: any;
   @Input() public form: FormGroup;
-  @Input() public placeholder: string = 'Your product here..';
+  @Input() public placeholder: string = '';
   @Input() public isReadOnly: boolean = false;
 
   public filtered: ISimpleItem[] | any[];

@@ -7,7 +7,7 @@
         <div>
           <div fxLayout="row wrap" fxFlex fxLayoutGap="20px">
             <il-input fxFlex="25" [isFloatLabel]="true" [form]="form" isFloatLabel="true" controlName="username"
-              placeholder="Username"></il-input>
+              [placeholder]="'Username' | translate"></il-input>
             <!-- this can only be viewed by admin -->
             <il-dropdown-multi-select fxFlex="25" [isFloatLabel]="true" [form]="form" controlName="user_access"
               placeHolder="Access" [options]="($access | async)">
@@ -27,25 +27,25 @@
           <div fxFlex fxLayout="column" fxLayoutAlign="start start">
             <div fxLayout="row wrap" fxLayoutGap="40px">
               <il-input fxFlex="25" inputMaxLen="50" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true"
-                controlName="firstname" placeholder="Firstname"></il-input>
+                controlName="firstname" [placeholder]="'Firstname' | translate"></il-input>
               <il-input fxFlex="25" inputMaxLen="50" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true"
-                controlName="lastname" placeholder="Lastname"></il-input>
+                controlName="lastname" [placeholder]="'Lastname' | translate"></il-input>
               <il-input fxFlex="25" inputMaxLen="50" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true"
-                controlName="phone" placeholder="Phone number"></il-input>
+                controlName="phone" [placeholder]="'Phone number' | translate"></il-input>
               <il-input fxFlex="25" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true" inputType="email"
-                controlName="email" placeholder="Email"></il-input>
+                controlName="email" [placeholder]="'Email' | translate"></il-input>
 
               <il-input fxFlex="25" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true"
-                controlName="facebook" inputMaxLen="50" placeholder="Facebook"></il-input>
+                controlName="facebook" inputMaxLen="50" [placeholder]="'Facebook' | translate"></il-input>
               <il-input fxFlex="25" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true"
-                controlName="company_linkedin" placeholder="Company linkedin"></il-input>
+                controlName="company_linkedin" [placeholder]="'Company linkedin' | translate"></il-input>
               <il-input fxFlex="25" inputMaxLen="50" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true"
-                controlName="twitter" placeholder="Twitter"></il-input>
+                controlName="twitter" [placeholder]="'Twitter' | translate"></il-input>
               <il-input fxFlex="25" inputMaxLen="50" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true"
-                controlName="wechatid" placeholder="WeChat ID"></il-input>
+                controlName="wechatid" [placeholder]="'WeChat ID' | translate"></il-input>
 
               <il-input fxFlex="25" inputMaxLen="50" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true"
-                controlName="qqid" placeholder="QQid"></il-input>
+                controlName="qqid" [placeholder]="'QQid' | translate"></il-input>
 
             </div>
           </div>
@@ -56,13 +56,13 @@
           <div fxLayout="column">
             <div fxLayout="row" fxLayoutGap="40px">
               <il-input fxFlex="25" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true"
-                controlName="company_name" inputMaxLen="50" placeholder="Company Name"></il-input>
+                controlName="company_name" inputMaxLen="50" [placeholder]="'Company Name' | translate"></il-input>
               <il-input fxFlex="25" [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true"
-                controlName="company_linkedin" inputMaxLen="50" placeholder="Company Linkedin"></il-input>
+                controlName="company_linkedin" inputMaxLen="50" [placeholder]="'Company Linkedin' | translate"></il-input>
               <div fxFlex="25"></div>
             </div>
             <il-textarea fxFlex="50" fxFlex [isFloatLabel]="true" [form]="form.get('user_profile')" isFloatLabel="true"
-              controlName="company_address" placeholder="Company Address"></il-textarea>
+              controlName="company_address" [placeholder]="'Company Address' | translate"></il-textarea>
           </div>
         </div>
       </div>

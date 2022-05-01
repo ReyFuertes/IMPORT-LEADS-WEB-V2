@@ -1,9 +1,12 @@
 <div class="menu-container" fxLayoutGap="0" fxLayoutAlign="center center">
-  <span *ngIf="menu?.label === 'DATA'" matBadge="Demo" matBadgePosition="after" matBadgeColor="accent" translate> {{ menu?.label | translate }}</span>
-  <span *ngIf="menu?.label !== 'DATA'" translate> {{ menu?.label | translate }}</span>
+  <span *ngIf="menu?.label === 'DATA'" matBadge="Demo" matBadgePosition="after" matBadgeColor="accent" translate> {{
+    trim(menu?.label) | translate }}</span>
+  <span *ngIf="menu?.label !== 'DATA'" translate>{{ trim(menu?.label) | translate }}</span>
 
-  <img *ngIf="hasChildren(menu)" [src]="svgPath + 'arrow-down-icon-black.svg'" (click)="$event.stopPropagation()" [matMenuTriggerFor]="subMenu">
+  <img *ngIf="hasChildren(menu)" [src]="svgPath + 'arrow-down-icon-black.svg'" (click)="$event.stopPropagation()"
+    [matMenuTriggerFor]="subMenu">
 </div>
 <mat-menu #subMenu="matMenu">
-  <button class="sub-menu-item" *ngFor="let submenu of menu?.children" [routerLink]="submenu?.access_route" mat-menu-item translate>{{ submenu?.access_name }}</button>
+  <button class="sub-menu-item" *ngFor="let submenu of menu?.children" [routerLink]="submenu?.access_route"
+    mat-menu-item translate>{{ trim(submenu?.access_name) | translate }}</button>
 </mat-menu>

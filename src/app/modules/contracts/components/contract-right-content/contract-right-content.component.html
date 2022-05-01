@@ -8,7 +8,7 @@
 
   <div class="tab-group">
     <mat-tab-group>
-      <mat-tab label="New Checklist">
+      <mat-tab [label]="'New Checklist' | translate">
         <div class="new-template" fxLayout="column" fxLayoutGap="10px">
           <div>
             <il-dropdown-select [options]="($userList | async)" [form]="form" controlName="assignedTo" [placeholder]="'Assigned To' | translate"></il-dropdown-select>

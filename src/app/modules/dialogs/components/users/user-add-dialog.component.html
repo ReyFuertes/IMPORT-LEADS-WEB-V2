@@ -10,20 +10,20 @@
   <div class="content" fxLayout="column" fxLayoutGap="10px">
     <div>
       <div fxLayout="row" fxFlex fxLayoutGap="20px">
-        <il-input fxFlex="50" [form]="form.get('user_profile')" isFloatLabel="true" controlName="firstname" placeholder="Firstname"></il-input>
-        <il-input fxFlex="50" [form]="form.get('user_profile')" isFloatLabel="true" controlName="lastname" placeholder="Lastname"></il-input>
+        <il-input fxFlex="50" [form]="form.get('user_profile')" isFloatLabel="true" controlName="firstname" [placeholder]="'Firstname' | translate"></il-input>
+        <il-input fxFlex="50" [form]="form.get('user_profile')" isFloatLabel="true" controlName="lastname" [placeholder]="'Lastname' | translate"></il-input>
       </div>
     </div>
     <div>
       <div fxLayout="row" fxFlex fxLayoutGap="20px">
-        <il-input fxFlex="50" [form]="form.get('user_profile')" isFloatLabel="true" controlName="company_name" placeholder="Company"></il-input>
-        <il-input fxFlex="50" [form]="form.get('user_profile')" isFloatLabel="true" controlName="phone" placeholder="Phone number"></il-input>
+        <il-input fxFlex="50" [form]="form.get('user_profile')" isFloatLabel="true" controlName="company_name" [placeholder]="'Company Name' | translate"></il-input>
+        <il-input fxFlex="50" [form]="form.get('user_profile')" isFloatLabel="true" controlName="phone" [placeholder]="'Phone number' | translate"></il-input>
       </div>
     </div>
     <div>
       <div fxLayout="row" fxLayoutGap="20px">
-        <il-input fxFlex="50" [form]="form" isFloatLabel="true" controlName="username" placeholder="Username"></il-input>
-        <il-input fxFlex="50" [form]="form" isFloatLabel="true" inputType="password" controlName="password" placeholder="Password"></il-input>
+        <il-input fxFlex="50" [form]="form" isFloatLabel="true" controlName="username" [placeholder]="'Username' | translate"></il-input>
+        <il-input fxFlex="50" [form]="form" isFloatLabel="true" inputType="password" controlName="password" [placeholder]="'Password' | translate"></il-input>
       </div>
     </div>
     <div fxLayout="row" fxFlex fxLayoutGap="20px">

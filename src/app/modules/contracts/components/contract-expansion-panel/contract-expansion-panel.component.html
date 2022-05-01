@@ -57,7 +57,7 @@
       <ng-template #titleInEditMode>
         <div fxLayout="column" fxFlex>
           <mat-form-field floatLabel="never">
-            <input matInput placeholder="Title" [value]="p?.title">
+            <input matInput [placeholder]="'Title' | translate" [value]="p?.title">
           </mat-form-field>
           <ng-container *ngTemplateOutlet="actionBtns"></ng-container>
         </div>

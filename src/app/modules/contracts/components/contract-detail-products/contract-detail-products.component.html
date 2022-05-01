@@ -56,9 +56,9 @@
       <div *ngIf="isAddState || (!inCheckListing && isAddState)" fxFlex fxLayout="column" fxLayoutAlign="start start">
         <ng-container>
           <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
-            <il-input-select fxFlex [form]="form" [controlName]="'product_name'" [suggestions]="suggestions" [isReadOnly]="inCheckListing || isNavOpenAndEdit"></il-input-select>
-            <il-input fxFlex="15" [form]="form" [isReadOnly]="isNavOpenAndEdit" [isNumberOnly]="true" [controlName]="'qty'" placeholder="Enter quantity" [isReadOnly]="inCheckListing"></il-input>
-            <il-input fxFlex="15" [form]="form" [isReadOnly]="isNavOpenAndEdit" [isNumberOnly]="true" [controlName]="'cost'" [showErrors]="hasSubProducts" placeholder="Enter unit cost"></il-input>
+            <il-input-select fxFlex [form]="form" [placeholder]="'Your product here..' | translate" [controlName]="'product_name'" [suggestions]="suggestions" [isReadOnly]="inCheckListing || isNavOpenAndEdit"></il-input-select>
+            <il-input fxFlex="15" [form]="form" [isReadOnly]="isNavOpenAndEdit" [isNumberOnly]="true" [controlName]="'qty'" [placeholder]="'Enter quantity' | translate" [isReadOnly]="inCheckListing"></il-input>
+            <il-input fxFlex="15" [form]="form" [isReadOnly]="isNavOpenAndEdit" [isNumberOnly]="true" [controlName]="'cost'" [showErrors]="hasSubProducts" [placeholder]="'Enter unit cost' | translate"></il-input>
             <!-- <div fxFlex="5"></div> -->
           </div>
         </ng-container>
@@ -68,10 +68,10 @@
           <div *ngFor="let sub_product of form.get('sub_products')?.controls;let i = index" fxLayout="column">
             <ng-container formArrayName="sub_products">
               <div fxFlex fxLayoutGap="20px" [formGroupName]="i" fxLayout="row" fxLayoutAlign="start center">
-                <il-input-select class="sub-product-auto-comp" [form]="sub_product" controlName="product_name" [suggestions]="suggestions" fxFlex fxFlexOffset="20px" [isReadOnly]="inCheckListing || isNavOpenAndEdit">
+                <il-input-select [placeholder]="'Your product here..' | translate" class="sub-product-auto-comp" [form]="sub_product" controlName="product_name" [suggestions]="suggestions" fxFlex fxFlexOffset="20px" [isReadOnly]="inCheckListing || isNavOpenAndEdit">
                 </il-input-select>
-                <il-input fxFlex="15" [form]="sub_product" [isReadOnly]="isNavOpenAndEdit" [isNumberOnly]="true" [controlName]="'qty'" placeholder="Enter quantity"></il-input>
-                <il-input fxFlex="15" [form]="sub_product" [isReadOnly]="isNavOpenAndEdit" [isNumberOnly]="true" [controlName]="'cost'" placeholder="Enter unit cost"></il-input>
+                <il-input fxFlex="15" [form]="sub_product" [isReadOnly]="isNavOpenAndEdit" [isNumberOnly]="true" [controlName]="'qty'" [placeholder]="'Enter quantity' | translate"></il-input>
+                <il-input fxFlex="15" [form]="sub_product" [isReadOnly]="isNavOpenAndEdit" [isNumberOnly]="true" [controlName]="'cost'" [placeholder]="'Enter unit cost' | translate"></il-input>
                 <div *appHasRole="hasAdminManagerRole" fxFlex="5" fxLayoutAlign="start center">
                   <img *ngIf="!inCheckListing" class="remove-icon" matTooltip="Remove" (click)="onRemoveSubProduct(sub_product?.value, i)" [src]="svgPath + 'delete-icon-red.svg'" />
                 </div>

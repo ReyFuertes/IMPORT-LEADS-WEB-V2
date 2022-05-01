@@ -26,6 +26,10 @@ export class MenuComponent extends GenericDestroyPageComponent implements OnInit
     super();
   }
 
+  public trim(value: string): string {
+    return value?.trim();
+  }
+
   ngOnInit() {
     this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
       .subscribe(language => {

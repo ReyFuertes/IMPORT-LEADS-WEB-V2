@@ -1,14 +1,14 @@
 <div class="us-container" fxLayout="column" fxLayoutGap="24px">
-  <h2 *appHasRole="'admin'">Settings</h2>
-  <h2 *appHasRole="'user'">Profile</h2>
+  <h2 *appHasRole="'admin'" translate>Settings</h2>
+  <h2 *appHasRole="'user'" translate>Profile</h2>
   <p-tabView [(activeIndex)]="activeIndex" (onChange)="handleChange($event)">
-    <p-tabPanel header="Profile">
+    <p-tabPanel [header]="'Profile' | translate">
       <il-user-setting-details></il-user-setting-details>
     </p-tabPanel>
-    <p-tabPanel *appHasRole="'admin'" header="Category">
+    <p-tabPanel *appHasRole="'admin'" [header]="'Category' | translate">
       <il-user-setting-category></il-user-setting-category>
     </p-tabPanel>
-    <p-tabPanel *appHasRole="'admin'" header="Template Category">
+    <p-tabPanel *appHasRole="'admin'" [header]="'Template Category' | translate">
       <il-user-category-template></il-user-category-template>
     </p-tabPanel>
   </p-tabView>

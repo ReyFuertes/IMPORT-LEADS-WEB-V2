@@ -56,7 +56,6 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
       user_client: [null]
     });
 
-    /* manually mark as valid if has value */
     this.form.get('venue')?.valueChanges
       .pipe(take(1),
         takeUntil(this.$unsubscribe))
@@ -90,6 +89,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
 
     this.store.dispatch(cacheImagesAction({ images: Object.assign([], images) }));
   }
+
   ngOnInit() {
     this.store.pipe(select(getCachedImages),
       takeUntil(this.$unsubscribe))
@@ -104,8 +104,11 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
           { label: venue.name, value: venue.id }));
       });
 
-    this.$userClients = this.store.pipe(select(getUserClientsSelector));
-    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+    this.$userClients = this.store.pipe(select(getUserClientsSelector),
+      takeUntil(this.$unsubscribe));
+      
+    this.store.pipe(select(getUserLangSelector),
+      takeUntil(this.$unsubscribe))
       .subscribe(language => {
         if (language) {
           this.translateService.use(language);
@@ -148,7 +151,7 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
       if (locaUser) {
         item.user = locaUser.user
       }
- 
+
       this.store.dispatch(addContractAction({ item }));
     } else {
       this.store.dispatch(updateContractAction({ item }));
@@ -171,13 +174,13 @@ export class ContractAddDialogComponent extends GenericAddEditComponent<IContrac
 
   public onRemoveCachedImage(image: IProductImage): void {
     let images = Object.assign([], this.cachedImages);
-    let match = images?.filter(i => i.id === image.id)?.shift();
+    let match = images?.find(i => i.id === image.id);
     if (match) {
       _.remove(images, { id: image.id });
       this.store.dispatch(cacheImagesAction({ images }));
     }
   }
- 
+
   public onImageChange(event: File): void {
     this.files.push(event);
 

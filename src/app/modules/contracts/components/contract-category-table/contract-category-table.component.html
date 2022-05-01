@@ -30,7 +30,7 @@
 
         <div *ngIf="i === (columnsToDisplay.length - 1)" fxLayoutAlign="end center" fxLayoutGap="10px">
           <!-- dropdown terms -->
-          <il-dropdown-select-search [ngClass]="{'disabled': inCheckListing, 'has-no-selection': hasNoSelection(element)}" *ngIf="($tags | async).length > 0" (click)="getTerm(element)" placeholder="Select Tag" [options]="($tags | async)"
+          <il-dropdown-select-search [ngClass]="{'disabled': inCheckListing, 'has-no-selection': hasNoSelection(element)}" *ngIf="($tags | async).length > 0" (click)="getTerm(element)" [placeholder]="'Select Tag' | translate" [options]="($tags | async)"
             (valueEmitter)="onTagUpdate($event, element)" [selectedItem]="element?.contract_tag?.id"></il-dropdown-select-search>
 
           <!-- delete term -->

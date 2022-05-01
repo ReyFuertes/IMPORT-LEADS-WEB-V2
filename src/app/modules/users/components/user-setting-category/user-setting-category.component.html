@@ -4,8 +4,8 @@
     [rowsPerPageOptions]="[10,25,50]">
     <ng-template pTemplate="header">
       <tr>
-        <th>Category Name</th>
-        <th>Associated Contract</th>
+        <th translate>Category Name</th>
+        <th translate>Associated Contract</th>
         <th></th>
       </tr>
     </ng-template>
@@ -15,13 +15,13 @@
         <td>{{ contractCategory?.contract?.label }}</td>
         <td>
           <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-            <i matTooltip="Delete Category" class="pi pi-times" (click)="onDelete(contractCategory)"></i>
+            <i [matTooltip]="'Delete Category' | translate" class="pi pi-times" (click)="onDelete(contractCategory)"></i>
           </div>
         </td>
       </tr>
     </ng-template>
   </p-table>
   <ng-template #noRecords>
-    <div class="no-records" fxFlex fxLayoutAlign="center center">No records found</div>
+    <div class="no-records" fxFlex fxLayoutAlign="center center" translate>No records found</div>
   </ng-template>
 </div>

@@ -22,7 +22,7 @@
 
       <mat-menu class="navigate-to" [overlapTrigger]="false" #appMenu="matMenu">
         <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-          <il-input fxFlex="100" (click)="$event.stopPropagation();" [form]="form" isFloatLabel="false" controlName="position" placeholder="Item Position"></il-input>
+          <il-input fxFlex="100" (click)="$event.stopPropagation();" [form]="form" isFloatLabel="false" controlName="position" [placeholder]="'Item Position' | translate"></il-input>
           <button (click)="navigateTo()" mat-flat-button class="il-button primary">Go</button>
         </div>
       </mat-menu>
@@ -68,10 +68,10 @@
   </div>
 
   <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
-    <il-input fxFlex="122px" [form]="form" isFloatLabel="true" [inputMaxLen]="10" controlName="copyCount" placeholder="Items checked for this run"></il-input>
+    <il-input fxFlex="122px" [form]="form" isFloatLabel="true" [inputMaxLen]="10" controlName="copyCount" [placeholder]="'Items checked for this run' | translate"></il-input>
 
     <div fxFlex fxLayoutAlign="end center">
-      <il-dropdown-select-search [selectedItem]="selProduct?.value" (valueEmitter)="onSelectProductChange($event, inspectionRun?.is_viewing)" placeholder="Select Product" [options]="products"></il-dropdown-select-search>
+      <il-dropdown-select-search [selectedItem]="selProduct?.value" (valueEmitter)="onSelectProductChange($event, inspectionRun?.is_viewing)" [placeholder]="'Select Product' | translate" [options]="products"></il-dropdown-select-search>
     </div>
   </div>
   <div *ngIf="selProduct; else selectedAProduct">

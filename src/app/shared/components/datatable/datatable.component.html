@@ -6,7 +6,7 @@
       <div>
         <div [ngClass]="{'col-dialog': isColControl(i)}" fxLayoutAlign="start center">
           <span *ngIf="!isColControl(i) && selectedIndex !== element?.id">{{ element[col] }}</span>
-          <il-dropdown-select-row *ngIf="isColControl(i) && items && items.length > 0 && !(isLastElement(cols, i))" (valueEmitter)="ddUpdate($event, element)" [selectedItem]="element?.parent?.value" placeholder="Select parent" [items]="items">
+          <il-dropdown-select-row *ngIf="isColControl(i) && items && items.length > 0 && !(isLastElement(cols, i))" (valueEmitter)="ddUpdate($event, element)" [selectedItem]="element?.parent?.value" [placeholder]="'Select parent' | translate" [items]="items">
           </il-dropdown-select-row>
         </div>
         <input *ngIf="selectedIndex === element?.id && !(isLastElement(cols, i)) && !isColControl(i)" (input)="onInput($event, element, col)" [value]="getValue(element[col])">

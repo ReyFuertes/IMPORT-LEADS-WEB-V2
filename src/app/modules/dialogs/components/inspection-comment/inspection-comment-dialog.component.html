@@ -7,7 +7,7 @@
   </div>
   <div [ngClass]="{'images-height': ($cachedImages | async)?.length > 0}" class="content">
     <div fxLayoutAlign="start start" fxLayout="column" fxLayoutGap="20px">
-      <il-textarea rows="5" [noResize]="true" [isFloatLabel]="false" [form]="form" controlName="comments" placeholder="Comment here..."></il-textarea>
+      <il-textarea rows="5" [noResize]="true" [isFloatLabel]="false" [form]="form" controlName="comments" [placeholder]="'Comment here' | translate"></il-textarea>
       <il-upload-box (imageEmitter)="onImageChange($event)" fxFlex="30"></il-upload-box>
     </div>
     <div class="img-container" *ngIf="($cachedImages | async)?.length > 0">

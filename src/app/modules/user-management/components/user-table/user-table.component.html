@@ -1,7 +1,7 @@
 <div class="user-table" [ngClass]="{'active': active}">
   <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
     <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay; let i = index">
-      <th mat-header-cell *matHeaderCellDef> {{ column !== 'action' ? splitToSentCase(column): ''}} </th>
+      <th mat-header-cell *matHeaderCellDef translate> {{ column !== 'action' ? (splitToSentCase(column) ): ''}} </th>
       <td [id]="i" mat-cell *matCellDef="let item">
         <div fxLayout="row" fxLayoutAlign="start center" *ngIf="!isNoExpand(i)">
           <div *ngIf="i === 0" class="img-container">
@@ -10,8 +10,10 @@
           </div>
           <span>{{item[column]}}</span>
         </div>
-        <il-popover-multi-select *ngIf="isNoExpand(i) && !isLast(columnsToDisplay, i)" [idx]="i" [label]="column" [options]="isAccessOrRoles(column)" [values]="fmtToIds(item, column)"
-          (optionValuesEmitter)="handleOptionValuesChange($event, item, column)" class="action-col"></il-popover-multi-select>
+        <il-popover-multi-select *ngIf="isNoExpand(i) && !isLast(columnsToDisplay, i)" [idx]="i" [label]="column"
+          [options]="isAccessOrRoles(column)" [values]="fmtToIds(item, column)"
+          (optionValuesEmitter)="handleOptionValuesChange($event, item, column)" class="action-col">
+        </il-popover-multi-select>
 
         <div *ngIf="column === 'action'" [id]="i" fxFlex fxLayoutAlign="center center">
           <img [id]="i" class="ellipse" [matMenuTriggerFor]="menu" [src]="svgPath + 'dots-icon-blue.svg'" />
@@ -26,7 +28,8 @@
 
     <!--detail expanded section -->
     <ng-container matColumnDef="expandedDetail">
-      <td [ngClass]="{'has-border': item == expandedElement}" mat-cell *matCellDef="let item" [attr.colspan]="columnsToDisplay.length">
+      <td [ngClass]="{'has-border': item == expandedElement}" mat-cell *matCellDef="let item"
+        [attr.colspan]="columnsToDisplay.length">
         <div class="tbl-el-detail" [@detailExpand]="item == expandedElement ? 'expanded' : 'collapsed'">
           <div fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="10px" class="tbl-el-diagram">
             <ng-container *ngFor="let col of cols">
@@ -49,5 +52,5 @@
     </tr>
     <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
   </table>
-  <mat-paginator [pageSize]="defaultPageSize" [pageSizeOptions]="pageSizeOptions" showFirstLastButtons></mat-paginator>
+  <mat-paginator [pageSize]="defaultPageSize" [pageSizeOptions]="pageSizeOptions" showFirstLastButtons translate></mat-paginator>
 </div>

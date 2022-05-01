@@ -2,10 +2,10 @@
   <p-table *ngIf="hasRecords; else noRecords" [value]="contractCategoryTemplates">
     <ng-template pTemplate="header">
       <tr>
-        <th>Template Category Name</th>
-        <th>Category Name</th>
-        <th>Contract</th>
-        <th></th>
+        <th translate>Template Category Name</th>
+        <th translate>Category Name</th>
+        <th translate>Contract</th>
+        <th ></th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-template>
@@ -14,18 +14,18 @@
         <td>{{ template?.contract_category?.category?.category_name }}</td>
         <td>
           <il-dropdown-select-ng [selectedItemsLabel]="'{0} associated'" [options]="$contracts | async"
-            (valueEmitter)="handleValueChange(template, $event)" placeholder="Select contracts"
+            (valueEmitter)="handleValueChange(template, $event)" [placeholder]="'Select contract' | translate"
             [selectedItem]="template?.contract"></il-dropdown-select-ng>
         </td>
         <td>
           <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-            <i matTooltip="Delete Template Category" class="pi pi-times" (click)="onDelete(template)"></i>
+            <i [matTooltip]="'Delete Template Category' | translate" class="pi pi-times" (click)="onDelete(template)"></i>
           </div>
         </td>
       </tr>
     </ng-template>
   </p-table>
   <ng-template #noRecords>
-    <div class="no-records" fxFlex fxLayoutAlign="center center">No records found</div>
+    <div class="no-records" fxFlex fxLayoutAlign="center center" translate>No records found</div>
   </ng-template>
 </div>

@@ -8,13 +8,13 @@
         <h4>{{ 'Personal Details' | translate }}</h4>
       </div>
       <div class="details-container" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="32px">
-        <il-input fxFlex="25" [form]="form" isFloatLabel="true" controlName="firstname" placeholder="First Name">
+        <il-input fxFlex="25" [form]="form" isFloatLabel="true" controlName="firstname" [placeholder]="'First Name' | translate">
         </il-input>
-        <il-input fxFlex="25" [form]="form" isFloatLabel="true" controlName="lastname" placeholder="Last Name">
+        <il-input fxFlex="25" [form]="form" isFloatLabel="true" controlName="lastname" [placeholder]="'Last Name' | translate">
         </il-input>
-        <il-input fxFlex="25" [form]="form" isFloatLabel="true" controlName="phone" placeholder="Phone Number">
+        <il-input fxFlex="25" [form]="form" isFloatLabel="true" controlName="phone" [placeholder]="'Phone Number' | translate">
         </il-input>
-        <il-input fxFlex="25" [form]="form" isFloatLabel="true" controlName="email" placeholder="Email"
+        <il-input fxFlex="25" [form]="form" isFloatLabel="true" controlName="email" [placeholder]="'Email' | translate"
           [inputType]="'email'"></il-input>
       </div>
     </div>
@@ -28,10 +28,10 @@
         <h4>{{ 'Company details' | translate }}</h4>
       </div>
       <div class="details-container" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="32px">
-        <il-input fxFlex="25" [form]="form" isFloatLabel="true" controlName="company_name" placeholder="Company Name">
+        <il-input fxFlex="25" [form]="form" isFloatLabel="true" controlName="company_name" [placeholder]="'Company Name' | translate">
         </il-input>
         <il-input fxFlex="50" [form]="form" isFloatLabel="true" controlName="company_address"
-          placeholder="Company Address"></il-input>
+          [placeholder]="'Company Address' | translate"></il-input>
       </div>
     </div>
   </div>
@@ -44,12 +44,12 @@
         <h4>{{ 'Language' | translate }}</h4>
       </div>
       <div class="details-container" fxLayout="row" fxFlex="33" fxLayoutAlign="start center" fxLayoutGap="32px">
-        <il-dropdown-select fxFlex placeholder="Select language" [form]="form" controlName="language"
+        <il-dropdown-select fxFlex [placeholder]="'Select language' | translate" [form]="form" controlName="language"
           [options]="languages"></il-dropdown-select>
       </div>
     </div>
   </div>
   <div class="action-btns" fxLayout="row" fxLayoutAlign="center center">
-    <button (click)="updateProfile()" mat-flat-button class="il-button primary large">Save settings</button>
+    <button (click)="updateProfile()" mat-flat-button class="il-button primary large" translate>Save</button>
   </div>
 </div>

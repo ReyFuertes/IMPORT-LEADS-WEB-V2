@@ -1,6 +1,6 @@
 <div class="us-container" fxLayout="column" fxLayoutGap="24px">
   <h2 *appHasRole="'admin'" translate>Settings</h2>
-  <h2 *appHasRole="'user'" translate>Profile</h2>
+  <!-- <h2 *appHasRole="'user'" translate>Profile</h2> -->
   <p-tabView [(activeIndex)]="activeIndex" (onChange)="handleChange($event)">
     <p-tabPanel [header]="'Profile' | translate">
       <il-user-setting-details></il-user-setting-details>

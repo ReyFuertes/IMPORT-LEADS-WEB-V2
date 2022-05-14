@@ -19,8 +19,8 @@
       <span class="username" [matTooltip]="user?.username" [matMenuTriggerFor]="menu">{{ user?.fullname }}</span>
       <img class="arrow" [matMenuTriggerFor]="menu" [src]="svgPath + 'arrow-down-icon-black.svg'" />
       <mat-menu #menu="matMenu">
-        <button *appHasRole="'user'" mat-menu-item [routerLink]="settingsRoute">{{ 'Profile' | translate }}</button>
-        <button *appHasRole="'admin'" mat-menu-item [routerLink]="settingsRoute">{{ 'Settings' | translate }}</button>
+        <!-- <button *appHasRole="'user'" mat-menu-item [routerLink]="settingsRoute">{{ 'Profile' | translate }}</button> -->
+        <button mat-menu-item [routerLink]="settingsRoute">{{ 'Settings' | translate }}</button>
         <button mat-menu-item [routerLink]="changePasswordRoute">{{ 'Change Password' | translate }}</button>
         <!-- NOTE: THIS WILL BE DISPLAYED IN ADMIN LEVEL -->
         <button *appHasRole="'admin'" mat-menu-item [routerLink]="userMngmntRoute">{{ 'User Management' | translate }}</button>

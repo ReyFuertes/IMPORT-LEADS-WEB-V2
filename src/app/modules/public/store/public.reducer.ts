@@ -1,5 +1,5 @@
 import { createReducer, on, Action } from "@ngrx/store";
-import { ChangePublicUserPasswordSuccessAction, isUserExistForChangePasswordSuccessAction } from "./public.actions";
+import { ValidatePublicUserPasswordSuccessAction, isUserExistForChangePasswordSuccessAction } from "./public.actions";
 
 export interface PublicState {
   emailToken?: { email: string, token: string, website_url: string };
@@ -11,7 +11,7 @@ export const initialState: PublicState = {
 };
 const publicReducer = createReducer(
   initialState,
-  on(ChangePublicUserPasswordSuccessAction, (state, action) => {
+  on(ValidatePublicUserPasswordSuccessAction, (state, action) => {
     return Object.assign({}, state, { isPasswordChanged: true });
   }),
   on(isUserExistForChangePasswordSuccessAction, (state, action) => {

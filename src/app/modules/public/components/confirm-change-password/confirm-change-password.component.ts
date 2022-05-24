@@ -4,12 +4,13 @@ import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { combineLatest, forkJoin } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import { GenericDestroyPageComponent } from 'src/app/shared/generics/generic-destroy-page';
 import { passwordValidator } from 'src/app/shared/util/validator';
 import { AppState } from 'src/app/store/app.reducer';
 import { getUserLangSelector } from 'src/app/store/selectors/app.selector';
 import { environment } from 'src/environments/environment';
-import { ChangePublicUserPasswordAction } from '../../store/public.actions';
+import { ValidatePublicUserPasswordAction } from '../../store/public.actions';
 import { getIsPasswordChangedSelector, getPublicEmailTokenSelector } from '../../store/public.selectors';
 
 @Component({
@@ -42,7 +43,9 @@ export class ConfirmChangePasswordComponent extends GenericDestroyPageComponent 
     combineLatest([
       this.store.pipe(select(getPublicEmailTokenSelector)),
       this.store.pipe(select(getUserLangSelector))
-    ]).subscribe(([emailToken, language]) => {
+    ])
+    .pipe(takeUntil(this.$unsubscribe), debounceTime(300))
+    .subscribe(([emailToken, language]) => {
       if (emailToken?.email && emailToken?.token) {
         this.form.get('username').patchValue(emailToken?.email, { emitEvent: false });
         this.form.get('token').patchValue(emailToken?.token, { emitEvent: false });
@@ -63,7 +66,7 @@ export class ConfirmChangePasswordComponent extends GenericDestroyPageComponent 
 
   public onSubmit(): void {
     if (this.form.valid) {
-      this.store.dispatch(ChangePublicUserPasswordAction({
+      this.store.dispatch(ValidatePublicUserPasswordAction({
         payload: this.form.value
       }))
     }

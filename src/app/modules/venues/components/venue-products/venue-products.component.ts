@@ -45,9 +45,6 @@ export class VenueProductsComponent extends GenericRowComponent implements OnCha
     label: 'Contracts',
     width: '100px'
   }, {
-    label: 'Avg. pass/fail',
-    width: '100px'
-  }, {
     label: '',
     width: '60px'
   }];

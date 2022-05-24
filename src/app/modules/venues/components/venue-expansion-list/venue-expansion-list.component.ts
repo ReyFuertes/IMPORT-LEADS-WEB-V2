@@ -27,10 +27,7 @@ export class VenueExpansionListComponent extends GenericDestroyPageComponent imp
   }, {
     label: 'Avg. Price',
     width: '100px'
-  }, {
-    label: 'Avg. pass/fail',
-    width: '100px'
-  }, {
+  },{
     label: 'Qnt. of items',
     width: '100px'
   }];

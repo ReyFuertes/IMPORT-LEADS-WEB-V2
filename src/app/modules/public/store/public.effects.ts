@@ -25,7 +25,7 @@ export class PublicEffect {
       map((response: any) => {
         return isUserExistForChangePasswordSuccessAction({ response });
       }),
-      retry(3),
+      retry(5),
       catchError((error: any) => {
         this.router.navigateByUrl(NOTFOUNDPAGE);
         console.log('%c LOAD CHANGE PASSWORD FAILED!', 'background: red; color: white');

@@ -74,8 +74,11 @@ export class UserTableComponent extends GenericContainer implements AfterViewIni
   }
 
   ngAfterViewInit(): void {
-    this.$users = this.store.pipe(select(getTableUsersSelector));
-    this.$users.pipe(debounceTime(100), takeUntil(this.$unsubscribe),
+    this.$users = this.store.pipe(select(getTableUsersSelector),
+      takeUntil(this.$unsubscribe));
+
+    this.$users.pipe(debounceTime(100),
+      takeUntil(this.$unsubscribe),
       tap((res) => {
         const _res = res.filter(i => i !== undefined);
         if (_res && _res.length > 0) {
@@ -86,7 +89,8 @@ export class UserTableComponent extends GenericContainer implements AfterViewIni
         }
       })).subscribe();
 
-    this.store.pipe(select(getAllAccessSelector))
+    this.store.pipe(select(getAllAccessSelector),
+      takeUntil(this.$unsubscribe))
       .pipe(takeUntil(this.$unsubscribe)).subscribe(res => {
         if (res) {
           this.accessOptions = res?.map(value => {
@@ -98,11 +102,12 @@ export class UserTableComponent extends GenericContainer implements AfterViewIni
         }
       });
 
-    this.store.pipe(select(getAllRolesSelector)).pipe(tap(res => {
-      if (res) this.rolesOptions = res;
-    })).subscribe();
+    this.store.pipe(select(getAllRolesSelector),
+      takeUntil(this.$unsubscribe))
+      .subscribe(roles => this.rolesOptions = roles.filter(role => role.label !== 'user'));
 
-    this.store.pipe(select(getUserLangSelector), takeUntil(this.$unsubscribe))
+    this.store.pipe(select(getUserLangSelector),
+      takeUntil(this.$unsubscribe))
       .subscribe(language => {
         if (language) {
           this.translateService.use(language);
